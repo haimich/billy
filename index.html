@@ -2,18 +2,52 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Billy</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    
+    <table id="table" class="table table-striped">
+      <thead>
+        <tr>
+          <th>Rechnungsnummer</th>
+          <th>Kunde</th>
+          <th>Betrag</th>
+          <th>Rechnungsdatum</th>
+          <th>Zahlung erhalten am</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <form></form>
+
   </body>
 
+  <script src="node_modules/react/dist/react.js"></script>
+  <script src="node_modules/redux/dist/redux.js"></script>
+  <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
+
   <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
+    let data = require("./data.json")
+
+    let table = document.getElementById('table');
+    table.querySelector('tbody').innerHTML = data.map(row).join('');
+
+    function row(data) {
+      return `
+        <tr>
+          <td>${data.id}</td>
+          <td>${data.customer}</td>
+          <td>${data.amount}</td>
+          <td>${formatDate(data.date_created)}</td>
+          <td>${formatDate(data.date_paid)}</td>
+        </tr>
+      `;
+    }
+
+    function formatDate(date) {
+      return moment(date).format('DD.MM.YYYY');
+    }
   </script>
 </html>
