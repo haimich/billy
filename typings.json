@@ -1,6 +1,9 @@
 {
   "name": "billy",
-  "dependencies": {},
+  "dependencies": {
+    "react": "registry:npm/react#15.0.1+20160601175240",
+    "react-dom": "registry:npm/react-dom#15.0.1+20160705210405"
+  },
   "globalDependencies": {
     "github-electron": "registry:dt/github-electron#1.2.5+20160624085047",
     "node": "registry:dt/node#6.0.0+20160709114037"

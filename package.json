@@ -4,9 +4,11 @@
   "description": "",
   "main": "./build",
   "scripts": {
+    "postinstall": "typings install",
     "prestart": "tsc",
-    "start": "electron .",
-    "watch": "tsc -w & electron ."
+    "start": "npm run copy-html && electron .",
+    "watch": "tsc -w & chokidar --initial -c 'npm run copy-html' index.html & electron .",
+    "copy-html": "cp index.html build"
   },
   "repository": {
     "type": "git",
@@ -14,11 +16,12 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/haimich/billy/issues"
   },
   "devDependencies": {
+    "chokidar-cli": "^1.2.0",
     "electron-prebuilt": "^1.2.6"
   },
   "dependencies": {
