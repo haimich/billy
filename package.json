@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "tsc",
     "start": "electron .",
-    "watch": "tsc -w"
+    "watch": "tsc -w & electron ."
   },
   "repository": {
     "type": "git",

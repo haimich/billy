@@ -1,18 +1,19 @@
 import * as moment from 'moment';
+import Bill from './models/Bill';
 
 let data = require('./data.json');
 
 let table = document.getElementById('table');
 table.querySelector('tbody').innerHTML = data.map(row).join('');
 
-function row(data) {
+function row(bill: Bill): string {
   return `
     <tr>
-      <td>${data.id}</td>
-      <td>${data.customer}</td>
-      <td>${data.amount}</td>
-      <td>${formatDate(data.date_created)}</td>
-      <td>${formatDate(data.date_paid)}</td>
+      <td>${bill.id}</td>
+      <td>${bill.customer}</td>
+      <td>${bill.amount}</td>
+      <td>${formatDate(bill.date_created)}</td>
+      <td>${formatDate(bill.date_paid)}</td>
     </tr>
   `;
 }
