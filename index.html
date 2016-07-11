@@ -28,26 +28,5 @@
   <script src="node_modules/redux/dist/redux.js"></script>
   <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
 
-  <script>
-    let data = require("./data.json")
-
-    let table = document.getElementById('table');
-    table.querySelector('tbody').innerHTML = data.map(row).join('');
-
-    function row(data) {
-      return `
-        <tr>
-          <td>${data.id}</td>
-          <td>${data.customer}</td>
-          <td>${data.amount}</td>
-          <td>${formatDate(data.date_created)}</td>
-          <td>${formatDate(data.date_paid)}</td>
-        </tr>
-      `;
-    }
-
-    function formatDate(date) {
-      return moment(date).format('DD.MM.YYYY');
-    }
-  </script>
+  <script src="build/app.js"></script>
 </html>
