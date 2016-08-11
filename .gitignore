@@ -2,3 +2,5 @@ node_modules/
 typings/
 build/
 *.log
+settings.json
+*.sqlite
