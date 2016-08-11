@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Bill from '../models/Bill';
+import Bill from '../models/BillModel';
 import { formatDate } from '../helpers/dateHelper';
 
 export default class TableView extends React.Component<Bill, {}> {

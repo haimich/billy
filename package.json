@@ -8,7 +8,8 @@
     "prestart": "tsc",
     "start": "npm run copy-html && electron .",
     "watch": "tsc -w & chokidar --initial -c 'npm run copy-html' index.html & electron .",
-    "copy-html": "cp index.html build"
+    "copy-html": "cp index.html build",
+    "rebuild" : "electron-rebuild"
   },
   "repository": {
     "type": "git",
@@ -21,9 +22,15 @@
     "url": "https://github.com/haimich/billy/issues"
   },
   "devDependencies": {
+    "@types/electron": "^1.3.17",
+    "@types/knex": "0.0.30",
+    "@types/node": "^6.0.33",
+    "@types/react": "^0.14.29",
+    "@types/react-dom": "^0.14.14",
     "chokidar-cli": "^1.2.0",
     "electron-prebuilt": "^1.2.6",
-    "typings": "^1.3.2"
+    "electron-rebuild": "^1.2.0",
+    "typescript": "^2.1.0-dev.20160811"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
@@ -32,7 +39,6 @@
     "react": "^15.2.1",
     "react-dom": "^15.3.0",
     "redux": "^3.5.2",
-    "sqlite3": "^3.1.4",
-    "typescript": "^1.8.10"
+    "sqlite3": "^3.1.4"
   }
 }

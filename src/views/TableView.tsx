@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Bill from '../models/Bill';
+import Bill from '../models/BillModel';
 import TableRowView from './TableRowView';
 
 export default class TableView extends React.Component<any, {}> {

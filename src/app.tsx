@@ -1,11 +1,10 @@
-import Bill from './models/Bill';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import TableView from './views/TableView';
+import Bill from './models/BillModel'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import TableView from './views/TableView'
+import { listBills } from './repositories/billsRepository'
 
-let data = require('../data.json');
-
-ReactDOM.render(
-  <TableView bills={data} />,
+listBills().then(bills => ReactDOM.render(
+  <TableView bills={bills} />,
   document.getElementById('table-container')
-);
+))
