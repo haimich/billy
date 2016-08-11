@@ -2,7 +2,7 @@ import * as React from 'react';
 import Bill from '../models/BillModel';
 import { formatDate } from '../helpers/dateHelper';
 
-export default class TableView extends React.Component<Bill, {}> {
+export default class TableComponent extends React.Component<Bill, {}> {
 
   render() {
     return (
