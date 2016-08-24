@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import Bill from '../models/BillModel'
+import { createBill } from '../repositories/billsRepository'
 
 export default class EditorComponent extends React.Component<any, {}> {
 
@@ -16,14 +17,15 @@ export default class EditorComponent extends React.Component<any, {}> {
     event.preventDefault()
 
     const refs = this.refs
+    const bill = new Bill(
+      refs.id.value,
+      refs.customer.value,
+      Number(refs.amount.value),
+      refs.date_created.valueAsDate,
+      refs.date_paid.valueAsDate,
+    )
 
-    console.log({
-      id: refs.id.value,
-      customer: refs.customer.value,
-      amount: Number(refs.amount.value),
-      date_created: refs.date_created.valueAsDate,
-      date_paid: refs.date_paid.valueAsDate,
-    })
+    createBill(bill).then(console.log, console.log)
   }
 
   render() {
