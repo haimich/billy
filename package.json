@@ -4,7 +4,6 @@
   "description": "",
   "main": "./build",
   "scripts": {
-    "postinstall": "typings install",
     "prestart": "tsc",
     "start": "npm run copy-html && electron .",
     "watch": "tsc -w & chokidar --initial -c 'npm run copy-html' index.html & electron .",
@@ -30,7 +29,7 @@
     "chokidar-cli": "^1.2.0",
     "electron-prebuilt": "^1.2.6",
     "electron-rebuild": "^1.2.0",
-    "typescript": "^2.1.0-dev.20160811"
+    "typescript": "^2.1.0-dev.20160824"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
