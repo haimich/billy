@@ -6,11 +6,9 @@ import EditorComponent from './components/EditorComponent'
 import { listBills } from './repositories/billsRepository'
 
 listBills().then(bills => ReactDOM.render(
-  <TableComponent bills={bills} />,
-  document.getElementById('table-container')
+  <div>
+    <TableComponent bills={bills} />
+    <EditorComponent />
+  </div>,
+  document.getElementById('app')
 ))
-
-ReactDOM.render(
-  <EditorComponent />,
-  document.getElementById('editor-container')
-)

@@ -7,7 +7,7 @@ export default class TableComponent extends React.Component<any, {}> {
 
   render() {
     return (
-      <table id="table" className="table table-striped">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th>Rechnungsnummer</th>
