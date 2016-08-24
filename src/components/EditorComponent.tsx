@@ -1,19 +1,15 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import Bill from '../models/BillModel'
-import * as DatePicker from 'react-datepicker'
 
 export default class EditorComponent extends React.Component<any, {}> {
 
   refs: {
     id: HTMLInputElement,
     customer: HTMLInputElement,
-    amount: HTMLInputElement
-  }
-
-  state: {
-    date_created: Date,
-    date_paid: Date
+    amount: HTMLInputElement,
+    date_created: HTMLInputElement,
+    date_paid: HTMLInputElement
   }
 
   onSave(event) {
@@ -23,19 +19,11 @@ export default class EditorComponent extends React.Component<any, {}> {
 
     console.log({
       id: refs.id.value,
-      customeer: refs.customer.value,
+      customer: refs.customer.value,
       amount: Number(refs.amount.value),
-      date_created: this.state.date_created,
-      date_paid: this.state.date_paid
+      date_created: refs.date_created.valueAsDate,
+      date_paid: refs.date_paid.valueAsDate,
     })
-  }
-
-  onChangeDateCreated(date) {
-    this.setState({ date_created: date.toDate() })
-  }
-
-  onChangeDatePaid(date) {
-    this.setState({ date_paid: date.toDate() })
   }
 
   render() {
@@ -45,31 +33,31 @@ export default class EditorComponent extends React.Component<any, {}> {
           <div className="form-group">
             <label htmlFor="id" className="col-sm-2 control-label">Rechnungsnr.</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="id" ref="id" />
+              <input type="text" className="form-control" id="id" ref="id" required />
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="customer" className="col-sm-2 control-label">Kunde</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="customer" ref="customer" />
+              <input type="text" className="form-control" id="customer" ref="customer" required />
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="amount" className="col-sm-2 control-label">Betrag</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="amount" ref="amount" />
+              <input type="number" className="form-control" id="amount" ref="amount" required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="date_created" className="col-sm-2 control-label">Rechnungsdatum</label>
             <div className="col-sm-10">
-              <DatePicker className="form-control" id="date_created" onChange={this.onChangeDateCreated.bind(this)} />
+              <input type="date" className="form-control" id="date_created" ref="date_created" required />
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="date_paid" className="col-sm-2 control-label">Rechnung bezahlt am</label>
             <div className="col-sm-10">
-              <DatePicker className="form-control" id="date_paid" onChange={this.onChangeDatePaid.bind(this)} />
+              <input type="date" className="form-control" id="date_paid" ref="date_paid" required />
             </div>
           </div>
           <div className="form-group">
@@ -83,6 +71,17 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   componentDidMount() {
-    const el:Element = ReactDOM.findDOMNode(this)
+    const inputs:Element[] = [ ...ReactDOM.findDOMNode(this).querySelectorAll('input') ]
+
+    inputs.forEach(input => input.addEventListener('input', function (event) {
+      const input:any = event.target;
+      input.closest('.form-group').classList.remove('has-error')
+      input.checkValidity()
+    }))
+
+    inputs.forEach(input => input.addEventListener('invalid', function (event) {
+      const input:any = event.target;
+      input.closest('.form-group').classList.add('has-error')
+    }))
   }
 }
