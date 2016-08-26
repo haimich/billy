@@ -1,13 +1,16 @@
 {
   "name": "billy",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A billing tool for Cristina.",
   "main": "./build",
   "scripts": {
+    "setup": "npm run prepare-database && npm run rebuild",
     "build": "tsc",
-    "prestart": "npm run build && npm run copy-html",
-    "start": "electron .",
-    "watch": "tsc -w & chokidar --initial -c 'npm run copy-html' index.html & electron .",
+    "prestart": "npm run build && npm run prepare-database && npm run copy-html",
+    "start": "npm run start-electron",
+    "start-electron": "electron .",
+    "prepare-database": "knex migrate:latest && knex seed:run",
+    "watch": "tsc -w & chokidar --initial -c 'npm run copy-html' index.html & npm run start-electron",
     "copy-html": "cp index.html build",
     "rebuild": "electron-rebuild"
   },
@@ -39,7 +42,6 @@
     "moment": "^2.14.1",
     "react": "^15.2.1",
     "react-dom": "^15.3.0",
-    "redux": "^3.5.2",
     "sqlite3": "^3.1.4"
   }
 }

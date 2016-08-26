@@ -9,5 +9,6 @@ module.exports = {
   },
   seeds: {
     directory: './sql/seeds'
-  }
+  },
+  useNullAsDefault: true // see http://knexjs.org/#Builder-insert
 };
