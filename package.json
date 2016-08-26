@@ -4,8 +4,9 @@
   "description": "",
   "main": "./build",
   "scripts": {
-    "prestart": "tsc",
-    "start": "npm run copy-html && electron .",
+    "build": "tsc",
+    "prestart": "npm run build && npm run copy-html",
+    "start": "electron .",
     "watch": "tsc -w & chokidar --initial -c 'npm run copy-html' index.html & electron .",
     "copy-html": "cp index.html build",
     "rebuild": "electron-rebuild"
