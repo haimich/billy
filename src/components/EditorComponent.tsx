@@ -46,14 +46,15 @@ export default class EditorComponent extends React.Component<any, {}> {
           </div>
           <div className="form-group">
             <label htmlFor="amount" className="col-sm-2 control-label">Betrag</label>
-            <div className="col-sm-10">
+            <div className="col-sm-10 input-group">
+              <span className="input-group-addon">€</span>
               <input type="number" className="form-control" id="amount" ref="amount" required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="date_created" className="col-sm-2 control-label">Rechnungsdatum</label>
             <div className="col-sm-10">
-              <input type="date" className="form-control" id="date_created" ref="date_created" required />
+              <input type="date" className="form-control currency" id="date_created" ref="date_created" required />
             </div>
           </div>
           <div className="form-group">
