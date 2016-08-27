@@ -5,7 +5,8 @@
   "main": "./build",
   "scripts": {
     "setup": "npm run prepare-database && npm run rebuild",
-    "build": "tsc && npm run copy-html",
+    "build": "npm run clean && tsc && npm run copy-html",
+    "clean": "rm -rf build/",
     "prestart": "npm run build",
     "start": "npm run start-electron",
     "start-electron": "electron .",
