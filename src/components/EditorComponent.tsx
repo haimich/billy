@@ -68,7 +68,7 @@ export default class EditorComponent extends React.Component<any, {}> {
           <div className="form-group">
             <label htmlFor="comment" className="col-sm-2 control-label">Kommentar</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="comment" ref="comment" required />
+              <textarea className="form-control" rows={3} id="comment" ref="comment" required />
             </div>
           </div>
           <div className="form-group">

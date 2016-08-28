@@ -7,6 +7,10 @@ body {
   flex-direction: column;
 }
 
+textarea {
+  resize: none;
+}
+
 #table-container, #editor-container {
   flex: 1;
 }
@@ -14,28 +18,3 @@ body {
 #table-container {
   overflow-y: auto;
 }
-
-/* Sticky table header */
-/*
-thead, tbody, tr, td, th { display: block; }
-
-tr:after {
-  content: ' ';
-  display: block;
-  visibility: hidden;
-  clear: both;
-}
-
-thead th {
-  height: 30px;
-}
-
-tbody {
-  height: 120px;
-  overflow-y: auto;
-}
-
-tbody td, thead th {
-  width: 19.2%;
-  float: left;
-}*/
