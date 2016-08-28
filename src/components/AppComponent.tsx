@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { listBills } from '../repositories/billsRepository'
+import { createBill } from '../repositories/billsRepository'
 import Bill from '../models/BillModel'
 import TableComponent from '../components/TableComponent'
 import EditorComponent from '../components/EditorComponent'
@@ -19,11 +19,15 @@ export default class AppComponent extends React.Component<any, {}> {
     }
   }
 
+  save(bill: Bill) {
+    createBill(bill).catch(console.error)
+  }
+
   render() {
     return (
       <div>
         <TableComponent bills={this.state.bills} />
-        <EditorComponent />
+        <EditorComponent save={this.save} />
       </div>
     )
   }

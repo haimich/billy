@@ -25,8 +25,8 @@ export default class EditorComponent extends React.Component<any, {}> {
       refs.date_paid.valueAsDate,
       refs.comment.value
     )
-
-    // createBill(bill).then(console.log, console.log)
+    debugger
+    this.props.save(bill)
   }
 
   render() {
