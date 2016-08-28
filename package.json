@@ -11,6 +11,7 @@
     "start": "npm run start-electron",
     "start-electron": "electron .",
     "prepare-database": "knex migrate:latest && knex seed:run",
+    "update-dependencies": "ncu -u",
     "watch": "tsc -w",
     "copy-html": "cp index.html build",
     "rebuild": "electron-rebuild"
@@ -36,7 +37,7 @@
   },
   "devDependencies": {
     "@types/electron": "^1.3.17",
-    "@types/knex": "0.0.30",
+    "@types/knex": "0.0.32",
     "@types/node": "^6.0.33",
     "@types/react": "^0.14.32",
     "@types/react-dom": "^0.14.14",
@@ -45,6 +46,7 @@
     "electron-react-devtools": "github:firejune/electron-react-devtools",
     "electron-rebuild": "^1.2.0",
     "electron-reload": "^1.0.2",
+    "npm-check-updates": "^2.8.0",
     "typescript": "^2.1.0-dev.20160824"
   }
 }
