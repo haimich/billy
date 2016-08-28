@@ -4,12 +4,21 @@ import { createBill } from '../repositories/billsRepository'
 import Bill from '../models/BillModel'
 import TableComponent from '../components/TableComponent'
 import EditorComponent from '../components/EditorComponent'
+import * as NotificationSystem from 'react-notification-system'
+
+let notifications
 
 export default class AppComponent extends React.Component<any, {}> {
 
   state: {
     bills: Bill[]
   }
+
+  refs: {
+    notificationSystem: HTMLInputElement
+  }
+
+  notificationSystem;
 
   constructor(props) {
     super(props)
@@ -19,8 +28,24 @@ export default class AppComponent extends React.Component<any, {}> {
     }
   }
 
+  componentDidMount() {
+    notifications = this.refs.notificationSystem;
+  }
+
   save(bill: Bill) {
-    createBill(bill).catch(console.error)
+    createBill(bill)
+      .then(() => {
+        notifications.addNotification({
+          message: 'Die Rechnung wurde gespeichert!',
+          level: 'success'
+        })
+      })
+      .catch((err) => {
+        notifications.addNotification({
+          message: 'Es ist ein Fehler aufgetreten: ' + err.message,
+          level: 'error'
+        })
+      })
   }
 
   render() {
@@ -28,6 +53,7 @@ export default class AppComponent extends React.Component<any, {}> {
       <div>
         <TableComponent bills={this.state.bills} />
         <EditorComponent save={this.save} />
+        <NotificationSystem ref="notificationSystem" />
       </div>
     )
   }
