@@ -10,7 +10,16 @@ npm run setup
 npm start
 ```
 
-* to use the React dev tools open the browser console in the open app and type `require('electron-react-devtools').install()` (this needs to be done once only)
+### Dev tools
+To use the following dev tools open the browser console in the open app and install every extension manually (this needs to be done once only)
+
+* React dev tools: `require('electron-react-devtools').install()`
+* Electron devtron: `require('devtron').install()`
+
+## Features to be implemented
+* File upload (copy file) with drag and drop
+* Sort by columns (?)
+* Search/Filter (eg. not payed, year,...)
 
 ## Links
 * https://github.com/chentsulin/electron-react-boilerplate
