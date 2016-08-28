@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import Bill from '../models/BillModel'
-import { createBill } from '../repositories/billsRepository'
 
 export default class EditorComponent extends React.Component<any, {}> {
 
@@ -27,7 +26,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       refs.comment.value
     )
 
-    createBill(bill).then(console.log, console.log)
+    // createBill(bill).then(console.log, console.log)
   }
 
   render() {
