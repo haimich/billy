@@ -7,14 +7,15 @@ export default class TableComponent extends React.Component<any, {}> {
 
   render() {
     return (
-      <table className="table table-striped">
+      <table id="table-container" className="table table-striped">
         <thead>
           <tr>
-            <th>Rechnungsnummer</th>
+            <th>Rechnungsnr.</th>
             <th>Kunde</th>
             <th>Betrag</th>
             <th>Rechnungsdatum</th>
             <th>Zahlung erhalten am</th>
+            <th>Kommentar</th>
           </tr>
         </thead>
         <tbody>

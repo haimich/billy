@@ -12,6 +12,7 @@ export default class TableComponent extends React.Component<Bill, {}> {
         <td>{this.props.amount}</td>
         <td>{formatDate(this.props.date_created)}</td>
         <td>{formatDate(this.props.date_paid)}</td>
+        <td>{this.props.comment}</td>
       </tr>
     );
   }

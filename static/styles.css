@@ -1,19 +1,22 @@
 html, body {
   height: 100%;
 }
+
 body {
   display: flex;
   flex-direction: column;
 }
+
 #table-container, #editor-container {
   flex: 1;
 }
+
 #table-container {
   overflow-y: auto;
 }
 
 /* Sticky table header */
-
+/*
 thead, tbody, tr, td, th { display: block; }
 
 tr:after {
@@ -35,4 +38,4 @@ tbody {
 tbody td, thead th {
   width: 19.2%;
   float: left;
-}
+}*/

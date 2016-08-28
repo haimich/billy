@@ -10,7 +10,8 @@ export default class EditorComponent extends React.Component<any, {}> {
     customer: HTMLInputElement,
     amount: HTMLInputElement,
     date_created: HTMLInputElement,
-    date_paid: HTMLInputElement
+    date_paid: HTMLInputElement,
+    comment: HTMLInputElement
   }
 
   onSave(event) {
@@ -23,6 +24,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       Number(refs.amount.value),
       refs.date_created.valueAsDate,
       refs.date_paid.valueAsDate,
+      refs.comment.value
     )
 
     createBill(bill).then(console.log, console.log)
@@ -30,7 +32,7 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   render() {
     return (
-      <div className="container">
+      <div id="editor-container" className="container">
         <form className="form-horizontal" onSubmit={this.onSave.bind(this)}>
           <div className="form-group">
             <label htmlFor="id" className="col-sm-2 control-label">Rechnungsnr.</label>
@@ -61,6 +63,12 @@ export default class EditorComponent extends React.Component<any, {}> {
             <label htmlFor="date_paid" className="col-sm-2 control-label">Rechnung bezahlt am</label>
             <div className="col-sm-10">
               <input type="date" className="form-control" id="date_paid" ref="date_paid" required />
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="comment" className="col-sm-2 control-label">Kommentar</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" id="comment" ref="comment" required />
             </div>
           </div>
           <div className="form-group">
