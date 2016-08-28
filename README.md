@@ -1,4 +1,4 @@
-# billy
+# Billy - bill management done rite
 
 ![billy](concept/accountants.png)
 
