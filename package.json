@@ -13,7 +13,7 @@
     "prepare-database": "knex migrate:latest && knex seed:run",
     "update-dependencies": "ncu -u",
     "watch": "tsc -w",
-    "copy-html": "cp index.html build",
+    "copy-html": "cp static/index.html build",
     "rebuild": "electron-rebuild"
   },
   "repository": {
