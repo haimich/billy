@@ -40,7 +40,7 @@ export default class TableComponent extends React.Component<any, {}> {
   }
 
   componentDidMount() {
-    // const lastRow:any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child');
-    // lastRow.scrollIntoView();
+    const lastRow:any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child');
+    lastRow.scrollIntoView();
   }
 }

@@ -32,50 +32,57 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   render() {
     return (
-      <div id="editor-container" className="container">
-        <form className="form-horizontal" onSubmit={this.onSave.bind(this)}>
-          <div className="form-group">
-            <label htmlFor="id" className="col-sm-2 control-label">Rechnungsnr.</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" id="id" ref="id" required />
+      <div id="editor-container">
+        <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
+
+          <div className="row">
+            <div className="form-group col-md-6">
+              <label htmlFor="id" className="col-sm-4 control-label">Rechnungsnr.</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control" id="id" ref="id" required />
+              </div>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="customer" className="col-sm-4 control-label">Kunde</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control" id="customer" ref="customer" required />
+              </div>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="amount" className="col-sm-4 control-label">Betrag</label>
+              <div className="col-sm-8 input-group">
+                <span className="input-group-addon">€</span>
+                <input type="number" className="form-control" id="amount" ref="amount" style={{textAlign: "right"}} required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
+              </div>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="date_created" className="col-sm-4 control-label">Rechnungsdatum</label>
+              <div className="col-sm-8">
+                <input type="date" className="form-control currency" id="date_created" ref="date_created" required />
+              </div>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="date_paid" className="col-sm-4 control-label">Rechnung bezahlt am</label>
+              <div className="col-sm-8">
+                <input type="date" className="form-control" id="date_paid" ref="date_paid" required />
+              </div>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="comment" className="col-sm-4 control-label">Kommentar</label>
+              <div className="col-sm-8">
+                <textarea className="form-control" rows={3} id="comment" ref="comment" />
+              </div>
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="customer" className="col-sm-2 control-label">Kunde</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" id="customer" ref="customer" required />
+
+          <div className="row">
+            <div className="form-group col-md-12">
+              <div className="pull-right">
+                <button type="submit" className="btn btn-primary">Speichern</button>
+              </div>
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="amount" className="col-sm-2 control-label">Betrag</label>
-            <div className="col-sm-10 input-group">
-              <span className="input-group-addon">€</span>
-              <input type="number" className="form-control" id="amount" ref="amount" required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="date_created" className="col-sm-2 control-label">Rechnungsdatum</label>
-            <div className="col-sm-10">
-              <input type="date" className="form-control currency" id="date_created" ref="date_created" required />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="date_paid" className="col-sm-2 control-label">Rechnung bezahlt am</label>
-            <div className="col-sm-10">
-              <input type="date" className="form-control" id="date_paid" ref="date_paid" required />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="comment" className="col-sm-2 control-label">Kommentar</label>
-            <div className="col-sm-10">
-              <textarea className="form-control" rows={3} id="comment" ref="comment" />
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-10">
-              <button type="submit" className="btn btn-primary">Speichern</button>
-            </div>
-          </div>
+
         </form>
       </div>
     )

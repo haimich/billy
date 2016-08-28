@@ -22,3 +22,7 @@ textarea {
 #table-container table {
   margin-bottom: 0px;
 }
+
+#editor-container {
+  margin-top: 20px;
+}
