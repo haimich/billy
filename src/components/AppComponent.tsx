@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createBill } from '../repositories/billsRepository'
+import { createBill, updateBill } from '../repositories/billsRepository'
 import Bill from '../models/BillModel'
 import TableComponent from '../components/TableComponent'
 import EditorComponent from '../components/EditorComponent'
@@ -48,10 +48,26 @@ export default class AppComponent extends React.Component<any, {}> {
       })
   }
 
+  update(bill: Bill) {
+    updateBill(bill)
+      .then(() => {
+        notifications.addNotification({
+          message: 'Der Eintrag wurde aktualisiert!',
+          level: 'success'
+        })
+      })
+      .catch((err) => {
+        notifications.addNotification({
+          message: 'Es ist ein Fehler aufgetreten: ' + err.message,
+          level: 'error'
+        })
+      })
+  }
+
   render() {
     return (
       <div>
-        <TableComponent bills={this.state.bills} />
+        <TableComponent bills={this.state.bills} update={this.update} />
         <EditorComponent save={this.save} />
         <NotificationSystem ref="notificationSystem" />
       </div>

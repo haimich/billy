@@ -10,9 +10,8 @@ export default class TableComponent extends React.Component<any, {}> {
     return 'click'
   }
 
-  onAfterSaveCell(row, cellName, cellValue) {
-    console.log("Save cell '" + cellName + "' with value '" + cellValue+"'")
-    console.log("The whole row :", row)
+  onSaveCell(row: Bill, cellName: string, cellValue: Object) {
+    this.props.update(row)
   }
 
   render() {
@@ -25,7 +24,7 @@ export default class TableComponent extends React.Component<any, {}> {
           cellEdit={{
             mode: this.getEditMode(),
             blurToSave: true,
-            afterSaveCell: this.onAfterSaveCell,
+            afterSaveCell: this.onSaveCell.bind(this),
           }}
           hover={true}
           search={true}

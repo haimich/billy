@@ -14,3 +14,15 @@ export function createBill(bill: Bill) {
 	return db('bills')
 		.insert(bill)
 }
+
+export function updateBill(bill: Bill) {
+	return db('bills')
+		.update({
+			amount: bill.amount,
+			customer: bill.customer,
+			date_created: bill.date_created,
+			date_paid: bill.date_paid,
+			comment: bill.comment
+		})
+		.where('id', bill.id)
+}
