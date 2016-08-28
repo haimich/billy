@@ -1,5 +1,7 @@
 # billy
 
+![billy](concept/accountants.png)
+
 ## Setup
 
 ```bash
