@@ -1,10 +1,8 @@
-import * as electron from 'electron'
+import { app, BrowserWindow, Menu} from 'electron'
 import { initMenu } from './menu'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -15,9 +13,8 @@ if (isDev) {
 }
 
 function createWindow () {
-  const menu = initMenu(electron)
-  electron.Menu.setApplicationMenu(menu)
-
+  const menu = initMenu()
+  
   mainWindow = new BrowserWindow({width: 1200, height: 800})
   mainWindow.loadURL(`file://${app_dir}/index.html`)
 

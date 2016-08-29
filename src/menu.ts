@@ -1,3 +1,5 @@
+import { BrowserWindow, Menu, shell } from 'electron'
+
 function application() {
   return {
     label: 'foo',
@@ -30,7 +32,7 @@ function edit() {
   }
 }
 
-function view(electron) {
+function view() {
   return {
     label: 'View',
     submenu: [{
@@ -41,7 +43,7 @@ function view(electron) {
           // on reload, start fresh and close any old
           // open secondary windows
           if (focusedWindow.id === 1) {
-            electron.BrowserWindow.getAllWindows().forEach((win) => {
+            BrowserWindow.getAllWindows().forEach((win) => {
               if (win.id > 1) {
                 win.close()
               }
@@ -68,21 +70,22 @@ function view(electron) {
   }
 }
 
-function help(electron) {
+function help() {
   return {
     label: 'Help',
     role: 'help',
     submenu: [{
       label: 'Learn More',
       click: () => {
-        electron.shell.openExternal('https://github.com/haimich/billy')
+        shell.openExternal('https://github.com/haimich/billy')
       }
     }]
   }
 }
 
-export function initMenu(electron) {
-  return electron.Menu.buildFromTemplate([
-    application(), edit(), view(electron), help(electron)
+export function initMenu() {
+  const template = Menu.buildFromTemplate([
+    application(), edit(), view(), help()
   ])
+  Menu.setApplicationMenu(template)
 }
