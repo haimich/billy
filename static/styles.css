@@ -23,6 +23,10 @@ textarea {
   margin-bottom: 0px;
 }
 
+#table-container .react-bs-container-body {
+  height: 350px !important;
+}
+
 #editor-container {
   margin-top: 20px;
 }
