@@ -24,11 +24,25 @@ export default class TableComponent extends React.Component<any, {}> {
     this.props.delete(rowKeys)
   }
 
+  handleConfirm(next, dropRowKeys) {
+    let billKey = 'Rechnung'
+    if (dropRowKeys.length >= 2) {
+      billKey = 'Rechnungen'
+    }
+
+    if (confirm(`Möchtest du die ${billKey} wirklich löschen?`)) {
+      next();
+    }
+  }
+
   render() {
     const options: Options = {
       afterDeleteRow: this.onDeleteRows.bind(this),
       sortName: 'id',
-      sortOrder: 'asc'
+      sortOrder: 'asc',
+      deleteText: 'Löschen',
+      noDataText: 'Keine Einträge',
+      handleConfirmDeleteRow: this.handleConfirm
     }
     const selectMode: SelectRowMode = 'checkbox' // multi select
     const selectRowProp = {
@@ -52,6 +66,7 @@ export default class TableComponent extends React.Component<any, {}> {
           deleteRow={true}
           selectRow={selectRowProp}
           pagination={false}
+          exportCSV={false}
           options={options}>
 
           <TableHeaderColumn isKey={true} dataField="id" width="140" dataSort={true}>Rechnungsnr.</TableHeaderColumn>

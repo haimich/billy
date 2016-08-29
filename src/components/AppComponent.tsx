@@ -45,7 +45,7 @@ export default class AppComponent extends React.Component<any, {}> {
     updateBill(bill)
       .then(() => {
         notifications.addNotification({
-          message: 'Der Eintrag wurde aktualisiert!',
+          message: 'Die Rechnung wurde aktualisiert!',
           level: 'success'
         })
       })
@@ -55,15 +55,13 @@ export default class AppComponent extends React.Component<any, {}> {
   delete(billIds: String[]) {
     deleteBillsByIds(billIds)
       .then(() => {
-        let msg
-        if (billIds.length === 1) {
-          msg = 'Der Eintrag wurde gelöscht!'
-        } else {
-          msg = 'Die Einträge wurden gelöscht!'
+        let billKey = 'Rechnung'
+        if (billIds.length >= 2) {
+          billKey = 'Rechnungen'
         }
 
         notifications.addNotification({
-          message: msg,
+          message: `Die ${billKey} wurden gelöscht!`,
           level: 'success'
         })
       })
