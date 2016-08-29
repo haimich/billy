@@ -63,6 +63,8 @@ export default class TableComponent extends React.Component<any, {}> {
           }}
           hover={true}
           search={true}
+          multiColumnSearch={true}
+          columnFilter={false}
           deleteRow={true}
           selectRow={selectRowProp}
           pagination={false}
