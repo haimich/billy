@@ -1,4 +1,5 @@
 import * as electron from 'electron'
+import { initMenu } from './menu'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
@@ -14,6 +15,9 @@ if (isDev) {
 }
 
 function createWindow () {
+  const menu = initMenu(electron)
+  electron.Menu.setApplicationMenu(menu)
+
   mainWindow = new BrowserWindow({width: 1200, height: 800})
   mainWindow.loadURL(`file://${app_dir}/index.html`)
 
