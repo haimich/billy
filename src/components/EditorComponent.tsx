@@ -25,7 +25,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       refs.date_paid.valueAsDate,
       refs.comment.value
     )
-    
+
     this.props.save(bill)
   }
 
@@ -63,7 +63,7 @@ export default class EditorComponent extends React.Component<any, {}> {
             <div className="form-group col-md-6">
               <label htmlFor="date_paid" className="col-sm-4 control-label">Rechnung bezahlt am</label>
               <div className="col-sm-8">
-                <input type="date" className="form-control" id="date_paid" ref="date_paid" required />
+                <input type="date" className="form-control" id="date_paid" ref="date_paid" />
               </div>
             </div>
             <div className="form-group col-md-6">

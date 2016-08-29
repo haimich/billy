@@ -1,6 +1,10 @@
 import * as moment from 'moment'
 
 export function dateFormatter(value: string): string {
+  if (value == null || value === '') {
+    return ''
+  }
+
   return moment(value).format('DD.MM.YYYY')
 }
 
