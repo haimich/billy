@@ -1,10 +1,16 @@
-import { BrowserWindow, Menu, shell } from 'electron'
+import { app, BrowserWindow, Menu, shell } from 'electron'
 
 function application() {
   return {
     label: 'foo',
     submenu: [{
       label: 'This is Billy ❤'
+    }, {
+      label: 'Quit',
+      accelerator: 'Command+Q',
+      click: function () {
+        app.quit()
+      }
     }]
   }
 }
