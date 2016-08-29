@@ -14,10 +14,7 @@ if (isDev) {
 }
 
 function createWindow () {
-  // Create the browser window.
   mainWindow = new BrowserWindow({width: 1200, height: 800})
-
-  // and load the index.html of the app.
   mainWindow.loadURL(`file://${app_dir}/index.html`)
 
   if (isDev) {
@@ -34,7 +31,6 @@ function createWindow () {
 
 app.on('ready', createWindow)
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
