@@ -1,10 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BootstrapTable, TableHeaderColumn, CellEditClickMode } from 'react-bootstrap-table';
+import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table';
 import Bill from '../models/BillModel';
 import { dateFormatter, currencyFormatter } from '../helpers/formatters';
 
 export default class TableComponent extends React.Component<any, {}> {
+
+  props: {
+    update: (row: Bill) => void,
+    delete: (rowIds: String[]) => void,
+    bills: Bill[]
+  }
 
   getEditMode(): CellEditClickMode {
     return 'click'
@@ -14,11 +20,26 @@ export default class TableComponent extends React.Component<any, {}> {
     this.props.update(row)
   }
 
+  onDeleteRows(rowKeys: string[]) {
+    this.props.delete(rowKeys)
+  }
+
   render() {
+    const options: Options = {
+      afterDeleteRow: this.onDeleteRows.bind(this),
+      sortName: 'id',
+      sortOrder: 'asc'
+    }
+    const selectMode: SelectRowMode = 'checkbox' // multi select
+    const selectRowProp = {
+      mode: selectMode,
+      clickToSelect: false,
+      bgColor: '#d9edf7',
+    }
 
     return (
       <div id="table-container">
-        <BootstrapTable 
+        <BootstrapTable
           data={this.props.bills}
           striped={true}
           cellEdit={{
@@ -28,7 +49,10 @@ export default class TableComponent extends React.Component<any, {}> {
           }}
           hover={true}
           search={true}
-          pagination={false}>
+          deleteRow={true}
+          selectRow={selectRowProp}
+          pagination={false}
+          options={options}>
 
           <TableHeaderColumn isKey={true} dataField="id" width="140" dataSort={true}>Rechnungsnr.</TableHeaderColumn>
           <TableHeaderColumn dataField="customer" width="300" dataSort={true}>Kunde</TableHeaderColumn>

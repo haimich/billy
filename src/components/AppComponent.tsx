@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createBill, updateBill } from '../repositories/billsRepository'
+import { createBill, updateBill, deleteBillsByIds } from '../repositories/billsRepository'
 import Bill from '../models/BillModel'
 import TableComponent from '../components/TableComponent'
 import EditorComponent from '../components/EditorComponent'
@@ -18,11 +18,9 @@ export default class AppComponent extends React.Component<any, {}> {
     notificationSystem: HTMLInputElement
   }
 
-  notificationSystem;
-
   constructor(props) {
     super(props)
-    
+
     this.state = {
       bills: props.bills // we convert props to state here to be able to load bills before render() is called
     }
@@ -40,12 +38,7 @@ export default class AppComponent extends React.Component<any, {}> {
           level: 'success'
         })
       })
-      .catch((err) => {
-        notifications.addNotification({
-          message: 'Es ist ein Fehler aufgetreten: ' + err.message,
-          level: 'error'
-        })
-      })
+      .catch(this.handleError)
   }
 
   update(bill: Bill) {
@@ -56,18 +49,38 @@ export default class AppComponent extends React.Component<any, {}> {
           level: 'success'
         })
       })
-      .catch((err) => {
+      .catch(this.handleError)
+  }
+
+  delete(billIds: String[]) {
+    deleteBillsByIds(billIds)
+      .then(() => {
+        let msg
+        if (billIds.length === 1) {
+          msg = 'Der Eintrag wurde gelöscht!'
+        } else {
+          msg = 'Die Einträge wurden gelöscht!'
+        }
+
         notifications.addNotification({
-          message: 'Es ist ein Fehler aufgetreten: ' + err.message,
-          level: 'error'
+          message: msg,
+          level: 'success'
         })
       })
+      .catch(this.handleError)
+  }
+
+  handleError(err: Error) {
+    notifications.addNotification({
+      message: 'Es ist ein Fehler aufgetreten: ' + err.message,
+      level: 'error'
+    })
   }
 
   render() {
     return (
       <div>
-        <TableComponent bills={this.state.bills} update={this.update} />
+        <TableComponent bills={this.state.bills} update={this.update} delete={this.delete} />
         <EditorComponent save={this.save} />
         <NotificationSystem ref="notificationSystem" />
       </div>
