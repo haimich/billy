@@ -15,7 +15,7 @@
     "watch": "tsc -w",
     "copy-html": "cp static/index.html build",
     "rebuild": "electron-rebuild",
-    "publish": "electron-packager . Billy --all --version=1.3.4 --out=~/Desktop --overwrite --icon=~/Desktop/app-icon.icns"
+    "publish": "electron-packager . Billy --all --version=1.3.4 --out=/Users/michmueller/Desktop/output --overwrite --icon=/Users/michmueller/Desktop/app-icon.icns"
   },
   "repository": {
     "type": "git",
