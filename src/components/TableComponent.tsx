@@ -38,10 +38,10 @@ export default class TableComponent extends React.Component<any, {}> {
   render() {
     const options: Options = {
       afterDeleteRow: this.onDeleteRows.bind(this),
-      sortName: 'id',
-      sortOrder: 'asc',
       deleteText: 'Löschen',
       noDataText: 'Keine Einträge',
+      sortName: 'date_created',
+      sortOrder: 'asc',
       handleConfirmDeleteRow: this.handleConfirm
     }
     const selectMode: SelectRowMode = 'checkbox' // multi select
