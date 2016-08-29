@@ -42,12 +42,6 @@ export default class EditorComponent extends React.Component<any, {}> {
               </div>
             </div>
             <div className="form-group col-md-6">
-              <label htmlFor="customer" className="col-sm-4 control-label">Kunde</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control" id="customer" ref="customer" required />
-              </div>
-            </div>
-            <div className="form-group col-md-6">
               <label htmlFor="amount" className="col-sm-4 control-label">Betrag</label>
               <div className="col-sm-8 input-group">
                 <span className="input-group-addon">€</span>
@@ -55,15 +49,21 @@ export default class EditorComponent extends React.Component<any, {}> {
               </div>
             </div>
             <div className="form-group col-md-6">
-              <label htmlFor="date_created" className="col-sm-4 control-label">Rechnungsdatum</label>
+              <label htmlFor="customer" className="col-sm-4 control-label">Kunde</label>
               <div className="col-sm-8">
-                <input type="date" className="form-control currency" id="date_created" ref="date_created" required />
+                <input type="text" className="form-control" id="customer" ref="customer" required />
               </div>
             </div>
             <div className="form-group col-md-6">
-              <label htmlFor="date_paid" className="col-sm-4 control-label">Rechnung bezahlt am</label>
+              <label htmlFor="date_paid" className="col-sm-4 control-label">Zahlung erhalten am</label>
               <div className="col-sm-8">
                 <input type="date" className="form-control" id="date_paid" ref="date_paid" />
+              </div>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="date_created" className="col-sm-4 control-label">Rechnungsdatum</label>
+              <div className="col-sm-8">
+                <input type="date" className="form-control currency" id="date_created" ref="date_created" required />
               </div>
             </div>
             <div className="form-group col-md-6">
