@@ -43,12 +43,34 @@ export default class AppComponent extends React.Component<any, {}> {
 
   update(bill: Bill) {
     updateBill(bill)
+      .then(() => {
+        this.setState({
+          bills: this.state.bills.map((element) => {
+            if (element.id === bill.id) {
+              return bill
+            } else {
+              return element
+            }
+          })
+        })
+      })
       .catch(this.handleError)
   }
 
   delete(billIds: String[]) {
     deleteBillsByIds(billIds)
       .then(() => {
+        this.setState({
+          bills: this.state.bills.filter((element) => {
+            for (let id of billIds) {
+              if (element.id === id) {
+                return
+              }
+            }
+            return element
+          })
+        })
+
         notifications.addNotification({
           message: t('Löschen erfolgreich', {count: billIds.length}),
           level: 'success',

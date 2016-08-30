@@ -86,9 +86,9 @@ export default class TableComponent extends React.Component<any, {}> {
     lastRow.scrollIntoView()
   }
 
-  componentDidUpdate() {
-    this.scrollDown()
-  }
+  // componentDidUpdate() {
+  //   this.scrollDown()
+  // }
 
   componentDidMount() {
     this.scrollDown()
