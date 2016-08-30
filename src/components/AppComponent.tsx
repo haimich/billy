@@ -5,6 +5,7 @@ import Bill from '../models/BillModel'
 import TableComponent from '../components/TableComponent'
 import EditorComponent from '../components/EditorComponent'
 import * as NotificationSystem from 'react-notification-system'
+import t from '../helpers/i18n'
 
 let notifications
 
@@ -33,9 +34,8 @@ export default class AppComponent extends React.Component<any, {}> {
   save(bill: Bill) {
     createBill(bill)
       .then(() => {
-        notifications.addNotification({
-          message: 'Die Rechnung wurde gespeichert!',
-          level: 'success'
+        this.setState({
+          bills: [bill].concat(this.state.bills)
         })
       })
       .catch(this.handleError)
@@ -43,26 +43,16 @@ export default class AppComponent extends React.Component<any, {}> {
 
   update(bill: Bill) {
     updateBill(bill)
-      .then(() => {
-        notifications.addNotification({
-          message: 'Die Rechnung wurde aktualisiert!',
-          level: 'success'
-        })
-      })
       .catch(this.handleError)
   }
 
   delete(billIds: String[]) {
     deleteBillsByIds(billIds)
       .then(() => {
-        let billKey = 'Rechnung'
-        if (billIds.length >= 2) {
-          billKey = 'Rechnungen'
-        }
-
         notifications.addNotification({
-          message: `Die ${billKey} wurden gelöscht!`,
-          level: 'success'
+          message: t('Löschen erfolgreich', {count: billIds.length}),
+          level: 'success',
+          position: 'tc'
         })
       })
       .catch(this.handleError)
@@ -70,16 +60,17 @@ export default class AppComponent extends React.Component<any, {}> {
 
   handleError(err: Error) {
     notifications.addNotification({
-      message: 'Es ist ein Fehler aufgetreten: ' + err.message,
-      level: 'error'
+      message: t('Datenbank Fehler') + err.message,
+      level: 'error',
+      position: 'tc'
     })
   }
 
   render() {
     return (
       <div>
-        <TableComponent bills={this.state.bills} update={this.update} delete={this.delete} />
-        <EditorComponent save={this.save} />
+        <TableComponent bills={this.state.bills} update={this.update.bind(this)} delete={this.delete.bind(this)} />
+        <EditorComponent save={this.save.bind(this)} />
         <NotificationSystem ref="notificationSystem" />
       </div>
     )
