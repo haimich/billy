@@ -1,21 +1,22 @@
-import { app, BrowserWindow, Menu} from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 import { initMenu } from './menu'
+import { get, set, init as initSettings } from './repositories/settingsRepository'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// Keep a global reference of the window object (otherwise the window will
+// be closed automatically when the JavaScript object is garbage collected).
 let mainWindow
 
 if (isDev) {
   require('electron-reload')(app_dir)
 }
 
-function createWindow () {
+async function createWindow() {
   const menu = initMenu()
-  
-  mainWindow = new BrowserWindow({width: 1200, height: 800})
+
+  mainWindow = new BrowserWindow({ width: 1200, height: 800 })
   mainWindow.loadURL(`file://${app_dir}/index.html`)
 
   if (isDev) {
@@ -23,11 +24,21 @@ function createWindow () {
   }
 
   mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  debugger
+
+  await initSettings()
+
+  const knex = await get('knex')
+  console.log(knex)
+
+  // if (isDev) {
+  //   settings.defaults.knex.connection = {
+  //     filename: './bills.sqlite'
+  //   }
+  // }
 }
 
 app.on('ready', createWindow)

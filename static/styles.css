@@ -15,10 +15,6 @@ textarea {
   flex: 1;
 }
 
-#table-container {
-  overflow-y: auto;
-}
-
 #table-container table {
   margin-bottom: 0px;
 }
