@@ -61,7 +61,7 @@ export default class TableComponent extends React.Component<any, {}> {
           search={true}
           multiColumnSearch={true}
           columnFilter={false}
-          insertRow={true}
+          insertRow={false}
           deleteRow={true}
           selectRow={selectRowProp}
           pagination={false}
