@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npm run prepare-database && npm run rebuild",
     "build": "npm run clean && tsc && npm run copy-html",
-    "clean": "rm -rf build/* output/*",
+    "clean": "rm -rf build/*",
     "prestart": "npm run build",
     "start": "npm run start-electron",
     "start-electron": "electron .",
