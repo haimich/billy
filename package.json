@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npm run prepare-database && npm run rebuild",
     "build": "npm run clean && tsc && npm run copy-html",
-    "clean": "rm -rf build/",
+    "clean": "rm -rf build/* output/*",
     "prestart": "npm run build",
     "start": "npm run start-electron",
     "start-electron": "electron .",
@@ -15,7 +15,7 @@
     "watch": "tsc -w",
     "copy-html": "cp static/index.html build",
     "rebuild": "electron-rebuild --version 1.3.4",
-    "publish:mac": "electron-packager . Billy --platform=darwin --arch=x64 --version=1.3.4 --out=output --overwrite --icon=billy.icns"
+    "publish:mac": "npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.3.4 --out=output --overwrite --icon=billy.icns"
   },
   "repository": {
     "type": "git",
