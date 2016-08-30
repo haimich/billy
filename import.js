@@ -1,4 +1,13 @@
+/**
+ * This script can be used to import bills from a csv file into the database.
+ *
+ * Example: node import.js Rechnungen.csv
+ */
+
 const basicCSV = require('basic-csv')
+const argv = require('minimist')(process.argv.slice(2))
+const FILENAME = argv._[0]
+
 const knex = require('knex')
 const knexConfig = require('./conf/development.js').knex
 
@@ -26,7 +35,7 @@ function saveToDb(bill) {
   return db('bills').insert(bill)
 }
 
-basicCSV.readCSV('./Rechnungen.csv', (error, rows) => {
+basicCSV.readCSV(FILENAME, (error, rows) => {
   if (error != null) {
     console.log(err);
     process.exit(1);
