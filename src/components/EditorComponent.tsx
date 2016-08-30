@@ -21,6 +21,8 @@ export default class EditorComponent extends React.Component<any, {}> {
     file?: File
   }
 
+  counter: number
+  
   constructor(props) {
     super(props)
 
@@ -48,18 +50,15 @@ export default class EditorComponent extends React.Component<any, {}> {
     this.props.save(bill)
   }
 
-  onDrag(event) {
-    event.preventDefault()
-    
-  }
-
   getFile(files) {
     if (files.length >= 1) {
       return files[0]
     }
   }
 
-  counter: number 
+  onDrag(event) {
+    event.preventDefault() 
+  } 
 
   onEnter() {
     this.counter++
@@ -155,12 +154,12 @@ export default class EditorComponent extends React.Component<any, {}> {
           <p></p>
         </form>
 
-        <div className="overlay"></div>
+        <div className="overlay"><span>{t('Datei ablegen')}</span></div>
       </div>
     )
   }
 
-  componentDidMount() {
+  addFormValidation() {
     const inputs:Element[] = [ ...ReactDOM.findDOMNode(this).querySelectorAll('input') ]
 
     inputs.forEach(input => input.addEventListener('input', function (event) {
@@ -173,5 +172,9 @@ export default class EditorComponent extends React.Component<any, {}> {
       const input:any = event.target;
       input.closest('.form-group').classList.add('has-error')
     }))
+  }
+
+  componentDidMount() {
+    this.addFormValidation()
   }
 }

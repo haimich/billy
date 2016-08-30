@@ -32,7 +32,9 @@ textarea {
 } 
 
 .overlay {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s linear;
   position: absolute;
   top: 0;
   right: 0;
@@ -41,10 +43,21 @@ textarea {
   background-color: rgba(255, 255, 255, 0.65);
 }
 
+.overlay span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10em;
+  font-size: 1.6em;
+  color: #666666
+}
+
 #editor-container.busy form {
   -webkit-filter: blur(2px);
   filter: blur(2px);
 }
 #editor-container.busy .overlay {
-  display: block;
+  visibility: visible;
+  transition: visibility 0s, opacity 0s linear;
+  opacity: 1;
 }
