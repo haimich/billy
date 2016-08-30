@@ -13,7 +13,7 @@ if (isDev) {
   require('electron-reload')(app_dir)
 }
 
-async function createWindow() {
+function createWindow() {
   const menu = initMenu()
 
   mainWindow = new BrowserWindow({ width: 1200, height: 800 })
@@ -27,12 +27,7 @@ async function createWindow() {
     mainWindow = null
   })
 
-  debugger
-
-  await initSettings()
-
-  const knex = await get('knex')
-  console.log(knex)
+  initSettings().then(console.log).catch(console.error)
 
   // if (isDev) {
   //   settings.defaults.knex.connection = {
