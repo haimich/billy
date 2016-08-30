@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
     table.text('customer')
     table.decimal('amount')
     table.text('comment')
+    table.text('file_path')
   })
 }
 

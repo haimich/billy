@@ -27,7 +27,8 @@ export function updateBill(bill: Bill): Promise<any> {
 			customer: bill.customer,
 			date_created: bill.date_created,
 			date_paid: bill.date_paid,
-			comment: bill.comment
+			comment: bill.comment,
+			file_path: bill.file_path
 		})
 		.where('id', bill.id)
 }

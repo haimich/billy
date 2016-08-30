@@ -4,8 +4,9 @@ export default class Bill {
     public customer: string,
     public amount: number,
     public date_created: Date,
-    public date_paid: Date,
-    public comment: string
+    public date_paid?: Date,
+    public comment?: string,
+    public file_path?: string,
   ) {
     // fields get set by Typescript automatically
   }

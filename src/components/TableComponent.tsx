@@ -81,8 +81,16 @@ export default class TableComponent extends React.Component<any, {}> {
 
   }
 
-  componentDidUpdate() {
+  scrollDown() {
     const lastRow:any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
     lastRow.scrollIntoView()
+  }
+
+  componentDidUpdate() {
+    this.scrollDown()
+  }
+
+  componentDidMount() {
+    this.scrollDown()
   }
 }

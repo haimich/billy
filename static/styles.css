@@ -26,3 +26,25 @@ textarea {
 #editor-container {
   margin-top: 20px;
 }
+
+#editor-container {
+  position: relative;
+} 
+
+.overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+#editor-container.busy form {
+  -webkit-filter: blur(2px);
+  filter: blur(2px);
+}
+#editor-container.busy .overlay {
+  display: block;
+}

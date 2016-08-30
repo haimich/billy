@@ -12,7 +12,23 @@ export default class EditorComponent extends React.Component<any, {}> {
     amount: HTMLInputElement,
     date_created: HTMLInputElement,
     date_paid: HTMLInputElement,
-    comment: HTMLInputElement
+    comment: HTMLInputElement,
+    file: HTMLInputElement,
+    fileLabel: HTMLInputElement
+  }
+
+  state: {
+    file?: File
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      file: undefined
+    }
+
+    this.counter = 0;
   }
 
   onSave(event) {
@@ -25,15 +41,51 @@ export default class EditorComponent extends React.Component<any, {}> {
       Number(refs.amount.value),
       refs.date_created.valueAsDate,
       refs.date_paid.valueAsDate,
-      refs.comment.value
+      refs.comment.value,
+      this.state.file && this.state.file.path
     )
 
     this.props.save(bill)
   }
 
+  onDrag(event) {
+    event.preventDefault()
+    
+  }
+
+  getFile(files) {
+    if (files.length >= 1) {
+      return files[0]
+    }
+  }
+
+  counter: number 
+
+  onEnter() {
+    this.counter++
+    ReactDOM.findDOMNode(this).classList.add('busy')
+  }
+
+  onLeave() {
+    this.counter--
+    if (this.counter == 0) {
+      ReactDOM.findDOMNode(this).classList.remove('busy')
+    }
+  }
+
+  onDrop(event) {
+    event.preventDefault()
+    this.setState({ file: this.getFile(event.dataTransfer.files) })
+    this.onLeave()
+  }
+
+  onFileinputChange(event) {
+    this.setState({ file: this.getFile(event.target.files) })
+  }
+
   render() {
     return (
-      <div id="editor-container">
+      <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
 
           <div className="row">
@@ -80,6 +132,15 @@ export default class EditorComponent extends React.Component<any, {}> {
                   <textarea className="form-control" rows={3} id="comment" value="Comment" ref="comment" />
                 </div>
               </div>
+              <div className="form-group">
+                <div className="col-sm-offset-4 col-sm-8">
+                  <label className="btn btn-default btn-sm">
+                    {t('Datei auswählen')}
+                    <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
+                  </label> &nbsp;
+                  <small ref="fileLabel">{this.state.file && this.state.file.name}</small>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -93,6 +154,8 @@ export default class EditorComponent extends React.Component<any, {}> {
 
           <p></p>
         </form>
+
+        <div className="overlay"></div>
       </div>
     )
   }
