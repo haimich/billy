@@ -15,7 +15,7 @@
     "watch": "tsc -w",
     "copy-html": "cp static/index.html build",
     "rebuild": "electron-rebuild --version 1.3.4",
-    "publish": "electron-packager . Billy --all --version=1.3.4 --out=output --overwrite --icon=app-icon.icns"
+    "publish:mac": "electron-packager . Billy --platform=darwin --arch=x64 --version=1.3.4 --out=output --overwrite --icon=billy.icns"
   },
   "repository": {
     "type": "git",
