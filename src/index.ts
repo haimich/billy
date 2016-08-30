@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron'
 import { initMenu } from './menu'
-import { get, set, init as initSettings } from './repositories/settingsRepository'
+import { get, set, initSettings } from './repositories/settingsRepository'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
@@ -13,9 +13,14 @@ if (isDev) {
   require('electron-reload')(app_dir)
 }
 
-function createWindow() {
-  const menu = initMenu()
+async function createWindow() {
+  initSettings()
 
+  if (isDev) {
+    await set('knex.connection.filename', './bills.sqlite')
+  }
+
+  initMenu()
   mainWindow = new BrowserWindow({ width: 1200, height: 800 })
   mainWindow.loadURL(`file://${app_dir}/index.html`)
 
@@ -26,14 +31,6 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-
-  initSettings().then(console.log).catch(console.error)
-
-  // if (isDev) {
-  //   settings.defaults.knex.connection = {
-  //     filename: './bills.sqlite'
-  //   }
-  // }
 }
 
 app.on('ready', createWindow)

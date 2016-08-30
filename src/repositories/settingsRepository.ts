@@ -6,8 +6,7 @@
 const settings = require('electron-settings')
 const isDev = require('electron-is-dev')
 
-export function init() {
-  debugger
+export function initSettings() {
   settings.configure({
     prettify: true
   })
@@ -25,7 +24,6 @@ export function init() {
       useNullAsDefault: true // see http://knexjs.org/#Builder-insert
     }
   })
-  return test
 }
 
 export function get(value: string): Promise<string> {

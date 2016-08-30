@@ -2,11 +2,18 @@ import Bill from './models/BillModel'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import AppComponent from './components/AppComponent'
-import { listBills } from './repositories/billsRepository'
+import { initDb, listBills } from './repositories/billsRepository'
 
-listBills().then(bills => ReactDOM.render(
-  <div>
-    <AppComponent bills={bills} />
-  </div>,
-  document.getElementById('app')
-))
+async function init() {
+  await initDb()
+  let bills = await listBills()
+
+  ReactDOM.render(
+    <div>
+      <AppComponent bills={bills} />
+    </div>,
+    document.getElementById('app')
+  )
+}
+
+init()
