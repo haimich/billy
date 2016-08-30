@@ -4,7 +4,8 @@ const messages = {
   'Rechnungsnr.': 'Rechnungsnr.',
   'Löschen erfolgreich': 'Die Rechnung wurde gelöscht!',
   'Löschen erfolgreich_plural': 'Die Rechnungen wurden gelöscht!',
-  'Datenbank Fehler': 'Es ist ein Fehler aufgetreten: '
+  'Datenbank Fehler': 'Es ist ein Fehler aufgetreten: ',
+  'Datenbank Fehler duplicate id': 'Es existiert bereits eine Rechnung mit dieser Rechnungsnummer'
 }
 
 export default function t(msgid, options: any = {}) {

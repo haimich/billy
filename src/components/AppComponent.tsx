@@ -31,58 +31,69 @@ export default class AppComponent extends React.Component<any, {}> {
     notifications = this.refs.notificationSystem;
   }
 
-  save(bill: Bill) {
-    createBill(bill)
-      .then(() => {
-        this.setState({
-          bills: [bill].concat(this.state.bills)
-        })
-      })
-      .catch(this.handleError)
+  async save(bill: Bill) {
+    try {
+      await createBill(bill)
+    } catch (err) {
+      this.handleError(err)
+    }
+    
+    this.setState({
+      bills: [bill].concat(this.state.bills)
+    })
   }
 
-  update(bill: Bill) {
-    updateBill(bill)
-      .then(() => {
-        this.setState({
-          bills: this.state.bills.map((element) => {
-            if (element.id === bill.id) {
-              return bill
-            } else {
-              return element
-            }
-          })
-        })
+  async update(bill: Bill) {
+    try {
+      await updateBill(bill)
+    } catch (err) {
+      this.handleError(err)
+    }
+    
+    this.setState({
+      bills: this.state.bills.map((element) => {
+        if (element.id === bill.id) {
+          return bill
+        } else {
+          return element
+        }
       })
-      .catch(this.handleError)
+    })
   }
 
-  delete(billIds: String[]) {
-    deleteBillsByIds(billIds)
-      .then(() => {
-        this.setState({
-          bills: this.state.bills.filter((element) => {
-            for (let id of billIds) {
-              if (element.id === id) {
-                return
-              }
-            }
-            return element
-          })
-        })
-
-        notifications.addNotification({
-          message: t('Löschen erfolgreich', {count: billIds.length}),
-          level: 'success',
-          position: 'tc'
-        })
+  async delete(billIds: String[]) {
+    try {
+      await deleteBillsByIds(billIds)
+    } catch (err) {
+      this.handleError(err)
+    }
+    
+    this.setState({
+      bills: this.state.bills.filter((element) => {
+        for (let id of billIds) {
+          if (element.id === id) {
+            return
+          }
+        }
+        return element
       })
-      .catch(this.handleError)
+    })
+
+    notifications.addNotification({
+      message: t('Löschen erfolgreich', {count: billIds.length}),
+      level: 'success',
+      position: 'tc'
+    })
   }
 
   handleError(err: Error) {
+    let message = t('Datenbank Fehler') + err.message
+    if (err['code'] === 'SQLITE_CONSTRAINT') {
+      message = t('Datenbank Fehler duplicate id')
+    }
+    
     notifications.addNotification({
-      message: t('Datenbank Fehler') + err.message,
+      message,
       level: 'error',
       position: 'tc'
     })
