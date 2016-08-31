@@ -17,7 +17,7 @@ async function createWindow() {
   initMenu()
 
   if (await userInputNeeded()) {
-    onboardingWindow = new BrowserWindow({ width: 410, height: 400 })
+    onboardingWindow = new BrowserWindow({ width: 375, height: 330 })
     onboardingWindow.loadURL(`file://${app_dir}/onboarding.html`)
     
     onboardingWindow.on('closed', () => {
