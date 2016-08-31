@@ -10,7 +10,7 @@ settings.configure({
 })
 
 export async function userInputNeeded(): Promise<boolean> {
-  const appDir = await settings.get('appDir')
+  const appDir = await settings.get('appFolder')
 
   if (appDir == null || appDir === '') {
     return true

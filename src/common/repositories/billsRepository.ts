@@ -1,5 +1,13 @@
 import * as knex from 'knex';
 import Bill from '../models/BillModel'
+import { get } from '../providers/settingsProvider'
+
+let db
+
+export async function initDb(): Promise<any> {
+	const knexConfig = await get('knex')
+	db = await knex(knexConfig)
+}
 
 export function listBills(): Promise<any> {
 	return db('bills')

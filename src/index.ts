@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { initMenu } from './common/menu'
-import { initDb } from './common/repositories/billsRepository'
-import { userInputNeeded } from './common/repositories/settingsRepository'
+import { userInputNeeded } from './common/providers/settingsProvider'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname

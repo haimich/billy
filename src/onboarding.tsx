@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import AppComponent from './onboarding/AppComponent'
-import { get, set } from './common/repositories/settingsRepository'
+import { get, set } from './common/providers/settingsProvider'
 
 async function init() {
 
