@@ -22,7 +22,7 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   counter: number
-  
+
   constructor(props) {
     super(props)
 
@@ -57,8 +57,8 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   onDrag(event) {
-    event.preventDefault() 
-  } 
+    event.preventDefault()
+  }
 
   onEnter() {
     this.counter++
@@ -98,7 +98,7 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label htmlFor="customer" className="col-sm-4 control-label">{t('Kunde')}</label>
                 <div className="col-sm-8">
-                  <input type="text" className="form-control" id="customer" ref="customer" value="Hohn Jeere" required />
+                  <input type="text" className="form-control" id="customer" ref="customer" defaultValue="Don Jeere" required />
                 </div>
               </div>
               <div className="form-group">
@@ -112,7 +112,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
-                    <input type="number" className="form-control" id="amount" ref="amount" value="100" style={{textAlign: "right"}} required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
+                    <input type="number" className="form-control" id="amount" ref="amount" defaultValue="100" style={{textAlign: "right"}} required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
                   </div>
                 </div>
               </div>
@@ -122,13 +122,13 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
                 <div className="col-sm-8">
-                  <input type="date" className="form-control" id="date_paid" value="2016-12-11" ref="date_paid" />
+                  <input type="date" className="form-control" id="date_paid" defaultValue="2016-12-11" ref="date_paid" />
                 </div>
               </div>
               <div className="form-group">
                 <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
                 <div className="col-sm-8">
-                  <textarea className="form-control" rows={3} id="comment" value="Comment" ref="comment" />
+                  <textarea className="form-control" rows={3} id="comment" defaultValue="Comment" ref="comment" />
                 </div>
               </div>
               <div className="form-group">
