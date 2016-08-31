@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom'
 import { ipcRenderer } from 'electron'
 import t from '../common/helpers/i18n'
-import { set } from '../common/repositories/settingsRepository'
+import { set } from '../common/providers/settingsProvider'
+import { setupDb } from '../common/providers/dbProvider'
 import { FormComponent, FormComponentValues } from './FormComponent'
 
 export default class AppComponent extends React.Component<any, {}> {
@@ -12,6 +13,9 @@ export default class AppComponent extends React.Component<any, {}> {
 
     await set('knex', {
       client: 'sqlite3',
+      connection: {
+        filename: values.folder + '/bills.sqlite'
+      },
       migrations: {
         tableName: 'migrations',
         directory: './sql/migrations'
@@ -21,6 +25,8 @@ export default class AppComponent extends React.Component<any, {}> {
       },
       useNullAsDefault: true // see http://knexjs.org/#Builder-insert
     })
+
+    await setupDb()
 
     ipcRenderer.send('onboarding-finished')
   }
