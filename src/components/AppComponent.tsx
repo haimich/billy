@@ -28,7 +28,7 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   componentDidMount() {
-    notifications = this.refs.notificationSystem;
+    notifications = this.refs.notificationSystem
   }
 
   async save(bill: Bill) {
