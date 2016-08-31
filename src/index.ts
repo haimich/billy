@@ -1,26 +1,25 @@
 import { app, BrowserWindow, Menu } from 'electron'
-import { initMenu } from './menu'
-import { get, set, initSettings } from './repositories/settingsRepository'
+import { initMenu } from './ui/menu'
+import { checkOnboardingRequired, startOnboarding } from './ui/onboarding'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
-
-// Keep a global reference of the window object (otherwise the window will
-// be closed automatically when the JavaScript object is garbage collected).
-let mainWindow
 
 if (isDev) {
   require('electron-reload')(app_dir)
 }
 
-async function createWindow() {
-  initSettings()
+// Keep a global reference of the window object (otherwise the window will
+// be closed automatically when the JavaScript object is garbage collected).
+let mainWindow
 
-  if (isDev) {
-    await set('knex.connection.filename', './bills.sqlite')
+async function createWindow() {
+  initMenu()
+
+  if (await checkOnboardingRequired()) {
+    await startOnboarding(app_dir)
   }
 
-  initMenu()
   mainWindow = new BrowserWindow({ width: 1200, height: 800 })
   mainWindow.loadURL(`file://${app_dir}/index.html`)
 

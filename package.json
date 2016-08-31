@@ -13,7 +13,7 @@
     "prepare-database": "knex migrate:latest && knex seed:run",
     "update-dependencies": "ncu -u",
     "watch": "tsc -w",
-    "copy-html": "cp static/index.html build",
+    "copy-html": "cp static/*.html build",
     "rebuild": "electron-rebuild --version 1.3.4",
     "publish:mac": "npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.3.4 --out=output --overwrite --icon=billy.icns"
   },

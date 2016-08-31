@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Billy</title>
+
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+
+   <div id="app">
+     <h2>Welcome to Billy!</h2>
+     <img src="../static/images/accountants.png">
+
+      <div class="form-group">
+        <label for="appFile" class="control-label">
+          Bitte wähle einen Speicherort
+        </label>
+        <input type="file" class="form-control" id="appFile" webkitdirectory directory />
+      </div>
+
+      <button class="btn btn-default btn-primary" style="margin-left: 20px;" onClick="handleOnClick()">Los gehts!</button>
+   </div>
+
+  </body>
+
+  <script>
+    function handleOnClick(event) {
+      console.log(event)
+    }
+
+  </script>
+</html>

@@ -4,27 +4,10 @@
  */
 
 const settings = require('electron-settings')
-const isDev = require('electron-is-dev')
 
-export function initSettings() {
-  settings.configure({
-    prettify: true
-  })
-
-  let test = settings.defaults({
-    knex: {
-      client: 'sqlite3',
-      migrations: {
-        tableName: 'migrations',
-        directory: './sql/migrations'
-      },
-      seeds: {
-        directory: './sql/seeds'
-      },
-      useNullAsDefault: true // see http://knexjs.org/#Builder-insert
-    }
-  })
-}
+settings.configure({
+  prettify: true
+})
 
 export function get(value: string): Promise<string> {
   return settings.get(value)
