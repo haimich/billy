@@ -9,6 +9,16 @@ settings.configure({
   prettify: true
 })
 
+export async function userInputNeeded(): Promise<boolean> {
+  const appDir = await settings.get('appDir')
+
+  if (appDir == null || appDir === '') {
+    return true
+  } else {
+    return false
+  }
+}
+
 export function get(value: string): Promise<string> {
   return settings.get(value)
 }

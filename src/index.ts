@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Menu } from 'electron'
 import { initMenu } from './common/menu'
 import { initDb } from './common/repositories/billsRepository'
-// import { checkOnboardingRequired, startOnboarding } from './ui/onboarding'
+import { userInputNeeded } from './common/repositories/settingsRepository'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
@@ -10,27 +10,31 @@ if (isDev) {
   require('electron-reload')(app_dir)
 }
 
-// Keep a global reference of the window object (otherwise the window will
-// be closed automatically when the JavaScript object is garbage collected).
-let mainWindow
+// Keep a global reference of the window objects to prevent gc
+let mainWindow, onboardingWindow
 
 async function createWindow() {
   initMenu()
 
-  // if (await checkOnboardingRequired()) {
-  //   await startOnboarding(app_dir)
-  // }
+  if (await userInputNeeded()) {
+    onboardingWindow = new BrowserWindow({ width: 410, height: 400 })
+    onboardingWindow.loadURL(`file://${app_dir}/onboarding.html`)
+    
+    onboardingWindow.on('closed', () => {
+      onboardingWindow = null
+    })
+  } else {
+    mainWindow = new BrowserWindow({ width: 1200, height: 800 })
+    mainWindow.loadURL(`file://${app_dir}/main.html`)
 
-  mainWindow = new BrowserWindow({ width: 1200, height: 800 })
-  mainWindow.loadURL(`file://${app_dir}/main.html`)
+    if (isDev) {
+      mainWindow.webContents.openDevTools()
+    }
 
-  if (isDev) {
-    mainWindow.webContents.openDevTools()
+    mainWindow.on('closed', () => {
+      mainWindow = null
+    })
   }
-
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
 }
 
 app.on('ready', createWindow)
