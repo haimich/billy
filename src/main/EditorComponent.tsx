@@ -1,8 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Bill from '../models/BillModel'
-import t from '../helpers/i18n'
-import { formatDateForInput } from '../helpers/formatters'
+import Bill from '../common/models/BillModel'
+import t from '../common/helpers/i18n'
+import { formatDateForInput } from '../common/helpers/formatters'
 
 export default class EditorComponent extends React.Component<any, {}> {
 

@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron'
-import { initMenu } from './ui/menu'
-import { checkOnboardingRequired, startOnboarding } from './ui/onboarding'
+import { initMenu } from './menu'
+// import { checkOnboardingRequired, startOnboarding } from './ui/onboarding'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
@@ -16,12 +16,12 @@ let mainWindow
 async function createWindow() {
   initMenu()
 
-  if (await checkOnboardingRequired()) {
-    await startOnboarding(app_dir)
-  }
+  // if (await checkOnboardingRequired()) {
+  //   await startOnboarding(app_dir)
+  // }
 
   mainWindow = new BrowserWindow({ width: 1200, height: 800 })
-  mainWindow.loadURL(`file://${app_dir}/index.html`)
+  mainWindow.loadURL(`file://${app_dir}/main.html`)
 
   if (isDev) {
     mainWindow.webContents.openDevTools()

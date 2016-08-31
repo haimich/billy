@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
-import Bill from '../models/BillModel'
-import { dateFormatter, currencyFormatter } from '../helpers/formatters'
-import t from '../helpers/i18n'
+import Bill from '../common/models/BillModel'
+import { dateFormatter, currencyFormatter } from '../common/helpers/formatters'
+import t from '../common/helpers/i18n'
 
 export default class TableComponent extends React.Component<any, {}> {
 

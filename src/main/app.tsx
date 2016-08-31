@@ -1,8 +1,8 @@
-import Bill from './models/BillModel'
+import Bill from '../common/models/BillModel'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import AppComponent from './components/AppComponent'
-import { initDb, listBills } from './repositories/billsRepository'
+import AppComponent from './AppComponent'
+import { initDb, listBills } from '../common/repositories/billsRepository'
 
 async function init() {
   await initDb()

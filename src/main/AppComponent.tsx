@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createBill, updateBill, deleteBillsByIds } from '../repositories/billsRepository'
-import Bill from '../models/BillModel'
-import TableComponent from '../components/TableComponent'
-import EditorComponent from '../components/EditorComponent'
+import { createBill, updateBill, deleteBillsByIds } from '../common/repositories/billsRepository'
+import Bill from '../common/models/BillModel'
+import TableComponent from './TableComponent'
+import EditorComponent from './EditorComponent'
 import * as NotificationSystem from 'react-notification-system'
-import t from '../helpers/i18n'
+import t from '../common/helpers/i18n'
 
 let notifications
 

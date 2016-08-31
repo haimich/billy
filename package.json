@@ -7,6 +7,7 @@
     "setup": "npm run prepare-database && npm run rebuild",
     "build": "npm run clean && tsc && npm run copy-html",
     "clean": "rm -rf build/*",
+    "clean:mac": "rm -rf ~/Library/Application\\ Support/billy",
     "prestart": "npm run build",
     "start": "npm run start-electron",
     "start-electron": "electron .",
