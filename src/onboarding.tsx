@@ -1,4 +1,4 @@
-import { get, set } from '../common/repositories/settingsRepository'
+import { get, set } from './common/repositories/settingsRepository'
 import { BrowserWindow } from 'electron'
 
 export async function checkOnboardingRequired() {

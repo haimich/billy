@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron'
 import { initMenu } from './menu'
+import { initDb } from './common/repositories/billsRepository'
 // import { checkOnboardingRequired, startOnboarding } from './ui/onboarding'
 const isDev = require('electron-is-dev')
 
