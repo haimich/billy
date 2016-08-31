@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom'
+import { ipcRenderer } from 'electron'
 import t from '../common/helpers/i18n'
 import { set } from '../common/repositories/settingsRepository'
 import { FormComponent, FormComponentValues } from './FormComponent'
@@ -21,7 +22,7 @@ export default class AppComponent extends React.Component<any, {}> {
       useNullAsDefault: true // see http://knexjs.org/#Builder-insert
     })
 
-    console.log('done')
+    ipcRenderer.send('onboarding-finished')
   }
 
   render() {

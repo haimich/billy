@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { initMenu } from './common/menu'
 import { initDb } from './common/repositories/billsRepository'
 import { userInputNeeded } from './common/repositories/settingsRepository'
@@ -17,24 +17,37 @@ async function createWindow() {
   initMenu()
 
   if (await userInputNeeded()) {
-    onboardingWindow = new BrowserWindow({ width: 370, height: 380 })
-    onboardingWindow.loadURL(`file://${app_dir}/onboarding.html`)
-    
-    onboardingWindow.on('closed', () => {
-      onboardingWindow = null
-    })
+    openOnboardingWindow()
   } else {
-    mainWindow = new BrowserWindow({ width: 1200, height: 800 })
-    mainWindow.loadURL(`file://${app_dir}/main.html`)
-
-    if (isDev) {
-      mainWindow.webContents.openDevTools()
-    }
-
-    mainWindow.on('closed', () => {
-      mainWindow = null
-    })
+    openMainWindow()
   }
+}
+
+function openOnboardingWindow() {
+  onboardingWindow = new BrowserWindow({ width: 370, height: 380 })
+  onboardingWindow.loadURL(`file://${app_dir}/onboarding.html`)
+
+  ipcMain.on('onboarding-finished', () => {
+    onboardingWindow.close()
+    openMainWindow()
+  })
+
+  onboardingWindow.on('closed', () => {
+    onboardingWindow = null
+  })
+}
+
+function openMainWindow() {
+  mainWindow = new BrowserWindow({ width: 1200, height: 800 })
+  mainWindow.loadURL(`file://${app_dir}/main.html`)
+
+  if (isDev) {
+    mainWindow.webContents.openDevTools()
+  }
+
+  mainWindow.on('closed', () => {
+    mainWindow = null
+  })
 }
 
 app.on('ready', createWindow)
