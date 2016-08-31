@@ -8,13 +8,24 @@ export default class AppComponent extends React.Component<any, {}> {
     file: HTMLInputElement
   }
 
-  handleOnClick() {
+  state: {
+    folder?: File
+  }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      folder: undefined
+    }
   }
 
   onFileinputChange(event) {
-    // this.setState({ file: this.getFile(event.target.files) })
-    console.log('event')
+    const files = event.target.files
+    if (files.length >= 1) {
+      this.setState({ folder: files[0] })
+      console.log(files[0])
+    }
   }
 
   render() {
@@ -38,7 +49,7 @@ export default class AppComponent extends React.Component<any, {}> {
                     {t('Ordner auswählen')}
                     <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
                   </label> &nbsp;
-                  <small ref="fileLabel">dateiname</small>
+                  <small ref="fileLabel">{this.state.folder && this.state.folder.path}</small>
                 </div>
               </div>
             </div>
