@@ -7,3 +7,8 @@ export async function setupDb(): Promise<any> {
   await db.migrate.latest()
   await db.seed.run()
 }
+
+export async function initDb(): Promise<any> {
+  const knexConfig = await get('knex')
+  return await knex(knexConfig)
+}

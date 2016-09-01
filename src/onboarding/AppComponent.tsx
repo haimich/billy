@@ -5,6 +5,7 @@ import t from '../common/helpers/i18n'
 import { set } from '../common/providers/settingsProvider'
 import { setupDb } from '../common/providers/dbProvider'
 import { FormComponent, FormComponentValues } from './FormComponent'
+const isDev = require('electron-is-dev')
 
 export default class AppComponent extends React.Component<any, {}> {
 
