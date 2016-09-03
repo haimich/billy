@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import t from '../common/helpers/i18n'
 import { formatDateForInput } from '../common/helpers/formatters'
+import { open } from '../common/providers/openFileProvider'
 
 export default class EditorComponent extends React.Component<any, {}> {
 
@@ -82,6 +83,13 @@ export default class EditorComponent extends React.Component<any, {}> {
     this.setState({ file: this.getFile(event.target.files) })
   }
 
+  openFile(event) {
+    event.preventDefault()
+    if (this.state.file != null) {
+      open(this.state.file.path)
+    }
+  }
+
   render() {
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
@@ -137,7 +145,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     {t('Datei auswählen')}
                     <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
                   </label> &nbsp;
-                  <small ref="fileLabel">{this.state.file && this.state.file.name}</small>
+                  <small className="fileview" ref="fileLabel" onClick={this.openFile.bind(this)}>{this.state.file && this.state.file.name}</small>
                 </div>
               </div>
             </div>

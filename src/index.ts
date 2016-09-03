@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { initMenu } from './common/menu'
 import { userInputNeeded } from './common/providers/settingsProvider'
+import { isMac } from './common/helpers/platform'
 const isDev = require('electron-is-dev')
 
 const app_dir = __dirname
@@ -54,7 +55,7 @@ app.on('ready', createWindow)
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
+  if (isMac()) {
     app.quit()
   }
 })

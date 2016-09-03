@@ -62,3 +62,7 @@ textarea {
   transition: visibility 0s, opacity 0s linear;
   opacity: 1;
 }
+
+.fileview {
+  cursor: pointer;
+}
