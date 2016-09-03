@@ -5,6 +5,7 @@
     "customer": "Marshall Sheppard",
     "amount": 181.797,
     "comment": "eleifend vitae,",
+    "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "id": "1"
   },
   {
@@ -12,6 +13,7 @@
     "date_paid": "2015-11-17T20:13:38-08:00",
     "customer": "Owen Lane",
     "amount": 124.88,
+    "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "odio. Phasellus at",
     "id": "2"
   },
@@ -20,6 +22,7 @@
     "date_paid": "2016-01-16T18:18:08-08:00",
     "customer": "Merritt Hart",
     "amount": 159.269,
+    "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "orci. Donec nibh. Quisque nonummy ipsum non arcu.",
     "id": "3"
   },
@@ -28,6 +31,7 @@
     "date_paid": "2016-11-02T17:36:41-07:00",
     "customer": "Herrod Dejesus",
     "amount": 100.982,
+    "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "non, hendrerit id, ante. Nunc mauris sapien, cursus in,",
     "id": "4"
   },
@@ -36,6 +40,7 @@
     "date_paid": "2016-12-17T20:20:05-08:00",
     "customer": "Ezekiel Mosley",
     "amount": 180.535,
+    "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "suscipit nonummy. Fusce",
     "id": "5"
   },
@@ -44,6 +49,7 @@
     "date_paid": "2016-09-04T13:34:59-07:00",
     "customer": "Bradley Bullock",
     "amount": 150.851,
+    "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "Phasellus ornare. Fusce",
     "id": "6"
   },
@@ -52,6 +58,7 @@
     "date_paid": "2016-10-25T10:50:57-07:00",
     "customer": "Adam Holder",
     "amount": 145.924,
+    "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "fermentum convallis ligula. Donec luctus aliquet odio. Etiam ligula tortor,",
     "id": "7"
   },
