@@ -13,10 +13,6 @@ export default class TableComponent extends React.Component<any, {}> {
     bills: Bill[]
   }
 
-  getEditMode(): CellEditClickMode {
-    return 'click'
-  }
-
   onSaveCell(row: Bill, cellName: string, cellValue: Object) {
     this.props.update(row)
   }
@@ -40,12 +36,14 @@ export default class TableComponent extends React.Component<any, {}> {
       sortOrder: 'asc',
       handleConfirmDeleteRow: this.handleConfirm
     }
-    const selectMode: SelectRowMode = 'checkbox' // multi select
+    const selectMode: SelectRowMode = 'radio'
     const selectRowProp = {
       mode: selectMode,
-      clickToSelect: false,
+      clickToSelect: true,
       bgColor: '#d9edf7',
+
     }
+    const editMode: CellEditClickMode = 'click'
 
     return (
       <div id="table-container">
@@ -53,7 +51,7 @@ export default class TableComponent extends React.Component<any, {}> {
           data={this.props.bills}
           striped={true}
           cellEdit={{
-            mode: this.getEditMode(),
+            mode: editMode,
             blurToSave: true,
             afterSaveCell: this.onSaveCell.bind(this),
           }}
@@ -62,11 +60,12 @@ export default class TableComponent extends React.Component<any, {}> {
           multiColumnSearch={true}
           columnFilter={false}
           insertRow={false}
-          deleteRow={true}
+          deleteRow={false}
           selectRow={selectRowProp}
           pagination={false}
           exportCSV={false}
-          options={options}>
+          options={options}
+          height={'300'}>
 
           <TableHeaderColumn isKey={true} dataField="id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
           <TableHeaderColumn dataField="customer" width="300" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
