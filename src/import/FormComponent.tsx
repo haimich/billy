@@ -1,6 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import t from '../common/helpers/i18n'
+import { importCsv } from '../common/providers/importProvider'
+import { init as initDb, importBills, deleteAll } from '../common/repositories/billsRepository'
+import SummaryComponent from './SummaryComponent'
+import Bill from '../common/models/BillModel'
 
 export default class FormComponent extends React.Component<any, {}> {
 
@@ -10,15 +14,27 @@ export default class FormComponent extends React.Component<any, {}> {
   }
 
   state: {
-    file?: File
+    file?: File,
+    shouldDelete?,
+    failed: Bill[],
+    successful: Bill[]
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      file: undefined
+      file: undefined,
+      shouldDelete: false,
+      failed: [],
+      successful: []
     }
+  }
+
+  onCheckboxChange(event) {
+    this.setState({
+      shouldDelete: !this.state.shouldDelete
+    })
   }
 
   onFileinputChange(event) {
@@ -29,25 +45,66 @@ export default class FormComponent extends React.Component<any, {}> {
     }
   }
 
-  handleButtonClick(event) {
-    console.log('Import it')
+  userConfirmed(): boolean {
+    if (this.state.shouldDelete) {
+      return window.confirm(t('Bist du sicher, dass die bestehenden Daten gelöscht werden sollen?'))
+    } else {
+      return true
+    }
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault()
+
+    if (this.state.file && this.userConfirmed()) {
+      try {
+        const bills = await importCsv(this.state.file.path)
+        
+        await initDb()
+
+        if (this.state.shouldDelete) {
+          await deleteAll()
+        }
+        const results = await importBills(bills)
+
+        this.setState({
+          failed: results.failed,
+          successful: results.successful
+        })
+      } catch (err) {
+        console.error('Import failed', err)
+      }
+    }
   }
 
   render() {
     return (
       <div id="form-container">
-        <form className="form-horizontal container" onSubmit={this.handleButtonClick.bind(this)}>
+        <form className="form-horizontal container" onSubmit={this.handleSubmit.bind(this)}>
+
+          <div className="row">
+            <div className="checkbox">
+              <label>
+                <input 
+                  type="checkbox"
+                  checked={this.state.shouldDelete}
+                  onChange={this.onCheckboxChange.bind(this)} />
+                {t('Bestehende Daten löschen?')}
+              </label>
+              <p></p>
+            </div>
+          </div>
 
           <div className="row">
             <div className="form-group">
-                <div className="col-sm-offset-4 col-sm-8">
-                  <label className="btn btn-default btn-sm">
-                    {t('Datei auswählen')}
-                    <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
-                  </label> &nbsp;
+              <div className="col-sm-offset-4 col-sm-8">
+                <label className="btn btn-default btn-sm">
+                  {t('Datei auswählen')}
+                  <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
+                </label> &nbsp;
                   <small className="fileview">{this.state.file && this.state.file.name}</small>
-                </div>
               </div>
+            </div>
           </div>
 
           <div className="row">
@@ -58,6 +115,8 @@ export default class FormComponent extends React.Component<any, {}> {
             </div>
           </div>
         </form>
+
+        <SummaryComponent failed={this.state.failed} successful={this.state.successful} />
       </div>
     )
   }

@@ -19,6 +19,26 @@ export function createBill(bill: Bill): Promise<any> {
     .insert(bill)
 }
 
+export async function importBills(bills): Promise<any> {
+  let failed: any = []
+  let successful: any = []
+
+  for (let bill of bills) {
+    try {
+      await createBill(bill)
+    } catch (err) {
+      failed.push(bill)
+      continue
+    }
+    successful.push(bill)
+  }
+
+  return {
+    failed,
+    successful
+  }
+}
+
 export function updateBill(bill: Bill): Promise<any> {
   return db('bills')
     .update({
@@ -36,4 +56,9 @@ export function deleteBillsByIds(billIds): Promise<any> {
   return db('bills')
     .delete()
     .whereIn('id', billIds)
+}
+
+export function deleteAll(): Promise<any> {
+  return db('bills')
+    .delete()
 }

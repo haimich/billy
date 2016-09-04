@@ -37,7 +37,7 @@ export class FormComponent extends React.Component<any, {}> {
     }
   }
 
-  handleButtonClick(event) {
+  onSubmit(event) {
     event.preventDefault()
     this.props.finish({
       folder: this.state.folder!.path
@@ -47,7 +47,7 @@ export class FormComponent extends React.Component<any, {}> {
   render() {
     return (
       <div id="form-container">
-        <form className="form-horizontal container" onSubmit={this.handleButtonClick.bind(this)}>
+        <form className="form-horizontal container" onSubmit={this.onSubmit.bind(this)}>
 
           <div className="row">
             <b>{t('Wo soll ich Deine Rechnungen ablegen?')}</b>
