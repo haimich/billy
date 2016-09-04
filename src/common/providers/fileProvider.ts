@@ -1,7 +1,7 @@
 import { isMac, getPlatform } from '../helpers/platform'
 import { get } from './settingsProvider'
 import * as child_process from 'child_process'
-import * as fs from 'fs'
+import * as mkdirp from 'mkdirp'
 
 export function open(fileName) {
   if (isMac()) {
@@ -23,9 +23,8 @@ export async function copyToAppDir(inputFilePath: string): Promise<any> {
 }
 
 export async function createFolder(path: string): Promise<any> {
-  console.log('create ' + path)
   return new Promise((resolve, reject) => {
-    fs.mkdir(path, (err) => {
+    mkdirp(path, (err) => {
       console.log('done', err)
       if (err) {
         reject(err)
