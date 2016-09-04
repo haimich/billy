@@ -3,7 +3,7 @@ import * as child_process from 'child_process'
 
 export function open(fileName) {
   if (isMac()) {
-    child_process.exec('open ' + fileName, (err, stdout, stderr) => {
+    child_process.exec(`open "${fileName}"`, (err, stdout, stderr) => {
       if (err) {
         console.log(err)
       }
