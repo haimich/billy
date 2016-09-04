@@ -33,6 +33,7 @@ export default class TableComponent extends React.Component<any, {}> {
       hideSelectColumn: true
     }
     const editMode: CellEditClickMode = 'click'
+    const height: any = 300
 
     return (
       <div id="table-container">
@@ -49,7 +50,7 @@ export default class TableComponent extends React.Component<any, {}> {
           selectRow={selectRowProp}
           exportCSV={false}
           options={options}
-          height={'300'}>
+          height={height}>
 
           <TableHeaderColumn isKey={true} dataField="id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
           <TableHeaderColumn dataField="customer" width="300" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
