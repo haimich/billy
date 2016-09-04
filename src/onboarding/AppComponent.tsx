@@ -4,18 +4,20 @@ import { ipcRenderer } from 'electron'
 import t from '../common/helpers/i18n'
 import { set } from '../common/providers/settingsProvider'
 import { setupDb } from '../common/providers/dbProvider'
+import { createFolder } from '../common/providers/fileProvider'
 import { FormComponent, FormComponentValues } from './FormComponent'
 const isDev = require('electron-is-dev')
 
 export default class AppComponent extends React.Component<any, {}> {
 
-  async finish(values: FormComponentValues): Promise<any> {
-    await set('appDir', values.folder)
+  async finishSetup(values: FormComponentValues): Promise<any> {
+    const appDir: string = values.folder
+    await set('appDir', appDir)
 
     await set('knex', {
       client: 'sqlite3',
       connection: {
-        filename: values.folder + '/bills.sqlite'
+        filename: appDir + '/bills.sqlite'
       },
       migrations: {
         tableName: 'migrations',
@@ -28,6 +30,7 @@ export default class AppComponent extends React.Component<any, {}> {
     })
 
     await setupDb()
+    await createFolder(appDir + '/files')
 
     ipcRenderer.send('onboarding-finished')
   }
@@ -38,7 +41,7 @@ export default class AppComponent extends React.Component<any, {}> {
         <h2>{t('Willkommen bei Billy!')}</h2>
         <img src="../static/images/accountants.png" />
 
-        <FormComponent finish={this.finish.bind(this)} />
+        <FormComponent finish={this.finishSetup.bind(this)} />
       </div>
     )
   }

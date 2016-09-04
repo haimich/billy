@@ -21,3 +21,17 @@ export async function copyToAppDir(inputFilePath: string): Promise<any> {
   const appDir = get('appDir')
   return 'test'
 }
+
+export async function createFolder(path: string): Promise<any> {
+  console.log('create ' + path)
+  return new Promise((resolve, reject) => {
+    fs.mkdir(path, (err) => {
+      console.log('done', err)
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
