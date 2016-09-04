@@ -7,7 +7,7 @@
     "setup": "npm run rebuild",
     "build": "npm run clean && tsc && npm run copy-html",
     "clean": "rm -rf build/*",
-    "clean:mac": "rm -rf ~/Library/Application\\ Support/billy",
+    "clean:mac": "rm -rf ~/Library/Application\\ Support/billy/Settings",
     "prestart": "npm run build",
     "start": "electron .",
     "update-dependencies": "ncu -u",
