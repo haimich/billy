@@ -146,7 +146,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
-                    <input type="text" className="form-control" id="amount" ref="amount" defaultValue="100" style={{ textAlign: 'right' }} required />
+                    <input type="text" className="form-control" id="amount" ref="amount" defaultValue="100" style={{ textAlign: 'right' }} required pattern={'[+-]?[0-9]+(,[0-9]+)?'} />
                   </div>
                 </div>
               </div>
