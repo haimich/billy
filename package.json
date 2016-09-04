@@ -36,6 +36,7 @@
     "moment": "^2.14.1",
     "react": "^15.2.1",
     "react-bootstrap-table": "^2.5.0",
+    "react-bootstrap-typeahead": "^0.9.1",
     "react-datetime": "^2.5.0",
     "react-dom": "^15.3.0",
     "react-notification-system": "^0.2.9",

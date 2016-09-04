@@ -1,16 +1,17 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-const Datetime = require('react-datetime')
 import Bill from '../common/models/BillModel'
+import { init as initDb, listCustomers } from '../common/repositories/customerRepository'
 import t from '../common/helpers/i18n'
 import { formatDateForInput, convertToNumber } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
+const Datetime = require('react-datetime')
+const Typeahead = require('react-bootstrap-typeahead').default
 
 export default class EditorComponent extends React.Component<any, {}> {
 
   refs: {
     id: HTMLInputElement,
-    customer: HTMLInputElement,
     amount: HTMLInputElement,
     comment: HTMLInputElement,
     file: HTMLInputElement
@@ -20,6 +21,8 @@ export default class EditorComponent extends React.Component<any, {}> {
     file?: File,
     dateCreated: Date
     datePaid?: Date,
+    customerList?: string[],
+    customer?: string
   }
 
   props: {
@@ -36,10 +39,23 @@ export default class EditorComponent extends React.Component<any, {}> {
     this.state = {
       file: undefined,
       dateCreated: new Date(),
-      datePaid: undefined
+      datePaid: undefined,
+      customerList: [],
+      customer: undefined
     }
 
+    this.fetchTypeaheadData()
     this.counter = 0;
+  }
+
+  async fetchTypeaheadData() {
+    try {
+      await initDb()
+      let customerList = await listCustomers()
+      this.setState({ customerList })
+    } catch (err) {
+      console.error('Could not fetch typeahead data', err)
+    }
   }
 
   onSave(event) {
@@ -48,7 +64,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     const refs = this.refs
     const bill = new Bill(
       refs.id.value,
-      refs.customer.value,
+      this.state.customer!,
       convertToNumber(refs.amount.value),
       this.state.dateCreated,
       this.state.datePaid,
@@ -110,6 +126,12 @@ export default class EditorComponent extends React.Component<any, {}> {
     })
   }
 
+  handleTypeaheadChange(selected) {
+    this.setState({
+      customer: selected
+    })
+  }
+
   render() {
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
@@ -126,7 +148,12 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label htmlFor="customer" className="col-sm-4 control-label">{t('Kunde')}</label>
                 <div className="col-sm-8">
-                  <input type="text" className="form-control" id="customer" ref="customer" defaultValue="Don Jeere" required />
+                  <Typeahead
+                    options={this.state.customerList}
+                    allowNew={false}
+                    onChange={this.handleTypeaheadChange.bind(this)}
+                    placeholder=""
+                  />
                 </div>
               </div>
               <div className="form-group">
