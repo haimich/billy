@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+const Datetime = require('react-datetime')
 import Bill from '../common/models/BillModel'
 import t from '../common/helpers/i18n'
 import { formatDateForInput } from '../common/helpers/formatters'
@@ -11,14 +12,14 @@ export default class EditorComponent extends React.Component<any, {}> {
     id: HTMLInputElement,
     customer: HTMLInputElement,
     amount: HTMLInputElement,
-    date_created: HTMLInputElement,
-    date_paid: HTMLInputElement,
     comment: HTMLInputElement,
     file: HTMLInputElement
   }
 
   state: {
-    file?: File
+    file?: File,
+    dateCreated: Date
+    datePaid?: Date,
   }
 
   props: {
@@ -33,7 +34,9 @@ export default class EditorComponent extends React.Component<any, {}> {
     super(props)
 
     this.state = {
-      file: undefined
+      file: undefined,
+      dateCreated: new Date(),
+      datePaid: undefined
     }
 
     this.counter = 0;
@@ -47,8 +50,8 @@ export default class EditorComponent extends React.Component<any, {}> {
       refs.id.value,
       refs.customer.value,
       Number(refs.amount.value),
-      refs.date_created.valueAsDate,
-      refs.date_paid.valueAsDate,
+      this.state.dateCreated,
+      this.state.datePaid,
       refs.comment.value,
       this.state.file && this.state.file.path
     )
@@ -95,6 +98,18 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
   }
 
+  handleDateCreatedChanged(newDate) {
+    this.setState({
+      dateCreated: newDate
+    })
+  }
+
+  handleDatePaidChanged(newDate) {
+    this.setState({
+      datePaid: newDate
+    })
+  }
+
   render() {
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
@@ -115,10 +130,15 @@ export default class EditorComponent extends React.Component<any, {}> {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="date_created" className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
-                <div className="col-sm-8">
-                  <input type="date" className="form-control currency" id="date_created" defaultValue={formatDateForInput(new Date())} ref="date_created" required />
-                </div>
+                <label className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
+                <Datetime 
+                  value={this.state.dateCreated}
+                  dateFormat={'DD.MM.YYYY'}
+                  closeOnSelect={true}
+                  timeFormat={false}
+                  className={'col-sm-8'}
+                  onChange={this.handleDateCreatedChanged.bind(this)}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="amount" className="col-sm-4 control-label">{t('Betrag')}</label>
@@ -134,9 +154,15 @@ export default class EditorComponent extends React.Component<any, {}> {
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
-                <div className="col-sm-8">
-                  <input type="date" className="form-control" id="date_paid" defaultValue="2016-12-11" ref="date_paid" />
-                </div>
+                <Datetime 
+                  value={this.state.datePaid}
+                  dateFormat={'DD.MM.YYYY'}
+                  closeOnSelect={true}
+                  timeFormat={false}
+                  className={'col-sm-8'}
+                  defaultValue={'11.12.2016'}
+                  onChange={this.handleDatePaidChanged.bind(this)}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>

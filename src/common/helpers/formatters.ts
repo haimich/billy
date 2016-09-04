@@ -9,7 +9,7 @@ export function dateFormatter(value: string): string {
 }
 
 export function formatDateForInput(date: Date): string {
-  return moment(date).format('YYYY-MM-DD')
+  return moment(date).format('DD.MM.YYYY')
 }
 
 export function currencyFormatter(value: number): string {
