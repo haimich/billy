@@ -15,3 +15,14 @@ export function formatDateForInput(date: Date): string {
 export function currencyFormatter(value: number): string {
   return '€' + value.toLocaleString('de-DE')
 }
+
+/**
+ * Accepts int and float values (with . or , as separator)
+ * 
+ * 123,45 => 123.45
+ * 123 => 123
+ * 123.45 => 123.45
+ */
+export function convertToNumber(value: string): number {
+  return parseFloat(value.replace(',','.').replace(' ',''))
+}

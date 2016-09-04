@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 const Datetime = require('react-datetime')
 import Bill from '../common/models/BillModel'
 import t from '../common/helpers/i18n'
-import { formatDateForInput } from '../common/helpers/formatters'
+import { formatDateForInput, convertToNumber } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
 
 export default class EditorComponent extends React.Component<any, {}> {
@@ -49,7 +49,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     const bill = new Bill(
       refs.id.value,
       refs.customer.value,
-      Number(refs.amount.value), // todo validate
+      convertToNumber(refs.amount.value),
       this.state.dateCreated,
       this.state.datePaid,
       refs.comment.value,
