@@ -34,6 +34,7 @@ function openOnboardingWindow() {
 
   ipcMain.on('onboarding-finished', () => {
     openMainWindow()
+    onboardingWindow.close()
   })
 
   onboardingWindow.on('closed', () => {
