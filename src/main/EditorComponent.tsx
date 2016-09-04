@@ -49,7 +49,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     const bill = new Bill(
       refs.id.value,
       refs.customer.value,
-      Number(refs.amount.value),
+      Number(refs.amount.value), // todo validate
       this.state.dateCreated,
       this.state.datePaid,
       refs.comment.value,
@@ -131,21 +131,22 @@ export default class EditorComponent extends React.Component<any, {}> {
               </div>
               <div className="form-group">
                 <label className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
-                <Datetime 
+                <Datetime
                   value={this.state.dateCreated}
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
                   onChange={this.handleDateCreatedChanged.bind(this)}
-                />
+                  inputProps={{ required: 'required' }}
+                  />
               </div>
               <div className="form-group">
                 <label htmlFor="amount" className="col-sm-4 control-label">{t('Betrag')}</label>
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
-                    <input type="number" className="form-control" id="amount" ref="amount" defaultValue="100" style={{ textAlign: "right" }} required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
+                    <input type="text" className="form-control" id="amount" ref="amount" defaultValue="100" style={{ textAlign: 'right' }} required />
                   </div>
                 </div>
               </div>
@@ -154,7 +155,7 @@ export default class EditorComponent extends React.Component<any, {}> {
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
-                <Datetime 
+                <Datetime
                   value={this.state.datePaid}
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
@@ -162,7 +163,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                   className={'col-sm-8'}
                   defaultValue={'11.12.2016'}
                   onChange={this.handleDatePaidChanged.bind(this)}
-                />
+                  />
               </div>
               <div className="form-group">
                 <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
@@ -201,16 +202,18 @@ export default class EditorComponent extends React.Component<any, {}> {
   addFormValidation() {
     const inputs: Element[] = [...ReactDOM.findDOMNode(this).querySelectorAll('input')]
 
-    inputs.forEach(input => input.addEventListener('input', function (event) {
-      const input: any = event.target;
-      input.closest('.form-group').classList.remove('has-error')
-      input.checkValidity()
-    }))
+    for (let input of inputs) {
+      input.addEventListener('input', (event) => {
+        const input: any = event.target;
+        input.closest('.form-group').classList.remove('has-error')
+        input.checkValidity()
+      })
 
-    inputs.forEach(input => input.addEventListener('invalid', function (event) {
-      const input: any = event.target;
-      input.closest('.form-group').classList.add('has-error')
-    }))
+      input.addEventListener('invalid', (event) => {
+        const input: any = event.target;
+        input.closest('.form-group').classList.add('has-error')
+      })
+    }
   }
 
   componentDidMount() {
