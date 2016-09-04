@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron'
 import t from '../common/helpers/i18n'
 import { set } from '../common/providers/settingsProvider'
 import { setupDb } from '../common/providers/dbProvider'
-import { ensureFolderExists } from '../common/providers/fileProvider'
+import { ensureFolderExists, exists } from '../common/providers/fileProvider'
 import { FormComponent, FormComponentValues } from './FormComponent'
 import * as NotificationSystem from 'react-notification-system'
 
@@ -22,13 +22,15 @@ export default class AppComponent extends React.Component<any, {}> {
 
   async finishSetup(values: FormComponentValues): Promise<any> {
     try {
-      const appDir: string = values.folder
+      const appDir = values.folder
       await set('appDir', appDir)
+
+      const dbFileName =  appDir + '/' + 'bills.sqlite'
 
       await set('knex', {
         client: 'sqlite3',
         connection: {
-          filename: appDir + '/bills.sqlite'
+          filename: dbFileName
         },
         migrations: {
           tableName: 'migrations',
@@ -40,7 +42,10 @@ export default class AppComponent extends React.Component<any, {}> {
         useNullAsDefault: true // see http://knexjs.org/#Builder-insert
       })
 
-      await setupDb()
+      if (! await exists(dbFileName)) {
+        await setupDb()
+      }
+
       await ensureFolderExists(appDir + '/files')
 
       ipcRenderer.send('onboarding-finished')
