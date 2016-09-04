@@ -12,6 +12,10 @@ textarea {
   resize: none;
 }
 
+.react-bs-container-body {
+  cursor: pointer;
+}
+
 #table-container, #editor-container {
   flex: 1;
 }

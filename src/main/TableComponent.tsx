@@ -13,35 +13,24 @@ export default class TableComponent extends React.Component<any, {}> {
     bills: Bill[]
   }
 
-  onSaveCell(row: Bill, cellName: string, cellValue: Object) {
-    this.props.update(row)
-  }
-
-  onDeleteRows(rowKeys: string[]) {
-    this.props.delete(rowKeys)
-  }
-
-  handleConfirm(next, dropRowKeys) {
-    if (confirm(`Möchtest du die ${t('Rechnung', { count: dropRowKeys.length })} wirklich löschen?`)) {
-      next()
-    }
+  onSelectRow(row: any, isSelected: boolean, event: any): boolean {
+    console.log(row)
+    return true
   }
 
   render() {
     const options: Options = {
-      afterDeleteRow: this.onDeleteRows.bind(this),
-      deleteText: t('Löschen'),
       noDataText: t('Keine Einträge'),
       sortName: 'date_created',
-      sortOrder: 'asc',
-      handleConfirmDeleteRow: this.handleConfirm
+      sortOrder: 'asc'
     }
     const selectMode: SelectRowMode = 'radio'
     const selectRowProp = {
       mode: selectMode,
       clickToSelect: true,
       bgColor: '#d9edf7',
-
+      onSelect: this.onSelectRow,
+      hideSelectColumn: true
     }
     const editMode: CellEditClickMode = 'click'
 
@@ -50,19 +39,14 @@ export default class TableComponent extends React.Component<any, {}> {
         <BootstrapTable
           data={this.props.bills}
           striped={true}
-          cellEdit={{
-            mode: editMode,
-            blurToSave: true,
-            afterSaveCell: this.onSaveCell.bind(this),
-          }}
           hover={true}
           search={true}
-          multiColumnSearch={true}
+          searchPlaceholder={t('Suchen')}
+          multiColumnSearch={false}
           columnFilter={false}
           insertRow={false}
           deleteRow={false}
           selectRow={selectRowProp}
-          pagination={false}
           exportCSV={false}
           options={options}
           height={'300'}>
