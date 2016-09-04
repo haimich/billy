@@ -28,7 +28,6 @@ function openOnboardingWindow() {
   onboardingWindow.loadURL(`file://${app_dir}/onboarding.html`)
 
   ipcMain.on('onboarding-finished', () => {
-    onboardingWindow.close()
     openMainWindow()
   })
 

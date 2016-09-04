@@ -9,8 +9,8 @@ const isDev = require('electron-is-dev')
 
 export default class AppComponent extends React.Component<any, {}> {
 
-  async finish(values: FormComponentValues) {
-    await set('appFolder', values.folder)
+  async finish(values: FormComponentValues): Promise<any> {
+    await set('appDir', values.folder)
 
     await set('knex', {
       client: 'sqlite3',

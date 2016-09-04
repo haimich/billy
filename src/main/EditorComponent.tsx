@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import t from '../common/helpers/i18n'
 import { formatDateForInput } from '../common/helpers/formatters'
-import { open } from '../common/providers/openFileProvider'
+import { open } from '../common/providers/fileProvider'
 
 export default class EditorComponent extends React.Component<any, {}> {
 
