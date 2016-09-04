@@ -14,12 +14,17 @@ if (isDev) {
 let mainWindow, onboardingWindow
 
 async function createWindow() {
-  initMenu()
+  try {
+    initMenu()
 
-  if (await userInputNeeded()) {
-    openOnboardingWindow()
-  } else {
-    openMainWindow()
+    if (await userInputNeeded()) {
+      openOnboardingWindow()
+    } else {
+      openMainWindow()
+    }
+  } catch (err) {
+    console.error('An error occured in createWindow', err)
+    process.exit(1)
   }
 }
 
