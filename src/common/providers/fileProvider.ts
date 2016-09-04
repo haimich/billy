@@ -3,6 +3,10 @@ import { get } from './settingsProvider'
 import * as child_process from 'child_process'
 import * as mkdirp from 'mkdirp'
 import { stat } from 'fs'
+import { ncp } from 'ncp'
+import { posix } from 'path'
+
+export const BILL_FOLDER_SUFFIX = '/files'
 
 export function open(fileName) {
   if (isMac()) {
@@ -18,19 +22,38 @@ export function open(fileName) {
   }
 }
 
-export async function copyToBillDir(billId: string, inputFilePath: string): Promise<void> {
-  // await ensureFolderExists()
-  const appDir = await get('appDir')
-  // return 'test'
+export function copyToAppDir(billId: string, inputFilePath: string): Promise<string> {
+  return get('appDir')
+    .then((appDir) => {
+      const targetFolder = `${appDir}${BILL_FOLDER_SUFFIX}/${billId}`
+      return ensureFolderExists(targetFolder)
+    })
+    .then((targetFolder) => {
+      const filename = posix.basename(inputFilePath)
+      const targetFilePath = `${targetFolder}/${filename}`
+
+      return new Promise((resolve, reject) => {
+        ncp(inputFilePath, targetFilePath, (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(targetFilePath)
+          }
+        })
+      })
+    })
 }
 
-export function ensureFolderExists(path: string): Promise<void> {
+/**
+ * Checks if a folder exists, if not it creates it in a "mkdir -p" style.
+ */
+export function ensureFolderExists(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
     mkdirp(path, (err) => {
       if (err) {
         reject(err)
       } else {
-        resolve()
+        resolve(path)
       }
     })
   })

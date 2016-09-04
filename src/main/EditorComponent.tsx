@@ -153,6 +153,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     allowNew={false}
                     onChange={this.handleTypeaheadChange.bind(this)}
                     placeholder=""
+                    emptyLabel={t('Keine Einträge vorhanden')}
                   />
                 </div>
               </div>

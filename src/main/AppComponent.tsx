@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { createBill, updateBill, deleteBillsByIds } from '../common/repositories/billsRepository'
+import { copyToAppDir } from '../common/providers/fileProvider'
 import Bill from '../common/models/BillModel'
 import TableComponent from './TableComponent'
 import EditorComponent from './EditorComponent'
@@ -34,6 +35,11 @@ export default class AppComponent extends React.Component<any, {}> {
 
   async save(bill: Bill) {
     try {
+      if (bill.file_path != null) {
+        const newFilePath = await copyToAppDir(bill.id, bill.file_path)
+        bill.file_path = newFilePath
+      }
+
       await createBill(bill)
     } catch (err) {
       this.handleError(err)

@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron'
 import t from '../common/helpers/i18n'
 import { set } from '../common/providers/settingsProvider'
 import { setupDb } from '../common/providers/dbProvider'
-import { ensureFolderExists, exists } from '../common/providers/fileProvider'
+import { ensureFolderExists, exists, BILL_FOLDER_SUFFIX } from '../common/providers/fileProvider'
 import { FormComponent, FormComponentValues } from './FormComponent'
 import * as NotificationSystem from 'react-notification-system'
 
@@ -46,7 +46,7 @@ export default class AppComponent extends React.Component<any, {}> {
         await setupDb()
       }
 
-      await ensureFolderExists(appDir + '/files')
+      await ensureFolderExists(appDir + BILL_FOLDER_SUFFIX)
 
       ipcRenderer.send('onboarding-finished')
     } catch (err) {
