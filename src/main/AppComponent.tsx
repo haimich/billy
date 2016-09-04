@@ -12,7 +12,8 @@ let notifications
 export default class AppComponent extends React.Component<any, {}> {
 
   state: {
-    bills: Bill[]
+    bills: Bill[],
+    selectedBill?: Bill
   }
 
   refs: {
@@ -87,7 +88,9 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   select(row: Bill) {
-    console.log('selected row')
+    this.setState({
+      selectedBill: row
+    })
   }
 
   handleError(err: Error) {
@@ -107,7 +110,7 @@ export default class AppComponent extends React.Component<any, {}> {
     return (
       <div>
         <TableComponent bills={this.state.bills} delete={this.delete.bind(this)} select={this.select.bind(this)} />
-        <EditorComponent save={this.save.bind(this)} update={this.update.bind(this)} />
+        <EditorComponent bill={this.state.selectedBill} save={this.save.bind(this)} update={this.update.bind(this)} />
         <NotificationSystem ref="notificationSystem" />
       </div>
     )
