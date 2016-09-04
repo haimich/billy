@@ -86,8 +86,12 @@ export default class AppComponent extends React.Component<any, {}> {
     })
   }
 
+  select(row: Bill) {
+    console.log('selected row')
+  }
+
   handleError(err: Error) {
-    let message = t('Datenbank Fehler') + err.message
+    let message = t('Datenbank-Fehler') + err.message
     if (err['code'] === 'SQLITE_CONSTRAINT') {
       message = t('Datenbank Fehler duplicate id')
     }
@@ -102,8 +106,8 @@ export default class AppComponent extends React.Component<any, {}> {
   render() {
     return (
       <div>
-        <TableComponent bills={this.state.bills} update={this.update.bind(this)} delete={this.delete.bind(this)} />
-        <EditorComponent save={this.save.bind(this)} />
+        <TableComponent bills={this.state.bills} delete={this.delete.bind(this)} select={this.select.bind(this)} />
+        <EditorComponent save={this.save.bind(this)} update={this.update.bind(this)} />
         <NotificationSystem ref="notificationSystem" />
       </div>
     )

@@ -22,6 +22,12 @@ export default class EditorComponent extends React.Component<any, {}> {
     file?: File
   }
 
+  props: {
+    update: (row: Bill) => void,
+    save: (row: Bill) => void,
+    bill?: Bill
+  }
+
   counter: number
 
   constructor(props) {
@@ -120,7 +126,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
-                    <input type="number" className="form-control" id="amount" ref="amount" defaultValue="100" style={{textAlign: "right"}} required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
+                    <input type="number" className="form-control" id="amount" ref="amount" defaultValue="100" style={{ textAlign: "right" }} required min="0" step="0.01" pattern="[+-]?\d+(,\d+)?" />
                   </div>
                 </div>
               </div>
@@ -168,16 +174,16 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   addFormValidation() {
-    const inputs:Element[] = [ ...ReactDOM.findDOMNode(this).querySelectorAll('input') ]
+    const inputs: Element[] = [...ReactDOM.findDOMNode(this).querySelectorAll('input')]
 
     inputs.forEach(input => input.addEventListener('input', function (event) {
-      const input:any = event.target;
+      const input: any = event.target;
       input.closest('.form-group').classList.remove('has-error')
       input.checkValidity()
     }))
 
     inputs.forEach(input => input.addEventListener('invalid', function (event) {
-      const input:any = event.target;
+      const input: any = event.target;
       input.closest('.form-group').classList.add('has-error')
     }))
   }

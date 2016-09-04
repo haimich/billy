@@ -8,28 +8,43 @@ import t from '../common/helpers/i18n'
 export default class TableComponent extends React.Component<any, {}> {
 
   props: {
-    update: (row: Bill) => void,
     delete: (rowIds: String[]) => void,
+    select: (row: Bill) => void,
     bills: Bill[]
   }
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
-    console.log(row)
+    if (isSelected) {
+      this.props.select(row)
+    }
     return true
+  }
+
+  onDeleteRows(rowKeys: string[]) {
+    this.props.delete(rowKeys)
+  }
+
+  handleConfirm(next: any, dropRowKeys: string[]) {
+    if (confirm(`Möchtest du die ${t('Rechnung', { count: dropRowKeys.length })} wirklich löschen?`)) {
+      next()
+    }
   }
 
   render() {
     const options: Options = {
-      noDataText: t('Keine Einträge'),
       sortName: 'date_created',
-      sortOrder: 'asc'
+      sortOrder: 'asc',
+      afterDeleteRow: this.onDeleteRows.bind(this),
+      deleteText: t('Löschen'),
+      noDataText: t('Keine Einträge'),
+      handleConfirmDeleteRow: this.handleConfirm.bind(this)
     }
     const selectMode: SelectRowMode = 'radio'
     const selectRowProp = {
       mode: selectMode,
       clickToSelect: true,
       bgColor: '#d9edf7',
-      onSelect: this.onSelectRow,
+      onSelect: this.onSelectRow.bind(this),
       hideSelectColumn: true
     }
     const editMode: CellEditClickMode = 'click'
@@ -46,7 +61,7 @@ export default class TableComponent extends React.Component<any, {}> {
           multiColumnSearch={false}
           columnFilter={false}
           insertRow={false}
-          deleteRow={false}
+          deleteRow={true}
           selectRow={selectRowProp}
           exportCSV={false}
           options={options}
@@ -66,7 +81,7 @@ export default class TableComponent extends React.Component<any, {}> {
   }
 
   scrollDown() {
-    const lastRow:any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
+    const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
     lastRow.scrollIntoView()
   }
 
