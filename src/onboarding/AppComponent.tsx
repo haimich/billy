@@ -4,35 +4,53 @@ import { ipcRenderer } from 'electron'
 import t from '../common/helpers/i18n'
 import { set } from '../common/providers/settingsProvider'
 import { setupDb } from '../common/providers/dbProvider'
-import { createFolder } from '../common/providers/fileProvider'
+import { ensureFolderExists } from '../common/providers/fileProvider'
 import { FormComponent, FormComponentValues } from './FormComponent'
-const isDev = require('electron-is-dev')
+import * as NotificationSystem from 'react-notification-system'
+
+let notifications
 
 export default class AppComponent extends React.Component<any, {}> {
 
+  refs: {
+    notificationSystem: HTMLInputElement
+  }
+
+  componentDidMount() {
+    notifications = this.refs.notificationSystem
+  }
+
   async finishSetup(values: FormComponentValues): Promise<any> {
-    const appDir: string = values.folder
-    await set('appDir', appDir)
+    try {
+      const appDir: string = values.folder
+      await set('appDir', appDir)
 
-    await set('knex', {
-      client: 'sqlite3',
-      connection: {
-        filename: appDir + '/bills.sqlite'
-      },
-      migrations: {
-        tableName: 'migrations',
-        directory: './sql/migrations'
-      },
-      seeds: {
-        directory: './sql/seeds'
-      },
-      useNullAsDefault: true // see http://knexjs.org/#Builder-insert
-    })
+      await set('knex', {
+        client: 'sqlite3',
+        connection: {
+          filename: appDir + '/bills.sqlite'
+        },
+        migrations: {
+          tableName: 'migrations',
+          directory: './sql/migrations'
+        },
+        seeds: {
+          directory: './sql/seeds'
+        },
+        useNullAsDefault: true // see http://knexjs.org/#Builder-insert
+      })
 
-    await setupDb()
-    await createFolder(appDir + '/files')
+      await setupDb()
+      await ensureFolderExists(appDir + '/files')
 
-    ipcRenderer.send('onboarding-finished')
+      ipcRenderer.send('onboarding-finished')
+    } catch (err) {
+      notifications.addNotification({
+        message: err,
+        level: 'error',
+        position: 'tc'
+      })
+    }
   }
 
   render() {
@@ -42,6 +60,7 @@ export default class AppComponent extends React.Component<any, {}> {
         <img src="../static/images/accountants.png" />
 
         <FormComponent finish={this.finishSetup.bind(this)} />
+        <NotificationSystem ref="notificationSystem" />
       </div>
     )
   }

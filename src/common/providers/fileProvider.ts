@@ -17,15 +17,15 @@ export function open(fileName) {
   }
 }
 
-export async function copyToAppDir(inputFilePath: string): Promise<any> {
-  const appDir = get('appDir')
+export async function copyToBillDir(billId: string, inputFilePath: string): Promise<any> {
+  // await ensureFolderExists()
+  const appDir = await get('appDir')
   return 'test'
 }
 
-export async function createFolder(path: string): Promise<any> {
+export function ensureFolderExists(path: string): Promise<any> {
   return new Promise((resolve, reject) => {
     mkdirp(path, (err) => {
-      console.log('done', err)
       if (err) {
         reject(err)
       } else {
