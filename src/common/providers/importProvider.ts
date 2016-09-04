@@ -8,10 +8,7 @@ const basicCSV = require('basic-csv')
 const argv = require('minimist')(process.argv.slice(2))
 const FILENAME = argv._[0]
 
-const knex = require('knex')
-const knexConfig = require('./conf/development.js').knex
-
-const db = knex(knexConfig)
+// const db = knex(knexConfig)
 
 function createBill(record) {
   let bill = {
@@ -31,26 +28,26 @@ function createBill(record) {
   return bill;
 }
 
-function saveToDb(bill) {
-  return db('bills').insert(bill)
-}
+// function saveToDb(bill) {
+//   return db('bills').insert(bill)
+// }
 
-basicCSV.readCSV(FILENAME, (error, rows) => {
-  if (error != null) {
-    console.log(err);
-    process.exit(1);
-  }
+// basicCSV.readCSV(FILENAME, (error, rows) => {
+//   if (error != null) {
+//     console.log(err);
+//     process.exit(1);
+//   }
 
-  Promise.all(
-    rows
-      .map(createBill)
-      .map(saveToDb)
-  ).then(() => {
-      console.log('All done!')
-      process.exit(0)
-    })
-    .catch((err) => {
-      console.error(err)
-      process.exit(1)
-    })
-});
+//   Promise.all(
+//     rows
+//       .map(createBill)
+//       .map(saveToDb)
+//   ).then(() => {
+//       console.log('All done!')
+//       process.exit(0)
+//     })
+//     .catch((err) => {
+//       console.error(err)
+//       process.exit(1)
+//     })
+// });

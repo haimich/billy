@@ -1,0 +1,17 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+body h2 {
+  margin-top: 5px;
+}
+
+#form-container {
+  flex: 1;
+}

@@ -1,17 +1,39 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
+import { } from './providers/importProvider'
+import { openImportWindow, reload, toggleDevTools } from './windows'
+import { isMac } from './helpers/platform'
 
-function application() {
+function application(): any {
+  const name = 'Billy'
+
   return {
-    label: 'foo',
-    submenu: [{
-      label: 'This is Billy ❤'
-    }, {
-      label: 'Quit',
-      accelerator: 'Command+Q',
-      click: function () {
-        app.quit()
-      }
-    }]
+    label: name,
+    submenu: [
+      {
+        label: 'About ' + name,
+        role: 'about'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Hide ' + name,
+        accelerator: 'Command+H',
+        role: 'hide'
+      },
+      {
+        label: 'Show All',
+        role: 'unhide'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: function () { app.quit(); }
+      },
+    ]
   }
 }
 
@@ -34,6 +56,10 @@ function edit() {
       label: 'Select All',
       accelerator: 'CmdOrCtrl+A',
       role: 'selectall'
+    }, {
+      label: 'Import',
+      accelerator: 'CmdOrCtrl+I',
+      click: () => openImportWindow()
     }]
   }
 }
@@ -44,35 +70,37 @@ function view() {
     submenu: [{
       label: 'Reload',
       accelerator: 'CmdOrCtrl+R',
-      click: (item, focusedWindow) => {
-        if (focusedWindow) {
-          // on reload, start fresh and close any old
-          // open secondary windows
-          if (focusedWindow.id === 1) {
-            BrowserWindow.getAllWindows().forEach((win) => {
-              if (win.id > 1) {
-                win.close()
-              }
-            })
-          }
-          focusedWindow.reload()
-        }
-      }
+      click: (item, focusedWindow) => reload(focusedWindow)
     }, {
       label: 'Toggle Developer Tools',
       accelerator: (() => {
-        if (process.platform === 'darwin') {
+        if (isMac()) {
           return 'Alt+Command+I'
         } else {
           return 'Ctrl+Shift+I'
         }
       })(),
-      click: (item, focusedWindow) => {
-        if (focusedWindow) {
-          focusedWindow.toggleDevTools()
-        }
-      }
+      click: (item, focusedWindow) => toggleDevTools(focusedWindow)
     }]
+  }
+}
+
+function window() {
+  return {
+    label: 'Window',
+    role: 'window',
+    submenu: [
+      {
+        label: 'Minimize',
+        accelerator: 'CmdOrCtrl+M',
+        role: 'minimize'
+      },
+      {
+        label: 'Close',
+        accelerator: 'CmdOrCtrl+W',
+        role: 'close'
+      },
+    ]
   }
 }
 
@@ -82,16 +110,14 @@ function help() {
     role: 'help',
     submenu: [{
       label: 'Learn More',
-      click: () => {
-        shell.openExternal('https://github.com/haimich/billy')
-      }
+      click: () => shell.openExternal('https://github.com/haimich/billy')
     }]
   }
 }
 
 export function initMenu() {
   const template = Menu.buildFromTemplate([
-    application(), edit(), view(), help()
+    application(), edit(), view(), window(), help()
   ])
   Menu.setApplicationMenu(template)
 }

@@ -14,8 +14,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     date_created: HTMLInputElement,
     date_paid: HTMLInputElement,
     comment: HTMLInputElement,
-    file: HTMLInputElement,
-    fileLabel: HTMLInputElement
+    file: HTMLInputElement
   }
 
   state: {
@@ -151,7 +150,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     {t('Datei auswählen')}
                     <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
                   </label> &nbsp;
-                  <small className="fileview" ref="fileLabel" onClick={this.openFile.bind(this)}>{this.state.file && this.state.file.name}</small>
+                  <small className="fileview" onClick={this.openFile.bind(this)}>{this.state.file && this.state.file.name}</small>
                 </div>
               </div>
             </div>
