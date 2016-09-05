@@ -32,7 +32,7 @@ export function openMainWindow() {
 }
 
 export function openImportWindow() {
-  importWindow = new BrowserWindow({ width: 370, height: 250 })
+  importWindow = new BrowserWindow({ width: 380, height: 260 })
   importWindow.loadURL(`file://${getAppFolder()}/import.html`)
 
   ipcMain.on('import-finished', () => {
