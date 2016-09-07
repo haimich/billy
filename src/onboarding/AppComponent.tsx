@@ -61,8 +61,10 @@ export default class AppComponent extends React.Component<any, {}> {
   render() {
     return (
       <div>
-        <h2>{t('Willkommen bei Billy!')}</h2>
-        <img src="../../static/images/accountants.png" />
+        <div className="text-center">
+          <h2>{t('Willkommen bei Billy!')}</h2>
+          <img src="../../static/images/accountants.png" />
+        </div>
 
         <FormComponent finish={this.finishSetup.bind(this)} />
         <NotificationSystem ref="notificationSystem" />
