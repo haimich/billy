@@ -10,7 +10,8 @@ export default class TableComponent extends React.Component<any, {}> {
   props: {
     delete: (rowIds: String[]) => void,
     select: (row: Bill) => void,
-    bills: Bill[]
+    bills: Bill[],
+    selectedId?: string
   }
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
@@ -45,7 +46,8 @@ export default class TableComponent extends React.Component<any, {}> {
       clickToSelect: true,
       bgColor: '#d9edf7',
       onSelect: this.onSelectRow.bind(this),
-      hideSelectColumn: true
+      hideSelectColumn: true,
+      selected: this.props.selectedId ? [ this.props.selectedId ] : []
     }
     const editMode: CellEditClickMode = 'click'
     const height: any = 300

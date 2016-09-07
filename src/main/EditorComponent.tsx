@@ -10,19 +10,17 @@ const Typeahead = require('react-bootstrap-typeahead').default
 
 export default class EditorComponent extends React.Component<any, {}> {
 
-  refs: {
-    id: HTMLInputElement,
-    amount: HTMLInputElement,
-    comment: HTMLInputElement,
-    file: HTMLInputElement
-  }
-
   state: {
-    file?: File,
-    dateCreated: Date
-    datePaid?: Date,
-    customerList?: string[],
-    customer?: string
+    id: string,
+    customer: string,
+    amount: string,
+    date_created: Date,
+    date_paid?: Date,
+    comment: string,
+    file_path: string,
+    customerList: string[],
+    isNew: boolean,
+    file?: File
   }
 
   props: {
@@ -37,15 +35,34 @@ export default class EditorComponent extends React.Component<any, {}> {
     super(props)
 
     this.state = {
-      file: undefined,
-      dateCreated: new Date(),
-      datePaid: undefined,
+      id: '',
+      customer: '',
+      amount: '',
+      date_created: new Date(),
+      date_paid: undefined,
+      comment: '',
+      file_path: '',
       customerList: [],
-      customer: undefined
-    }
+      isNew: true,
+      file: undefined
+    };
 
     this.fetchTypeaheadData()
     this.counter = 0;
+  }
+
+  resetState() {
+    this.setState({
+      id: '',
+      customer: '',
+      amount: undefined,
+      date_created: new Date(),
+      date_paid: undefined,
+      comment: '',
+      file_path: '',
+      isNew: true,
+      file: undefined
+    })
   }
 
   async fetchTypeaheadData() {
@@ -61,18 +78,23 @@ export default class EditorComponent extends React.Component<any, {}> {
   onSave(event) {
     event.preventDefault()
 
-    const refs = this.refs
     const bill = new Bill(
-      refs.id.value,
-      this.state.customer!,
-      convertToNumber(refs.amount.value),
-      this.state.dateCreated,
-      this.state.datePaid,
-      refs.comment.value,
+      this.state.id,
+      this.state.customer,
+      convertToNumber(this.state.amount),
+      this.state.date_created,
+      this.state.date_paid,
+      this.state.comment,
       this.state.file && this.state.file.path
     )
 
-    this.props.save(bill)
+    if (this.state.isNew) {
+      this.props.save(bill)
+    } else {
+      this.props.update(bill)
+    }
+
+    // this.resetState()
   }
 
   getFile(files) {
@@ -116,13 +138,13 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   handleDateCreatedChanged(newDate) {
     this.setState({
-      dateCreated: newDate
+      date_created: newDate
     })
   }
 
   handleDatePaidChanged(newDate) {
     this.setState({
-      datePaid: newDate
+      date_paid: newDate
     })
   }
 
@@ -142,13 +164,14 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnr.')}</label>
                 <div className="col-sm-8">
-                  <input type="text" className="form-control" id="id" ref="id" required autoFocus />
+                  <input type="text" className="form-control" id="id" readOnly={! this.state.isNew} required value={this.state.id} onChange={(event: any) => this.setState({ id: event.target.value })} autoFocus />
                 </div>
               </div>
               <div className="form-group">
                 <label htmlFor="customer" className="col-sm-4 control-label">{t('Kunde')}</label>
                 <div className="col-sm-8">
                   <Typeahead
+                    value={this.state.customer}
                     options={this.state.customerList}
                     allowNew={false}
                     onChange={this.handleTypeaheadChange.bind(this)}
@@ -160,7 +183,7 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
                 <Datetime
-                  value={this.state.dateCreated}
+                  value={this.state.date_created}
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
@@ -174,7 +197,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
-                    <input type="text" className="form-control" id="amount" ref="amount" defaultValue="100" style={{ textAlign: 'right' }} required pattern={'[+-]?[0-9]+(,[0-9]+)?'} />
+                    <input type="text" className="form-control" id="amount" value={this.state.amount} onChange={(event: any) => this.setState({ amount: event.target.value })} style={{ textAlign: 'right' }} required pattern={'[+-]?[0-9]+(,[0-9]+)?'} />
                   </div>
                 </div>
               </div>
@@ -184,26 +207,25 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
                 <Datetime
-                  value={this.state.datePaid}
+                  value={this.state.date_paid}
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  defaultValue={'11.12.2016'}
                   onChange={this.handleDatePaidChanged.bind(this)}
                   />
               </div>
               <div className="form-group">
                 <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
                 <div className="col-sm-8">
-                  <textarea className="form-control" rows={3} id="comment" defaultValue="Comment" ref="comment" />
+                  <textarea className="form-control" rows={3} id="comment" value={this.state.comment} onChange={(event: any) => this.setState({ comment: event.target.value })} />
                 </div>
               </div>
               <div className="form-group">
                 <div className="col-sm-offset-4 col-sm-8">
                   <label className="btn btn-default btn-sm">
                     {t('Datei auswählen')}
-                    <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
+                    <input type="file" className="form-control hidden" onChange={this.onFileinputChange.bind(this)} />
                   </label> &nbsp;
                   <small className="fileview" onClick={this.openFile.bind(this)}>{this.state.file && this.state.file.name}</small>
                 </div>
@@ -246,5 +268,25 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   componentDidMount() {
     this.addFormValidation()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let bill;
+    if (nextProps.bill) {
+      bill = Object.assign(nextProps.bill)
+      bill.amount = String(bill.amount).replace('.', ',')
+    } else {
+      bill = {
+        id: '',
+        customer: '',
+        amount: '',
+        date_created: new Date(),
+        date_paid: undefined,
+        comment: '',
+        file_path: '',
+        file: undefined
+      }
+    }
+    this.setState(Object.assign({ isNew: ! nextProps.bill }, bill))
   }
 }

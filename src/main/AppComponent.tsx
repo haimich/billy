@@ -44,9 +44,10 @@ export default class AppComponent extends React.Component<any, {}> {
     } catch (err) {
       this.handleError(err)
     }
-    
+
     this.setState({
-      bills: [bill].concat(this.state.bills)
+      selectedBill: undefined,
+      bills: [ bill ].concat(this.state.bills)
     })
   }
 
@@ -56,8 +57,9 @@ export default class AppComponent extends React.Component<any, {}> {
     } catch (err) {
       this.handleError(err)
     }
-    
+
     this.setState({
+      selectedBill: undefined,
       bills: this.state.bills.map((element) => {
         if (element.id === bill.id) {
           return bill
@@ -74,7 +76,7 @@ export default class AppComponent extends React.Component<any, {}> {
     } catch (err) {
       this.handleError(err)
     }
-    
+
     this.setState({
       bills: this.state.bills.filter((element) => {
         for (let id of billIds) {
@@ -94,6 +96,7 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   select(row: Bill) {
+    console.log(row)
     this.setState({
       selectedBill: row
     })
@@ -104,7 +107,7 @@ export default class AppComponent extends React.Component<any, {}> {
     if (err['code'] === 'SQLITE_CONSTRAINT') {
       message = t('Datenbank Fehler duplicate id')
     }
-    
+
     notifications.addNotification({
       message,
       level: 'error',
@@ -115,7 +118,12 @@ export default class AppComponent extends React.Component<any, {}> {
   render() {
     return (
       <div>
-        <TableComponent bills={this.state.bills} delete={this.delete.bind(this)} select={this.select.bind(this)} />
+        <TableComponent
+            bills={this.state.bills}
+            delete={this.delete.bind(this)}
+            select={this.select.bind(this)}
+            selectedId={this.state.selectedBill && this.state.selectedBill.id}
+        />
         <EditorComponent bill={this.state.selectedBill} save={this.save.bind(this)} update={this.update.bind(this)} />
         <NotificationSystem ref="notificationSystem" />
       </div>
