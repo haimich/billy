@@ -23,6 +23,9 @@ export function currencyFormatter(value: number): string {
  * 123 => 123
  * 123.45 => 123.45
  */
-export function convertToNumber(value: string): number {
+export function convertToNumber(value?: string): number {
+  if (value == null) {
+    return 0
+  }
   return parseFloat(value.replace(',','.').replace(' ',''))
 }

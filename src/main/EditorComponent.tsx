@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
+import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { init as initDb, listCustomers } from '../common/repositories/customerRepository'
 import t from '../common/helpers/i18n'
@@ -9,53 +10,56 @@ import { open } from '../common/providers/fileProvider'
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
 
+interface State {
+  id: string;
+  amount?: string;
+  date_created: Date;
+  date_paid?: Date;
+  comment: string;
+  file_path: string;
+  customer?: Customer;
+  customerList: Customer[];
+  isNew: boolean;
+  file?: File;
+}
+
+interface Props {
+  update: (row: Bill) => void;
+  save: (row: Bill) => void;
+  bill?: Bill;
+}
+
 export default class EditorComponent extends React.Component<any, {}> {
 
-  state: {
-    id: string,
-    customer: Customer,
-    amount: string,
-    date_created: Date,
-    date_paid?: Date,
-    comment: string,
-    file_path: string,
-    customerList: Customer[],
-    isNew: boolean,
-    file?: File
-  }
-
-  props: {
-    update: (row: Bill) => void,
-    save: (row: Bill) => void,
-    bill?: Bill
-  }
+  state: State
+  props: Props
 
   dragCounter: number
 
   constructor(props) {
     super(props)
 
-    this.state = this.getDefaultValues()
+    this.state = this.getDefaultState()
     this.fetchTypeaheadData()
     this.dragCounter = 0;
   }
 
   resetState() {
-    this.setState(this.getDefaultValues())
+    this.setState(this.getDefaultState())
     this.fetchTypeaheadData()
     this.dragCounter = 0;
   }
 
-  getDefaultValues(): any {
+  getDefaultState(): State {
     return {
       id: '',
-      customer: undefined,
-      customerList: [],
-      amount: undefined,
+      amount: '',
       date_created: new Date(),
       date_paid: undefined,
       comment: '',
       file_path: '',
+      customer: undefined,
+      customerList: [],
       isNew: true,
       file: undefined
     }
@@ -76,7 +80,7 @@ export default class EditorComponent extends React.Component<any, {}> {
 
     const bill = new Bill(
       this.state.id,
-      this.state.customer.id,
+      this.state.customer!.id,
       convertToNumber(this.state.amount),
       this.state.date_created,
       this.state.date_paid,
@@ -138,7 +142,16 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnr.')}</label>
                 <div className="col-sm-8">
-                  <input type="text" className="form-control" id="id" readOnly={! this.state.isNew} required value={this.state.id} onChange={(event: any) => this.setState({ id: event.target.value })} autoFocus />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="id"
+                    readOnly={!this.state.isNew}
+                    required
+                    value={this.state.id}
+                    onChange={(event: any) => this.setState({ id: event.target.value })}
+                    autoFocus
+                    />
                 </div>
               </div>
               <div className="form-group">
@@ -147,12 +160,12 @@ export default class EditorComponent extends React.Component<any, {}> {
                   <Typeahead
                     options={this.state.customerList}
                     allowNew={false}
-                    onChange={selected => this.setState({customer: selected})}
+                    onChange={selected => this.setState({ customer: selected[0] })}
                     selected={[this.state.customer]}
                     labelKey={'name'}
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
-                  />
+                    />
                 </div>
               </div>
               <div className="form-group">
@@ -163,7 +176,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  onChange={newDate => this.setState({date_created: newDate})}
+                  onChange={newDate => this.setState({ date_created: newDate })}
                   inputProps={{ required: 'required' }}
                   />
               </div>
@@ -172,7 +185,16 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
-                    <input type="text" className="form-control" id="amount" value={this.state.amount} onChange={(event: any) => this.setState({ amount: event.target.value })} style={{ textAlign: 'right' }} required pattern={'[+-]?[0-9]+(,[0-9]+)?'} />
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="amount"
+                      value={this.state.amount}
+                      onChange={(event: any) => this.setState({ amount: event.target.value })}
+                      style={{ textAlign: 'right' }}
+                      required
+                      pattern={'[+-]?[0-9]+(,[0-9]+)?'}
+                      />
                   </div>
                 </div>
               </div>
@@ -187,7 +209,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  onChange={newDate => this.setState({date_paid: newDate})}
+                  onChange={newDate => this.setState({ date_paid: newDate })}
                   />
               </div>
               <div className="form-group">
@@ -200,7 +222,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-offset-4 col-sm-8">
                   <label className="btn btn-default btn-sm">
                     {t('Datei auswählen')}
-                    <input type="file" className="form-control hidden" onChange={(event: any) => this.setState({file: this.getFile(event.target.files)})} />
+                    <input type="file" className="form-control hidden" onChange={(event: any) => this.setState({ file: this.getFile(event.target.files) })} />
                   </label> &nbsp;
                   <small className="fileview" onClick={this.openFile.bind(this)}>{this.state.file && this.state.file.name}</small>
                 </div>
@@ -246,17 +268,18 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   componentWillReceiveProps(nextProps) {
-    let bill
+    const isExisting = (nextProps.bill != null)
+    let newState: State
 
-    if (nextProps.bill) {
-      // Edit existing bill
-      bill = Object.assign(nextProps.bill)
-      bill.amount = String(bill.amount).replace('.', ',')
+    if (isExisting) {
+      newState = Object.assign(nextProps.bill)
+      newState.amount = String(newState.amount).replace('.', ',')
     } else {
-      // Create new bill
-      bill = this.getDefaultValues()
+      newState = this.getDefaultState()
     }
 
-    this.setState(Object.assign({ isNew: ! nextProps.bill }, bill))
+    newState = Object.assign({ isNew: !isExisting }, newState)
+
+    this.setState(newState)
   }
 }

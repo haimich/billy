@@ -95,12 +95,6 @@ export default class AppComponent extends React.Component<any, {}> {
     })
   }
 
-  select(row: Bill) {
-    this.setState({
-      selectedBill: row
-    })
-  }
-
   handleError(err: Error) {
     let message = t('Datenbank-Fehler') + err.message
     if (err['code'] === 'SQLITE_CONSTRAINT') {
@@ -118,12 +112,16 @@ export default class AppComponent extends React.Component<any, {}> {
     return (
       <div>
         <TableComponent
-            bills={this.state.bills}
-            delete={this.delete.bind(this)}
-            select={this.select.bind(this)}
-            selectedId={this.state.selectedBill && this.state.selectedBill.id}
+          bills={this.state.bills}
+          delete={this.delete.bind(this)}
+          select={row => this.setState({ selectedBill: row })}
+          selectedId={this.state.selectedBill && this.state.selectedBill.id}
         />
-        <EditorComponent bill={this.state.selectedBill} save={this.save.bind(this)} update={this.update.bind(this)} />
+        <EditorComponent
+          bill={this.state.selectedBill}
+          save={this.save.bind(this)}
+          update={this.update.bind(this)}
+        />
         <NotificationSystem ref="notificationSystem" />
       </div>
     )

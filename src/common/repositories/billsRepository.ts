@@ -1,3 +1,4 @@
+import Customer from '../models/CustomerModel'
 import Bill from '../models/BillModel'
 import BillDbModel from '../models/BillDbModel'
 import { get } from '../providers/settingsProvider'
@@ -18,6 +19,7 @@ export function listBills(): Promise<BillDbModel[]> {
       b.amount,
       b.comment,
       b.file_path,
+      c.id as customer_id,
       c.name as customer_name,
       c.telephone as customer_telephone
 
@@ -25,7 +27,24 @@ export function listBills(): Promise<BillDbModel[]> {
 
       where b.customer_id = c.id
       order by b.date_created
-  `)
+  `).then((rows) => {
+    return rows.map(row => {
+      return new BillDbModel(
+        row.id,
+        row.amount,
+        row.date_created,
+        row.date_paid,
+        row.comment,
+        row.file_path,
+        row.customer_name,
+        new Customer(
+          row.customer_id,
+          row.customer_name,
+          row.customer_telephone
+        )
+      )
+    })
+  })
 }
 
 export function createBill(bill: Bill): Promise<any> {

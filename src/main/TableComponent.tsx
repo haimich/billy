@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
-import Bill from '../common/models/BillModel'
+import BillDbModel from '../common/models/BillDbModel'
 import { dateFormatter, currencyFormatter } from '../common/helpers/formatters'
 import t from '../common/helpers/i18n'
 
@@ -9,8 +9,8 @@ export default class TableComponent extends React.Component<any, {}> {
 
   props: {
     delete: (rowIds: String[]) => void,
-    select: (row: Bill) => void,
-    bills: Bill[],
+    select: (row: BillDbModel) => void,
+    bills: BillDbModel[],
     selectedId?: string
   }
 
@@ -46,7 +46,7 @@ export default class TableComponent extends React.Component<any, {}> {
       bgColor: '#d9edf7',
       onSelect: this.onSelectRow.bind(this),
       hideSelectColumn: true,
-      selected: this.props.selectedId ? [ this.props.selectedId ] : []
+      selected: this.props.selectedId ? [this.props.selectedId] : []
     }
     const editMode: CellEditClickMode = 'click'
     const height: any = 300

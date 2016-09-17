@@ -1,3 +1,5 @@
+import Customer from './CustomerModel'
+
 export default class BillDbModel {
   constructor(
     public id: string,
@@ -7,7 +9,7 @@ export default class BillDbModel {
     public comment?: string,
     public file_path?: string,
     public customer_name?: string,
-    public customer_telephone?: string,
+    public customer?: Customer,
   ) {
     // fields get set by Typescript automatically
   }
