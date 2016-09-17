@@ -2,7 +2,7 @@
   {
     "date_created": "2017-06-04T05:34:04-07:00",
     "date_paid": "2016-06-04T11:34:08-07:00",
-    "customer": "Marshall Sheppard",
+    "customer_id": "1",
     "amount": 181.797,
     "comment": "eleifend vitae,",
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
@@ -11,7 +11,7 @@
   {
     "date_created": "2015-10-10T17:58:45-07:00",
     "date_paid": "2015-11-17T20:13:38-08:00",
-    "customer": "Owen Lane",
+    "customer_id": "1",
     "amount": 124.88,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "odio. Phasellus at",
@@ -20,7 +20,7 @@
   {
     "date_created": "2016-01-06T12:04:46-08:00",
     "date_paid": "2016-01-16T18:18:08-08:00",
-    "customer": "Merritt Hart",
+    "customer_id": "2",
     "amount": 159.269,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "orci. Donec nibh. Quisque nonummy ipsum non arcu.",
@@ -29,7 +29,7 @@
   {
     "date_created": "2016-08-30T21:20:06-07:00",
     "date_paid": "2016-11-02T17:36:41-07:00",
-    "customer": "Herrod Dejesus",
+    "customer_id": "2",
     "amount": 100.982,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "non, hendrerit id, ante. Nunc mauris sapien, cursus in,",
@@ -38,7 +38,7 @@
   {
     "date_created": "2017-05-13T17:05:28-07:00",
     "date_paid": "2016-12-17T20:20:05-08:00",
-    "customer": "Ezekiel Mosley",
+    "customer_id": "3",
     "amount": 180.535,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "suscipit nonummy. Fusce",
@@ -47,7 +47,7 @@
   {
     "date_created": "2015-09-23T23:49:26-07:00",
     "date_paid": "2016-09-04T13:34:59-07:00",
-    "customer": "Bradley Bullock",
+    "customer_id": "4",
     "amount": 150.851,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "Phasellus ornare. Fusce",
@@ -56,7 +56,7 @@
   {
     "date_created": "2016-11-26T20:25:06-08:00",
     "date_paid": "2016-10-25T10:50:57-07:00",
-    "customer": "Adam Holder",
+    "customer_id": "1",
     "amount": 145.924,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "fermentum convallis ligula. Donec luctus aliquet odio. Etiam ligula tortor,",
@@ -65,7 +65,7 @@
   {
     "date_created": "2016-03-04T23:03:28-08:00",
     "date_paid": "2015-11-06T09:22:25-08:00",
-    "customer": "Boris Wallace",
+    "customer_id": "5",
     "amount": 101.168,
     "comment": "mauris, rhoncus id,",
     "id": "8"
@@ -73,7 +73,7 @@
   {
     "date_created": "2016-09-14T11:38:41-07:00",
     "date_paid": "2015-09-24T03:04:00-07:00",
-    "customer": "Fletcher Tate",
+    "customer_id": "6",
     "amount": 111.502,
     "comment": "non, bibendum sed, est. Nunc laoreet lectus quis",
     "id": "9"
@@ -81,7 +81,7 @@
   {
     "date_created": "2017-05-02T23:21:46-07:00",
     "date_paid": "2015-12-17T07:51:50-08:00",
-    "customer": "Alden Mitchell",
+    "customer_id": "7",
     "amount": 131.571,
     "comment": "consectetuer rhoncus. Nullam velit dui, semper et, lacinia",
     "id": "10"
@@ -89,7 +89,7 @@
   {
     "date_created": "2016-07-26T19:11:00-07:00",
     "date_paid": "2016-03-12T11:40:57-08:00",
-    "customer": "Xander Strickland",
+    "customer_id": "8",
     "amount": 145.117,
     "comment": "lacus vestibulum lorem, sit",
     "id": "11"
@@ -97,7 +97,7 @@
   {
     "date_created": "2017-06-07T21:03:02-07:00",
     "date_paid": "2016-10-20T23:35:57-07:00",
-    "customer": "Keane Gallegos",
+    "customer_id": "9",
     "amount": 177.362,
     "comment": "massa non ante bibendum ullamcorper. Duis",
     "id": "12"
@@ -105,7 +105,7 @@
   {
     "date_created": "2015-07-25T07:38:49-07:00",
     "date_paid": "2017-03-11T13:33:27-08:00",
-    "customer": "George Walter",
+    "customer_id": "10",
     "amount": 190.239,
     "comment": "sociis natoque penatibus et magnis dis",
     "id": "13"
@@ -113,7 +113,7 @@
   {
     "date_created": "2015-08-03T00:06:33-07:00",
     "date_paid": "2016-08-21T23:52:09-07:00",
-    "customer": "Martin Walters",
+    "customer_id": "1",
     "amount": 138.993,
     "comment": "nisi a odio semper cursus. Integer mollis. Integer tincidunt aliquam",
     "id": "14"
@@ -121,7 +121,7 @@
   {
     "date_created": "2015-10-12T13:25:48-07:00",
     "date_paid": "2016-01-19T14:00:01-08:00",
-    "customer": "Roth Buckley",
+    "customer_id": "11",
     "amount": 195.981,
     "comment": "cursus a, enim. Suspendisse aliquet, sem ut cursus luctus, ipsum",
     "id": "15"
@@ -129,7 +129,7 @@
   {
     "date_created": "2015-09-09T13:41:16-07:00",
     "date_paid": "2015-09-12T05:51:48-07:00",
-    "customer": "Tiger Gilbert",
+    "customer_id": "12",
     "amount": 142.413,
     "comment": "et nunc. Quisque ornare tortor",
     "id": "16"
@@ -137,7 +137,7 @@
   {
     "date_created": "2015-11-08T11:04:11-08:00",
     "date_paid": "2015-07-29T23:03:22-07:00",
-    "customer": "Baker Parrish",
+    "customer_id": "13",
     "amount": 152.612,
     "comment": "volutpat ornare, facilisis eget, ipsum.",
     "id": "17"
@@ -145,7 +145,7 @@
   {
     "date_created": "2016-12-19T03:37:44-08:00",
     "date_paid": "2016-10-31T04:20:13-07:00",
-    "customer": "Brady Workman",
+    "customer_id": "14",
     "amount": 107.474,
     "comment": "euismod et,",
     "id": "18"
@@ -153,7 +153,7 @@
   {
     "date_created": "2016-01-23T20:39:10-08:00",
     "date_paid": "2016-08-06T22:55:09-07:00",
-    "customer": "Wayne Lloyd",
+    "customer_id": "14",
     "amount": 193.03,
     "comment": "Quisque nonummy ipsum non arcu. Vivamus sit amet risus.",
     "id": "19"
@@ -161,7 +161,7 @@
   {
     "date_created": "2017-05-21T10:55:33-07:00",
     "date_paid": "2016-10-16T07:08:17-07:00",
-    "customer": "Chaim James",
+    "customer_id": "15",
     "amount": 173.748,
     "comment": "tempor, est ac mattis semper, dui",
     "id": "20"
@@ -169,7 +169,7 @@
   {
     "date_created": "2016-03-11T07:29:56-08:00",
     "date_paid": "2017-04-02T01:04:14-07:00",
-    "customer": "Gregory Gates",
+    "customer_id": "16",
     "amount": 184.274,
     "comment": "tempus scelerisque, lorem ipsum sodales purus,",
     "id": "21"
@@ -177,7 +177,7 @@
   {
     "date_created": "2016-07-23T20:58:27-07:00",
     "date_paid": "2016-06-21T21:20:29-07:00",
-    "customer": "Blake Giles",
+    "customer_id": "16",
     "amount": 139.431,
     "comment": "Vivamus non lorem vitae odio sagittis",
     "id": "22"
@@ -185,7 +185,7 @@
   {
     "date_created": "2017-07-10T14:11:46-07:00",
     "date_paid": "2016-07-12T19:53:50-07:00",
-    "customer": "Todd Hampton",
+    "customer_id": "1",
     "amount": 129.547,
     "comment": "massa non ante bibendum ullamcorper.",
     "id": "23"
@@ -193,7 +193,7 @@
   {
     "date_created": "2015-09-12T06:46:39-07:00",
     "date_paid": "2016-07-09T09:18:41-07:00",
-    "customer": "Dolan Delaney",
+    "customer_id": "17",
     "amount": 175.93,
     "comment": "Suspendisse dui.",
     "id": "24"
@@ -201,7 +201,7 @@
   {
     "date_created": "2017-05-11T18:07:07-07:00",
     "date_paid": "2017-01-07T16:20:02-08:00",
-    "customer": "Conan Mosley",
+    "customer_id": "17",
     "amount": 175.636,
     "comment": "Cras eget nisi dictum augue malesuada",
     "id": "25"
@@ -209,7 +209,7 @@
   {
     "date_created": "2015-10-23T14:37:48-07:00",
     "date_paid": "2015-10-03T22:48:01-07:00",
-    "customer": "Wade Mcguire",
+    "customer_id": "18",
     "amount": 146.595,
     "comment": "dui. Fusce aliquam, enim nec tempus scelerisque, lorem",
     "id": "26"
@@ -217,7 +217,7 @@
   {
     "date_created": "2016-09-29T01:21:58-07:00",
     "date_paid": "2015-12-18T20:22:54-08:00",
-    "customer": "Malik Webb",
+    "customer_id": "19",
     "amount": 139.394,
     "comment": "amet,",
     "id": "27"
@@ -225,7 +225,7 @@
   {
     "date_created": "2017-01-15T02:09:48-08:00",
     "date_paid": "2016-07-08T17:08:53-07:00",
-    "customer": "Uriel Molina",
+    "customer_id": "20",
     "amount": 113.104,
     "comment": "lorem semper auctor. Mauris vel",
     "id": "28"
@@ -233,7 +233,7 @@
   {
     "date_created": "2016-05-16T10:49:33-07:00",
     "date_paid": "2015-10-08T22:42:03-07:00",
-    "customer": "Jonah Barron",
+    "customer_id": "21",
     "amount": 138.605,
     "comment": "et, lacinia vitae, sodales",
     "id": "29"
@@ -241,7 +241,7 @@
   {
     "date_created": "2016-05-31T08:12:20-07:00",
     "date_paid": "2016-01-07T14:56:47-08:00",
-    "customer": "Omar English",
+    "customer_id": "21",
     "amount": 112.437,
     "comment": "varius orci, in consequat",
     "id": "30"
@@ -249,7 +249,7 @@
   {
     "date_created": "2016-02-11T23:38:26-08:00",
     "date_paid": "2015-10-19T13:41:20-07:00",
-    "customer": "Kieran Wallace",
+    "customer_id": "22",
     "amount": 126.908,
     "comment": "tempus risus. Donec egestas. Duis",
     "id": "31"
@@ -257,7 +257,7 @@
   {
     "date_created": "2016-08-21T21:20:37-07:00",
     "date_paid": "2017-04-21T00:54:02-07:00",
-    "customer": "Thane Potts",
+    "customer_id": "23",
     "amount": 120.471,
     "comment": "mus. Aenean eget magna. Suspendisse tristique neque venenatis lacus.",
     "id": "32"
@@ -265,7 +265,7 @@
   {
     "date_created": "2015-11-30T22:56:41-08:00",
     "date_paid": "2017-04-20T11:48:09-07:00",
-    "customer": "Cole Tran",
+    "customer_id": "24",
     "amount": 165.8,
     "comment": "velit. Pellentesque ultricies dignissim",
     "id": "33"
@@ -273,7 +273,7 @@
   {
     "date_created": "2016-10-26T06:13:12-07:00",
     "date_paid": "2016-10-06T14:01:56-07:00",
-    "customer": "Aquila Preston",
+    "customer_id": "25",
     "amount": 150.041,
     "comment": "odio sagittis semper. Nam tempor diam dictum sapien.",
     "id": "34"
@@ -281,7 +281,7 @@
   {
     "date_created": "2016-11-09T12:12:27-08:00",
     "date_paid": "2017-06-15T22:50:01-07:00",
-    "customer": "Ian Pugh",
+    "customer_id": "26",
     "amount": 178.577,
     "comment": "nonummy. Fusce fermentum fermentum arcu. Vestibulum ante ipsum primis in",
     "id": "35"
@@ -289,7 +289,7 @@
   {
     "date_created": "2016-08-08T08:12:41-07:00",
     "date_paid": "2016-09-20T19:18:07-07:00",
-    "customer": "Phillip Hicks",
+    "customer_id": "26",
     "amount": 106.204,
     "comment": "elementum, lorem ut",
     "id": "36"
@@ -297,7 +297,7 @@
   {
     "date_created": "2015-12-15T03:24:27-08:00",
     "date_paid": "2017-01-30T04:33:06-08:00",
-    "customer": "Basil Dillon",
+    "customer_id": "1",
     "amount": 177.484,
     "comment": "consequat, lectus sit amet",
     "id": "37"
@@ -305,7 +305,7 @@
   {
     "date_created": "2015-12-08T04:23:34-08:00",
     "date_paid": "2016-03-27T09:25:17-07:00",
-    "customer": "Jerome Cole",
+    "customer_id": "1",
     "amount": 163.275,
     "comment": "magna",
     "id": "38"
@@ -313,7 +313,7 @@
   {
     "date_created": "2016-03-13T09:15:10-07:00",
     "date_paid": "2017-04-19T03:20:22-07:00",
-    "customer": "Bruce Terry",
+    "customer_id": "1",
     "amount": 117.673,
     "comment": "non, feugiat nec, diam. Duis mi enim, condimentum eget,",
     "id": "39"
@@ -321,7 +321,7 @@
   {
     "date_created": "2015-08-21T21:49:05-07:00",
     "date_paid": "2017-01-14T15:29:13-08:00",
-    "customer": "Ray Richard",
+    "customer_id": "1",
     "amount": 100.22,
     "comment": "a tortor.",
     "id": "40"
@@ -329,7 +329,7 @@
   {
     "date_created": "2015-11-05T00:52:53-08:00",
     "date_paid": "2016-12-25T07:30:07-08:00",
-    "customer": "Garth Garrison",
+    "customer_id": "1",
     "amount": 161.685,
     "comment": "eu, ligula. Aenean euismod mauris eu",
     "id": "41"
@@ -337,7 +337,7 @@
   {
     "date_created": "2016-05-11T07:49:48-07:00",
     "date_paid": "2016-08-02T02:05:57-07:00",
-    "customer": "Forrest Bean",
+    "customer_id": "1",
     "amount": 174.301,
     "comment": "amet lorem semper auctor. Mauris vel turpis. Aliquam",
     "id": "42"
@@ -345,7 +345,7 @@
   {
     "date_created": "2017-03-26T03:29:17-07:00",
     "date_paid": "2017-03-31T12:13:25-07:00",
-    "customer": "Hilel Wilkerson",
+    "customer_id": "1",
     "amount": 138.345,
     "comment": "fringilla ornare placerat, orci lacus vestibulum lorem,",
     "id": "43"
@@ -353,7 +353,7 @@
   {
     "date_created": "2017-02-09T08:57:18-08:00",
     "date_paid": "2015-11-06T17:44:16-08:00",
-    "customer": "Jack Fitzgerald",
+    "customer_id": "1",
     "amount": 129.331,
     "comment": "a, enim. Suspendisse aliquet, sem ut cursus luctus, ipsum leo",
     "id": "44"
@@ -361,7 +361,7 @@
   {
     "date_created": "2015-12-07T05:42:32-08:00",
     "date_paid": "2016-08-02T12:31:29-07:00",
-    "customer": "Murphy Swanson",
+    "customer_id": "1",
     "amount": 193.789,
     "comment": "lorem,",
     "id": "45"
@@ -369,7 +369,7 @@
   {
     "date_created": "2015-09-29T23:03:48-07:00",
     "date_paid": "2016-11-17T10:09:47-08:00",
-    "customer": "Nathaniel Richard",
+    "customer_id": "1",
     "amount": 187.613,
     "comment": "sem, consequat",
     "id": "46"
@@ -377,7 +377,7 @@
   {
     "date_created": "2015-09-26T23:59:51-07:00",
     "date_paid": "2016-06-25T18:22:12-07:00",
-    "customer": "Craig Tyson",
+    "customer_id": "1",
     "amount": 138.702,
     "comment": "aliquet magna a neque. Nullam ut",
     "id": "47"
@@ -385,7 +385,7 @@
   {
     "date_created": "2015-11-30T07:18:54-08:00",
     "date_paid": "2017-05-03T16:12:31-07:00",
-    "customer": "Justin Carrillo",
+    "customer_id": "1",
     "amount": 128.01,
     "comment": "fringilla ornare",
     "id": "48"
@@ -393,7 +393,7 @@
   {
     "date_created": "2016-10-02T14:21:23-07:00",
     "date_paid": "2015-11-14T12:42:03-08:00",
-    "customer": "Mohammad Wood",
+    "customer_id": "1",
     "amount": 176.893,
     "comment": "ante ipsum",
     "id": "49"
@@ -401,7 +401,7 @@
   {
     "date_created": "2015-09-24T21:18:13-07:00",
     "date_paid": "2015-07-17T11:49:10-07:00",
-    "customer": "Callum Wagner",
+    "customer_id": "1",
     "amount": 199.676,
     "comment": "In ornare sagittis felis. Donec",
     "id": "50"
@@ -409,7 +409,7 @@
   {
     "date_created": "2015-12-23T16:43:09-08:00",
     "date_paid": "2015-10-26T09:47:58-07:00",
-    "customer": "Armando Collier",
+    "customer_id": "1",
     "amount": 110.067,
     "comment": "dui. Fusce diam nunc, ullamcorper eu, euismod ac, fermentum vel,",
     "id": "51"
@@ -417,7 +417,7 @@
   {
     "date_created": "2016-01-04T23:51:19-08:00",
     "date_paid": "2016-04-05T19:11:20-07:00",
-    "customer": "Jerome Vincent",
+    "customer_id": "1",
     "amount": 179.409,
     "comment": "tempor erat neque non quam. Pellentesque habitant morbi tristique",
     "id": "52"
@@ -425,7 +425,7 @@
   {
     "date_created": "2017-06-28T15:56:21-07:00",
     "date_paid": "2017-07-02T20:36:11-07:00",
-    "customer": "Myles Hooper",
+    "customer_id": "1",
     "amount": 120.298,
     "comment": "molestie tortor",
     "id": "53"
@@ -433,7 +433,7 @@
   {
     "date_created": "2015-07-30T03:43:50-07:00",
     "date_paid": "2017-04-10T18:43:10-07:00",
-    "customer": "Aladdin Craig",
+    "customer_id": "1",
     "amount": 175.331,
     "comment": "adipiscing ligula. Aenean",
     "id": "54"
@@ -441,7 +441,7 @@
   {
     "date_created": "2015-08-04T05:02:55-07:00",
     "date_paid": "2017-02-24T03:36:48-08:00",
-    "customer": "Magee Jenkins",
+    "customer_id": "1",
     "amount": 106.038,
     "comment": "justo. Proin non massa non ante bibendum ullamcorper. Duis cursus,",
     "id": "55"
@@ -449,7 +449,7 @@
   {
     "date_created": "2017-02-13T21:13:47-08:00",
     "date_paid": "2015-07-27T12:56:17-07:00",
-    "customer": "Colin Phillips",
+    "customer_id": "1",
     "amount": 108.553,
     "comment": "non, hendrerit id,",
     "id": "56"
@@ -457,7 +457,7 @@
   {
     "date_created": "2017-04-26T22:06:40-07:00",
     "date_paid": "2015-09-17T03:34:21-07:00",
-    "customer": "Brendan Cross",
+    "customer_id": "1",
     "amount": 174.335,
     "comment": "Proin ultrices. Duis volutpat nunc sit",
     "id": "57"
@@ -465,7 +465,7 @@
   {
     "date_created": "2015-07-19T04:42:55-07:00",
     "date_paid": "2016-01-16T13:16:34-08:00",
-    "customer": "Neil Sampson",
+    "customer_id": "1",
     "amount": 178.008,
     "comment": "mauris ut",
     "id": "58"
@@ -473,7 +473,7 @@
   {
     "date_created": "2015-09-13T16:32:58-07:00",
     "date_paid": "2015-11-26T18:12:18-08:00",
-    "customer": "Dustin Morrison",
+    "customer_id": "1",
     "amount": 191.07,
     "comment": "penatibus et magnis dis parturient",
     "id": "59"
@@ -481,7 +481,7 @@
   {
     "date_created": "2016-01-13T18:50:35-08:00",
     "date_paid": "2016-11-23T11:11:31-08:00",
-    "customer": "Cameron Meyer",
+    "customer_id": "1",
     "amount": 167.031,
     "comment": "Suspendisse eleifend. Cras sed leo. Cras vehicula",
     "id": "60"
@@ -489,7 +489,7 @@
   {
     "date_created": "2017-04-10T21:50:31-07:00",
     "date_paid": "2017-05-18T12:55:59-07:00",
-    "customer": "Zeph Vincent",
+    "customer_id": "1",
     "amount": 196.957,
     "comment": "bibendum fermentum metus. Aenean sed pede nec",
     "id": "61"
@@ -497,7 +497,7 @@
   {
     "date_created": "2016-03-05T12:34:17-08:00",
     "date_paid": "2017-02-01T07:01:43-08:00",
-    "customer": "Scott Copeland",
+    "customer_id": "1",
     "amount": 172.677,
     "comment": "accumsan interdum libero dui",
     "id": "62"
@@ -505,7 +505,7 @@
   {
     "date_created": "2017-02-02T15:12:36-08:00",
     "date_paid": "2016-05-11T13:46:12-07:00",
-    "customer": "Kato Adams",
+    "customer_id": "1",
     "amount": 167.029,
     "comment": "taciti sociosqu ad",
     "id": "63"
@@ -513,7 +513,7 @@
   {
     "date_created": "2016-07-19T20:23:02-07:00",
     "date_paid": "2016-10-13T14:28:25-07:00",
-    "customer": "Perry Reese",
+    "customer_id": "1",
     "amount": 179.654,
     "comment": "vehicula et, rutrum eu, ultrices sit amet,",
     "id": "64"
@@ -521,7 +521,7 @@
   {
     "date_created": "2016-01-14T05:07:30-08:00",
     "date_paid": "2016-10-28T23:59:40-07:00",
-    "customer": "Ivor Salinas",
+    "customer_id": "1",
     "amount": 174.331,
     "comment": "luctus vulputate, nisi sem semper erat, in consectetuer",
     "id": "65"
@@ -529,7 +529,7 @@
   {
     "date_created": "2016-05-28T19:37:00-07:00",
     "date_paid": "2017-01-24T00:18:20-08:00",
-    "customer": "Matthew Drake",
+    "customer_id": "1",
     "amount": 131.327,
     "comment": "massa. Integer vitae nibh. Donec est",
     "id": "66"
@@ -537,7 +537,7 @@
   {
     "date_created": "2016-10-13T16:05:13-07:00",
     "date_paid": "2016-01-01T20:54:31-08:00",
-    "customer": "Jerry Ray",
+    "customer_id": "1",
     "amount": 149.123,
     "comment": "ornare, lectus",
     "id": "67"
@@ -545,7 +545,7 @@
   {
     "date_created": "2016-09-12T18:23:17-07:00",
     "date_paid": "2015-08-24T02:16:24-07:00",
-    "customer": "Kaseem Mcguire",
+    "customer_id": "1",
     "amount": 103.351,
     "comment": "justo nec ante.",
     "id": "68"
@@ -553,7 +553,7 @@
   {
     "date_created": "2017-06-19T18:17:32-07:00",
     "date_paid": "2015-07-13T22:57:17-07:00",
-    "customer": "Kamal Knight",
+    "customer_id": "1",
     "amount": 171.094,
     "comment": "egestas, urna justo faucibus",
     "id": "69"
@@ -561,7 +561,7 @@
   {
     "date_created": "2015-07-18T01:53:32-07:00",
     "date_paid": "2015-08-31T11:07:22-07:00",
-    "customer": "Richard Kirkland",
+    "customer_id": "1",
     "amount": 137.995,
     "comment": "tellus. Nunc lectus",
     "id": "70"
@@ -569,7 +569,7 @@
   {
     "date_created": "2017-02-27T03:25:44-08:00",
     "date_paid": "2016-01-30T06:47:11-08:00",
-    "customer": "Randall Mcmillan",
+    "customer_id": "1",
     "amount": 135.139,
     "comment": "fermentum fermentum arcu. Vestibulum ante ipsum primis in faucibus",
     "id": "71"
@@ -577,7 +577,7 @@
   {
     "date_created": "2016-09-24T14:11:40-07:00",
     "date_paid": "2016-04-25T07:52:50-07:00",
-    "customer": "Christian Jackson",
+    "customer_id": "1",
     "amount": 190.41,
     "comment": "posuere, enim",
     "id": "72"
@@ -585,7 +585,7 @@
   {
     "date_created": "2016-05-09T15:23:54-07:00",
     "date_paid": "2016-10-29T13:48:03-07:00",
-    "customer": "Reed Mullins",
+    "customer_id": "1",
     "amount": 187.58,
     "comment": "magna. Sed eu eros. Nam consequat dolor vitae dolor.",
     "id": "73"
@@ -593,7 +593,7 @@
   {
     "date_created": "2017-02-05T11:38:41-08:00",
     "date_paid": "2016-10-21T22:14:39-07:00",
-    "customer": "Logan Richard",
+    "customer_id": "1",
     "amount": 164.222,
     "comment": "est",
     "id": "74"
@@ -601,7 +601,7 @@
   {
     "date_created": "2016-10-25T14:10:21-07:00",
     "date_paid": "2017-06-13T05:31:24-07:00",
-    "customer": "Kennedy Diaz",
+    "customer_id": "1",
     "amount": 154.948,
     "comment": "Integer tincidunt aliquam arcu.",
     "id": "75"
@@ -609,7 +609,7 @@
   {
     "date_created": "2016-02-09T19:13:40-08:00",
     "date_paid": "2017-01-05T04:25:08-08:00",
-    "customer": "Barclay Mayer",
+    "customer_id": "1",
     "amount": 195.498,
     "comment": "Quisque ornare tortor at risus. Nunc ac",
     "id": "76"
@@ -617,7 +617,7 @@
   {
     "date_created": "2015-07-23T15:50:52-07:00",
     "date_paid": "2015-11-25T22:10:59-08:00",
-    "customer": "Noble Mcclain",
+    "customer_id": "1",
     "amount": 196.692,
     "comment": "elit. Nulla facilisi.",
     "id": "77"
@@ -625,7 +625,7 @@
   {
     "date_created": "2015-08-28T09:33:44-07:00",
     "date_paid": "2017-05-04T21:09:03-07:00",
-    "customer": "Avram Cole",
+    "customer_id": "1",
     "amount": 199.706,
     "comment": "vel sapien imperdiet ornare. In",
     "id": "78"
@@ -633,7 +633,7 @@
   {
     "date_created": "2017-05-06T08:15:01-07:00",
     "date_paid": "2016-10-28T03:33:37-07:00",
-    "customer": "Craig Mccullough",
+    "customer_id": "1",
     "amount": 130.797,
     "comment": "Nunc",
     "id": "79"
@@ -641,7 +641,7 @@
   {
     "date_created": "2015-09-18T14:40:09-07:00",
     "date_paid": "2017-01-14T18:28:06-08:00",
-    "customer": "Xenos Johnston",
+    "customer_id": "1",
     "amount": 103.45,
     "comment": "auctor ullamcorper, nisl arcu iaculis enim, sit amet",
     "id": "80"
@@ -649,7 +649,7 @@
   {
     "date_created": "2017-02-10T07:53:56-08:00",
     "date_paid": "2016-09-02T20:43:25-07:00",
-    "customer": "Kane Workman",
+    "customer_id": "1",
     "amount": 116.148,
     "comment": "sem eget massa.",
     "id": "81"
@@ -657,7 +657,7 @@
   {
     "date_created": "2016-10-20T03:43:02-07:00",
     "date_paid": "2016-12-30T21:35:45-08:00",
-    "customer": "Quentin Sampson",
+    "customer_id": "1",
     "amount": 107.714,
     "comment": "mattis ornare, lectus ante",
     "id": "82"
@@ -665,7 +665,7 @@
   {
     "date_created": "2017-02-07T12:56:20-08:00",
     "date_paid": "2016-09-28T15:32:12-07:00",
-    "customer": "Ulric Crosby",
+    "customer_id": "1",
     "amount": 115.856,
     "comment": "ultricies ligula. Nullam",
     "id": "83"
@@ -673,7 +673,7 @@
   {
     "date_created": "2016-02-02T09:49:28-08:00",
     "date_paid": "2015-10-28T21:45:52-07:00",
-    "customer": "Alec Vasquez",
+    "customer_id": "1",
     "amount": 139.497,
     "comment": "malesuada fringilla est. Mauris eu turpis.",
     "id": "84"
@@ -681,7 +681,7 @@
   {
     "date_created": "2016-06-01T06:58:00-07:00",
     "date_paid": "2015-09-29T20:10:22-07:00",
-    "customer": "Andrew Cantu",
+    "customer_id": "1",
     "amount": 125.85,
     "comment": "malesuada. Integer",
     "id": "85"
@@ -689,7 +689,7 @@
   {
     "date_created": "2016-04-16T09:50:57-07:00",
     "date_paid": "2017-03-13T11:50:04-07:00",
-    "customer": "Maxwell Christian",
+    "customer_id": "1",
     "amount": 117.296,
     "comment": "natoque penatibus et magnis dis",
     "id": "86"
@@ -697,7 +697,7 @@
   {
     "date_created": "2016-02-28T09:39:53-08:00",
     "date_paid": "2017-03-09T05:43:12-08:00",
-    "customer": "Hall Browning",
+    "customer_id": "1",
     "amount": 194.202,
     "comment": "nec tellus. Nunc lectus pede, ultrices a,",
     "id": "87"
@@ -705,7 +705,7 @@
   {
     "date_created": "2016-09-16T06:05:19-07:00",
     "date_paid": "2015-07-28T22:46:51-07:00",
-    "customer": "Owen Rogers",
+    "customer_id": "1",
     "amount": 128.134,
     "comment": "eu",
     "id": "88"
@@ -713,7 +713,7 @@
   {
     "date_created": "2016-09-19T20:47:48-07:00",
     "date_paid": "2016-03-17T03:37:36-07:00",
-    "customer": "Castor Ruiz",
+    "customer_id": "1",
     "amount": 172.575,
     "comment": "sapien",
     "id": "89"
@@ -721,7 +721,7 @@
   {
     "date_created": "2017-01-25T06:32:27-08:00",
     "date_paid": "2016-03-16T19:01:23-07:00",
-    "customer": "Sawyer Matthews",
+    "customer_id": "1",
     "amount": 191.553,
     "comment": "Fusce fermentum fermentum arcu. Vestibulum ante ipsum primis in faucibus",
     "id": "90"
@@ -729,7 +729,7 @@
   {
     "date_created": "2017-02-14T17:50:56-08:00",
     "date_paid": "2016-04-11T05:21:59-07:00",
-    "customer": "Gabriel Kennedy",
+    "customer_id": "1",
     "amount": 101.554,
     "comment": "gravida non, sollicitudin a,",
     "id": "91"
@@ -737,7 +737,7 @@
   {
     "date_created": "2015-12-16T01:43:31-08:00",
     "date_paid": "2015-07-13T18:38:28-07:00",
-    "customer": "Hashim Hester",
+    "customer_id": "1",
     "amount": 144.83,
     "comment": "sagittis. Duis gravida.",
     "id": "92"
@@ -745,7 +745,7 @@
   {
     "date_created": "2015-10-08T19:58:36-07:00",
     "date_paid": "2016-11-22T11:08:38-08:00",
-    "customer": "Alexander Justice",
+    "customer_id": "1",
     "amount": 191.409,
     "comment": "vehicula et,",
     "id": "93"
@@ -753,7 +753,7 @@
   {
     "date_created": "2016-08-09T12:36:27-07:00",
     "date_paid": "2017-04-17T12:50:58-07:00",
-    "customer": "Kyle Foley",
+    "customer_id": "1",
     "amount": 137.677,
     "comment": "Integer mollis.",
     "id": "94"
@@ -761,7 +761,7 @@
   {
     "date_created": "2016-05-23T03:12:41-07:00",
     "date_paid": "2015-07-24T22:39:49-07:00",
-    "customer": "Philip Bates",
+    "customer_id": "1",
     "amount": 175.744,
     "comment": "luctus ut,",
     "id": "95"
@@ -769,7 +769,7 @@
   {
     "date_created": "2016-12-27T05:12:41-08:00",
     "date_paid": "2016-09-30T08:07:58-07:00",
-    "customer": "Gavin Mcknight",
+    "customer_id": "1",
     "amount": 101.535,
     "comment": "Cum sociis natoque penatibus et magnis dis",
     "id": "96"
@@ -777,7 +777,7 @@
   {
     "date_created": "2017-02-28T09:14:41-08:00",
     "date_paid": "2017-05-28T08:26:04-07:00",
-    "customer": "Jason Sutton",
+    "customer_id": "1",
     "amount": 162.309,
     "comment": "lacinia vitae, sodales at, velit.",
     "id": "97"
@@ -785,7 +785,7 @@
   {
     "date_created": "2017-05-02T13:30:49-07:00",
     "date_paid": "2016-09-07T14:09:46-07:00",
-    "customer": "Ira Hurley",
+    "customer_id": "1",
     "amount": 122.766,
     "comment": "Nulla tempor augue ac ipsum. Phasellus vitae mauris sit",
     "id": "98"
@@ -793,7 +793,7 @@
   {
     "date_created": "2016-02-02T18:16:00-08:00",
     "date_paid": "2017-06-05T18:49:30-07:00",
-    "customer": "Acton Sampson",
+    "customer_id": "1",
     "amount": 180.261,
     "comment": "pede. Cras vulputate velit eu sem. Pellentesque ut ipsum ac",
     "id": "99"
@@ -801,7 +801,7 @@
   {
     "date_created": "2015-08-30T04:12:41-07:00",
     "date_paid": "2015-08-08T05:24:46-07:00",
-    "customer": "Ethan Jensen",
+    "customer_id": "1",
     "amount": 182.366,
     "comment": "accumsan interdum libero",
     "id": "100"

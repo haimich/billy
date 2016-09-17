@@ -5,7 +5,7 @@ import { isDev, getAppFolder } from './helpers/app'
 let mainWindow, onboardingWindow, importWindow
 
 export function openOnboardingWindow() {
-  onboardingWindow = new BrowserWindow({ width: 450, height: 320 })
+  onboardingWindow = new BrowserWindow({ width: 450, height: 338 })
   onboardingWindow.loadURL(`file://${getAppFolder()}/onboarding.html`)
 
   ipcMain.on('onboarding-finished', () => {

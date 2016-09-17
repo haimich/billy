@@ -69,7 +69,7 @@ export default class TableComponent extends React.Component<any, {}> {
           height={height}>
 
           <TableHeaderColumn isKey={true} dataField="id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="customer" width="300" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="customer_name" width="300" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="amount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Betrag')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_created" width="170" dataFormat={dateFormatter} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_paid" width="190" dataFormat={dateFormatter} dataSort={true}>{t('Zahlung erhalten am')}</TableHeaderColumn>

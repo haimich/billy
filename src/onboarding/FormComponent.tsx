@@ -57,7 +57,9 @@ export class FormComponent extends React.Component<any, {}> {
             {t('Ordner auswählen')}
             <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
           </label> &nbsp;
-          <small ref="fileLabel" className="fileLabel">{this.state.folder && this.state.folder.path}</small>
+          <small ref="fileLabel" className="fileLabel" title={this.state.folder && this.state.folder.path}>
+            {this.state.folder && this.state.folder.path}
+          </small>
           <button type="submit" className="btn btn-primary" ref="next" disabled>{t('Weiter')}</button>
         </p>
       </form>

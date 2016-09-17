@@ -1,4 +1,5 @@
 import Bill from '../models/BillModel'
+import BillDbModel from '../models/BillDbModel'
 import { get } from '../providers/settingsProvider'
 import { initDb } from '../providers/dbProvider'
 
@@ -8,10 +9,23 @@ export async function init(): Promise<any> {
   db = await initDb()
 }
 
-export function listBills(): Promise<any> {
-  return db('bills')
-    .select('*')
-    .orderBy('date_created')
+export function listBills(): Promise<BillDbModel[]> {
+  return db.raw(`
+    select
+      b.id,
+      b.date_created,
+      b.date_paid,
+      b.amount,
+      b.comment,
+      b.file_path,
+      c.name as customer_name,
+      c.telephone as customer_telephone
+
+      from bills b, customers c
+
+      where b.customer_id = c.id
+      order by b.date_created
+  `)
 }
 
 export function createBill(bill: Bill): Promise<any> {
@@ -43,7 +57,7 @@ export function updateBill(bill: Bill): Promise<any> {
   return db('bills')
     .update({
       amount: bill.amount,
-      customer: bill.customer,
+      customer_id: bill.customer_id,
       date_created: bill.date_created,
       date_paid: bill.date_paid,
       comment: bill.comment,

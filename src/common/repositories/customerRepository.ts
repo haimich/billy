@@ -9,8 +9,7 @@ export async function init(): Promise<any> {
 }
 
 export function listCustomers(): Promise<string[]> {
-  return db('bills')
-    .distinct('customer')
-    .select()
-    .then(rows => rows.map(row => row.customer).filter(el => el != null))
+  return db('customers')
+    .select('*')
+    .orderBy('name')
 }

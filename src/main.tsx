@@ -5,8 +5,15 @@ import AppComponent from './main/AppComponent'
 import { init as initDb, listBills } from './common/repositories/billsRepository'
 
 async function init() {
-  await initDb()
-  let bills = await listBills()
+  let bills
+
+  try {
+    await initDb()
+    bills = await listBills()
+  } catch (err) {
+    alert('Could not load bills ' + err.message)
+    return
+  }
 
   ReactDOM.render(
     <div>

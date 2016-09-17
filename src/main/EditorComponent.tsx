@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
+import Customer from '../common/models/CustomerModel'
 import { init as initDb, listCustomers } from '../common/repositories/customerRepository'
 import t from '../common/helpers/i18n'
 import { formatDateForInput, convertToNumber } from '../common/helpers/formatters'
@@ -12,13 +13,13 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   state: {
     id: string,
-    customer: string,
+    customer: Customer,
     amount: string,
     date_created: Date,
     date_paid?: Date,
     comment: string,
     file_path: string,
-    customerList: string[],
+    customerList: Customer[],
     isNew: boolean,
     file?: File
   }
@@ -29,26 +30,26 @@ export default class EditorComponent extends React.Component<any, {}> {
     bill?: Bill
   }
 
-  counter: number
+  dragCounter: number
 
   constructor(props) {
     super(props)
 
     this.state = this.getDefaultValues()
     this.fetchTypeaheadData()
-    this.counter = 0;
+    this.dragCounter = 0;
   }
 
   resetState() {
     this.setState(this.getDefaultValues())
     this.fetchTypeaheadData()
-    this.counter = 0;
+    this.dragCounter = 0;
   }
 
   getDefaultValues(): any {
     return {
       id: '',
-      customer: '',
+      customer: undefined,
       customerList: [],
       amount: undefined,
       date_created: new Date(),
@@ -75,7 +76,7 @@ export default class EditorComponent extends React.Component<any, {}> {
 
     const bill = new Bill(
       this.state.id,
-      this.state.customer,
+      this.state.customer.id,
       convertToNumber(this.state.amount),
       this.state.date_created,
       this.state.date_paid,
@@ -103,13 +104,13 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   onEnter() {
-    this.counter++
+    this.dragCounter++
     ReactDOM.findDOMNode(this).classList.add('busy')
   }
 
   onLeave() {
-    this.counter--
-    if (this.counter === 0) {
+    this.dragCounter--
+    if (this.dragCounter === 0) {
       ReactDOM.findDOMNode(this).classList.remove('busy')
     }
   }
@@ -148,6 +149,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     allowNew={false}
                     onChange={selected => this.setState({customer: selected})}
                     selected={[this.state.customer]}
+                    labelKey={'name'}
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
                   />
