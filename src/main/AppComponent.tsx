@@ -96,7 +96,6 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   select(row: Bill) {
-    console.log(row)
     this.setState({
       selectedBill: row
     })

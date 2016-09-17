@@ -40,9 +40,8 @@ export default class TableComponent extends React.Component<any, {}> {
       noDataText: t('Keine Einträge'),
       handleConfirmDeleteRow: this.handleConfirm.bind(this)
     }
-    const selectMode: SelectRowMode = 'radio'
-    const selectRowProp = {
-      mode: selectMode,
+    const selectRowProp: any = {
+      mode: 'radio',
       clickToSelect: true,
       bgColor: '#d9edf7',
       onSelect: this.onSelectRow.bind(this),

@@ -34,27 +34,22 @@ export default class EditorComponent extends React.Component<any, {}> {
   constructor(props) {
     super(props)
 
-    this.state = {
-      id: '',
-      customer: '',
-      amount: '',
-      date_created: new Date(),
-      date_paid: undefined,
-      comment: '',
-      file_path: '',
-      customerList: [],
-      isNew: true,
-      file: undefined
-    };
-
+    this.state = this.getDefaultValues()
     this.fetchTypeaheadData()
     this.counter = 0;
   }
 
   resetState() {
-    this.setState({
+    this.setState(this.getDefaultValues())
+    this.fetchTypeaheadData()
+    this.counter = 0;
+  }
+
+  getDefaultValues(): any {
+    return {
       id: '',
       customer: '',
+      customerList: [],
       amount: undefined,
       date_created: new Date(),
       date_paid: undefined,
@@ -62,7 +57,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       file_path: '',
       isNew: true,
       file: undefined
-    })
+    }
   }
 
   async fetchTypeaheadData() {
@@ -71,7 +66,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       let customerList = await listCustomers()
       this.setState({ customerList })
     } catch (err) {
-      console.error('Could not fetch typeahead data', err)
+      console.warn('Could not fetch typeahead data', err)
     }
   }
 
@@ -94,7 +89,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       this.props.update(bill)
     }
 
-    // this.resetState()
+    this.resetState()
   }
 
   getFile(files) {
@@ -114,7 +109,7 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   onLeave() {
     this.counter--
-    if (this.counter == 0) {
+    if (this.counter === 0) {
       ReactDOM.findDOMNode(this).classList.remove('busy')
     }
   }
@@ -125,33 +120,11 @@ export default class EditorComponent extends React.Component<any, {}> {
     this.onLeave()
   }
 
-  onFileinputChange(event) {
-    this.setState({ file: this.getFile(event.target.files) })
-  }
-
   openFile(event) {
     event.preventDefault()
     if (this.state.file != null) {
       open(this.state.file.path)
     }
-  }
-
-  handleDateCreatedChanged(newDate) {
-    this.setState({
-      date_created: newDate
-    })
-  }
-
-  handleDatePaidChanged(newDate) {
-    this.setState({
-      date_paid: newDate
-    })
-  }
-
-  handleTypeaheadChange(selected) {
-    this.setState({
-      customer: selected
-    })
   }
 
   render() {
@@ -171,10 +144,10 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <label htmlFor="customer" className="col-sm-4 control-label">{t('Kunde')}</label>
                 <div className="col-sm-8">
                   <Typeahead
-                    value={this.state.customer}
                     options={this.state.customerList}
                     allowNew={false}
-                    onChange={this.handleTypeaheadChange.bind(this)}
+                    onChange={selected => this.setState({customer: selected})}
+                    selected={[this.state.customer]}
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
                   />
@@ -188,7 +161,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  onChange={this.handleDateCreatedChanged.bind(this)}
+                  onChange={newDate => this.setState({date_created: newDate})}
                   inputProps={{ required: 'required' }}
                   />
               </div>
@@ -212,7 +185,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  onChange={this.handleDatePaidChanged.bind(this)}
+                  onChange={newDate => this.setState({date_paid: newDate})}
                   />
               </div>
               <div className="form-group">
@@ -225,7 +198,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-offset-4 col-sm-8">
                   <label className="btn btn-default btn-sm">
                     {t('Datei auswählen')}
-                    <input type="file" className="form-control hidden" onChange={this.onFileinputChange.bind(this)} />
+                    <input type="file" className="form-control hidden" onChange={(event: any) => this.setState({file: this.getFile(event.target.files)})} />
                   </label> &nbsp;
                   <small className="fileview" onClick={this.openFile.bind(this)}>{this.state.file && this.state.file.name}</small>
                 </div>
@@ -271,22 +244,17 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   componentWillReceiveProps(nextProps) {
-    let bill;
+    let bill
+
     if (nextProps.bill) {
+      // Edit existing bill
       bill = Object.assign(nextProps.bill)
       bill.amount = String(bill.amount).replace('.', ',')
     } else {
-      bill = {
-        id: '',
-        customer: '',
-        amount: '',
-        date_created: new Date(),
-        date_paid: undefined,
-        comment: '',
-        file_path: '',
-        file: undefined
-      }
+      // Create new bill
+      bill = this.getDefaultValues()
     }
+
     this.setState(Object.assign({ isNew: ! nextProps.bill }, bill))
   }
 }
