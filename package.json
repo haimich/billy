@@ -23,6 +23,9 @@
     "url": "git+https://github.com/haimich/billy.git"
   },
   "keywords": [],
+  "engines": {
+    "node": ">= 6.0.0"
+  },
   "author": "",
   "license": "MIT",
   "bugs": {
