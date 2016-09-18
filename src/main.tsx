@@ -4,7 +4,8 @@ import * as ReactDOM from 'react-dom'
 import AppComponent from './main/AppComponent'
 import { initDb } from './common/providers/dbProvider'
 import { get } from './common/providers/settingsProvider'
-import { init as initRepo, listBills } from './common/repositories/billsRepository'
+import { init as initBillsRepo, listBills } from './common/repositories/billsRepository'
+import { init as initCustomersRepo } from './common/repositories/customersRepository'
 
 async function init() {
   let bills
@@ -12,7 +13,8 @@ async function init() {
   try {
     const knexConfig = await get('knex')
     const knexInstance = await initDb(knexConfig)
-    initRepo(knexInstance)
+    initBillsRepo(knexInstance)
+    initCustomersRepo(knexInstance)
 
     bills = await listBills()
   } catch (err) {
