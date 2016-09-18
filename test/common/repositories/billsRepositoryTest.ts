@@ -1,5 +1,6 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
-import { init, createBill, listBills, deleteBillsByInvoiceIds, deleteBillsByInvoiceIdPattern, getBillByInvoiceId } from '../../../src/common/repositories/billsRepository'
+import { init, listBills, getBillByInvoiceId } from '../../../src/common/repositories/billsRepository' 
+import { createBill, deleteBillsByInvoiceIds, deleteBillsByInvoiceIdPattern, updateBill } from '../../../src/common/repositories/billsRepository'
 import * as chai from 'chai'
 import * as moment from 'moment'
 
@@ -13,7 +14,7 @@ before(async () => {
   await init(knexInstance)
 })
 
-after(async () => {
+afterEach(async () => {
   await deleteBillsByInvoiceIdPattern(PREFIX + '%')
 })
 
@@ -34,10 +35,40 @@ describe('createBill', () => {
     expect(bill.invoice_id).to.equal(PREFIX + '123')
     expect(bill.amount).to.equal(123.45)
     expect(bill.amount).to.equal(123.45)
-    expect(bill.customer_id).to.equal(1)
+    expect(bill.customer.id).to.equal(1)
     expect(bill.date_created).to.equal(testDate)
     expect(bill.date_paid).to.equal(testDate)
     expect(bill.file_path).to.equal('/tmp/test.md')
+  })
+})
+
+describe('updateBill', () => {
+  it('should update the bill', async () => {
+    const testDate = moment().toISOString()
+
+    await createBill({
+      invoice_id: PREFIX + '123',
+      amount: 123.45,
+      comment: 'bla',
+      customer_id: 1,
+      date_created: testDate
+    })
+
+    await updateBill({
+      invoice_id: PREFIX + '123',
+      amount: 99,
+      comment: 'bla foo',
+      customer_id: 2,
+      date_created: testDate,
+      date_paid: testDate
+    })
+
+    const updatedBill = await getBillByInvoiceId(PREFIX + '123')
+    
+    expect(updatedBill.amount).to.equal(99)
+    expect(updatedBill.amount).to.equal(99)
+    expect(updatedBill.customer.id).to.equal(2)
+    expect(updatedBill.date_paid).to.equal(testDate)
   })
 })
 
@@ -64,5 +95,34 @@ describe('getBillByInvoiceId', () => {
 
     expect(result.invoice_id).to.equal(PREFIX + '456')
     expect(result.amount).to.equal(123.45)
+  })
+})
+
+describe('deleteBillsByInvoiceIds', () => {
+  it('should delete the bills that match the invoice ids', async () => {
+    const bill1 = await createBill({
+      invoice_id: PREFIX + '123',
+      amount: 123.45,
+      customer_id: 1,
+      date_created: moment().toISOString()
+    })
+    const bill2 = await createBill({
+      invoice_id: PREFIX + '456',
+      amount: 123.45,
+      customer_id: 1,
+      date_created: moment().toISOString()
+    })
+    const result = await deleteBillsByInvoiceIds([PREFIX + '123', PREFIX + '456'])
+
+    await createBill({
+      invoice_id: PREFIX + '789',
+      amount: 123.45,
+      customer_id: 1,
+      date_created: moment().toISOString()
+    })
+
+    expect(await getBillByInvoiceId(PREFIX + '123')).to.be.undefined
+    expect(await getBillByInvoiceId(PREFIX + '456')).to.be.undefined
+    expect(await getBillByInvoiceId(PREFIX + '789')).to.be.ok
   })
 })

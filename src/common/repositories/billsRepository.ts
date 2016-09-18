@@ -8,7 +8,7 @@ export async function init(knexInstance): Promise<any> {
   db = knexInstance
 }
 
-export function createBill(bill: Bill): Promise<Bill> {
+export function createBill(bill: Bill): Promise<BillDbModel> {
   return db('bills')
     .insert(bill)
     .then((rows) => {
@@ -17,15 +17,83 @@ export function createBill(bill: Bill): Promise<Bill> {
 }
 
 function getBillById(id: number): Promise<BillDbModel> {
-  return db('bills')
-    .where('id', id)
-    .first()
+  return db.raw(`
+    select
+      b.invoice_id,
+      b.date_created,
+      b.date_paid,
+      b.amount,
+      b.comment,
+      b.file_path,
+      c.id as customer_id,
+      c.name as customer_name,
+      c.telephone as customer_telephone
+
+      from bills b, customers c
+
+      where b.customer_id = c.id
+      and   b.id = ?
+  `, [id])
+    .then((rows) => {
+      if (rows == null || rows.length !== 1) {
+        return
+      }
+
+      return {
+        invoice_id: rows[0].invoice_id,
+        amount: rows[0].amount,
+        date_created: rows[0].date_created,
+        date_paid: rows[0].date_paid,
+        comment: rows[0].comment,
+        file_path: rows[0].file_path,
+        customer_name: rows[0].customer_name,
+        customer: {
+          id: rows[0].customer_id,
+          name: rows[0].customer_name,
+          telephone: rows[0].customer_telephone
+        }
+      }
+    })
 }
 
 export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
-  return db('bills')
-    .where('invoice_id', invoiceId)
-    .first()
+  return db.raw(`
+    select
+      b.invoice_id,
+      b.date_created,
+      b.date_paid,
+      b.amount,
+      b.comment,
+      b.file_path,
+      c.id as customer_id,
+      c.name as customer_name,
+      c.telephone as customer_telephone
+
+      from bills b, customers c
+
+      where b.customer_id = c.id
+      and   b.invoice_id = ?
+  `, [invoiceId])
+    .then((rows) => {
+      if (rows == null || rows.length !== 1) {
+        return
+      }
+
+      return {
+        invoice_id: rows[0].invoice_id,
+        amount: rows[0].amount,
+        date_created: rows[0].date_created,
+        date_paid: rows[0].date_paid,
+        comment: rows[0].comment,
+        file_path: rows[0].file_path,
+        customer_name: rows[0].customer_name,
+        customer: {
+          id: rows[0].customer_id,
+          name: rows[0].customer_name,
+          telephone: rows[0].customer_telephone
+        }
+      }
+    })
 }
 
 export function listBills(): Promise<BillDbModel[]> {
