@@ -39,20 +39,13 @@ function getBillById(id: number): Promise<BillDbModel> {
         return
       }
 
-      return {
-        invoice_id: rows[0].invoice_id,
-        amount: rows[0].amount,
-        date_created: rows[0].date_created,
-        date_paid: rows[0].date_paid,
-        comment: rows[0].comment,
-        file_path: rows[0].file_path,
-        customer_name: rows[0].customer_name,
+      return Object.assign(rows[0], {
         customer: {
           id: rows[0].customer_id,
           name: rows[0].customer_name,
           telephone: rows[0].customer_telephone
         }
-      }
+      })
     })
 }
 
@@ -79,20 +72,13 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
         return
       }
 
-      return {
-        invoice_id: rows[0].invoice_id,
-        amount: rows[0].amount,
-        date_created: rows[0].date_created,
-        date_paid: rows[0].date_paid,
-        comment: rows[0].comment,
-        file_path: rows[0].file_path,
-        customer_name: rows[0].customer_name,
+      return Object.assign(rows[0], {
         customer: {
           id: rows[0].customer_id,
           name: rows[0].customer_name,
           telephone: rows[0].customer_telephone
         }
-      }
+      })
     })
 }
 
@@ -115,20 +101,13 @@ export function listBills(): Promise<BillDbModel[]> {
       order by b.date_created
   `).then((rows) => {
       return rows.map(row => {
-        return {
-          invoice_id: row.invoice_id,
-          amount: row.amount,
-          date_created: row.date_created,
-          date_paid: row.date_paid,
-          comment: row.comment,
-          file_path: row.file_path,
-          customer_name: row.customer_name,
+        return Object.assign(row, {
           customer: {
-            id: row.customer_id,
-            name: row.customer_name,
-            telephone: row.customer_telephone
+            id: rows[0].customer_id,
+            name: rows[0].customer_name,
+            telephone: rows[0].customer_telephone
           }
-        }
+        })
       })
     })
 }
