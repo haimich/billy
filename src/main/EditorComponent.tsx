@@ -79,9 +79,9 @@ export default class EditorComponent extends React.Component<any, {}> {
   onSave(event) {
     event.preventDefault()
 
-    const bill = {
+    const bill: Bill = {
       invoice_id: this.state.invoice_id,
-      customer_id: this.state.selectedCustomer![0].id,
+      customer_id: this.state.selectedCustomer![0].id!,
       amount: convertToNumber(this.state.amount),
       date_created: this.state.date_created,
       date_paid: this.state.date_paid,

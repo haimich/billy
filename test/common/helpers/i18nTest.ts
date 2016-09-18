@@ -4,6 +4,7 @@ import * as chai from 'chai'
 let expect = chai.expect
 
 describe('i18n', () => {
+
   it('should return the given string', () => {
     const result = t('Rechnung')
     expect(result).to.equal('Rechnung')
@@ -18,4 +19,5 @@ describe('i18n', () => {
     const result = t('Rechnung', { count: 2 })
     expect(result).to.equal('Rechnungen')
   })
+  
 })
