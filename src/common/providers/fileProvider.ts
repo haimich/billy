@@ -12,26 +12,26 @@ export function open(fileName) {
   openWithOs(fileName)
 }
 
-export function copyToAppDir(billId: string, inputFilePath: string): Promise<string> {
-  return get('appDir')
-    .then((appDir) => {
-      const targetFolder = `${appDir}${BILL_FOLDER_SUFFIX}/${billId}`
-      return ensureFolderExists(targetFolder)
-    })
-    .then((targetFolder) => {
-      const filename = posix.basename(inputFilePath)
-      const targetFilePath = `${targetFolder}/${filename}`
+export async function copyToAppDir(billId: string, inputFilePath: string): Promise<string> {
+  const appDir = await get('appDir')
+  const targetFolder = await ensureFolderExists(`${appDir}${BILL_FOLDER_SUFFIX}/${billId}`)
 
-      return new Promise((resolve, reject) => {
-        ncp(inputFilePath, targetFilePath, (err) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(targetFilePath)
-          }
-        })
-      })
+  const filename = posix.basename(inputFilePath)
+  const targetFilePath = `${targetFolder}/${filename}`
+
+  return await copyRecursive(inputFilePath, targetFilePath)
+}
+
+function copyRecursive(inputFilePath, targetFilePath): Promise<string> {
+  return new Promise((resolve, reject) => {
+    ncp(inputFilePath, targetFilePath, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(targetFilePath)
+      }
     })
+  })
 }
 
 /**
