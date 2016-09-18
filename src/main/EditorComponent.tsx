@@ -5,7 +5,7 @@ import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { init as initDb, listCustomers } from '../common/repositories/customerRepository'
 import t from '../common/helpers/i18n'
-import { formatDateForInput, convertToNumber } from '../common/helpers/formatters'
+import { convertToNumber } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
