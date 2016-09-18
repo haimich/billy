@@ -1,5 +1,5 @@
 interface Bill {
-  id: string;
+  id?: string;
   customer_id: number;
   amount: number;
   date_created: Date;

@@ -10,6 +10,20 @@ export async function init(): Promise<any> {
   db = await initDb()
 }
 
+export function createBill(bill: Bill): Promise<number> {
+  return db('bills')
+    .insert(bill)
+    .then(rows => rows[0])
+}
+
+export function getBill(id: number): Promise<BillDbModel> {
+  return db('bills')
+    .where('id', '=', `'id'`)
+    .then((rows) => {
+      debugger
+    })
+}
+
 export function listBills(): Promise<BillDbModel[]> {
   return db.raw(`
     select
@@ -44,20 +58,6 @@ export function listBills(): Promise<BillDbModel[]> {
           }
         }
       })
-    })
-}
-
-export function createBill(bill: Bill): Promise<number> {
-  return db('bills')
-    .insert(bill)
-    .then(rows => rows[0])
-}
-
-export function getBill(id: number): Promise<BillDbModel> {
-  return db('bills')
-    .where('id', '=', `'id'`)
-    .then((rows) => {
-      debugger
     })
 }
 

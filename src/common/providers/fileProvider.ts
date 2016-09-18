@@ -49,6 +49,9 @@ export function ensureFolderExists(path: string): Promise<string> {
   })
 }
 
+/**
+ * Checks if a file or folder exists
+ */
 export function exists(path: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     stat(path, (err, stats) => {
