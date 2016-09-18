@@ -15,8 +15,8 @@ const Typeahead = require('react-bootstrap-typeahead').default
 interface State {
   invoice_id: string;
   amount?: string;
-  date_created: string;
-  date_paid?: string;
+  date_created: Date;
+  date_paid?: Date;
   comment: string;
   file_path: string;
   selectedCustomer?: Customer[];
@@ -56,7 +56,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     return {
       invoice_id: '',
       amount: '',
-      date_created: moment().toISOString(),
+      date_created: new Date(),
       date_paid: undefined,
       comment: '',
       file_path: '',
@@ -83,10 +83,13 @@ export default class EditorComponent extends React.Component<any, {}> {
       invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer![0].id!,
       amount: convertToNumber(this.state.amount),
-      date_created: this.state.date_created,
-      date_paid: this.state.date_paid,
+      date_created: moment(this.state.date_created).toISOString(),
       comment: this.state.comment,
       file_path: this.state.file && this.state.file.path
+    }
+
+    if (this.state.date_paid != null) {
+      bill.date_paid = moment(this.state.date_paid).toISOString()      
     }
 
     if (this.state.isNew) {
@@ -277,6 +280,11 @@ export default class EditorComponent extends React.Component<any, {}> {
       newState = Object.assign(bill)
       newState.amount = String(newState.amount).replace('.', ',')
       newState.selectedCustomer = [bill.customer]
+      newState.date_created = moment(newState.date_created).toDate()
+
+      if (newState.date_paid != null) {
+        newState.date_paid = moment(newState.date_paid).toDate()
+      }
     } else {
       newState = this.getDefaultState()
     }
