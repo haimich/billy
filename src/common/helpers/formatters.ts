@@ -8,6 +8,18 @@ export function dateFormatter(value: string): string {
   return moment(value).format('DD.MM.YYYY')
 }
 
+export function dateToString(date: Date | undefined): string | undefined {
+  if (date != null) {
+    return moment(date).toISOString()
+  }
+}
+
+export function stringToDate(date: string | undefined): Date | undefined {
+  if (date != null) {
+    return moment(date).toDate()
+  }
+}
+
 export function currencyFormatter(value: number): string {
   return value.toLocaleString('de-DE', {
     style: 'currency',

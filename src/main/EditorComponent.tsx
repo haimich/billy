@@ -5,9 +5,8 @@ import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { listCustomers } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
-import { convertToNumber } from '../common/helpers/formatters'
+import { convertToNumber, dateToString, stringToDate } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
-import * as moment from 'moment'
 
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
@@ -83,13 +82,10 @@ export default class EditorComponent extends React.Component<any, {}> {
       invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer![0].id!,
       amount: convertToNumber(this.state.amount),
-      date_created: moment(this.state.date_created).toISOString(),
+      date_created: dateToString(this.state.date_created)!,
+      date_paid: dateToString(this.state.date_paid),
       comment: this.state.comment,
       file_path: this.state.file && this.state.file.path
-    }
-
-    if (this.state.date_paid != null) {
-      bill.date_paid = moment(this.state.date_paid).toISOString()      
     }
 
     if (this.state.isNew) {
@@ -280,11 +276,8 @@ export default class EditorComponent extends React.Component<any, {}> {
       newState = Object.assign(bill)
       newState.amount = String(newState.amount).replace('.', ',')
       newState.selectedCustomer = [bill.customer]
-      newState.date_created = moment(newState.date_created).toDate()
-
-      if (newState.date_paid != null) {
-        newState.date_paid = moment(newState.date_paid).toDate()
-      }
+      newState.date_created = stringToDate(bill.date_created)!
+      newState.date_paid = stringToDate(bill.date_paid)!
     } else {
       newState = this.getDefaultState()
     }
