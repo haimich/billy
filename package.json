@@ -2,7 +2,7 @@
   "name": "billy",
   "version": "0.0.1",
   "description": "A billing tool for Cristina.",
-  "main": "./build",
+  "main": "./build/src/index.js",
   "scripts": {
     "setup": "npm run rebuild",
     "build": "npm run clean && tsc && npm run copy-html",
@@ -14,7 +14,7 @@
     "watch:test": "chokidar -c 'npm test' 'src/**/*.ts' 'test/**/*.ts'",
     "update-dependencies": "ncu -u",
     "watch": "tsc -w",
-    "copy-html": "cp static/*.html build",
+    "copy-html": "cp static/*.html build/src",
     "rebuild": "electron-rebuild --version 1.3.4",
     "publish:mac": "npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.3.4 --out=output --overwrite --icon=static/images/billy.icns"
   },

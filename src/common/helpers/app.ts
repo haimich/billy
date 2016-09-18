@@ -5,5 +5,5 @@ export function isDev(): boolean {
 }
 
 export function getAppFolder(): string {
-  return path.join(__dirname, '../../')
+  return path.join(__dirname, '../../../')
 }

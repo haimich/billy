@@ -6,7 +6,7 @@ let mainWindow, onboardingWindow, importWindow
 
 export function openOnboardingWindow() {
   onboardingWindow = new BrowserWindow({ width: 450, height: 338 })
-  onboardingWindow.loadURL(`file://${getAppFolder()}/onboarding.html`)
+  onboardingWindow.loadURL(`file://${getAppFolder()}/src/onboarding.html`)
 
   ipcMain.on('onboarding-finished', () => {
     openMainWindow()
@@ -20,7 +20,7 @@ export function openOnboardingWindow() {
 
 export function openMainWindow() {
   mainWindow = new BrowserWindow({ width: 1200, height: 800 })
-  mainWindow.loadURL(`file://${getAppFolder()}/main.html`)
+  mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
 
   if (isDev) {
     mainWindow.webContents.openDevTools()
@@ -33,7 +33,7 @@ export function openMainWindow() {
 
 export function openImportWindow() {
   importWindow = new BrowserWindow({ width: 380, height: 260 })
-  importWindow.loadURL(`file://${getAppFolder()}/import.html`)
+  importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
 
   ipcMain.on('import-finished', () => {
     importWindow.close()
