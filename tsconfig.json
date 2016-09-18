@@ -1,20 +1,19 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "target": "es6",
-        "jsx": "react",
-        "rootDir": "src",
-        "outDir": "build",
-        "noImplicitAny": false,
-        "strictNullChecks": true,
-        "noImplicitThis": true,
-        "sourceMap": false
-    },
-    "exclude": [
-        "node_modules",
-        "static",
-        "sql",
-        "concept"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "jsx": "react",
+    "outDir": "build",
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "sourceMap": false
+  },
+  "exclude": [
+    "node_modules",
+    "static",
+    "sql",
+    "concept"
+  ]
 }
