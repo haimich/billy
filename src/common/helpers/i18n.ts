@@ -8,7 +8,11 @@ const messages = {
   'Datenbank Fehler duplicate id': 'Es existiert bereits eine Rechnung mit dieser Rechnungsnummer',
 }
 
-export default function t(msgid, options: any = {}) {
+interface Options {
+  count?: number;
+}
+
+export default function t(msgid, options: Options = {}) {
   if ('count' in options && options.count != 1) {
     msgid += '_plural'
   }
