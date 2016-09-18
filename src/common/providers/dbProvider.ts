@@ -8,7 +8,6 @@ export async function setupDb(): Promise<any> {
   await db.seed.run()
 }
 
-export async function initDb(): Promise<any> {
-  const knexConfig = await get('knex')
+export async function initDb(knexConfig: knex.Config): Promise<any> {
   return await knex(knexConfig)
 }

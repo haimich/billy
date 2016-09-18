@@ -1,12 +1,11 @@
 import Bill from '../models/BillModel'
-import { get } from '../providers/settingsProvider'
-import { initDb } from '../providers/dbProvider'
 
 let db
 
-export async function init(): Promise<any> {
-  db = await initDb()
+export async function init(knexInstance): Promise<any> {
+  db = knexInstance
 }
+
 
 export function listCustomers(): Promise<string[]> {
   return db('customers')

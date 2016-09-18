@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
-import { init as initDb, listCustomers } from '../common/repositories/customerRepository'
+import { listCustomers } from '../common/repositories/customerRepository'
 import t from '../common/helpers/i18n'
 import { convertToNumber } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
@@ -67,7 +67,6 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   async fetchTypeaheadData() {
     try {
-      await initDb()
       let customerList = await listCustomers()
       this.setState({ customerList })
     } catch (err) {

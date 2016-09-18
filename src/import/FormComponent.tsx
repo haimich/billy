@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import t from '../common/helpers/i18n'
 import { importCsv } from '../common/providers/importProvider'
-import { init as initDb, importBills, deleteAll } from '../common/repositories/billsRepository'
+import { importBills, deleteAll } from '../common/repositories/billsRepository'
 import SummaryComponent from './SummaryComponent'
 import Bill from '../common/models/BillModel'
 
@@ -60,8 +60,6 @@ export default class FormComponent extends React.Component<any, {}> {
       try {
         const bills = await importCsv(this.state.file.path)
         
-        await initDb()
-
         if (this.state.shouldDelete) {
           await deleteAll()
         }

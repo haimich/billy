@@ -1,13 +1,11 @@
 import Customer from '../models/CustomerModel'
 import Bill from '../models/BillModel'
 import BillDbModel from '../models/BillDbModel'
-import { get } from '../providers/settingsProvider'
-import { initDb } from '../providers/dbProvider'
 
 let db
 
-export async function init(): Promise<any> {
-  db = await initDb()
+export async function init(knexInstance): Promise<any> {
+  db = knexInstance
 }
 
 export function createBill(bill: Bill): Promise<number> {
@@ -98,6 +96,12 @@ export function deleteBillsByIds(billIds): Promise<any> {
   return db('bills')
     .delete()
     .whereIn('id', billIds)
+}
+
+export function deleteBillsByIdPattern(idPattern: string): Promise<any> {
+  return db('bills')
+    .delete()
+    .where('id', 'like', idPattern)
 }
 
 export function deleteAll(): Promise<any> {

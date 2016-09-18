@@ -39,11 +39,6 @@ export default class AppComponent extends React.Component<any, {}> {
   async save(bill: Bill) {
     let createdBill
 
-    if (bill.id == null) {
-      this.handleError(t('Das Feld "Rechnungs-ID" muss einen Wert haben'))
-      return
-    }
-
     try {
       if (bill.file_path != null) {
         const newFilePath = await copyToAppDir(bill.id, bill.file_path)

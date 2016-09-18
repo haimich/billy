@@ -27,4 +27,9 @@ describe('dateFormatter', () => {
   })
 })
 
-//currencyFormatter is not tested because it produces different results in Electron and Mocha environment
+describe('currencyFormatter', () => {
+  it('should convert a string to a formatted date', () => {
+    const result = currencyFormatter(123.45)
+    expect(result).to.equal('123,45 €')
+  })
+})
