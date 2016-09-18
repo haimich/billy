@@ -11,7 +11,7 @@ async function init() {
     await initDb()
     bills = await listBills()
   } catch (err) {
-    alert('Could not load bills ' + err.message)
+    alert('Could not load bills: ' + err.message)
     return
   }
 
