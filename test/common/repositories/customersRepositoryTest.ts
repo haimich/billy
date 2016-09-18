@@ -1,5 +1,5 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
-import { init, createCustomer, listCustomers, deleteCustomerByNamePattern } from '../../../src/common/repositories/customerRepository'
+import { init, createCustomer, listCustomers, deleteCustomerByNamePattern } from '../../../src/common/repositories/customersRepository'
 import * as chai from 'chai'
 
 const knexConfig = require('../../../../knexfile')
@@ -20,10 +20,22 @@ describe('customersRepository', () => {
 
   describe('createCustomer', () => {
     it('should return the created customer', async () => {
-      const customer = createCustomer({
+      const customer = await createCustomer({
         name: 'Hans Grohe',
         'telephone': '123/456 789'
       })
+
+      expect(customer.name).to.equal('Hans Grohe')
+      expect(customer.telephone).to.equal('123/456 789')
+    })
+  })
+
+  describe('listCustomers', () => {
+    it('should return all customers sorted by name', async () => {
+      const customers = await listCustomers()
+
+      expect(customers.length).to.be.above(1)
+      expect(customers[0].name <= customers[1].name).to.be.true
     })
   })
 

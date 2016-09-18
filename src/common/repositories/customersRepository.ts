@@ -20,7 +20,7 @@ function getCustomerById(id: number): Promise<Customer> {
     .first()
 }
 
-export function listCustomers(): Promise<string[]> {
+export function listCustomers(): Promise<Customer[]> {
   return db('customers')
     .select('*')
     .orderBy('name')
