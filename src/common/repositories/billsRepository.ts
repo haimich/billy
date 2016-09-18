@@ -22,7 +22,7 @@ function getBillById(id: number): Promise<BillDbModel> {
     .first()
 }
 
-export function getBillByInvoiceId(invoiceId: number): Promise<BillDbModel> {
+export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
   return db('bills')
     .where('invoice_id', invoiceId)
     .first()
