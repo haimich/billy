@@ -1,7 +1,7 @@
 import { isMac, getPlatform } from '../helpers/platform'
 import { get } from './settingsProvider'
-import * as child_process from 'child_process'
 import * as mkdirp from 'mkdirp'
+const openWithOs = require('open')
 import { stat } from 'fs'
 import { ncp } from 'ncp'
 import { posix } from 'path'
@@ -9,17 +9,7 @@ import { posix } from 'path'
 export const BILL_FOLDER_SUFFIX = '/files'
 
 export function open(fileName) {
-  if (isMac()) {
-    child_process.exec(`open "${fileName}"`, (err, stdout, stderr) => {
-      if (err) {
-        console.log(err)
-      }
-
-      console.log('exec: ', stdout, stderr)
-    })
-  } else {
-    console.warn('File open is not implemented on your platform: ' + getPlatform())
-  }
+  openWithOs(fileName)
 }
 
 export function copyToAppDir(billId: string, inputFilePath: string): Promise<string> {
