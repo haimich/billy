@@ -5,14 +5,16 @@ import BillDbModel from '../common/models/BillDbModel'
 import { dateFormatter, currencyFormatter } from '../common/helpers/formatters'
 import t from '../common/helpers/i18n'
 
+interface Props {
+  delete: (rowIds: String[]) => void;
+  select: (row: BillDbModel) => void;
+  bills: BillDbModel[];
+  selectedId?: string;
+}
+
 export default class TableComponent extends React.Component<any, {}> {
 
-  props: {
-    delete: (rowIds: String[]) => void,
-    select: (row: BillDbModel) => void,
-    bills: BillDbModel[],
-    selectedId?: string
-  }
+  props: Props
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
     if (isSelected) {
@@ -85,10 +87,6 @@ export default class TableComponent extends React.Component<any, {}> {
     const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
     lastRow.scrollIntoView()
   }
-
-  // componentDidUpdate() {
-  //   this.scrollDown()
-  // }
 
   componentDidMount() {
     this.scrollDown()

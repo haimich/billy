@@ -28,28 +28,37 @@ export function listBills(): Promise<BillDbModel[]> {
       where b.customer_id = c.id
       order by b.date_created
   `).then((rows) => {
-    return rows.map(row => {
-      return new BillDbModel(
-        row.id,
-        row.amount,
-        row.date_created,
-        row.date_paid,
-        row.comment,
-        row.file_path,
-        row.customer_name,
-        new Customer(
-          row.customer_id,
-          row.customer_name,
-          row.customer_telephone
-        )
-      )
+      return rows.map(row => {
+        return {
+          id: row.id,
+          amount: row.amount,
+          date_created: row.date_created,
+          date_paid: row.date_paid,
+          comment: row.comment,
+          file_path: row.file_path,
+          customer_name: row.customer_name,
+          customer: {
+            id: row.customer_id,
+            name: row.customer_name,
+            telephone: row.customer_telephone
+          }
+        }
+      })
     })
-  })
 }
 
-export function createBill(bill: Bill): Promise<any> {
+export function createBill(bill: Bill): Promise<number> {
   return db('bills')
     .insert(bill)
+    .then(rows => rows[0])
+}
+
+export function getBill(id: number): Promise<BillDbModel> {
+  return db('bills')
+    .where('id', '=', `'id'`)
+    .then((rows) => {
+      debugger
+    })
 }
 
 export async function importBills(bills): Promise<any> {

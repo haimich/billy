@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createBill, updateBill, deleteBillsByIds } from '../common/repositories/billsRepository'
+import { getBill, createBill, updateBill, deleteBillsByIds } from '../common/repositories/billsRepository'
 import { copyToAppDir } from '../common/providers/fileProvider'
 import Bill from '../common/models/BillModel'
+import BillDbModel from '../common/models/BillDbModel'
 import TableComponent from './TableComponent'
 import EditorComponent from './EditorComponent'
 import * as NotificationSystem from 'react-notification-system'
@@ -10,12 +11,14 @@ import t from '../common/helpers/i18n'
 
 let notifications
 
+interface State {
+  bills: BillDbModel[];
+  selectedBill?: BillDbModel;
+}
+
 export default class AppComponent extends React.Component<any, {}> {
 
-  state: {
-    bills: Bill[],
-    selectedBill?: Bill
-  }
+  state: State
 
   refs: {
     notificationSystem: HTMLInputElement
@@ -34,20 +37,24 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   async save(bill: Bill) {
+    let createdBill
+
     try {
       if (bill.file_path != null) {
         const newFilePath = await copyToAppDir(bill.id, bill.file_path)
         bill.file_path = newFilePath
       }
 
-      await createBill(bill)
+      // let createdId = await createBill(bill)
+      createdBill = await getBill(110)
     } catch (err) {
       this.handleError(err)
+      return
     }
 
     this.setState({
       selectedBill: undefined,
-      bills: [ bill ].concat(this.state.bills)
+      bills: [ createdBill ].concat(this.state.bills)
     })
   }
 

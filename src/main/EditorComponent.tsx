@@ -17,7 +17,7 @@ interface State {
   date_paid?: Date;
   comment: string;
   file_path: string;
-  customer?: Customer;
+  selectedCustomer?: Customer[];
   customerList: Customer[];
   isNew: boolean;
   file?: File;
@@ -26,7 +26,7 @@ interface State {
 interface Props {
   update: (row: Bill) => void;
   save: (row: Bill) => void;
-  bill?: Bill;
+  bill?: BillDbModel;
 }
 
 export default class EditorComponent extends React.Component<any, {}> {
@@ -58,7 +58,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       date_paid: undefined,
       comment: '',
       file_path: '',
-      customer: undefined,
+      selectedCustomer: undefined,
       customerList: [],
       isNew: true,
       file: undefined
@@ -78,15 +78,15 @@ export default class EditorComponent extends React.Component<any, {}> {
   onSave(event) {
     event.preventDefault()
 
-    const bill = new Bill(
-      this.state.id,
-      this.state.customer!.id,
-      convertToNumber(this.state.amount),
-      this.state.date_created,
-      this.state.date_paid,
-      this.state.comment,
-      this.state.file && this.state.file.path
-    )
+    const bill = {
+      id: this.state.id,
+      customer_id: this.state.selectedCustomer![0].id,
+      amount: convertToNumber(this.state.amount),
+      date_created: this.state.date_created,
+      date_paid: this.state.date_paid,
+      comment: this.state.comment,
+      file_path: this.state.file && this.state.file.path
+    }
 
     if (this.state.isNew) {
       this.props.save(bill)
@@ -160,8 +160,8 @@ export default class EditorComponent extends React.Component<any, {}> {
                   <Typeahead
                     options={this.state.customerList}
                     allowNew={false}
-                    onChange={selected => this.setState({ customer: selected[0] })}
-                    selected={[this.state.customer]}
+                    onChange={selected => this.setState({ selectedCustomer: selected })}
+                    selected={this.state.selectedCustomer}
                     labelKey={'name'}
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
@@ -268,18 +268,19 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const isExisting = (nextProps.bill != null)
+    const bill: BillDbModel = nextProps.bill
+    const isExisting = (bill != null)
     let newState: State
 
     if (isExisting) {
-      newState = Object.assign(nextProps.bill)
+      newState = Object.assign(bill)
       newState.amount = String(newState.amount).replace('.', ',')
+      newState.selectedCustomer = [bill.customer]
     } else {
       newState = this.getDefaultState()
     }
 
-    newState = Object.assign({ isNew: !isExisting }, newState)
-
+    newState = Object.assign(newState, { isNew: !isExisting })
     this.setState(newState)
   }
 }
