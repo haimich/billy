@@ -1,4 +1,4 @@
-import { convertToNumber, dateFormatter } from '../../../src/common/helpers/formatters'
+import { convertToNumber, dateFormatter, currencyFormatter } from '../../../src/common/helpers/formatters'
 import * as chai from 'chai'
 
 let expect = chai.expect
@@ -22,6 +22,9 @@ describe('convertToNumber', () => {
 
 describe('dateFormatter', () => {
   it('should convert a string to a formatted date', () => {
-    // const result = dateFormatter()
+    const result = dateFormatter('2008-02-01T09:00:22+05')
+    expect(result).to.equal('01.02.2008')
   })
 })
+
+//currencyFormatter is not tested because it produces different results in Electron and Mocha environment

@@ -45,8 +45,7 @@ export default class AppComponent extends React.Component<any, {}> {
         bill.file_path = newFilePath
       }
 
-      // let createdId = await createBill(bill)
-      createdBill = await getBill(110)
+      let createdBill = await createBill(bill)
     } catch (err) {
       this.handleError(err)
       return

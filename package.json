@@ -11,7 +11,7 @@
     "prestart": "npm run build",
     "start": "electron .",
     "test": "npm run build && mocha build/test/**/*Test.js",
-    "watch:test": "chokidar -c 'npm test' 'src/**/*.ts' 'test/**/*.ts'",
+    "watch:test": "chokidar --initial -c 'npm test' 'src/**/*.ts' 'test/**/*.ts'",
     "update-dependencies": "ncu -u",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html build/src",
