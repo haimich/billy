@@ -8,24 +8,30 @@ export async function init(knexInstance): Promise<any> {
   db = knexInstance
 }
 
-export function createBill(bill: Bill): Promise<number> {
+export function createBill(bill: Bill): Promise<Bill> {
   return db('bills')
     .insert(bill)
-    .then(rows => rows[0])
+    .then((rows) => {
+      return getBillById(rows[0])
+    })
 }
 
-export function getBill(id: number): Promise<BillDbModel> {
+function getBillById(id: number): Promise<BillDbModel> {
   return db('bills')
-    .where('id', '=', `'id'`)
-    .then((rows) => {
-      debugger
-    })
+    .where('id', id)
+    .first()
+}
+
+export function getBillByInvoiceId(invoiceId: number): Promise<BillDbModel> {
+  return db('bills')
+    .where('invoice_id', invoiceId)
+    .first()
 }
 
 export function listBills(): Promise<BillDbModel[]> {
   return db.raw(`
     select
-      b.id,
+      b.invoice_id,
       b.date_created,
       b.date_paid,
       b.amount,
@@ -42,7 +48,7 @@ export function listBills(): Promise<BillDbModel[]> {
   `).then((rows) => {
       return rows.map(row => {
         return {
-          id: row.id,
+          invoice_id: row.invoice_id,
           amount: row.amount,
           date_created: row.date_created,
           date_paid: row.date_paid,
@@ -89,19 +95,19 @@ export function updateBill(bill: Bill): Promise<any> {
       comment: bill.comment,
       file_path: bill.file_path
     })
-    .where('id', bill.id)
+    .where('invoice_id', bill.invoice_id)
 }
 
-export function deleteBillsByIds(billIds): Promise<any> {
+export function deleteBillsByInvoiceIds(invoiceIds): Promise<any> {
   return db('bills')
     .delete()
-    .whereIn('id', billIds)
+    .whereIn('invoice_id', invoiceIds)
 }
 
-export function deleteBillsByIdPattern(idPattern: string): Promise<any> {
+export function deleteBillsByInvoiceIdPattern(idPattern: string): Promise<any> {
   return db('bills')
     .delete()
-    .where('id', 'like', idPattern)
+    .where('invoice_id', 'like', idPattern)
 }
 
 export function deleteAll(): Promise<any> {

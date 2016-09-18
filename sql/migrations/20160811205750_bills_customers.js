@@ -1,20 +1,23 @@
 exports.up = (knex, Promise) => {
   return knex.schema.createTable('customers', (table) => {
-    table.increments('id').primary()
-    table.text('name')
+    table.increments('id').primary().notNullable()
+    table.text('name').notNullable()
     table.text('telephone')
 
     table.index(('name'))
   })
     .then(() => {
       return knex.schema.createTable('bills', (table) => {
-        table.text('id').primary()
-        table.dateTime('date_created').defaultTo(knex.fn.now())
+        table.increments('id').primary().notNullable()
+        table.text('invoice_id').unique().notNullable()
+        table.dateTime('date_created').defaultTo(knex.fn.now()).notNullable()
         table.dateTime('date_paid')
-        table.integer('customer_id').references('id').inTable('customer')
-        table.decimal('amount')
+        table.integer('customer_id').references('id').inTable('customer').notNullable()
+        table.decimal('amount').notNullable()
         table.text('comment')
         table.text('file_path')
+
+        table.index('invoice_id')
       })
     })
 }

@@ -6,7 +6,7 @@
     "amount": 181.797,
     "comment": "eleifend vitae,",
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
-    "id": "1"
+    "invoice_id": "2016/1"
   },
   {
     "date_created": "2015-10-10T17:58:45-07:00",
@@ -15,7 +15,7 @@
     "amount": 124.88,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "odio. Phasellus at",
-    "id": "2"
+    "invoice_id": "2016/2"
   },
   {
     "date_created": "2016-01-06T12:04:46-08:00",
@@ -24,7 +24,7 @@
     "amount": 159.269,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "orci. Donec nibh. Quisque nonummy ipsum non arcu.",
-    "id": "3"
+    "invoice_id": "2016/3"
   },
   {
     "date_created": "2016-08-30T21:20:06-07:00",
@@ -33,7 +33,7 @@
     "amount": 100.982,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "non, hendrerit id, ante. Nunc mauris sapien, cursus in,",
-    "id": "4"
+    "invoice_id": "2016/4"
   },
   {
     "date_created": "2017-05-13T17:05:28-07:00",
@@ -42,7 +42,7 @@
     "amount": 180.535,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "suscipit nonummy. Fusce",
-    "id": "5"
+    "invoice_id": "2016/5"
   },
   {
     "date_created": "2015-09-23T23:49:26-07:00",
@@ -51,7 +51,7 @@
     "amount": 150.851,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "Phasellus ornare. Fusce",
-    "id": "6"
+    "invoice_id": "2016/6"
   },
   {
     "date_created": "2016-11-26T20:25:06-08:00",
@@ -60,7 +60,7 @@
     "amount": 145.924,
     "file_path": "/Users/CrisMich/Dropbox/Apps/billy/files/Rechnung1.docs",
     "comment": "fermentum convallis ligula. Donec luctus aliquet odio. Etiam ligula tortor,",
-    "id": "7"
+    "invoice_id": "2016/7"
   },
   {
     "date_created": "2016-03-04T23:03:28-08:00",
@@ -68,7 +68,7 @@
     "customer_id": "5",
     "amount": 101.168,
     "comment": "mauris, rhoncus id,",
-    "id": "8"
+    "invoice_id": "2016/8"
   },
   {
     "date_created": "2016-09-14T11:38:41-07:00",
@@ -76,7 +76,7 @@
     "customer_id": "6",
     "amount": 111.502,
     "comment": "non, bibendum sed, est. Nunc laoreet lectus quis",
-    "id": "9"
+    "invoice_id": "2016/9"
   },
   {
     "date_created": "2017-05-02T23:21:46-07:00",
@@ -84,7 +84,7 @@
     "customer_id": "7",
     "amount": 131.571,
     "comment": "consectetuer rhoncus. Nullam velit dui, semper et, lacinia",
-    "id": "10"
+    "invoice_id": "2016/10"
   },
   {
     "date_created": "2016-07-26T19:11:00-07:00",
@@ -92,7 +92,7 @@
     "customer_id": "8",
     "amount": 145.117,
     "comment": "lacus vestibulum lorem, sit",
-    "id": "11"
+    "invoice_id": "2016/11"
   },
   {
     "date_created": "2017-06-07T21:03:02-07:00",
@@ -100,7 +100,7 @@
     "customer_id": "9",
     "amount": 177.362,
     "comment": "massa non ante bibendum ullamcorper. Duis",
-    "id": "12"
+    "invoice_id": "2016/12"
   },
   {
     "date_created": "2015-07-25T07:38:49-07:00",
@@ -108,7 +108,7 @@
     "customer_id": "10",
     "amount": 190.239,
     "comment": "sociis natoque penatibus et magnis dis",
-    "id": "13"
+    "invoice_id": "2016/13"
   },
   {
     "date_created": "2015-08-03T00:06:33-07:00",
@@ -116,7 +116,7 @@
     "customer_id": "1",
     "amount": 138.993,
     "comment": "nisi a odio semper cursus. Integer mollis. Integer tincidunt aliquam",
-    "id": "14"
+    "invoice_id": "2016/14"
   },
   {
     "date_created": "2015-10-12T13:25:48-07:00",
@@ -124,7 +124,7 @@
     "customer_id": "11",
     "amount": 195.981,
     "comment": "cursus a, enim. Suspendisse aliquet, sem ut cursus luctus, ipsum",
-    "id": "15"
+    "invoice_id": "2016/15"
   },
   {
     "date_created": "2015-09-09T13:41:16-07:00",
@@ -132,7 +132,7 @@
     "customer_id": "12",
     "amount": 142.413,
     "comment": "et nunc. Quisque ornare tortor",
-    "id": "16"
+    "invoice_id": "2016/16"
   },
   {
     "date_created": "2015-11-08T11:04:11-08:00",
@@ -140,7 +140,7 @@
     "customer_id": "13",
     "amount": 152.612,
     "comment": "volutpat ornare, facilisis eget, ipsum.",
-    "id": "17"
+    "invoice_id": "2016/17"
   },
   {
     "date_created": "2016-12-19T03:37:44-08:00",
@@ -148,7 +148,7 @@
     "customer_id": "14",
     "amount": 107.474,
     "comment": "euismod et,",
-    "id": "18"
+    "invoice_id": "2016/18"
   },
   {
     "date_created": "2016-01-23T20:39:10-08:00",
@@ -156,7 +156,7 @@
     "customer_id": "14",
     "amount": 193.03,
     "comment": "Quisque nonummy ipsum non arcu. Vivamus sit amet risus.",
-    "id": "19"
+    "invoice_id": "2016/19"
   },
   {
     "date_created": "2017-05-21T10:55:33-07:00",
@@ -164,7 +164,7 @@
     "customer_id": "15",
     "amount": 173.748,
     "comment": "tempor, est ac mattis semper, dui",
-    "id": "20"
+    "invoice_id": "2016/20"
   },
   {
     "date_created": "2016-03-11T07:29:56-08:00",
@@ -172,7 +172,7 @@
     "customer_id": "16",
     "amount": 184.274,
     "comment": "tempus scelerisque, lorem ipsum sodales purus,",
-    "id": "21"
+    "invoice_id": "2016/21"
   },
   {
     "date_created": "2016-07-23T20:58:27-07:00",
@@ -180,7 +180,7 @@
     "customer_id": "16",
     "amount": 139.431,
     "comment": "Vivamus non lorem vitae odio sagittis",
-    "id": "22"
+    "invoice_id": "2016/22"
   },
   {
     "date_created": "2017-07-10T14:11:46-07:00",
@@ -188,7 +188,7 @@
     "customer_id": "1",
     "amount": 129.547,
     "comment": "massa non ante bibendum ullamcorper.",
-    "id": "23"
+    "invoice_id": "2016/23"
   },
   {
     "date_created": "2015-09-12T06:46:39-07:00",
@@ -196,7 +196,7 @@
     "customer_id": "17",
     "amount": 175.93,
     "comment": "Suspendisse dui.",
-    "id": "24"
+    "invoice_id": "2016/24"
   },
   {
     "date_created": "2017-05-11T18:07:07-07:00",
@@ -204,7 +204,7 @@
     "customer_id": "17",
     "amount": 175.636,
     "comment": "Cras eget nisi dictum augue malesuada",
-    "id": "25"
+    "invoice_id": "2016/25"
   },
   {
     "date_created": "2015-10-23T14:37:48-07:00",
@@ -212,7 +212,7 @@
     "customer_id": "18",
     "amount": 146.595,
     "comment": "dui. Fusce aliquam, enim nec tempus scelerisque, lorem",
-    "id": "26"
+    "invoice_id": "2016/26"
   },
   {
     "date_created": "2016-09-29T01:21:58-07:00",
@@ -220,7 +220,7 @@
     "customer_id": "19",
     "amount": 139.394,
     "comment": "amet,",
-    "id": "27"
+    "invoice_id": "2016/27"
   },
   {
     "date_created": "2017-01-15T02:09:48-08:00",
@@ -228,7 +228,7 @@
     "customer_id": "20",
     "amount": 113.104,
     "comment": "lorem semper auctor. Mauris vel",
-    "id": "28"
+    "invoice_id": "2016/28"
   },
   {
     "date_created": "2016-05-16T10:49:33-07:00",
@@ -236,7 +236,7 @@
     "customer_id": "21",
     "amount": 138.605,
     "comment": "et, lacinia vitae, sodales",
-    "id": "29"
+    "invoice_id": "2016/29"
   },
   {
     "date_created": "2016-05-31T08:12:20-07:00",
@@ -244,7 +244,7 @@
     "customer_id": "21",
     "amount": 112.437,
     "comment": "varius orci, in consequat",
-    "id": "30"
+    "invoice_id": "2016/30"
   },
   {
     "date_created": "2016-02-11T23:38:26-08:00",
@@ -252,7 +252,7 @@
     "customer_id": "22",
     "amount": 126.908,
     "comment": "tempus risus. Donec egestas. Duis",
-    "id": "31"
+    "invoice_id": "2016/31"
   },
   {
     "date_created": "2016-08-21T21:20:37-07:00",
@@ -260,7 +260,7 @@
     "customer_id": "23",
     "amount": 120.471,
     "comment": "mus. Aenean eget magna. Suspendisse tristique neque venenatis lacus.",
-    "id": "32"
+    "invoice_id": "2016/32"
   },
   {
     "date_created": "2015-11-30T22:56:41-08:00",
@@ -268,7 +268,7 @@
     "customer_id": "24",
     "amount": 165.8,
     "comment": "velit. Pellentesque ultricies dignissim",
-    "id": "33"
+    "invoice_id": "2016/33"
   },
   {
     "date_created": "2016-10-26T06:13:12-07:00",
@@ -276,7 +276,7 @@
     "customer_id": "25",
     "amount": 150.041,
     "comment": "odio sagittis semper. Nam tempor diam dictum sapien.",
-    "id": "34"
+    "invoice_id": "2016/34"
   },
   {
     "date_created": "2016-11-09T12:12:27-08:00",
@@ -284,7 +284,7 @@
     "customer_id": "26",
     "amount": 178.577,
     "comment": "nonummy. Fusce fermentum fermentum arcu. Vestibulum ante ipsum primis in",
-    "id": "35"
+    "invoice_id": "2016/35"
   },
   {
     "date_created": "2016-08-08T08:12:41-07:00",
@@ -292,7 +292,7 @@
     "customer_id": "26",
     "amount": 106.204,
     "comment": "elementum, lorem ut",
-    "id": "36"
+    "invoice_id": "2016/36"
   },
   {
     "date_created": "2015-12-15T03:24:27-08:00",
@@ -300,7 +300,7 @@
     "customer_id": "1",
     "amount": 177.484,
     "comment": "consequat, lectus sit amet",
-    "id": "37"
+    "invoice_id": "2016/37"
   },
   {
     "date_created": "2015-12-08T04:23:34-08:00",
@@ -308,7 +308,7 @@
     "customer_id": "1",
     "amount": 163.275,
     "comment": "magna",
-    "id": "38"
+    "invoice_id": "2016/38"
   },
   {
     "date_created": "2016-03-13T09:15:10-07:00",
@@ -316,7 +316,7 @@
     "customer_id": "1",
     "amount": 117.673,
     "comment": "non, feugiat nec, diam. Duis mi enim, condimentum eget,",
-    "id": "39"
+    "invoice_id": "2016/39"
   },
   {
     "date_created": "2015-08-21T21:49:05-07:00",
@@ -324,7 +324,7 @@
     "customer_id": "1",
     "amount": 100.22,
     "comment": "a tortor.",
-    "id": "40"
+    "invoice_id": "2016/40"
   },
   {
     "date_created": "2015-11-05T00:52:53-08:00",
@@ -332,7 +332,7 @@
     "customer_id": "1",
     "amount": 161.685,
     "comment": "eu, ligula. Aenean euismod mauris eu",
-    "id": "41"
+    "invoice_id": "2016/41"
   },
   {
     "date_created": "2016-05-11T07:49:48-07:00",
@@ -340,7 +340,7 @@
     "customer_id": "1",
     "amount": 174.301,
     "comment": "amet lorem semper auctor. Mauris vel turpis. Aliquam",
-    "id": "42"
+    "invoice_id": "2016/42"
   },
   {
     "date_created": "2017-03-26T03:29:17-07:00",
@@ -348,7 +348,7 @@
     "customer_id": "1",
     "amount": 138.345,
     "comment": "fringilla ornare placerat, orci lacus vestibulum lorem,",
-    "id": "43"
+    "invoice_id": "2016/43"
   },
   {
     "date_created": "2017-02-09T08:57:18-08:00",
@@ -356,7 +356,7 @@
     "customer_id": "1",
     "amount": 129.331,
     "comment": "a, enim. Suspendisse aliquet, sem ut cursus luctus, ipsum leo",
-    "id": "44"
+    "invoice_id": "2016/44"
   },
   {
     "date_created": "2015-12-07T05:42:32-08:00",
@@ -364,7 +364,7 @@
     "customer_id": "1",
     "amount": 193.789,
     "comment": "lorem,",
-    "id": "45"
+    "invoice_id": "2016/45"
   },
   {
     "date_created": "2015-09-29T23:03:48-07:00",
@@ -372,7 +372,7 @@
     "customer_id": "1",
     "amount": 187.613,
     "comment": "sem, consequat",
-    "id": "46"
+    "invoice_id": "2016/46"
   },
   {
     "date_created": "2015-09-26T23:59:51-07:00",
@@ -380,7 +380,7 @@
     "customer_id": "1",
     "amount": 138.702,
     "comment": "aliquet magna a neque. Nullam ut",
-    "id": "47"
+    "invoice_id": "2016/47"
   },
   {
     "date_created": "2015-11-30T07:18:54-08:00",
@@ -388,7 +388,7 @@
     "customer_id": "1",
     "amount": 128.01,
     "comment": "fringilla ornare",
-    "id": "48"
+    "invoice_id": "2016/48"
   },
   {
     "date_created": "2016-10-02T14:21:23-07:00",
@@ -396,7 +396,7 @@
     "customer_id": "1",
     "amount": 176.893,
     "comment": "ante ipsum",
-    "id": "49"
+    "invoice_id": "2016/49"
   },
   {
     "date_created": "2015-09-24T21:18:13-07:00",
@@ -404,7 +404,7 @@
     "customer_id": "1",
     "amount": 199.676,
     "comment": "In ornare sagittis felis. Donec",
-    "id": "50"
+    "invoice_id": "2016/50"
   },
   {
     "date_created": "2015-12-23T16:43:09-08:00",
@@ -412,7 +412,7 @@
     "customer_id": "1",
     "amount": 110.067,
     "comment": "dui. Fusce diam nunc, ullamcorper eu, euismod ac, fermentum vel,",
-    "id": "51"
+    "invoice_id": "2016/51"
   },
   {
     "date_created": "2016-01-04T23:51:19-08:00",
@@ -420,7 +420,7 @@
     "customer_id": "1",
     "amount": 179.409,
     "comment": "tempor erat neque non quam. Pellentesque habitant morbi tristique",
-    "id": "52"
+    "invoice_id": "2016/52"
   },
   {
     "date_created": "2017-06-28T15:56:21-07:00",
@@ -428,7 +428,7 @@
     "customer_id": "1",
     "amount": 120.298,
     "comment": "molestie tortor",
-    "id": "53"
+    "invoice_id": "2016/53"
   },
   {
     "date_created": "2015-07-30T03:43:50-07:00",
@@ -436,7 +436,7 @@
     "customer_id": "1",
     "amount": 175.331,
     "comment": "adipiscing ligula. Aenean",
-    "id": "54"
+    "invoice_id": "2016/54"
   },
   {
     "date_created": "2015-08-04T05:02:55-07:00",
@@ -444,7 +444,7 @@
     "customer_id": "1",
     "amount": 106.038,
     "comment": "justo. Proin non massa non ante bibendum ullamcorper. Duis cursus,",
-    "id": "55"
+    "invoice_id": "2016/55"
   },
   {
     "date_created": "2017-02-13T21:13:47-08:00",
@@ -452,7 +452,7 @@
     "customer_id": "1",
     "amount": 108.553,
     "comment": "non, hendrerit id,",
-    "id": "56"
+    "invoice_id": "2016/56"
   },
   {
     "date_created": "2017-04-26T22:06:40-07:00",
@@ -460,7 +460,7 @@
     "customer_id": "1",
     "amount": 174.335,
     "comment": "Proin ultrices. Duis volutpat nunc sit",
-    "id": "57"
+    "invoice_id": "2016/57"
   },
   {
     "date_created": "2015-07-19T04:42:55-07:00",
@@ -468,7 +468,7 @@
     "customer_id": "1",
     "amount": 178.008,
     "comment": "mauris ut",
-    "id": "58"
+    "invoice_id": "2016/58"
   },
   {
     "date_created": "2015-09-13T16:32:58-07:00",
@@ -476,7 +476,7 @@
     "customer_id": "1",
     "amount": 191.07,
     "comment": "penatibus et magnis dis parturient",
-    "id": "59"
+    "invoice_id": "2016/59"
   },
   {
     "date_created": "2016-01-13T18:50:35-08:00",
@@ -484,7 +484,7 @@
     "customer_id": "1",
     "amount": 167.031,
     "comment": "Suspendisse eleifend. Cras sed leo. Cras vehicula",
-    "id": "60"
+    "invoice_id": "2016/60"
   },
   {
     "date_created": "2017-04-10T21:50:31-07:00",
@@ -492,7 +492,7 @@
     "customer_id": "1",
     "amount": 196.957,
     "comment": "bibendum fermentum metus. Aenean sed pede nec",
-    "id": "61"
+    "invoice_id": "2016/61"
   },
   {
     "date_created": "2016-03-05T12:34:17-08:00",
@@ -500,7 +500,7 @@
     "customer_id": "1",
     "amount": 172.677,
     "comment": "accumsan interdum libero dui",
-    "id": "62"
+    "invoice_id": "2016/62"
   },
   {
     "date_created": "2017-02-02T15:12:36-08:00",
@@ -508,7 +508,7 @@
     "customer_id": "1",
     "amount": 167.029,
     "comment": "taciti sociosqu ad",
-    "id": "63"
+    "invoice_id": "2016/63"
   },
   {
     "date_created": "2016-07-19T20:23:02-07:00",
@@ -516,7 +516,7 @@
     "customer_id": "1",
     "amount": 179.654,
     "comment": "vehicula et, rutrum eu, ultrices sit amet,",
-    "id": "64"
+    "invoice_id": "2016/64"
   },
   {
     "date_created": "2016-01-14T05:07:30-08:00",
@@ -524,7 +524,7 @@
     "customer_id": "1",
     "amount": 174.331,
     "comment": "luctus vulputate, nisi sem semper erat, in consectetuer",
-    "id": "65"
+    "invoice_id": "2016/65"
   },
   {
     "date_created": "2016-05-28T19:37:00-07:00",
@@ -532,7 +532,7 @@
     "customer_id": "1",
     "amount": 131.327,
     "comment": "massa. Integer vitae nibh. Donec est",
-    "id": "66"
+    "invoice_id": "2016/66"
   },
   {
     "date_created": "2016-10-13T16:05:13-07:00",
@@ -540,7 +540,7 @@
     "customer_id": "1",
     "amount": 149.123,
     "comment": "ornare, lectus",
-    "id": "67"
+    "invoice_id": "2016/67"
   },
   {
     "date_created": "2016-09-12T18:23:17-07:00",
@@ -548,7 +548,7 @@
     "customer_id": "1",
     "amount": 103.351,
     "comment": "justo nec ante.",
-    "id": "68"
+    "invoice_id": "2016/68"
   },
   {
     "date_created": "2017-06-19T18:17:32-07:00",
@@ -556,7 +556,7 @@
     "customer_id": "1",
     "amount": 171.094,
     "comment": "egestas, urna justo faucibus",
-    "id": "69"
+    "invoice_id": "2016/69"
   },
   {
     "date_created": "2015-07-18T01:53:32-07:00",
@@ -564,7 +564,7 @@
     "customer_id": "1",
     "amount": 137.995,
     "comment": "tellus. Nunc lectus",
-    "id": "70"
+    "invoice_id": "2016/70"
   },
   {
     "date_created": "2017-02-27T03:25:44-08:00",
@@ -572,7 +572,7 @@
     "customer_id": "1",
     "amount": 135.139,
     "comment": "fermentum fermentum arcu. Vestibulum ante ipsum primis in faucibus",
-    "id": "71"
+    "invoice_id": "2016/71"
   },
   {
     "date_created": "2016-09-24T14:11:40-07:00",
@@ -580,7 +580,7 @@
     "customer_id": "1",
     "amount": 190.41,
     "comment": "posuere, enim",
-    "id": "72"
+    "invoice_id": "2016/72"
   },
   {
     "date_created": "2016-05-09T15:23:54-07:00",
@@ -588,7 +588,7 @@
     "customer_id": "1",
     "amount": 187.58,
     "comment": "magna. Sed eu eros. Nam consequat dolor vitae dolor.",
-    "id": "73"
+    "invoice_id": "2016/73"
   },
   {
     "date_created": "2017-02-05T11:38:41-08:00",
@@ -596,7 +596,7 @@
     "customer_id": "1",
     "amount": 164.222,
     "comment": "est",
-    "id": "74"
+    "invoice_id": "2016/74"
   },
   {
     "date_created": "2016-10-25T14:10:21-07:00",
@@ -604,7 +604,7 @@
     "customer_id": "1",
     "amount": 154.948,
     "comment": "Integer tincidunt aliquam arcu.",
-    "id": "75"
+    "invoice_id": "2016/75"
   },
   {
     "date_created": "2016-02-09T19:13:40-08:00",
@@ -612,7 +612,7 @@
     "customer_id": "1",
     "amount": 195.498,
     "comment": "Quisque ornare tortor at risus. Nunc ac",
-    "id": "76"
+    "invoice_id": "2016/76"
   },
   {
     "date_created": "2015-07-23T15:50:52-07:00",
@@ -620,7 +620,7 @@
     "customer_id": "1",
     "amount": 196.692,
     "comment": "elit. Nulla facilisi.",
-    "id": "77"
+    "invoice_id": "2016/77"
   },
   {
     "date_created": "2015-08-28T09:33:44-07:00",
@@ -628,7 +628,7 @@
     "customer_id": "1",
     "amount": 199.706,
     "comment": "vel sapien imperdiet ornare. In",
-    "id": "78"
+    "invoice_id": "2016/78"
   },
   {
     "date_created": "2017-05-06T08:15:01-07:00",
@@ -636,7 +636,7 @@
     "customer_id": "1",
     "amount": 130.797,
     "comment": "Nunc",
-    "id": "79"
+    "invoice_id": "2016/79"
   },
   {
     "date_created": "2015-09-18T14:40:09-07:00",
@@ -644,7 +644,7 @@
     "customer_id": "1",
     "amount": 103.45,
     "comment": "auctor ullamcorper, nisl arcu iaculis enim, sit amet",
-    "id": "80"
+    "invoice_id": "2016/80"
   },
   {
     "date_created": "2017-02-10T07:53:56-08:00",
@@ -652,7 +652,7 @@
     "customer_id": "1",
     "amount": 116.148,
     "comment": "sem eget massa.",
-    "id": "81"
+    "invoice_id": "2016/81"
   },
   {
     "date_created": "2016-10-20T03:43:02-07:00",
@@ -660,7 +660,7 @@
     "customer_id": "1",
     "amount": 107.714,
     "comment": "mattis ornare, lectus ante",
-    "id": "82"
+    "invoice_id": "2016/82"
   },
   {
     "date_created": "2017-02-07T12:56:20-08:00",
@@ -668,7 +668,7 @@
     "customer_id": "1",
     "amount": 115.856,
     "comment": "ultricies ligula. Nullam",
-    "id": "83"
+    "invoice_id": "2016/83"
   },
   {
     "date_created": "2016-02-02T09:49:28-08:00",
@@ -676,7 +676,7 @@
     "customer_id": "1",
     "amount": 139.497,
     "comment": "malesuada fringilla est. Mauris eu turpis.",
-    "id": "84"
+    "invoice_id": "2016/84"
   },
   {
     "date_created": "2016-06-01T06:58:00-07:00",
@@ -684,7 +684,7 @@
     "customer_id": "1",
     "amount": 125.85,
     "comment": "malesuada. Integer",
-    "id": "85"
+    "invoice_id": "2016/85"
   },
   {
     "date_created": "2016-04-16T09:50:57-07:00",
@@ -692,7 +692,7 @@
     "customer_id": "1",
     "amount": 117.296,
     "comment": "natoque penatibus et magnis dis",
-    "id": "86"
+    "invoice_id": "2016/86"
   },
   {
     "date_created": "2016-02-28T09:39:53-08:00",
@@ -700,7 +700,7 @@
     "customer_id": "1",
     "amount": 194.202,
     "comment": "nec tellus. Nunc lectus pede, ultrices a,",
-    "id": "87"
+    "invoice_id": "2016/87"
   },
   {
     "date_created": "2016-09-16T06:05:19-07:00",
@@ -708,7 +708,7 @@
     "customer_id": "1",
     "amount": 128.134,
     "comment": "eu",
-    "id": "88"
+    "invoice_id": "2016/88"
   },
   {
     "date_created": "2016-09-19T20:47:48-07:00",
@@ -716,7 +716,7 @@
     "customer_id": "1",
     "amount": 172.575,
     "comment": "sapien",
-    "id": "89"
+    "invoice_id": "2016/89"
   },
   {
     "date_created": "2017-01-25T06:32:27-08:00",
@@ -724,7 +724,7 @@
     "customer_id": "1",
     "amount": 191.553,
     "comment": "Fusce fermentum fermentum arcu. Vestibulum ante ipsum primis in faucibus",
-    "id": "90"
+    "invoice_id": "2016/90"
   },
   {
     "date_created": "2017-02-14T17:50:56-08:00",
@@ -732,7 +732,7 @@
     "customer_id": "1",
     "amount": 101.554,
     "comment": "gravida non, sollicitudin a,",
-    "id": "91"
+    "invoice_id": "2015/91"
   },
   {
     "date_created": "2015-12-16T01:43:31-08:00",
@@ -740,7 +740,7 @@
     "customer_id": "1",
     "amount": 144.83,
     "comment": "sagittis. Duis gravida.",
-    "id": "92"
+    "invoice_id": "2015/92"
   },
   {
     "date_created": "2015-10-08T19:58:36-07:00",
@@ -748,7 +748,7 @@
     "customer_id": "1",
     "amount": 191.409,
     "comment": "vehicula et,",
-    "id": "93"
+    "invoice_id": "2015/93"
   },
   {
     "date_created": "2016-08-09T12:36:27-07:00",
@@ -756,7 +756,7 @@
     "customer_id": "1",
     "amount": 137.677,
     "comment": "Integer mollis.",
-    "id": "94"
+    "invoice_id": "2015/94"
   },
   {
     "date_created": "2016-05-23T03:12:41-07:00",
@@ -764,7 +764,7 @@
     "customer_id": "1",
     "amount": 175.744,
     "comment": "luctus ut,",
-    "id": "95"
+    "invoice_id": "2015/95"
   },
   {
     "date_created": "2016-12-27T05:12:41-08:00",
@@ -772,7 +772,7 @@
     "customer_id": "1",
     "amount": 101.535,
     "comment": "Cum sociis natoque penatibus et magnis dis",
-    "id": "96"
+    "invoice_id": "2014/96"
   },
   {
     "date_created": "2017-02-28T09:14:41-08:00",
@@ -780,7 +780,7 @@
     "customer_id": "1",
     "amount": 162.309,
     "comment": "lacinia vitae, sodales at, velit.",
-    "id": "97"
+    "invoice_id": "2014/97"
   },
   {
     "date_created": "2017-05-02T13:30:49-07:00",
@@ -788,7 +788,7 @@
     "customer_id": "1",
     "amount": 122.766,
     "comment": "Nulla tempor augue ac ipsum. Phasellus vitae mauris sit",
-    "id": "98"
+    "invoice_id": "2014/98"
   },
   {
     "date_created": "2016-02-02T18:16:00-08:00",
@@ -796,7 +796,7 @@
     "customer_id": "1",
     "amount": 180.261,
     "comment": "pede. Cras vulputate velit eu sem. Pellentesque ut ipsum ac",
-    "id": "99"
+    "invoice_id": "2014/99"
   },
   {
     "date_created": "2015-08-30T04:12:41-07:00",
@@ -804,6 +804,6 @@
     "customer_id": "1",
     "amount": 182.366,
     "comment": "accumsan interdum libero",
-    "id": "100"
+    "invoice_id": "2014/100"
   }
 ]

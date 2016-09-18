@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { getBill, createBill, updateBill, deleteBillsByIds } from '../common/repositories/billsRepository'
+import { getBillByInvoiceId, createBill, updateBill, deleteBillsByInvoiceIds } from '../common/repositories/billsRepository'
 import { copyToAppDir } from '../common/providers/fileProvider'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
@@ -41,7 +41,7 @@ export default class AppComponent extends React.Component<any, {}> {
 
     try {
       if (bill.file_path != null) {
-        const newFilePath = await copyToAppDir(bill.id, bill.file_path)
+        const newFilePath = await copyToAppDir(bill.invoice_id, bill.file_path)
         bill.file_path = newFilePath
       }
 
@@ -67,7 +67,7 @@ export default class AppComponent extends React.Component<any, {}> {
     this.setState({
       selectedBill: undefined,
       bills: this.state.bills.map((element) => {
-        if (element.id === bill.id) {
+        if (element.invoice_id === bill.invoice_id) {
           return bill
         } else {
           return element
@@ -78,15 +78,15 @@ export default class AppComponent extends React.Component<any, {}> {
 
   async delete(billIds: String[]) {
     try {
-      await deleteBillsByIds(billIds)
+      await deleteBillsByInvoiceIds(billIds)
     } catch (err) {
       this.handleError(err)
     }
 
     this.setState({
       bills: this.state.bills.filter((element) => {
-        for (let id of billIds) {
-          if (element.id === id) {
+        for (let invoiceId of billIds) {
+          if (element.invoice_id === invoiceId) {
             return
           }
         }
@@ -121,7 +121,7 @@ export default class AppComponent extends React.Component<any, {}> {
           bills={this.state.bills}
           delete={this.delete.bind(this)}
           select={row => this.setState({ selectedBill: row })}
-          selectedId={this.state.selectedBill && this.state.selectedBill.id}
+          selectedInvoiceId={this.state.selectedBill && this.state.selectedBill.invoice_id}
         />
         <EditorComponent
           bill={this.state.selectedBill}

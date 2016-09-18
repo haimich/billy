@@ -1,5 +1,8 @@
+// Knex properties for test reasons 
+
 module.exports = {
   client: 'sqlite3',
+  debug: false,
   connection: {
     filename: "./bills.sqlite"
   },

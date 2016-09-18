@@ -7,14 +7,16 @@ import { listCustomers } from '../common/repositories/customerRepository'
 import t from '../common/helpers/i18n'
 import { convertToNumber } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
+import * as moment from 'moment'
+
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
 
 interface State {
-  id: string;
+  invoice_id: string;
   amount?: string;
-  date_created: Date;
-  date_paid?: Date;
+  date_created: string;
+  date_paid?: string;
   comment: string;
   file_path: string;
   selectedCustomer?: Customer[];
@@ -52,9 +54,9 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   getDefaultState(): State {
     return {
-      id: '',
+      invoice_id: '',
       amount: '',
-      date_created: new Date(),
+      date_created: moment().toISOString(),
       date_paid: undefined,
       comment: '',
       file_path: '',
@@ -78,7 +80,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     event.preventDefault()
 
     const bill = {
-      id: this.state.id,
+      invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer![0].id,
       amount: convertToNumber(this.state.amount),
       date_created: this.state.date_created,
@@ -147,7 +149,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     id="id"
                     readOnly={!this.state.isNew}
                     required
-                    value={this.state.id}
+                    value={this.state.invoice_id}
                     onChange={(event: any) => this.setState({ id: event.target.value })}
                     autoFocus
                     />

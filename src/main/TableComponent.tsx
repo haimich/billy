@@ -9,7 +9,7 @@ interface Props {
   delete: (rowIds: String[]) => void;
   select: (row: BillDbModel) => void;
   bills: BillDbModel[];
-  selectedId?: string;
+  selectedInvoiceId?: string;
 }
 
 export default class TableComponent extends React.Component<any, {}> {
@@ -48,7 +48,7 @@ export default class TableComponent extends React.Component<any, {}> {
       bgColor: '#d9edf7',
       onSelect: this.onSelectRow.bind(this),
       hideSelectColumn: true,
-      selected: this.props.selectedId ? [this.props.selectedId] : []
+      selected: this.props.selectedInvoiceId ? [this.props.selectedInvoiceId] : []
     }
     const editMode: CellEditClickMode = 'click'
     const height: any = 300
@@ -70,7 +70,7 @@ export default class TableComponent extends React.Component<any, {}> {
           options={options}
           height={height}>
 
-          <TableHeaderColumn isKey={true} dataField="id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
+          <TableHeaderColumn isKey={true} dataField="invoice_id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
           <TableHeaderColumn dataField="customer_name" width="300" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="amount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Betrag')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_created" width="170" dataFormat={dateFormatter} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>

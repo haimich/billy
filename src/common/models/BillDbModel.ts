@@ -1,12 +1,12 @@
 import Customer from './CustomerModel'
 
 interface BillDbModel {
-  id: string;
+  invoice_id: string;
   amount: number;
-  date_created: Date;
+  date_created: string;
+  date_paid?: string;
   customer_name: string;
   customer: Customer;
-  date_paid?: Date;
   comment?: string;
   file_path?: string;
 }
