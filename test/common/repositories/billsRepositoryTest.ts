@@ -56,7 +56,7 @@ describe('billsRepository', () => {
         date_created: testDate
       })
 
-      await updateBill({
+      const updatedBill = await updateBill({
         invoice_id: PREFIX + '123',
         amount: 99,
         comment: 'bla foo',
@@ -64,8 +64,6 @@ describe('billsRepository', () => {
         date_created: testDate,
         date_paid: testDate
       })
-
-      const updatedBill = await getBillByInvoiceId(PREFIX + '123')
 
       expect(updatedBill.amount).to.equal(99)
       expect(updatedBill.amount).to.equal(99)

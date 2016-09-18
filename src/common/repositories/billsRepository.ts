@@ -16,6 +16,22 @@ export function createBill(bill: Bill): Promise<BillDbModel> {
     })
 }
 
+export function updateBill(bill: Bill): Promise<BillDbModel> {
+  return db('bills')
+    .update({
+      amount: bill.amount,
+      customer_id: bill.customer_id,
+      date_created: bill.date_created,
+      date_paid: bill.date_paid,
+      comment: bill.comment,
+      file_path: bill.file_path
+    })
+    .where('invoice_id', bill.invoice_id)
+    .then(() => {
+      return getBillByInvoiceId(bill.invoice_id)
+    })
+}
+
 function getBillById(id: number): Promise<BillDbModel> {
   return db.raw(`
     select
@@ -103,9 +119,9 @@ export function listBills(): Promise<BillDbModel[]> {
       return rows.map(row => {
         return Object.assign(row, {
           customer: {
-            id: rows[0].customer_id,
-            name: rows[0].customer_name,
-            telephone: rows[0].customer_telephone
+            id: row.customer_id,
+            name: row.customer_name,
+            telephone: row.customer_telephone
           }
         })
       })
@@ -130,19 +146,6 @@ export async function importBills(bills): Promise<any> {
     failed,
     successful
   }
-}
-
-export function updateBill(bill: Bill): Promise<any> {
-  return db('bills')
-    .update({
-      amount: bill.amount,
-      customer_id: bill.customer_id,
-      date_created: bill.date_created,
-      date_paid: bill.date_paid,
-      comment: bill.comment,
-      file_path: bill.file_path
-    })
-    .where('invoice_id', bill.invoice_id)
 }
 
 export function deleteBillsByInvoiceIds(invoiceIds): Promise<any> {

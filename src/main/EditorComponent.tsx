@@ -14,7 +14,7 @@ const Typeahead = require('react-bootstrap-typeahead').default
 interface State {
   invoice_id: string;
   amount?: string;
-  date_created: Date;
+  date_created?: Date;
   date_paid?: Date;
   comment: string;
   file_path: string;
@@ -34,6 +34,9 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   state: State
   props: Props
+  refs: {
+    typeahead: any
+  }
 
   dragCounter: number
 
@@ -47,6 +50,7 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   resetState() {
     this.setState(this.getDefaultState())
+    this.refs.typeahead.getInstance().clear()
     this.fetchTypeaheadData()
     this.dragCounter = 0;
   }
@@ -55,7 +59,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     return {
       invoice_id: '',
       amount: '',
-      date_created: new Date(),
+      date_created: undefined,
       date_paid: undefined,
       comment: '',
       file_path: '',
@@ -149,7 +153,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     readOnly={!this.state.isNew}
                     required
                     value={this.state.invoice_id}
-                    onChange={(event: any) => this.setState({ id: event.target.value })}
+                    onChange={(event: any) => this.setState({ invoice_id: event.target.value })}
                     autoFocus
                     />
                 </div>
@@ -163,6 +167,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     onChange={selected => this.setState({ selectedCustomer: selected })}
                     selected={this.state.selectedCustomer}
                     labelKey={'name'}
+                    ref='typeahead'
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
                     />
@@ -270,19 +275,20 @@ export default class EditorComponent extends React.Component<any, {}> {
   componentWillReceiveProps(nextProps) {
     const bill: BillDbModel = nextProps.bill
     const isExisting = (bill != null)
-    let newState: State
 
     if (isExisting) {
+      let newState: State
+      
       newState = Object.assign(bill)
       newState.amount = String(newState.amount).replace('.', ',')
       newState.selectedCustomer = [bill.customer]
       newState.date_created = stringToDate(bill.date_created)!
       newState.date_paid = stringToDate(bill.date_paid)!
+      newState = Object.assign(newState, { isNew: !isExisting })
+      
+      this.setState(newState)
     } else {
-      newState = this.getDefaultState()
+      this.resetState()
     }
-
-    newState = Object.assign(newState, { isNew: !isExisting })
-    this.setState(newState)
   }
 }

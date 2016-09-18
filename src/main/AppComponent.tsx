@@ -45,7 +45,7 @@ export default class AppComponent extends React.Component<any, {}> {
         bill.file_path = newFilePath
       }
 
-      let createdBill = await createBill(bill)
+      createdBill = await createBill(bill)
     } catch (err) {
       this.handleError(err)
       return
@@ -58,8 +58,10 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   async update(bill: Bill) {
+    let updatedBill
+
     try {
-      await updateBill(bill)
+      updatedBill = await updateBill(bill)
     } catch (err) {
       this.handleError(err)
     }
@@ -68,7 +70,7 @@ export default class AppComponent extends React.Component<any, {}> {
       selectedBill: undefined,
       bills: this.state.bills.map((element) => {
         if (element.invoice_id === bill.invoice_id) {
-          return bill
+          return updatedBill
         } else {
           return element
         }
