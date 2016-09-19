@@ -89,10 +89,10 @@ export default class AppComponent extends React.Component<any, {}> {
       bills: this.state.bills.filter((element) => {
         for (let invoiceId of billIds) {
           if (element.invoice_id === invoiceId) {
-            return
+            return false
           }
         }
-        return element
+        return true
       })
     })
 
