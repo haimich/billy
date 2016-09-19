@@ -116,13 +116,21 @@ export default class AppComponent extends React.Component<any, {}> {
     })
   }
 
+  billSelected(bill: BillDbModel, isSelected: boolean) {
+    if (isSelected) {
+      this.setState({ selectedBill: bill })
+    } else {
+      this.setState({ selectedBill: undefined })
+    }
+  }
+
   render() {
     return (
       <div>
         <TableComponent
           bills={this.state.bills}
           delete={this.delete.bind(this)}
-          select={row => this.setState({ selectedBill: row })}
+          select={this.billSelected.bind(this)}
           selectedInvoiceId={this.state.selectedBill && this.state.selectedBill.invoice_id}
         />
         <EditorComponent

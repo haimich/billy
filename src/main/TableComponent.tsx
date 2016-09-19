@@ -7,7 +7,7 @@ import t from '../common/helpers/i18n'
 
 interface Props {
   delete: (rowIds: String[]) => void;
-  select: (row: BillDbModel) => void;
+  select: (row: BillDbModel, isSelected: boolean) => void;
   bills: BillDbModel[];
   selectedInvoiceId?: string;
 }
@@ -17,9 +17,8 @@ export default class TableComponent extends React.Component<any, {}> {
   props: Props
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
-    if (isSelected) {
-      this.props.select(row)
-    }
+    this.props.select(row, isSelected)
+
     return true
   }
 
