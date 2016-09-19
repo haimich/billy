@@ -18,7 +18,6 @@ export default class TableComponent extends React.Component<any, {}> {
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
     this.props.select(row, isSelected)
-
     return true
   }
 
