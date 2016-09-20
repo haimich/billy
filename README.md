@@ -19,11 +19,6 @@ To use the following dev tools open the browser console in the open app and inst
 * React dev tools: `require('electron-react-devtools').install()`
 * Electron devtron: `require('devtron').install()`
 
-## Features to be implemented
-* File upload (copy file) with drag and drop
-* Sort by columns (?)
-* Search/Filter (eg. not payed, year,...)
-
 ## Links
 * http://electron.atom.io/docs/tutorial/application-distribution/
 * http://electron.atom.io/docs/tutorial/using-native-node-modules/
