@@ -1,7 +1,5 @@
 import { convertToNumber, dateFormatter, currencyFormatter } from '../../../src/common/helpers/formatters'
-import * as chai from 'chai'
-
-let expect = chai.expect
+import { expect } from 'chai'
 
 describe('formatters', () => {
 

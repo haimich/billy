@@ -1,12 +1,10 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
 import { init, listBills, getBillByInvoiceId } from '../../../src/common/repositories/billsRepository'
 import { createBill, deleteBillsByInvoiceIds, deleteBillsByInvoiceIdPattern, updateBill } from '../../../src/common/repositories/billsRepository'
-import * as chai from 'chai'
+import { expect } from 'chai'
 import * as moment from 'moment'
 
 const knexConfig = require('../../../../knexfile')
-
-let expect = chai.expect
 const PREFIX = 'INTEGRATIONTEST-'
 
 before(async () => {

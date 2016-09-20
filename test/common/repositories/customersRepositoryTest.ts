@@ -1,11 +1,10 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
 import { init, getCustomerById, createCustomer, updateCustomer } from '../../../src/common/repositories/customersRepository'
 import { listCustomers, deleteCustomerByNamePattern } from '../../../src/common/repositories/customersRepository'
-import * as chai from 'chai'
+import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
 
-let expect = chai.expect
 const PREFIX = 'INTEGRATIONTEST-'
 
 before(async () => {

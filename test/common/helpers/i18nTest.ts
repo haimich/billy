@@ -1,7 +1,5 @@
 import t from '../../../src/common/helpers/i18n'
-import * as chai from 'chai'
-
-let expect = chai.expect
+import { expect } from 'chai'
 
 describe('i18n', () => {
 
