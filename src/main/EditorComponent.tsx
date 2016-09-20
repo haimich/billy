@@ -276,7 +276,7 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   componentDidMount() {
-    // Hack: enable htmlFor for Typeahead component
+    // Hack: enable some features for Typeahead component
     const typeaheadInput = 
       ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelectorAll('input[name=customer]')[0]
     typeaheadInput.setAttribute('id', 'customer')

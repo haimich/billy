@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import BillDbModel from '../common/models/BillDbModel'
 import { dateFormatter, currencyFormatter } from '../common/helpers/formatters'
+import { preventDragAndDrop } from '../common/helpers/dom' 
 import t from '../common/helpers/i18n'
 
 interface Props {
@@ -87,6 +88,7 @@ export default class TableComponent extends React.Component<any, {}> {
   }
 
   componentDidMount() {
+    preventDragAndDrop(ReactDOM.findDOMNode(this))
     this.scrollDown()
   }
 }
