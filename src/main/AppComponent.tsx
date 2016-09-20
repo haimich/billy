@@ -131,7 +131,6 @@ export default class AppComponent extends React.Component<any, {}> {
           bills={this.state.bills}
           delete={this.delete.bind(this)}
           select={this.billSelected.bind(this)}
-          selectedInvoiceId={this.state.selectedBill && this.state.selectedBill.invoice_id}
         />
         <EditorComponent
           bill={this.state.selectedBill}

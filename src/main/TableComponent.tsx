@@ -10,7 +10,6 @@ interface Props {
   delete: (rowIds: String[]) => void;
   select: (row: BillDbModel, isSelected: boolean) => void;
   bills: BillDbModel[];
-  selectedInvoiceId?: string;
 }
 
 export default class TableComponent extends React.Component<any, {}> {
@@ -46,8 +45,7 @@ export default class TableComponent extends React.Component<any, {}> {
       clickToSelect: true,
       bgColor: '#d9edf7',
       onSelect: this.onSelectRow.bind(this),
-      hideSelectColumn: true,
-      selected: this.props.selectedInvoiceId ? [this.props.selectedInvoiceId] : []
+      hideSelectColumn: true
     }
     const editMode: CellEditClickMode = 'click'
     const height: any = 300

@@ -28,9 +28,9 @@ describe('formatters', () => {
   })
 
   describe('currencyFormatter', () => {
-    it('should convert a string to a formatted date', () => {
+    it('should convert a number to a string with currency', () => {
       const result = currencyFormatter(123.45)
-      expect(result).to.equal('123,45 €')
+      expect(result).to.equal('123,45 €')
     })
   })
 

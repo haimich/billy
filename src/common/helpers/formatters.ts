@@ -21,12 +21,7 @@ export function stringToDate(date: string | undefined): Date | undefined {
 }
 
 export function currencyFormatter(value: number): string {
-  return value.toLocaleString('de-DE', {
-    style: 'currency',
-    currency: 'EUR',
-    maximumFractionDigits: 2,
-    useGrouping: true
-  })
+  return value.toLocaleString('de-DE') + ' €'
 }
 
 /**
