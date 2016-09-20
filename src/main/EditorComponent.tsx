@@ -174,15 +174,18 @@ export default class EditorComponent extends React.Component<any, {}> {
                 </div>
               </div>
               <div className="form-group">
-                <label className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
+                <label htmlFor="date_created" className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
                 <Datetime
                   value={this.state.date_created}
+                  inputProps={{
+                    id: 'date_created',
+                    required: 'required'
+                  }}
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
                   onChange={newDate => this.setState({ date_created: newDate })}
-                  inputProps={{ required: 'required' }}
                   />
               </div>
               <div className="form-group">
@@ -210,6 +213,9 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
                 <Datetime
                   value={this.state.date_paid}
+                  inputProps={{
+                    id: 'date_paid'
+                  }}
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
