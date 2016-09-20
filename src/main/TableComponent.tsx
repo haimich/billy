@@ -83,8 +83,10 @@ export default class TableComponent extends React.Component<any, {}> {
   }
 
   scrollDown() {
-    const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
-    lastRow.scrollIntoView()
+    if (this.props.bills.length >= 1) {
+      const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
+      lastRow.scrollIntoView()
+    }
   }
 
   componentDidMount() {
