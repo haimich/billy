@@ -4,4 +4,6 @@ machine:
 
 test:
   pre:
-    - npm run setup
+    - npm install sqlite3 --build-from-source
+    - npm run recreate-database
+    - npm run rebuild
