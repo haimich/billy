@@ -168,6 +168,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     selected={this.state.selectedCustomer}
                     labelKey={'name'}
                     ref='typeahead'
+                    name="customer"
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
                     />
@@ -275,6 +276,11 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   componentDidMount() {
+    // Hack: enable htmlFor for Typeahead component
+    const typeaheadInput = 
+      ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelectorAll('input[name=customer]')[0]
+    typeaheadInput.setAttribute('id', 'customer')
+
     this.addFormValidation()
   }
 
