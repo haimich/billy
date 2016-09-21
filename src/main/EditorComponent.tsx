@@ -5,7 +5,7 @@ import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { listCustomers } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
-import { convertToNumber, dateToString } from '../common/helpers/formatters'
+import { convertToNumber } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
 
 const Datetime = require('react-datetime')
