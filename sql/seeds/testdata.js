@@ -39,21 +39,33 @@ function generateCustomer() {
 }
 
 function generateBill() {
-  const createdDay = chance.natural({ min: 1, max: 28 })
-  const createdMonth = chance.natural({ min: 1, max: 12 })
-  const createdYear = chance.natural({ min: 2013, max: 2016 })
+  const createdDay = addZeroIfNecessary(chance.natural({ min: 1, max: 28 }))
+  const createdMonth = addZeroIfNecessary(chance.natural({ min: 1, max: 12 }))
+  const createdYear = addZeroIfNecessary(chance.natural({ min: 2013, max: 2016 }))
+
+  console.log(`${createdYear}-${createdMonth}-${createdDay}`)
 
   const bill = {
     invoice_id: `${createdYear}/${counter++}`,
-    date_created: moment(`${createdDay}-${createdMonth}-${createdYear}`, 'DD.MM.YYYY').format('DD.MM.YYYY'),
+    date_created: moment(`${createdYear}-${createdMonth}-${createdDay}`).format('YYYY-MM-DD'),
     customer_id: chance.natural({ min: 1, max: NUMBER_OF_CUSTOMERS }),
     amount: chance.floating({min: 0, max: 1500}),
     comment: chance.paragraph(),
   }
 
   if (chance.bool()) {
-    bill.date_paid = moment(`${createdDay}-${createdMonth}-${createdYear - 1}`, 'DD.MM.YYYY').format('DD.MM.YYYY')
+    console.log(`${createdYear - 1}-${createdMonth}-${createdDay}`)
+    bill.date_paid = moment(`${createdYear - 1}-${createdMonth}-${createdDay}`).format('YYYY-MM-DD')
   }
   
   return bill
+}
+
+function addZeroIfNecessary(number) {
+  let output = '' + number
+  if (output.length === 1) {
+    return '0' + output
+  } else {
+    return output
+  }
 }
