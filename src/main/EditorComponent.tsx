@@ -291,16 +291,16 @@ export default class EditorComponent extends React.Component<any, {}> {
     if (isNew) {
       this.resetState()
     } else {
-      let newState: State
-      
-      newState = Object.assign(bill)
-      newState.amount = numberFormatterView(bill.amount)
-      newState.selectedCustomer = [bill.customer]
-      newState.date_created = dateFormatterView(bill.date_created)
-      newState.date_paid = dateFormatterView(bill.date_paid)
-      newState = Object.assign(newState, { isNew })
-      
-      this.setState(newState)
+      this.setState({
+        invoice_id: bill.invoice_id,
+        file_path: bill.file_path,
+        selectedCustomer: [bill.customer],
+        date_created: dateFormatterView(bill.date_created),
+        date_paid: dateFormatterView(bill.date_paid),
+        amount: numberFormatterView(bill.amount),
+        comment: bill.comment,
+        isNew
+      })
     }
   }
 }
