@@ -22,7 +22,7 @@ describe('formatters', () => {
 
   describe('dateFormatter', () => {
     it('should convert a string to a formatted date', () => {
-      const result = dateFormatter('2008-02-01T09:00:22+05')
+      const result = dateFormatter('2008-02-01')
       expect(result).to.equal('01.02.2008')
     })
   })
