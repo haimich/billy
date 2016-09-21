@@ -1,12 +1,21 @@
 import * as moment from 'moment'
 
-export function dateFormatter(value: string): string {
+export function dateFormatterView(value: string | undefined): string {
   if (value == null || value === '') {
     return ''
   }
 
-  return moment(value).format('DD.MM.YYYY')
+  return moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')
 }
+
+export function dateFormatterDb(value: string | undefined): string {
+  if (value == null || value === '') {
+    return ''
+  }
+
+  return moment(value, 'DD.MM.YYYY').format('YYYY-MM-DD')
+}
+
 export function currencyFormatter(value: number): string {
   return value.toLocaleString('de-DE') + ' €'
 }
@@ -22,5 +31,5 @@ export function convertToNumber(value?: string): number {
   if (value == null) {
     return 0
   }
-  return parseFloat(value.replace(',','.').replace(' ',''))
+  return parseFloat(value.replace(',', '.').replace(' ', ''))
 }

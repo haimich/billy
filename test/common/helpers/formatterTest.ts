@@ -1,4 +1,4 @@
-import { convertToNumber, dateFormatter, currencyFormatter } from '../../../src/common/helpers/formatters'
+import { convertToNumber, dateFormatterView, dateFormatterDb, currencyFormatter } from '../../../src/common/helpers/formatters'
 import { expect } from 'chai'
 
 describe('formatters', () => {
@@ -20,10 +20,17 @@ describe('formatters', () => {
     })
   })
 
-  describe('dateFormatter', () => {
+  describe('dateFormatterView', () => {
     it('should convert a string to a formatted date', () => {
-      const result = dateFormatter('2008-02-01')
+      const result = dateFormatterView('2008-02-01')
       expect(result).to.equal('01.02.2008')
+    })
+  })
+
+  describe('dateFormatterDb', () => {
+    it('should convert a string to a formatted date', () => {
+      const result = dateFormatterDb('01.02.2008')
+      expect(result).to.equal('2008-02-01')
     })
   })
 

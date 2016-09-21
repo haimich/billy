@@ -5,7 +5,7 @@ import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { listCustomers } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
-import { convertToNumber } from '../common/helpers/formatters'
+import { convertToNumber, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
 
 const Datetime = require('react-datetime')
@@ -86,8 +86,8 @@ export default class EditorComponent extends React.Component<any, {}> {
       invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer![0].id!,
       amount: convertToNumber(this.state.amount),
-      date_created: this.state.date_created!,
-      date_paid: this.state.date_paid,
+      date_created: dateFormatterDb(this.state.date_created),
+      date_paid: dateFormatterDb(this.state.date_paid),
       comment: this.state.comment,
       file_path: this.state.file && this.state.file.path
     }
@@ -294,8 +294,8 @@ export default class EditorComponent extends React.Component<any, {}> {
       newState = Object.assign(bill)
       newState.amount = String(newState.amount).replace('.', ',')
       newState.selectedCustomer = [bill.customer]
-      newState.date_created = bill.date_created
-      newState.date_paid = bill.date_paid
+      newState.date_created = dateFormatterView(bill.date_created)
+      newState.date_paid = dateFormatterView(bill.date_paid)
       newState = Object.assign(newState, { isNew: !isExisting })
       
       this.setState(newState)

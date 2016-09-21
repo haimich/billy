@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import BillDbModel from '../common/models/BillDbModel'
-import { dateFormatter, currencyFormatter } from '../common/helpers/formatters'
+import { dateFormatterView, currencyFormatter } from '../common/helpers/formatters'
 import { preventDragAndDrop } from '../common/helpers/dom' 
 import t from '../common/helpers/i18n'
 
@@ -72,8 +72,8 @@ export default class TableComponent extends React.Component<any, {}> {
           <TableHeaderColumn isKey={true} dataField="invoice_id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
           <TableHeaderColumn dataField="customer_name" width="300" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="amount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Betrag')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date_created" width="170" dataFormat={dateFormatter} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date_paid" width="190" dataFormat={dateFormatter} dataSort={true}>{t('Zahlung erhalten am')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date_created" width="170" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date_paid" width="190" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlung erhalten am')}</TableHeaderColumn>
           <TableHeaderColumn dataField="comment" width="400" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
 
         </BootstrapTable>
