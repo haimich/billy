@@ -10,6 +10,7 @@ interface Props {
   delete: (rowIds: String[]) => void;
   select: (row: BillDbModel, isSelected: boolean) => void;
   bills: BillDbModel[];
+  selectedInvoiceId?: string;
 }
 
 export default class TableComponent extends React.Component<any, {}> {
@@ -45,6 +46,7 @@ export default class TableComponent extends React.Component<any, {}> {
       clickToSelect: true,
       bgColor: '#d9edf7',
       onSelect: this.onSelectRow.bind(this),
+      selected: this.props.selectedInvoiceId ? [this.props.selectedInvoiceId] : [],
       hideSelectColumn: true
     }
     const editMode: CellEditClickMode = 'click'
@@ -90,5 +92,9 @@ export default class TableComponent extends React.Component<any, {}> {
   componentDidMount() {
     preventDragAndDrop(ReactDOM.findDOMNode(this))
     this.scrollDown()
+  }
+
+  componentWillReceiveProps(newProps) {
+    console.log(this.props.bills.forEach(el => console.log(el.date_created)))
   }
 }

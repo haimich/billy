@@ -5,7 +5,7 @@ import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { listCustomers } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
-import { convertToNumber, dateToString, stringToDate } from '../common/helpers/formatters'
+import { convertToNumber, dateToString } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
 
 const Datetime = require('react-datetime')
@@ -14,8 +14,8 @@ const Typeahead = require('react-bootstrap-typeahead').default
 interface State {
   invoice_id: string;
   amount?: string;
-  date_created?: Date;
-  date_paid?: Date;
+  date_created?: string;
+  date_paid?: string;
   comment: string;
   file_path: string;
   selectedCustomer?: Customer[];
@@ -86,8 +86,8 @@ export default class EditorComponent extends React.Component<any, {}> {
       invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer![0].id!,
       amount: convertToNumber(this.state.amount),
-      date_created: dateToString(this.state.date_created)!,
-      date_paid: dateToString(this.state.date_paid),
+      date_created: this.state.date_created!,
+      date_paid: this.state.date_paid,
       comment: this.state.comment,
       file_path: this.state.file && this.state.file.path
     }
@@ -276,12 +276,12 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   componentDidMount() {
-    // Hack: enable some features for Typeahead component
+    this.addFormValidation()
+
+    // Hack: enable htmlFor feature for Typeahead component
     const typeaheadInput = 
       ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelectorAll('input[name=customer]')[0]
     typeaheadInput.setAttribute('id', 'customer')
-
-    this.addFormValidation()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -294,8 +294,8 @@ export default class EditorComponent extends React.Component<any, {}> {
       newState = Object.assign(bill)
       newState.amount = String(newState.amount).replace('.', ',')
       newState.selectedCustomer = [bill.customer]
-      newState.date_created = stringToDate(bill.date_created)!
-      newState.date_paid = stringToDate(bill.date_paid)!
+      newState.date_created = bill.date_created
+      newState.date_paid = bill.date_paid
       newState = Object.assign(newState, { isNew: !isExisting })
       
       this.setState(newState)

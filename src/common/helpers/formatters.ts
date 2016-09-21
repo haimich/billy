@@ -14,12 +14,6 @@ export function dateToString(date: Date | undefined): string | undefined {
   }
 }
 
-export function stringToDate(date: string | undefined): Date | undefined {
-  if (date != null) {
-    return moment(date).toDate()
-  }
-}
-
 export function currencyFormatter(value: number): string {
   return value.toLocaleString('de-DE') + ' €'
 }
