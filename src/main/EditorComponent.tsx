@@ -5,7 +5,7 @@ import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { listCustomers } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
-import { convertToNumber, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
 
 const Datetime = require('react-datetime')
@@ -85,7 +85,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     const bill: Bill = {
       invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer![0].id!,
-      amount: convertToNumber(this.state.amount),
+      amount: numberFormatterDb(this.state.amount),
       date_created: dateFormatterDb(this.state.date_created),
       date_paid: dateFormatterDb(this.state.date_paid),
       comment: this.state.comment,
@@ -286,21 +286,21 @@ export default class EditorComponent extends React.Component<any, {}> {
 
   componentWillReceiveProps(nextProps) {
     const bill: BillDbModel = nextProps.bill
-    const isExisting = (bill != null)
+    const isNew = (bill == null)
 
-    if (isExisting) {
+    if (isNew) {
+      this.resetState()
+    } else {
       let newState: State
       
       newState = Object.assign(bill)
-      newState.amount = String(newState.amount).replace('.', ',')
+      newState.amount = numberFormatterView(bill.amount)
       newState.selectedCustomer = [bill.customer]
       newState.date_created = dateFormatterView(bill.date_created)
       newState.date_paid = dateFormatterView(bill.date_paid)
-      newState = Object.assign(newState, { isNew: !isExisting })
+      newState = Object.assign(newState, { isNew })
       
       this.setState(newState)
-    } else {
-      this.resetState()
     }
   }
 }

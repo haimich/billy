@@ -94,4 +94,8 @@ export default class TableComponent extends React.Component<any, {}> {
     this.scrollDown()
   }
 
+  componentWillReceiveProps(props) {
+    console.log(props.bills.forEach(el => console.log(el.date_created, ' - ', el.date_paid)))
+  }
+
 }

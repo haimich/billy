@@ -1,22 +1,39 @@
-import { convertToNumber, dateFormatterView, dateFormatterDb, currencyFormatter } from '../../../src/common/helpers/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, currencyFormatter } from '../../../src/common/helpers/formatters'
 import { expect } from 'chai'
 
 describe('formatters', () => {
 
-  describe('convertToNumber', () => {
+  describe('convertToNumberDb', () => {
     it('should convert a string with digits to a number', () => {
-      const result = convertToNumber('12345')
+      const result = numberFormatterDb('12345')
       expect(result).to.equal(12345)
     })
 
     it('should convert a string with a comma to a float', () => {
-      const result = convertToNumber('123,45')
+      const result = numberFormatterDb('123,45')
       expect(result).to.equal(123.45)
     })
 
     it('should convert a string with a dot to a float', () => {
-      const result = convertToNumber('123.45')
+      const result = numberFormatterDb('123.45')
       expect(result).to.equal(123.45)
+    })
+  })
+
+  describe('convertToNumberView', () => {
+    it('should convert a number to a string with digits', () => {
+      const result = numberFormatterView(12345)
+      expect(result).to.equal('12345')
+    })
+
+    it('should convert a float to a string with a comma', () => {
+      const result = numberFormatterView(123.45)
+      expect(result).to.equal('123,45')
+    })
+
+    it('should convert a float to a string with a comma', () => {
+      const result = numberFormatterView(123.45)
+      expect(result).to.equal('123,45')
     })
   })
 
