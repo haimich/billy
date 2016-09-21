@@ -3,7 +3,7 @@ const Chance = require('chance')
 const chance = new Chance()
 
 const NUMBER_OF_CUSTOMERS = 25
-const NUMBER_OF_BILLS = 5
+const NUMBER_OF_BILLS = 100
 let counter = 1
 
 // Deletes ALL existing entries!
