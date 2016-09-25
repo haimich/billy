@@ -57,8 +57,6 @@ export default class AppComponent extends React.Component<any, {}> {
       selectedBill: undefined,
       bills: [ createdBill ].concat(this.state.bills)
     })
-
-    this.notify(t('Speichern erfolgreich'), 'success')
   }
 
   async updateBill(bill: Bill) {
@@ -100,6 +98,8 @@ export default class AppComponent extends React.Component<any, {}> {
       }),
       selectedBill: undefined
     })
+
+    this.notify(t('Löschen erfolgreich'), 'success')
   }
 
   async updateCustomer(customer: Customer) {
@@ -152,6 +152,7 @@ export default class AppComponent extends React.Component<any, {}> {
           updateCustomer={this.updateCustomer.bind(this)}
           notify={this.notify.bind(this)}
         />
+
         <NotificationSystem ref="notificationSystem" />
       </div>
     )

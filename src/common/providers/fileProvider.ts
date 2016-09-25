@@ -14,12 +14,22 @@ export function open(fileName) {
 
 export async function copyToAppDir(billId: string, inputFilePath: string): Promise<string> {
   const appDir = await get('appDir')
-  const targetFolder = await ensureFolderExists(`${appDir}${BILL_FOLDER_SUFFIX}/${billId}`)
+  const targetFolder = await ensureFolderExists(`${appDir}${BILL_FOLDER_SUFFIX}/${encode(billId)}`)
 
   const filename = posix.basename(inputFilePath)
   const targetFilePath = `${targetFolder}/${filename}`
 
   return await copyRecursive(inputFilePath, targetFilePath)
+}
+
+export function encode(fileName: string): string {
+  return fileName
+    .replace(/ /g, '_')
+    .replace(/\/|\\/g, '-')
+    .replace(/<|>/g, '-')
+    .replace(/:|;|\|/g, '-')
+    .replace(/!|\?|\*/g, '-')
+    .replace(/\n|\r|\t/g, '-')
 }
 
 function copyRecursive(inputFilePath, targetFilePath): Promise<string> {
