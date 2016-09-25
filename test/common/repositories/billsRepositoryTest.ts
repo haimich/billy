@@ -1,5 +1,5 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
-import { init, listBills, getBillByInvoiceId } from '../../../src/common/repositories/billsRepository'
+import { init, billExists, listBills, getBillByInvoiceId } from '../../../src/common/repositories/billsRepository'
 import { createBill, deleteBillsByInvoiceIds, deleteBillsByInvoiceIdPattern, updateBill } from '../../../src/common/repositories/billsRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'
@@ -17,6 +17,25 @@ afterEach(async () => {
 })
 
 describe('billsRepository', () => {
+
+  describe('billExists', () => {
+    it('should return true if the bill exists', async () => {
+      const invoiceId = PREFIX + '123'
+
+      expect(await billExists(invoiceId)).to.be.false
+
+      const testDate = moment().toISOString()
+
+      const bill = await createBill({
+        invoice_id: invoiceId,
+        amount: 123.45,
+        customer_id: 1,
+        date_created: testDate
+      })
+
+      expect(await billExists(bill.invoice_id)).to.be.true
+    })
+  })
 
   describe('createBill', () => {
     it('should return the created bill', async () => {

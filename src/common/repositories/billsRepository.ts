@@ -8,6 +8,13 @@ export async function init(knexInstance): Promise<any> {
   db = knexInstance
 }
 
+export function billExists(invoiceId: string): Promise<boolean> {
+  return db('bills')
+    .select('invoice_id')
+    .where('invoice_id', invoiceId)
+    .then(rows => rows.length === 0 ? false : true)
+}
+
 export function createBill(bill: Bill): Promise<BillDbModel> {
   return db('bills')
     .insert(bill)
