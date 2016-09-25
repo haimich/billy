@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
+import { billExists } from '../common/repositories/billsRepository'
 import { listCustomers, createCustomer } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
@@ -22,6 +23,7 @@ interface State {
   customerList: Customer[];
   customerTelephone?: string;
   isNew: boolean;
+  invoiceIdValid: boolean;
   file?: File;
 }
 
@@ -37,7 +39,8 @@ export default class EditorComponent extends React.Component<any, {}> {
   state: State
   props: Props
   refs: {
-    typeahead: any
+    typeahead: any,
+    invoiceId: any
   }
 
   dragCounter: number
@@ -68,6 +71,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       selectedCustomer: undefined,
       customerList: [],
       isNew: true,
+      invoiceIdValid: true,
       file: undefined
     }
   }
@@ -140,6 +144,19 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
   }
 
+  async handleIdChange(event: any) {
+    const invoiceId = event.target.value
+    
+    try {
+      this.setState({
+        invoice_id: invoiceId,
+        invoiceIdValid: await !billExists(invoiceId)
+      })
+    } catch (err) {
+      console.error('Could not check if bill exists', err)
+    }
+  }
+
   async handleCustomerChange(selected: any) {
     if (selected == null || selected.length !== 1) {
       return
@@ -199,12 +216,21 @@ export default class EditorComponent extends React.Component<any, {}> {
                     type="text"
                     className="form-control"
                     id="id"
+                    ref="invoiceId"
                     readOnly={!this.state.isNew}
                     required
                     value={this.state.invoice_id}
-                    onChange={(event: any) => this.setState({ invoice_id: event.target.value })}
+                    onChange={this.handleIdChange.bind(this)}
                     autoFocus
                     />
+                  { this.state.invoiceIdValid ? null : 
+                    <div
+                      tabIndex={-1}
+                      className="sub-input"
+                      style={{color: 'red'}}>
+                      {t('Die Rechnungsnr. existiert bereits')}
+                    </div>
+                  }
                 </div>
               </div>
               <div className="form-group">
@@ -227,7 +253,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     value={this.selectedCustomerTelephone()}
                     onChange={this.handleCustomerTelephoneChange.bind(this)}
                     placeholder={t('keine Telefonnr.')}
-                    className="customer-telephone"
+                    className="sub-input"
                     tabIndex={-1}
                   />
                 </div>
@@ -357,6 +383,7 @@ export default class EditorComponent extends React.Component<any, {}> {
         date_paid: dateFormatterView(bill.date_paid),
         amount: numberFormatterView(bill.amount),
         comment: bill.comment,
+        invoiceIdValid: true,
         isNew
       })
     }

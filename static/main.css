@@ -57,21 +57,22 @@ textarea {
   -webkit-filter: blur(2px);
   filter: blur(2px);
 }
+
 #editor-container.busy .overlay {
   visibility: visible;
   transition: visibility 0s, opacity 0s linear;
   opacity: 1;
 }
 
-.fileview {
-  cursor: pointer;
-}
-
-.customer-telephone {
+#editor-container .sub-input {
   width: 96%;
   border: none;
-  color: #7b7b7b;
-  font-size: 13px;
   margin: 5px 0px -8px 13px;
   padding: 4px;
+  font-size: 13px;  
+  color: #7b7b7b;
+}
+
+.fileview {
+  cursor: pointer;
 }
