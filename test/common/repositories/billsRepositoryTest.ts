@@ -1,6 +1,6 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
 import { init, billExists, listBills, getBillByInvoiceId } from '../../../src/common/repositories/billsRepository'
-import { createBill, deleteBillsByInvoiceIds, deleteBillsByInvoiceIdPattern, updateBill } from '../../../src/common/repositories/billsRepository'
+import { createBill, deleteBillByInvoiceId, deleteBillsByInvoiceIdPattern, updateBill } from '../../../src/common/repositories/billsRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'
 
@@ -115,32 +115,20 @@ describe('billsRepository', () => {
     })
   })
 
-  describe('deleteBillsByInvoiceIds', () => {
+  describe('deleteBillByInvoiceId', () => {
     it('should delete the bills that match the invoice ids', async () => {
-      const bill1 = await createBill({
+      const bill = await createBill({
         invoice_id: PREFIX + '123',
         amount: 123.45,
         customer_id: 1,
         date_created: moment().toISOString()
       })
-      const bill2 = await createBill({
-        invoice_id: PREFIX + '456',
-        amount: 123.45,
-        customer_id: 1,
-        date_created: moment().toISOString()
-      })
-      const result = await deleteBillsByInvoiceIds([PREFIX + '123', PREFIX + '456'])
 
-      await createBill({
-        invoice_id: PREFIX + '789',
-        amount: 123.45,
-        customer_id: 1,
-        date_created: moment().toISOString()
-      })
+      expect(await billExists(PREFIX + '123')).to.be.true
+      
+      const result = await deleteBillByInvoiceId(PREFIX + '123')
 
-      expect(await getBillByInvoiceId(PREFIX + '123')).to.be.undefined
-      expect(await getBillByInvoiceId(PREFIX + '456')).to.be.undefined
-      expect(await getBillByInvoiceId(PREFIX + '789')).to.be.ok
+      expect(await billExists(PREFIX + '123')).to.be.false
     })
   })
 

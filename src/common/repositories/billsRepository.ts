@@ -155,10 +155,10 @@ export async function importBills(bills): Promise<any> {
   }
 }
 
-export function deleteBillsByInvoiceIds(invoiceIds): Promise<any> {
+export function deleteBillByInvoiceId(invoiceId: string): Promise<any> {
   return db('bills')
     .delete()
-    .whereIn('invoice_id', invoiceIds)
+    .where('invoice_id', invoiceId)
 }
 
 export function deleteBillsByInvoiceIdPattern(idPattern: string): Promise<any> {
