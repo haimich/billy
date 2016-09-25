@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
-import { listCustomers } from '../common/repositories/customersRepository'
+import { listCustomers, createCustomer } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
@@ -20,6 +20,7 @@ interface State {
   file_path: string;
   selectedCustomer?: Customer[];
   customerList: Customer[];
+  customerTelephone?: string;
   isNew: boolean;
   file?: File;
 }
@@ -136,6 +137,31 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
   }
 
+  async handleCustomerChange(selected: any) {
+    if (selected == null || selected.length !== 1) {
+      return
+    }
+
+    if (selected[0].customOption) {
+      let customer
+
+      try {
+        customer = await createCustomer({
+          name: selected[0].name
+        })
+      } catch (err) {
+        console.error('Could not create customer', err)
+      }
+
+      this.setState({
+        selectedCustomer: [customer],
+        customerList: [customer].concat(this.state.customerList)
+      })
+    } else {
+      this.setState({ selectedCustomer: selected })
+    }
+  }
+
   handleCustomerTelephoneChange(event: any) {
     if (this.state.selectedCustomer && this.state.selectedCustomer[0]) {
       this.setState({
@@ -145,7 +171,7 @@ export default class EditorComponent extends React.Component<any, {}> {
           telephone: event.target.value // new number
         }]
       })
-    } 
+    }
   }
 
   selectedCustomerTelephone() {
@@ -183,26 +209,24 @@ export default class EditorComponent extends React.Component<any, {}> {
                 <div className="col-sm-8">
                   <Typeahead
                     options={this.state.customerList}
-                    allowNew={false}
-                    onChange={selected => this.setState({ selectedCustomer: selected })}
+                    allowNew={true}
+                    onChange={this.handleCustomerChange.bind(this)}
                     selected={this.state.selectedCustomer}
                     labelKey={'name'}
                     ref='typeahead'
                     name="customer"
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
+                    newSelectionPrefix={t('Kunden anlegen: ')}
                     tabIndex={2}
                     />
-                  {this.state.selectedCustomer && this.state.selectedCustomer[0] 
-                    ? <input
-                        value={this.selectedCustomerTelephone()}
-                        onChange={this.handleCustomerTelephoneChange.bind(this)}
-                        placeholder={t('keine Telefonnr.')}
-                        className="customer-telephone"
-                        tabIndex={-1}
-                      />
-                    : null
-                  }
+                  <input
+                    value={this.selectedCustomerTelephone()}
+                    onChange={this.handleCustomerTelephoneChange.bind(this)}
+                    placeholder={t('keine Telefonnr.')}
+                    className="customer-telephone"
+                    tabIndex={-1}
+                  />
                 </div>
               </div>
               <div className="form-group">
