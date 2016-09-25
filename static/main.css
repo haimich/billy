@@ -66,3 +66,11 @@ textarea {
 .fileview {
   cursor: pointer;
 }
+
+.customer-telephone {
+  border: none;
+  color: #7b7b7b;
+  font-size: 13px;
+  margin: 5px 0px -10px 13px;
+  padding: 4px;
+}

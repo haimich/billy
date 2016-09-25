@@ -136,6 +136,26 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
   }
 
+  handleCustomerTelephoneChange(event: any) {
+    if (this.state.selectedCustomer && this.state.selectedCustomer[0]) {
+      this.setState({
+        selectedCustomer: [{
+          id: this.state.selectedCustomer[0].id,
+          name: this.state.selectedCustomer[0].name,
+          telephone: event.target.value // new number
+        }]
+      })
+    } 
+  }
+
+  selectedCustomerTelephone() {
+    if (this.state.selectedCustomer && this.state.selectedCustomer[0] && this.state.selectedCustomer[0].telephone) {
+      return this.state.selectedCustomer[0].telephone
+    } else {
+      return ''
+    }
+  }
+
   render() {
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
@@ -171,7 +191,18 @@ export default class EditorComponent extends React.Component<any, {}> {
                     name="customer"
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
+                    tabIndex={2}
                     />
+                  {this.state.selectedCustomer && this.state.selectedCustomer[0] 
+                    ? <input
+                        value={this.selectedCustomerTelephone()}
+                        onChange={this.handleCustomerTelephoneChange.bind(this)}
+                        placeholder={t('keine Telefonnr.')}
+                        className="customer-telephone"
+                        tabIndex={-1}
+                      />
+                    : null
+                  }
                 </div>
               </div>
               <div className="form-group">
