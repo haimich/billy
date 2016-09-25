@@ -57,6 +57,8 @@ export default class AppComponent extends React.Component<any, {}> {
       selectedBill: undefined,
       bills: [ createdBill ].concat(this.state.bills)
     })
+
+    this.notify(t('Speichern erfolgreich'), 'success')
   }
 
   async updateBill(bill: Bill) {
@@ -95,10 +97,9 @@ export default class AppComponent extends React.Component<any, {}> {
           }
         }
         return true
-      })
+      }),
+      selectedBill: undefined
     })
-
-    this.notify(t('Löschen erfolgreich', {count: billIds.length}), 'success')
   }
 
   async updateCustomer(customer: Customer) {

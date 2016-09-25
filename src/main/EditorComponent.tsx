@@ -122,7 +122,7 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   async checkValidity(bill: Bill): Promise<string | undefined> {
-    if (await billExists(bill.invoice_id)) {
+    if (this.state.isNew && await billExists(bill.invoice_id)) {
       return t('Datenbank Fehler duplicate id')
     }
     
