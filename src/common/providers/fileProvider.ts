@@ -5,6 +5,7 @@ const openWithOs = require('open')
 import { stat } from 'fs'
 import { ncp } from 'ncp'
 import { posix } from 'path'
+import * as rimraf from 'rimraf'
 
 export const BILL_FOLDER_SUFFIX = '/files'
 
@@ -12,14 +13,18 @@ export function open(fileName) {
   openWithOs(fileName)
 }
 
-export async function copyToAppDir(billId: string, inputFilePath: string): Promise<string> {
-  const appDir = await get('appDir')
-  const targetFolder = await ensureFolderExists(`${appDir}${BILL_FOLDER_SUFFIX}/${encode(billId)}`)
+export async function copyToAppDir(invoiceId: string, inputFilePath: string): Promise<string> {
+  const targetFolder = await ensureFolderExists(await getFilePath(invoiceId))
 
   const filename = posix.basename(inputFilePath)
   const targetFilePath = `${targetFolder}/${filename}`
 
   return await copyRecursive(inputFilePath, targetFilePath)
+}
+
+async function getFilePath(invoiceId: string): Promise<string> {
+  const appDir = await get('appDir')
+  return `${appDir}${BILL_FOLDER_SUFFIX}/${encode(invoiceId)}`
 }
 
 export function encode(fileName: string): string {
@@ -76,4 +81,21 @@ export function exists(path: string): Promise<boolean> {
       }
     })
   })
+}
+
+function rmrf(filePattern: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    rimraf(filePattern, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+export async function deleteFilesByInvoiceId(invoiceId: string): Promise<any> {
+  const path = await getFilePath(invoiceId)
+  await rmrf(path)
 }

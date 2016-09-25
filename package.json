@@ -5,10 +5,10 @@
   "main": "./build/src/index.js",
   "scripts": {
     "setup": "npm run rebuild && npm run recreate-database",
-    "recreate-database": "rm -f bills.sqlite && knex migrate:latest && knex seed:run",
+    "recreate-database": "rimraf bills.sqlite && knex migrate:latest && knex seed:run",
     "build": "npm run clean && tsc && npm run copy-html",
-    "clean": "rm -rf build/*",
-    "clean:mac": "rm -rf ~/Library/Application\\ Support/billy/Settings",
+    "clean": "rimraf build/*",
+    "clean:mac": "rimraf ~/Library/Application\\ Support/billy/Settings",
     "prestart": "npm run build",
     "start": "electron .",
     "test": "npm run build && electron-mocha build/test/**/*Test.js",
@@ -48,6 +48,7 @@
     "react-datetime": "^2.6.0",
     "react-dom": "^15.3.0",
     "react-notification-system": "^0.2.9",
+    "rimraf": "^2.5.4",
     "sqlite3": "^3.1.4"
   },
   "devDependencies": {
@@ -62,6 +63,7 @@
     "@types/react-bootstrap-table": "^2.3.29",
     "@types/react-dom": "^0.14.14",
     "@types/react-notification-system": "^0.2.28",
+    "@types/rimraf": "0.0.28",
     "chai": "^3.5.0",
     "chance": "^1.0.4",
     "chokidar-cli": "^1.2.0",

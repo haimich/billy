@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { getBillByInvoiceId, createBill, updateBill, deleteBillByInvoiceId } from '../common/repositories/billsRepository'
 import { updateCustomer } from '../common/repositories/customersRepository'
-import { copyToAppDir } from '../common/providers/fileProvider'
+import { copyToAppDir, deleteFilesByInvoiceId } from '../common/providers/fileProvider'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
@@ -89,6 +89,7 @@ export default class AppComponent extends React.Component<any, {}> {
     try {
       for (let invoiceId of billIds) {
         await deleteBillByInvoiceId(invoiceId)
+        await deleteFilesByInvoiceId(invoiceId)
       }
     } catch (err) {
       this.handleError(err)
