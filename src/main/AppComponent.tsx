@@ -63,6 +63,11 @@ export default class AppComponent extends React.Component<any, {}> {
     let updatedBill
 
     try {
+      if (bill.file_path != null) {
+        const newFilePath = await copyToAppDir(bill.invoice_id, bill.file_path)
+        bill.file_path = newFilePath
+      }
+      
       updatedBill = await updateBill(bill)
     } catch (err) {
       this.handleError(err)

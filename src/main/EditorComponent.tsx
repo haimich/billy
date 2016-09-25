@@ -8,6 +8,7 @@ import { listCustomers, createCustomer } from '../common/repositories/customersR
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
+import * as path from 'path'
 
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
@@ -18,7 +19,6 @@ interface State {
   date_created?: string;
   date_paid?: string;
   comment: string;
-  file_path: string;
   selectedCustomer?: Customer[];
   customerList: Customer[];
   customerTelephone?: string;
@@ -68,7 +68,6 @@ export default class EditorComponent extends React.Component<any, {}> {
       date_created: undefined,
       date_paid: undefined,
       comment: '',
-      file_path: '',
       selectedCustomer: undefined,
       customerList: [],
       isNew: true,
@@ -376,7 +375,10 @@ export default class EditorComponent extends React.Component<any, {}> {
     } else {
       this.setState({
         invoice_id: bill.invoice_id,
-        file_path: bill.file_path,
+        file: {
+          path: bill.file_path,
+          name: bill.file_path && path.basename(bill.file_path)
+        },
         selectedCustomer: [bill.customer],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),
