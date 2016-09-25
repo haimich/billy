@@ -32,6 +32,7 @@ interface Props {
   saveBill: (row: Bill) => void;
   updateCustomer: (row: Customer) => void;
   bill?: BillDbModel;
+  notify: any;
 }
 
 export default class EditorComponent extends React.Component<any, {}> {
@@ -101,7 +102,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     try {
       const result = await this.checkValidity(bill)
       if (result) {
-        console.log('Is not valid', result)
+        this.props.notify(result, 'error')
         return
       }
     } catch (err) {

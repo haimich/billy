@@ -98,11 +98,7 @@ export default class AppComponent extends React.Component<any, {}> {
       })
     })
 
-    notifications.addNotification({
-      message: t('Löschen erfolgreich', {count: billIds.length}),
-      level: 'success',
-      position: 'tc'
-    })
+    this.notify(t('Löschen erfolgreich', {count: billIds.length}), 'success')
   }
 
   async updateCustomer(customer: Customer) {
@@ -113,17 +109,22 @@ export default class AppComponent extends React.Component<any, {}> {
     }
   }
 
+  notify(message: string, level: 'error' | 'success') {
+    notifications.addNotification({
+      message,
+      level,
+      position: 'tc'
+    })
+  }
+
   handleError(err: Error) {
     let message = t('Datenbank-Fehler') + err.message
+
     if (err['code'] === 'SQLITE_CONSTRAINT') {
       message = t('Datenbank Fehler duplicate id')
     }
 
-    notifications.addNotification({
-      message,
-      level: 'error',
-      position: 'tc'
-    })
+    this.notify(message, 'error')
   }
 
   billSelected(bill: BillDbModel, isSelected: boolean) {
@@ -148,6 +149,7 @@ export default class AppComponent extends React.Component<any, {}> {
           saveBill={this.saveBill.bind(this)}
           updateBill={this.updateBill.bind(this)}
           updateCustomer={this.updateCustomer.bind(this)}
+          notify={this.notify.bind(this)}
         />
         <NotificationSystem ref="notificationSystem" />
       </div>
