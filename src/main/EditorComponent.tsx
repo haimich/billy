@@ -85,7 +85,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
   }
 
-  onSave(event) {
+  async onSave(event) {
     event.preventDefault()
 
     const bill: Bill = {
@@ -98,6 +98,17 @@ export default class EditorComponent extends React.Component<any, {}> {
       file_path: this.state.file && this.state.file.path
     }
 
+    try {
+      const result = await this.checkValidity(bill)
+      if (result) {
+        console.log('Is not valid', result)
+        return
+      }
+    } catch (err) {
+      console.error('checkValidity threw an error', err)
+      return
+    }
+
     if (this.state.isNew) {
       this.props.saveBill(bill)
     } else {
@@ -107,6 +118,14 @@ export default class EditorComponent extends React.Component<any, {}> {
     this.props.updateCustomer(this.state.selectedCustomer![0])
 
     this.resetState()
+  }
+
+  async checkValidity(bill: Bill): Promise<string | undefined> {
+    if (await billExists(bill.invoice_id)) {
+      return t('Datenbank Fehler duplicate id')
+    }
+    
+    return
   }
 
   getFile(files) {
@@ -141,19 +160,6 @@ export default class EditorComponent extends React.Component<any, {}> {
     event.preventDefault()
     if (this.state.file != null) {
       open(this.state.file.path)
-    }
-  }
-
-  async handleIdChange(event: any) {
-    const invoiceId = event.target.value
-    
-    try {
-      this.setState({
-        invoice_id: invoiceId,
-        invoiceIdValid: await !billExists(invoiceId)
-      })
-    } catch (err) {
-      console.error('Could not check if bill exists', err)
     }
   }
 
@@ -220,17 +226,9 @@ export default class EditorComponent extends React.Component<any, {}> {
                     readOnly={!this.state.isNew}
                     required
                     value={this.state.invoice_id}
-                    onChange={this.handleIdChange.bind(this)}
+                    onChange={(event: any) => this.setState({ invoice_id: event.target.value})}
                     autoFocus
                     />
-                  { this.state.invoiceIdValid ? null : 
-                    <div
-                      tabIndex={-1}
-                      className="sub-input"
-                      style={{color: 'red'}}>
-                      {t('Die Rechnungsnr. existiert bereits')}
-                    </div>
-                  }
                 </div>
               </div>
               <div className="form-group">
