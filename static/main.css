@@ -68,6 +68,7 @@ textarea {
 }
 
 .customer-telephone {
+  width: 96%;
   border: none;
   color: #7b7b7b;
   font-size: 13px;

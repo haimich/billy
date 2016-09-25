@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { getBillByInvoiceId, createBill, updateBill, deleteBillsByInvoiceIds } from '../common/repositories/billsRepository'
+import { updateCustomer } from '../common/repositories/customersRepository'
 import { copyToAppDir } from '../common/providers/fileProvider'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
+import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
 import EditorComponent from './EditorComponent'
 import * as NotificationSystem from 'react-notification-system'
@@ -36,7 +38,7 @@ export default class AppComponent extends React.Component<any, {}> {
     notifications = this.refs.notificationSystem
   }
 
-  async save(bill: Bill) {
+  async saveBill(bill: Bill) {
     let createdBill
 
     try {
@@ -57,7 +59,7 @@ export default class AppComponent extends React.Component<any, {}> {
     })
   }
 
-  async update(bill: Bill) {
+  async updateBill(bill: Bill) {
     let updatedBill
 
     try {
@@ -78,7 +80,7 @@ export default class AppComponent extends React.Component<any, {}> {
     })
   }
 
-  async delete(billIds: String[]) {
+  async deleteBill(billIds: String[]) {
     try {
       await deleteBillsByInvoiceIds(billIds)
     } catch (err) {
@@ -101,6 +103,14 @@ export default class AppComponent extends React.Component<any, {}> {
       level: 'success',
       position: 'tc'
     })
+  }
+
+  async updateCustomer(customer: Customer) {
+    try {
+      await updateCustomer(customer)
+    } catch (err) {
+      this.handleError(err)
+    }
   }
 
   handleError(err: Error) {
@@ -129,14 +139,15 @@ export default class AppComponent extends React.Component<any, {}> {
       <div>
         <TableComponent
           bills={this.state.bills}
-          delete={this.delete.bind(this)}
+          delete={this.deleteBill.bind(this)}
           select={this.billSelected.bind(this)}
           selectedInvoiceId={this.state.selectedBill && this.state.selectedBill.invoice_id}
         />
         <EditorComponent
           bill={this.state.selectedBill}
-          save={this.save.bind(this)}
-          update={this.update.bind(this)}
+          saveBill={this.saveBill.bind(this)}
+          updateBill={this.updateBill.bind(this)}
+          updateCustomer={this.updateCustomer.bind(this)}
         />
         <NotificationSystem ref="notificationSystem" />
       </div>

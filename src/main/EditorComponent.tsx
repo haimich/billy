@@ -26,8 +26,9 @@ interface State {
 }
 
 interface Props {
-  update: (row: Bill) => void;
-  save: (row: Bill) => void;
+  updateBill: (row: Bill) => void;
+  saveBill: (row: Bill) => void;
+  updateCustomer: (row: Customer) => void;
   bill?: BillDbModel;
 }
 
@@ -94,10 +95,12 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
 
     if (this.state.isNew) {
-      this.props.save(bill)
+      this.props.saveBill(bill)
     } else {
-      this.props.update(bill)
+      this.props.updateBill(bill)
     }
+
+    this.props.updateCustomer(this.state.selectedCustomer![0])
 
     this.resetState()
   }
