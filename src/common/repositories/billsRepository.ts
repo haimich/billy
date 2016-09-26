@@ -144,7 +144,6 @@ export async function importBills(bills): Promise<any> {
       await createBill(bill)
     } catch (err) {
       failed.push(err)
-      console.log(err)
       continue
     }
     successful.push(bill)

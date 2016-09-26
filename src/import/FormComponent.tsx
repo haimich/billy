@@ -86,6 +86,8 @@ export default class FormComponent extends React.Component<any, {}> {
 
         const results = await importBills(bills)
 
+        console.log(results)
+
         this.setState({
           failed: results.failed,
           successful: results.successful
@@ -98,7 +100,7 @@ export default class FormComponent extends React.Component<any, {}> {
 
   async getCustomerNames() {
     const customers = await listCustomers()
-    return customers.reduce((lookup, c) => (lookup[c.name] = c.id, lookup))
+    return customers.reduce((lookup, c) => (lookup[c.name] = c.id, lookup), {})
   }
 
   render() {
