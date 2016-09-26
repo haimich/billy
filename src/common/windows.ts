@@ -40,7 +40,7 @@ export function openMainWindow() {
 }
 
 export function openImportWindow() {
-  importWindow = new BrowserWindow({ width: 380, height: 260, show: false, parent: mainWindow })
+  importWindow = new BrowserWindow({ width: 380, height: 260, show: false, parent: mainWindow, modal: true })
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
 
   importWindow.once('ready-to-show', () => {
