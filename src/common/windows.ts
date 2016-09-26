@@ -69,7 +69,7 @@ export function openImportWindow() {
 }
 
 export function allWindowsClosed() {
-  return (mainWindow === null && onboardingWindow === null && importWindow === null)
+  return (mainWindow == null && onboardingWindow == null && importWindow == null)
 }
 
 export function reload(focusedWindow) {
