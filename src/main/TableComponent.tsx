@@ -8,7 +8,7 @@ import t from '../common/helpers/i18n'
 
 interface Props {
   delete: (rowIds: String[]) => void;
-  select: (row: BillDbModel, isSelected: boolean) => void;
+  select: (isSelected: boolean, row?: BillDbModel) => void;
   bills: BillDbModel[];
   selectedInvoiceId?: string;
 }
@@ -18,7 +18,7 @@ export default class TableComponent extends React.Component<any, {}> {
   props: Props
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
-    this.props.select(row, isSelected)
+    this.props.select(isSelected, row)
     return true
   }
 
@@ -32,6 +32,10 @@ export default class TableComponent extends React.Component<any, {}> {
     }
   }
 
+  handleAdd(event) {
+    this.props.select(false, undefined)
+  }
+
   render() {
     const options: Options = {
       sortName: 'date_created',
@@ -39,6 +43,7 @@ export default class TableComponent extends React.Component<any, {}> {
       afterDeleteRow: this.onDeleteRows.bind(this),
       deleteText: t('Löschen'),
       noDataText: t('Keine Einträge'),
+      insertText: t('Neu'),
       handleConfirmDeleteRow: this.handleConfirm.bind(this)
     }
     const selectRowProp: any = {
@@ -62,7 +67,7 @@ export default class TableComponent extends React.Component<any, {}> {
           searchPlaceholder={t('Suchen')}
           multiColumnSearch={false}
           columnFilter={false}
-          insertRow={false}
+          insertRow={true}
           deleteRow={true}
           selectRow={selectRowProp}
           exportCSV={false}
@@ -92,6 +97,8 @@ export default class TableComponent extends React.Component<any, {}> {
   componentDidMount() {
     preventDragAndDrop(ReactDOM.findDOMNode(this))
     this.scrollDown()
+
+    document.querySelector(`.react-bs-table-add-btn`).addEventListener('click', this.handleAdd.bind(this))
   }
 
 }

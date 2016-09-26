@@ -59,6 +59,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     this.setState(this.getDefaultState())
     this.refs.typeahead.getInstance().clear()
     this.fetchTypeaheadData()
+    setTimeout(() => this.refs.invoiceId.focus())
     this.dragCounter = 0;
   }
 

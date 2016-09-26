@@ -136,7 +136,7 @@ export default class AppComponent extends React.Component<any, {}> {
     this.notify(message, 'error')
   }
 
-  billSelected(bill: BillDbModel, isSelected: boolean) {
+  billSelected(isSelected: boolean, bill?: BillDbModel) {
     if (isSelected) {
       this.setState({ selectedBill: bill })
     } else {
