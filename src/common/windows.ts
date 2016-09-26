@@ -5,7 +5,14 @@ import { isDev, getAppFolder } from './helpers/app'
 let mainWindow, onboardingWindow, importWindow
 
 export function openOnboardingWindow() {
-  onboardingWindow = new BrowserWindow({ width: 450, height: 338, show: false })
+  onboardingWindow = new BrowserWindow({
+    width: 450,
+    height: 320,
+    show: false,
+    resizable: false,
+    titleBarStyle: 'hidden',
+    type: 'splash'
+  })
   onboardingWindow.loadURL(`file://${getAppFolder()}/src/onboarding.html`)
 
   onboardingWindow.once('ready-to-show', () => {
@@ -40,7 +47,13 @@ export function openMainWindow() {
 }
 
 export function openImportWindow() {
-  importWindow = new BrowserWindow({ width: 380, height: 260, show: false, parent: mainWindow, modal: true })
+  importWindow = new BrowserWindow({
+    width: 380,
+    height: 260,
+    show: false,
+    parent: mainWindow,
+    modal: true
+  })
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
 
   importWindow.once('ready-to-show', () => {
