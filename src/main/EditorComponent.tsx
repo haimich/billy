@@ -41,7 +41,8 @@ export default class EditorComponent extends React.Component<any, {}> {
   props: Props
   refs: {
     typeahead: any,
-    invoiceId: any
+    invoiceId: any,
+    date_created: any
   }
 
   dragCounter: number
@@ -124,7 +125,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     if (this.state.isNew && await billExists(bill.invoice_id)) {
       return t('Datenbank Fehler duplicate id')
     }
-    
+
     return
   }
 
@@ -186,6 +187,8 @@ export default class EditorComponent extends React.Component<any, {}> {
     } else {
       this.setState({ selectedCustomer: selected })
     }
+
+    this.revalidate(ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelector('input[name=customer]'))
   }
 
   handleCustomerTelephoneChange(event: any) {
@@ -198,6 +201,11 @@ export default class EditorComponent extends React.Component<any, {}> {
         }]
       })
     }
+  }
+
+  handleDateCreatedChange(newDate: Date) {
+    this.setState({ date_created: newDate })
+    this.revalidate(ReactDOM.findDOMNode(this.refs.date_created).querySelector('input'))
   }
 
   selectedCustomerTelephone() {
@@ -226,7 +234,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     readOnly={!this.state.isNew}
                     required
                     value={this.state.invoice_id}
-                    onChange={(event: any) => this.setState({ invoice_id: event.target.value})}
+                    onChange={(event: any) => this.setState({ invoice_id: event.target.value })}
                     autoFocus
                     />
                 </div>
@@ -253,12 +261,13 @@ export default class EditorComponent extends React.Component<any, {}> {
                     placeholder={t('keine Telefonnr.')}
                     className="sub-input"
                     tabIndex={-1}
-                  />
+                    />
                 </div>
               </div>
               <div className="form-group">
                 <label htmlFor="date_created" className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
                 <Datetime
+                  ref="date_created"
                   value={this.state.date_created}
                   inputProps={{
                     id: 'date_created',
@@ -268,7 +277,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  onChange={newDate => this.setState({ date_created: newDate })}
+                  onChange={this.handleDateCreatedChange.bind(this)}
                   />
               </div>
               <div className="form-group">
@@ -344,11 +353,7 @@ export default class EditorComponent extends React.Component<any, {}> {
     const inputs: Element[] = [...ReactDOM.findDOMNode(this).querySelectorAll('input')]
 
     for (let input of inputs) {
-      input.addEventListener('input', (event) => {
-        const input: any = event.target;
-        input.closest('.form-group').classList.remove('has-error')
-        input.checkValidity()
-      })
+      input.addEventListener('input', event => this.revalidate(event.target))
 
       input.addEventListener('invalid', (event) => {
         const input: any = event.target;
@@ -357,13 +362,19 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
   }
 
+  revalidate(input) {
+    input.closest('.form-group').classList.remove('has-error')
+    setTimeout(() => input.checkValidity())
+  }
+
   componentDidMount() {
     this.addFormValidation()
 
-    // Hack: enable htmlFor feature for Typeahead component
-    const typeaheadInput = 
-      ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelectorAll('input[name=customer]')[0]
+    // Hack: enable features for Typeahead component
+    const typeaheadInput =
+      ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelector('input[name=customer]')
     typeaheadInput.setAttribute('id', 'customer')
+    typeaheadInput.setAttribute('required', 'true')
   }
 
   componentWillReceiveProps(nextProps) {
