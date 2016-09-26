@@ -143,7 +143,8 @@ export async function importBills(bills): Promise<any> {
     try {
       await createBill(bill)
     } catch (err) {
-      failed.push(bill)
+      failed.push(err)
+      console.log(err)
       continue
     }
     successful.push(bill)

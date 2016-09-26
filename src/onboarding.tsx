@@ -3,8 +3,6 @@ import * as ReactDOM from 'react-dom'
 import AppComponent from './onboarding/AppComponent'
 
 async function init() {
-    debugger
-
   ReactDOM.render(
     <div>
       <AppComponent />

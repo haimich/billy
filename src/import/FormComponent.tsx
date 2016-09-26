@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom';
 import t from '../common/helpers/i18n'
 import { importCsv } from '../common/providers/importProvider'
 import { importBills, deleteAll } from '../common/repositories/billsRepository'
+import { listCustomers, createCustomer } from '../common/repositories/customersRepository'
+import Customer from '../common/models/CustomerModel'
 import SummaryComponent from './SummaryComponent'
 import Bill from '../common/models/BillModel'
 
@@ -63,6 +65,25 @@ export default class FormComponent extends React.Component<any, {}> {
         if (this.state.shouldDelete) {
           await deleteAll()
         }
+
+        let customerNames = await this.getCustomerNames()
+
+        const createCustomers: Promise<Customer>[] = []
+        bills.forEach(bill => {
+          if (! (bill.customer in customerNames)) {
+            createCustomers.push(createCustomer({ name: bill.customer }))
+          }
+        })
+
+        await Promise.all(createCustomers)
+
+        customerNames = await this.getCustomerNames()
+
+        bills.forEach(bill => {
+          bill.customer_id = customerNames[bill.customer]
+          delete bill.customer
+        })
+
         const results = await importBills(bills)
 
         this.setState({
@@ -73,6 +94,11 @@ export default class FormComponent extends React.Component<any, {}> {
         console.error('Import failed', err)
       }
     }
+  }
+
+  async getCustomerNames() {
+    const customers = await listCustomers()
+    return customers.reduce((lookup, c) => (lookup[c.name] = c.id, lookup))
   }
 
   render() {

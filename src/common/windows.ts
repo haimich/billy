@@ -51,9 +51,7 @@ export function openImportWindow() {
   importWindow = new BrowserWindow({
     width: 380,
     height: 260,
-    show: false,
-    parent: mainWindow,
-    modal: true
+    show: false
   })
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
 
