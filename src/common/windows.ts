@@ -5,8 +5,12 @@ import { isDev, getAppFolder } from './helpers/app'
 let mainWindow, onboardingWindow, importWindow
 
 export function openOnboardingWindow() {
-  onboardingWindow = new BrowserWindow({ width: 450, height: 338 })
+  onboardingWindow = new BrowserWindow({ width: 450, height: 338, show: false })
   onboardingWindow.loadURL(`file://${getAppFolder()}/src/onboarding.html`)
+
+  onboardingWindow.once('ready-to-show', () => {
+    onboardingWindow.show()
+  })
 
   ipcMain.on('onboarding-finished', () => {
     openMainWindow()
@@ -19,12 +23,16 @@ export function openOnboardingWindow() {
 }
 
 export function openMainWindow() {
-  mainWindow = new BrowserWindow({ width: 1200, height: 800 })
+  mainWindow = new BrowserWindow({ width: 1200, height: 800, show: false })
   mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
 
   if (isDev) {
     mainWindow.webContents.openDevTools()
   }
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -32,8 +40,12 @@ export function openMainWindow() {
 }
 
 export function openImportWindow() {
-  importWindow = new BrowserWindow({ width: 380, height: 260 })
+  importWindow = new BrowserWindow({ width: 380, height: 260, show: false })
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
+
+  importWindow.once('ready-to-show', () => {
+    importWindow.show()
+  })
 
   ipcMain.on('import-finished', () => {
     importWindow.close()
