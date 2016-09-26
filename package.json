@@ -10,7 +10,7 @@
     "clean": "rimraf build/*",
     "clean:mac": "rimraf ~/Library/Application\\ Support/billy/Settings",
     "prestart": "npm run build",
-    "start": "electron .",
+    "start": "NODE_ENV=development electron .",
     "test": "npm run build && electron-mocha build/test/**/*Test.js",
     "watch:test": "chokidar --initial -c 'npm test' 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts'",
     "update-dependencies": "ncu -u",
