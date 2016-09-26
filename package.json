@@ -41,6 +41,7 @@
     "knex": "^0.12.1",
     "mkdirp": "^0.5.1",
     "moment": "^2.14.1",
+    "ncp": "^2.0.0",
     "open": "0.0.5",
     "react": "^15.2.1",
     "react-bootstrap-table": "^2.5.1",
