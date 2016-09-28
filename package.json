@@ -13,7 +13,6 @@
     "start": "NODE_ENV=development electron .",
     "test": "npm run build && electron-mocha build/test/**/*Test.js",
     "watch:test": "chokidar --initial -c 'npm test' 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts'",
-    "update-dependencies": "ncu -u",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html build/src",
     "rebuild": "electron-rebuild",
@@ -75,7 +74,6 @@
     "electron-rebuild": "^1.2.1",
     "electron-reload": "^1.0.2",
     "mocha": "^3.0.2",
-    "npm-check-updates": "^2.8.0",
     "typescript": "^2.1.0-dev.20160824"
   }
 }
