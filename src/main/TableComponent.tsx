@@ -38,7 +38,7 @@ export default class TableComponent extends React.Component<any, {}> {
 
   render() {
     const options: Options = {
-      sortName: 'date_created',
+      sortName: 'invoice_id',
       sortOrder: 'asc',
       afterDeleteRow: this.onDeleteRows.bind(this),
       deleteText: t('Löschen'),
