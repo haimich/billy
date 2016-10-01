@@ -1,5 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { isDev, getAppFolder } from './helpers/app'
+import { get, set } from './providers/settingsProvider'
+import WindowModel from './models/WindowModel'
 
 // Keep a global reference of the window objects to prevent gc
 let mainWindow, onboardingWindow, importWindow
@@ -29,8 +31,14 @@ export function openOnboardingWindow() {
   })
 }
 
-export function openMainWindow() {
-  mainWindow = new BrowserWindow({ width: 1200, height: 800, show: false })
+export async function openMainWindow() {
+  const dimensions = await getDimensions('main')
+
+  mainWindow = new BrowserWindow({
+    width: dimensions.width,
+    height: dimensions.height,
+    show: false
+  })
   mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
 
   if (isDev) {
@@ -91,4 +99,31 @@ export function toggleDevTools(focusedWindow) {
   if (focusedWindow) {
     focusedWindow.toggleDevTools()
   }
+}
+
+async function getDimensions(windowName: string): Promise<WindowModel> {
+  let windowSettings, dimensions
+
+  try {
+    windowSettings = await get('windowSettings')
+  } catch (err) {
+    console.error('Error while fetching window settings', err)
+  }
+
+  if (windowSettings != null) {
+    dimensions.width = windowSettings.width
+    dimensions.height = windowSettings.height
+  } else {
+    switch (windowName) {
+      case 'main':
+        dimensions.width = 1200
+        dimensions.height = 800
+        break
+      case 'default':
+        dimensions.width = 1200
+        dimensions.height = 800
+    }
+  }
+
+  return dimensions
 }

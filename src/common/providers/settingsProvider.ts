@@ -19,7 +19,7 @@ export async function userInputNeeded(): Promise<boolean> {
   }
 }
 
-type settingKeys = 'appDir' | 'knex'
+type settingKeys = 'appDir' | 'knex' | 'windowSettings'
 
 export function get(value: settingKeys): Promise<string> {
   return settings.get(value)
