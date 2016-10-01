@@ -50,7 +50,14 @@ export async function openMainWindow() {
     mainWindow.focus()
   })
 
-  mainWindow.on('closed', () => {
+  let bounds
+  mainWindow.on('resize', async () => {
+    bounds = mainWindow.getBounds()
+  });
+
+  mainWindow.on('closed', async () => {
+    await saveDimensions('main', bounds)
+
     mainWindow = null
   })
 }
@@ -118,8 +125,6 @@ async function getDimensions(windowName: string): Promise<WindowModel> {
     console.error('Error while fetching window settings', err)
   }
 
-  console.log('windowSettings', windowSettings)
-
   if (windowSettings != null && windowSettings[windowName] != null) {
     dimensions.width = windowSettings[windowName].width || defaults[windowName].width
     dimensions.height = windowSettings[windowName].height || defaults[windowName].height
@@ -128,7 +133,21 @@ async function getDimensions(windowName: string): Promise<WindowModel> {
     dimensions.height = defaults[windowName].height
   }
 
-  console.log('dimensions', dimensions)
-
   return dimensions
+}
+
+async function saveDimensions(windowName: string, bounds: WindowModel): Promise<any> {
+  if (bounds == null) {
+    return
+  }
+
+  let settings = await get('windowsSettings')
+  settings[windowName] = bounds
+
+  try {
+    await set('windowsSettings', settings)
+    console.log('set bounds', bounds)
+  } catch (err) {
+    console.error('Could not save window dimensions', err)
+  }
 }
