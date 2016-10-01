@@ -102,28 +102,33 @@ export function toggleDevTools(focusedWindow) {
 }
 
 async function getDimensions(windowName: string): Promise<WindowModel> {
-  let windowSettings, dimensions
+  let windowSettings
+  let dimensions: WindowModel = {}
+
+  const defaults = {
+    main: {
+      width: 1200,
+      height: 800
+    }
+  }
 
   try {
-    windowSettings = await get('windowSettings')
+    windowSettings = await get('windowsSettings')
   } catch (err) {
     console.error('Error while fetching window settings', err)
   }
 
-  if (windowSettings != null) {
-    dimensions.width = windowSettings.width
-    dimensions.height = windowSettings.height
+  console.log('windowSettings', windowSettings)
+
+  if (windowSettings != null && windowSettings[windowName] != null) {
+    dimensions.width = windowSettings[windowName].width || defaults[windowName].width
+    dimensions.height = windowSettings[windowName].height || defaults[windowName].height
   } else {
-    switch (windowName) {
-      case 'main':
-        dimensions.width = 1200
-        dimensions.height = 800
-        break
-      case 'default':
-        dimensions.width = 1200
-        dimensions.height = 800
-    }
+    dimensions.width = defaults[windowName].width
+    dimensions.height = defaults[windowName].height
   }
+
+  console.log('dimensions', dimensions)
 
   return dimensions
 }

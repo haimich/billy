@@ -1,6 +1,6 @@
 interface WindowModel {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 export default WindowModel
