@@ -10,7 +10,7 @@ settings.configure({
 })
 
 export async function userInputNeeded(): Promise<boolean> {
-  const appDir = await settings.get('appDir')
+  const appDir = await get('appDir')
 
   if (appDir == null || appDir === '') {
     return true
@@ -19,10 +19,12 @@ export async function userInputNeeded(): Promise<boolean> {
   }
 }
 
-export function get(value: string): Promise<string> {
+type settingKeys = 'appDir' | 'knex'
+
+export function get(value: settingKeys): Promise<string> {
   return settings.get(value)
 }
 
-export function set(key: string, value: any): Promise<string> {
+export function set(key: settingKeys, value: any): Promise<string> {
   return settings.set(key, value)
 }
