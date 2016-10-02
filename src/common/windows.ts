@@ -30,7 +30,11 @@ export function openOnboardingWindow() {
 }
 
 export function openMainWindow() {
-  mainWindow = new BrowserWindow({ width: 1200, height: 800, show: false })
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: isDev ? 900 : 710, // create room for dev tools 
+    show: false
+  })
   mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
 
   if (isDev) {
