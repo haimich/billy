@@ -23,6 +23,7 @@ interface State {
   customerList: Customer[];
   customerTelephone?: string;
   isNew: boolean;
+  isDirty: boolean;
   invoiceIdValid: boolean;
   file?: File;
 }
@@ -73,6 +74,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       selectedCustomer: undefined,
       customerList: [],
       isNew: true,
+      isDirty: false,
       invoiceIdValid: true,
       file: undefined
     }
@@ -337,6 +339,7 @@ export default class EditorComponent extends React.Component<any, {}> {
           <div className="row">
             <div className="col-md-12">
               <div className="pull-right">
+                <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)}>{t('Abbrechen')}</button> &nbsp;
                 <button type="submit" className="btn btn-primary">{t('Speichern')}</button>
               </div>
             </div>
@@ -364,6 +367,7 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   revalidate(input) {
+    this.state.isDirty = true;
     input.closest('.form-group').classList.remove('has-error')
     setTimeout(() => input.checkValidity())
   }
@@ -382,6 +386,8 @@ export default class EditorComponent extends React.Component<any, {}> {
     const bill: BillDbModel = nextProps.bill
     const isNew = (bill == null)
 
+    if (this.state.isDirty && ! confirm(t('Möchtest du die Änderungen verwerfen?'))) return
+
     if (isNew) {
       this.resetState()
     } else {
@@ -397,7 +403,8 @@ export default class EditorComponent extends React.Component<any, {}> {
         amount: numberFormatterView(bill.amount),
         comment: bill.comment,
         invoiceIdValid: true,
-        isNew
+        isNew,
+        isDirty: false
       })
     }
   }
