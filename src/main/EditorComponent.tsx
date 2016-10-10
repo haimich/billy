@@ -354,9 +354,7 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   addFormValidation() {
-    const inputs: Element[] = [...ReactDOM.findDOMNode(this).querySelectorAll('input')]
-
-    for (let input of inputs) {
+    for (let input of this.getInputs()) {
       input.addEventListener('input', event => this.revalidate(event.target))
 
       input.addEventListener('invalid', (event) => {
@@ -364,6 +362,14 @@ export default class EditorComponent extends React.Component<any, {}> {
         input.closest('.form-group').classList.add('has-error')
       })
     }
+  }
+
+  resetFormValidationErrors() {
+    this.getInputs().forEach(input => input.closest('.form-group')!.classList.remove('has-error'))
+  }
+
+  getInputs() {
+    return [ ...ReactDOM.findDOMNode(this).querySelectorAll('input') ]
   }
 
   revalidate(input) {
@@ -387,6 +393,8 @@ export default class EditorComponent extends React.Component<any, {}> {
     const isNew = (bill == null)
 
     if (this.state.isDirty && ! confirm(t('Möchtest du die Änderungen verwerfen?'))) return
+
+    this.resetFormValidationErrors()
 
     if (isNew) {
       this.resetState()
