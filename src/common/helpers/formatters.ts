@@ -17,7 +17,7 @@ export function dateFormatterDb(value?: string): string {
 }
 
 export function currencyFormatter(value: number): string {
-  return value.toLocaleString('de-DE') + ' €'
+  return value.toLocaleString('de-DE', { minimumFractionDigits: 2 }) + ' €'
 }
 
 export function numberFormatterDb(value?: string): number {
