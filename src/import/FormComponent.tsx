@@ -68,14 +68,15 @@ export default class FormComponent extends React.Component<any, {}> {
 
         let customerNames = await this.getCustomerNames()
 
-        const createCustomers: Promise<Customer>[] = []
+        const createCustomers: { [id: string]: Promise<Customer> } = {}
         bills.forEach(bill => {
-          if (! (bill.customer in customerNames)) {
-            createCustomers.push(createCustomer({ name: bill.customer }))
+          const customer = bill.customer
+          if (! (customer in customerNames || customer in createCustomers)) {
+            createCustomers[customer] = createCustomer({ name: bill.customer })
           }
         })
 
-        await Promise.all(createCustomers)
+        await Promise.all(values(createCustomers))
 
         customerNames = await this.getCustomerNames()
 
@@ -146,4 +147,8 @@ export default class FormComponent extends React.Component<any, {}> {
       </div>
     )
   }
+}
+
+function values(obj) {
+  return Object.keys(obj).map(k => obj[k]);
 }
