@@ -1,7 +1,7 @@
 exports.up = (knex, Promise) => {
   return knex.schema.createTable('customers', (table) => {
     table.increments('id').primary().notNullable()
-    table.text('name').notNullable()
+    table.text('name').notNullable().unique()
     table.text('telephone')
 
     table.index(('name'))
