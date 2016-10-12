@@ -4,7 +4,9 @@
   "description": "A billing tool for Cristina.",
   "main": "./build/src/index.js",
   "scripts": {
-    "setup": "npm run rebuild && npm run recreate-database",
+    "setup": "npm run install-platform-specific && npm run rebuild && npm run recreate-database",
+    "install-platform-specific": "npm install sqlite3 --build-from-source",
+    "rebuild": "electron-rebuild",
     "recreate-database": "rimraf bills.sqlite && knex migrate:latest && knex seed:run",
     "build": "npm run clean && tsc && npm run copy-html",
     "clean": "rimraf build/*",
@@ -15,7 +17,6 @@
     "watch:test": "chokidar --initial -c 'npm test' 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts'",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html build/src",
-    "rebuild": "electron-rebuild",
     "publish:mac": "sudo rimraf output && npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.4.0 --out=output --overwrite --icon=static/images/billy.icns"
   },
   "repository": {
@@ -36,8 +37,9 @@
     "bootstrap": "^3.3.6",
     "electron": "^1.4.0",
     "electron-is-dev": "^0.1.2",
+    "electron-packager": "^8.0.0",
     "electron-settings": "^2.2.1",
-    "knex": "^0.12.1",
+    "knex": "^0.12.5",
     "mkdirp": "^0.5.1",
     "moment": "^2.14.1",
     "ncp": "^2.0.0",
@@ -49,8 +51,7 @@
     "react-dom": "^15.3.0",
     "react-notification-system": "^0.2.9",
     "rimraf": "^2.5.4",
-    "electron-packager": "^8.0.0",
-    "sqlite3": "^3.1.4"
+    "sqlite3": "^3.1.6"
   },
   "devDependencies": {
     "@types/chai": "^3.4.32",
