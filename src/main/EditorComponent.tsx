@@ -339,7 +339,7 @@ export default class EditorComponent extends React.Component<any, {}> {
           <div className="row">
             <div className="col-md-12">
               <div className="pull-right">
-                <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)}>{t('Abbrechen')}</button> &nbsp;
+                <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)} disabled={!this.state.isDirty}>{t('Abbrechen')}</button> &nbsp;
                 <button type="submit" className="btn btn-primary">{t('Speichern')}</button>
               </div>
             </div>
