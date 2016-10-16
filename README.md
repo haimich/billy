@@ -17,4 +17,4 @@ To reload the application on code changes, start the app with `npm start` and pe
 To use the following dev tools open the browser console in the open app and install every extension manually (this needs to be done once only)
 
 * React dev tools: `require('electron-react-devtools').install()`
-* Electron devtron: `require('devtron').install()
+* Electron devtron: `require('devtron').install()`
