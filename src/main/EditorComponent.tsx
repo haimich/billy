@@ -43,7 +43,8 @@ export default class EditorComponent extends React.Component<any, {}> {
   refs: {
     typeahead: any,
     invoiceId: any,
-    date_created: any
+    date_created: any,
+    date_paid: any
   }
 
   dragCounter: number
@@ -211,6 +212,11 @@ export default class EditorComponent extends React.Component<any, {}> {
     this.revalidate(ReactDOM.findDOMNode(this.refs.date_created).querySelector('input'))
   }
 
+  handleDatePaidChange(newDate: Date) {
+    this.setState({ date_paid: newDate })
+    this.revalidate(ReactDOM.findDOMNode(this.refs.date_paid).querySelector('input'))
+  }
+
   selectedCustomerTelephone() {
     if (this.state.selectedCustomer && this.state.selectedCustomer[0] && this.state.selectedCustomer[0].telephone) {
       return this.state.selectedCustomer[0].telephone
@@ -307,6 +313,7 @@ export default class EditorComponent extends React.Component<any, {}> {
               <div className="form-group">
                 <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
                 <Datetime
+                  ref="date_paid"
                   value={this.state.date_paid}
                   inputProps={{
                     id: 'date_paid'
@@ -315,7 +322,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  onChange={newDate => this.setState({ date_paid: newDate })}
+                  onChange={this.handleDatePaidChange.bind(this)}
                   />
               </div>
               <div className="form-group">
@@ -339,7 +346,7 @@ export default class EditorComponent extends React.Component<any, {}> {
           <div className="row">
             <div className="col-md-12">
               <div className="pull-right">
-                <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)} disabled={!this.state.isDirty}>{t('Abbrechen')}</button> &nbsp;
+                <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)}>{t('Abbrechen')}</button> &nbsp;
                 <button type="submit" className="btn btn-primary">{t('Speichern')}</button>
               </div>
             </div>
@@ -369,11 +376,11 @@ export default class EditorComponent extends React.Component<any, {}> {
   }
 
   getInputs() {
-    return [ ...ReactDOM.findDOMNode(this).querySelectorAll('input') ]
+    return [ ...ReactDOM.findDOMNode(this).querySelectorAll('input,textarea') ]
   }
 
   revalidate(input) {
-    this.state.isDirty = true;
+    this.state.isDirty = true
     input.closest('.form-group').classList.remove('has-error')
     setTimeout(() => input.checkValidity())
   }
