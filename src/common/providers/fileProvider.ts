@@ -2,8 +2,7 @@ import { isMac, getPlatform } from '../helpers/platform'
 import { get } from './settingsProvider'
 import * as mkdirp from 'mkdirp'
 const openWithOs = require('open')
-import { stat } from 'fs'
-import { ncp } from 'ncp'
+import { stat, readFile, writeFile } from 'fs'
 import { posix } from 'path'
 import * as rimraf from 'rimraf'
 
@@ -14,12 +13,18 @@ export function open(fileName) {
 }
 
 export async function copyToAppDir(invoiceId: string, inputFilePath: string): Promise<string> {
+  if (! await exists(inputFilePath)) {
+    throw new Error('The file does not exist: ' + inputFilePath)
+  } else if (await isDirectory(inputFilePath)) {
+    throw new Error('You can only store files, no directories')
+  }
+
   const targetFolder = await ensureFolderExists(await getFilePath(invoiceId))
 
   const filename = posix.basename(inputFilePath)
   const targetFilePath = `${targetFolder}/${filename}`
 
-  return await copyRecursive(inputFilePath, targetFilePath)
+  return await copyFile(inputFilePath, targetFilePath)
 }
 
 async function getFilePath(invoiceId: string): Promise<string> {
@@ -37,15 +42,17 @@ export function encode(fileName: string): string {
     .replace(/\n|\r|\t/g, '-')
 }
 
-function copyRecursive(inputFilePath, targetFilePath): Promise<string> {
+function copyFile(inputFilePath, targetFilePath): Promise<string> {
   return new Promise((resolve, reject) => {
-    ncp(inputFilePath, targetFilePath, (err) => {
-      if (err) {
-        reject(err)
-      } else {
+    readFile(inputFilePath, (err, data) => {
+      if (err) reject(err)
+
+      writeFile(targetFilePath, data, (err) => {
+        if (err) reject(err)
+        
         resolve(targetFilePath)
-      }
-    })
+      });
+    });
   })
 }
 
@@ -90,6 +97,18 @@ function rmrf(filePattern: string): Promise<any> {
         reject(err)
       } else {
         resolve()
+      }
+    })
+  })
+}
+
+function isDirectory(path: string): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    stat(path, (err, stats) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(stats.isDirectory())
       }
     })
   })

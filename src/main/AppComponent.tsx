@@ -43,8 +43,7 @@ export default class AppComponent extends React.Component<any, {}> {
 
     try {
       if (bill.file_path != null) {
-        const newFilePath = await copyToAppDir(bill.invoice_id, bill.file_path)
-        bill.file_path = newFilePath
+        bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
       }
 
       createdBill = await createBill(bill)
@@ -64,13 +63,13 @@ export default class AppComponent extends React.Component<any, {}> {
 
     try {
       if (bill.file_path != null) {
-        const newFilePath = await copyToAppDir(bill.invoice_id, bill.file_path)
-        bill.file_path = newFilePath
+        bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
       }
 
       updatedBill = await updateBill(bill)
     } catch (err) {
       this.handleError(err)
+      return
     }
 
     this.setState({
@@ -127,7 +126,7 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   handleError(err: Error) {
-    let message = t('Datenbank-Fehler') + err.message
+    let message = t('Es ist ein Fehler aufgetreten: ') + err.message
 
     if (err['code'] === 'SQLITE_CONSTRAINT') {
       message = t('Datenbank Fehler duplicate id')
