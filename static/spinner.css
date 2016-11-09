@@ -1,7 +1,7 @@
 .spinner {
   display: flex;
   justify-content: center;
-  margin: 35vh auto;
+  margin: 32vh auto;
 }
 
 @-webkit-keyframes uil-default-anim {
