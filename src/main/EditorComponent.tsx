@@ -4,7 +4,7 @@ import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { billExists } from '../common/repositories/billsRepository'
-import { listCustomers, createCustomer } from '../common/repositories/customersRepository'
+import { listCustomers, createCustomer, getCustomerById } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
@@ -86,16 +86,21 @@ export default class EditorComponent extends React.Component<any, {}> {
       let customerList = await listCustomers()
       this.setState({ customerList })
     } catch (err) {
-      console.warn('Could not fetch typeahead data', err)
+      this.props.notify(t('Could not fetch typeahead data'), 'error')      
     }
   }
 
   async onSave(event) {
     event.preventDefault()
 
+    if (this.state.selectedCustomer == null || this.state.selectedCustomer[0] == null) {
+      this.props.notify(t('Bitte wähle einen Kunden aus oder erstelle einen neuen'), 'error')
+      return
+    }
+
     const bill: Bill = {
       invoice_id: this.state.invoice_id,
-      customer_id: this.state.selectedCustomer![0].id!,
+      customer_id: this.state.selectedCustomer[0].id!,
       amount: numberFormatterDb(this.state.amount),
       date_created: dateFormatterDb(this.state.date_created),
       date_paid: dateFormatterDb(this.state.date_paid),
@@ -110,7 +115,7 @@ export default class EditorComponent extends React.Component<any, {}> {
         return
       }
     } catch (err) {
-      console.error('checkValidity threw an error', err)
+      this.props.notify(t('checkValidity threw an error'), 'error')
       return
     }
 
@@ -173,15 +178,22 @@ export default class EditorComponent extends React.Component<any, {}> {
       return
     }
 
-    if (selected[0].customOption) {
+    let selectedCustomer = selected[0]
+    let isNewCustomer = false
+
+    if (selectedCustomer.customOption && (await getCustomerById(selectedCustomer.id) == null)) {
+      isNewCustomer = true
+    }
+
+    if (isNewCustomer) {
       let customer
 
       try {
         customer = await createCustomer({
-          name: selected[0].name
+          name: selectedCustomer.name
         })
       } catch (err) {
-        console.error('Could not create customer', err)
+        this.props.notify(t('Could not create customer'), 'error')
       }
 
       this.setState({
@@ -255,6 +267,7 @@ export default class EditorComponent extends React.Component<any, {}> {
                     options={this.state.customerList}
                     allowNew={true}
                     onChange={this.handleCustomerChange.bind(this)}
+                    onBlur={this.handleCustomerChange.bind(this)}
                     selected={this.state.selectedCustomer}
                     labelKey={'name'}
                     ref='typeahead'
