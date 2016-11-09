@@ -4,7 +4,7 @@ import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import { billExists } from '../common/repositories/billsRepository'
-import { listCustomers, createCustomer, getCustomerById } from '../common/repositories/customersRepository'
+import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
@@ -21,7 +21,6 @@ interface State {
   comment: string;
   selectedCustomer?: Customer[];
   customerList: Customer[];
-  customerTelephone?: string;
   isNew: boolean;
   isDirty: boolean;
   invoiceIdValid: boolean;
@@ -125,7 +124,7 @@ export default class EditorComponent extends React.Component<any, {}> {
       this.props.updateBill(bill)
     }
 
-    this.props.updateCustomer(this.state.selectedCustomer![0])
+    this.props.updateCustomer(this.state.selectedCustomer[0])
 
     this.resetState()
   }
@@ -190,7 +189,8 @@ export default class EditorComponent extends React.Component<any, {}> {
 
       try {
         customer = await createCustomer({
-          name: selectedCustomer.name
+          name: selectedCustomer.name,
+          telephone: selectedCustomer.telephone
         })
       } catch (err) {
         this.props.notify(t('Could not create customer'), 'error')
@@ -237,6 +237,35 @@ export default class EditorComponent extends React.Component<any, {}> {
     }
   }
 
+  async handleDeleteCustomer() {
+    if (this.state.selectedCustomer != null && this.state.selectedCustomer[0] != null) {
+      let customer = this.state.selectedCustomer[0]
+      if (confirm(t(`Möchtest du den Kunden "${customer.name}" wirklich löschen?`))) {
+        try {
+          await deleteCustomerById(customer.id!)
+        } catch (err) {
+          this.props.notify(t('Could not delete customer'), 'error')
+          return
+        }
+
+        this.refs.typeahead.getInstance().clear()
+
+        let newCustomerList: Customer[] = []
+        for (let i = 0; i < this.state.customerList.length; i++) {
+          if (customer.id === this.state.customerList[i].id) {
+            continue
+          }
+          newCustomerList.push(this.state.customerList[i])
+        }
+
+        this.setState({
+          customerList: newCustomerList,
+          selectedCustomer: undefined
+        })
+      }
+    }
+  }
+
   render() {
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
@@ -277,13 +306,19 @@ export default class EditorComponent extends React.Component<any, {}> {
                     newSelectionPrefix={t('Kunden anlegen: ')}
                     tabIndex={2}
                     />
-                  <input
-                    value={this.selectedCustomerTelephone()}
-                    onChange={this.handleCustomerTelephoneChange.bind(this)}
-                    placeholder={t('keine Telefonnr.')}
-                    className="sub-input"
-                    tabIndex={-1}
-                    />
+                  <span className="sub-label">
+                    <input
+                      value={this.selectedCustomerTelephone()}
+                      onChange={this.handleCustomerTelephoneChange.bind(this)}
+                      placeholder={t('keine Telefonnr.')}
+                      className="sub-input"
+                      tabIndex={-1}
+                      /> {
+                        this.state.selectedCustomer != null 
+                          ? <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" onClick={this.handleDeleteCustomer.bind(this)}></span>
+                          : ''
+                      }
+                  </span>
                 </div>
               </div>
               <div className="form-group">
