@@ -7,3 +7,20 @@ body {
   flex-direction: column;
   padding: 10px;
 }
+
+#filter-container, #table-container {
+  flex: 1;
+}
+
+#filter-container {
+  margin-bottom: 20px;
+}
+
+#table-container {
+  margin-bottom: 10px;
+}
+
+#table-container table {
+  margin-bottom: 0px;
+  cursor: pointer;
+}

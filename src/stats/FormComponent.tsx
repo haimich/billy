@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
+import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import Bill from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import t from '../common/helpers/i18n'
-import { dateFormatterYearView, numberFormatterView } from '../common/helpers/formatters'
+import { dateFormatterYearView, numberFormatterView, currencyFormatter } from '../common/helpers/formatters'
 import { asc, desc } from '../common/helpers/sorters'
 import * as moment from 'moment'
 
@@ -43,17 +44,17 @@ export class FormComponent extends React.Component<any, {}> {
     return years.sort(desc)
   }
 
-  getAvailableCustomers(): string[] {
-    let customers: string[] = []
+  // getAvailableCustomers(): string[] {
+  //   let customers: string[] = []
 
-    for (let customer of this.props.customers) {
-      if (customers.indexOf(customer.name) === -1) {
-        customers.push(customer.name)
-      }
-    }
+  //   for (let customer of this.props.customers) {
+  //     if (customers.indexOf(customer.name) === -1) {
+  //       customers.push(customer.name)
+  //     }
+  //   }
 
-    return customers.sort(asc)
-  }
+  //   return customers.sort(asc)
+  // }
 
   handleYearChange(element) {
     this.setState({
@@ -80,68 +81,85 @@ export class FormComponent extends React.Component<any, {}> {
     )
   }
 
-  handleCustomerChange(element) {
-    this.setState({
-      selectedCustomer: element.target.value
-    })
-  }
-
-  generateCustomerSelectbox() {
-    let options: JSX.Element[] = []
-
-    for (let customer of this.getAvailableCustomers()) {
-      options.push(<option key={customer}>{customer}</option>)
-    }
-
-    return (
-      <select
-        className="form-control"
-        id="customer"
-        value={this.state.selectedCustomer}
-        onChange={this.handleCustomerChange.bind(this)}
-      >
-        <option>{SELECT_CUSTOMER_TEXT}</option>
-        {options}
-      </select>
-    )
-  }
-
   getTotal(): string {
     let total = 0
 
     for (let bill of this.props.bills) {
-      let createdYear = '' + moment(bill.date_created).year()
-
-      if (createdYear === this.state.selectedYear) {
-        if (
-          this.state.selectedCustomer === SELECT_CUSTOMER_TEXT ||
-          this.state.selectedCustomer === bill.customer_name) {
-          total += bill.amount
-        } 
+      if (this.matchesSelectedYear(bill.date_created)) {
+        total += bill.amount
       }
     }
 
     return numberFormatterView(total)
   }
 
+  matchesSelectedYear(date: string): boolean {
+    let year = '' + moment(date).year()
+    return (year === this.state.selectedYear)
+  }
+
+  getTotalForCustomers(): Customer[] {
+    let customersWithTotals = {}
+
+    for (let bill of this.props.bills) {
+      if (this.matchesSelectedYear(bill.date_created)) {
+        if (bill.customer == null || bill.customer.id == null) {
+          continue
+        }
+
+        if (customersWithTotals[bill.customer.id] == null) {
+          customersWithTotals[bill.customer.id] = {
+            total: bill.amount,
+            id: bill.customer.id,
+            name: bill.customer.name
+          }
+        } else {
+          customersWithTotals[bill.customer.id].total += bill.amount
+        }
+      }
+    }
+
+    let customers: any[] = []
+    for (let customerId of Object.keys(customersWithTotals)) {
+      let customer = customersWithTotals[customerId]
+      customers.push(customer)
+    }
+
+    return customers
+  }
+
   render() {
+    const tableOptions: Options = {
+      sortName: 'total',
+      sortOrder: 'desc',
+      noDataText: t('Keine Einträge')
+    }
+
     return (
-      <form>
+      <div>
+        <form id="filter-container">
+          <label htmlFor="year">{t('Jahr')}</label>
+          {this.generateYearSelectbox()}
+        </form>
 
-        <label htmlFor="year">{t('Jahr')}</label>
-        {this.generateYearSelectbox()}
+        <div id="table-container">
+          <BootstrapTable
+            data={this.getTotalForCustomers()}
+            striped={true}
+            hover={true}
+            options={tableOptions}>
 
-        <label htmlFor="customer">{t('Kunde')}</label>
-        {this.generateCustomerSelectbox()}
+            <TableHeaderColumn isKey={true} dataField="name" width="100" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
+            <TableHeaderColumn dataField="total" width="50" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
 
-        <div className="panel panel-default">
-          <div className="panel-heading">{t('Umsatz')}</div>
-          <div className="panel-body">
-            {this.getTotal()} €
-          </div>
+          </BootstrapTable>
         </div>
 
-      </form>
+        <div className="pull-right">
+          <b>{t('SUMME')}:</b> {this.getTotal()} €
+        </div>
+
+      </div>
     )
   }
 

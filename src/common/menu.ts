@@ -61,7 +61,7 @@ function edit() {
       accelerator: 'CmdOrCtrl+I',
       click: () => openImportWindow()
     }, {
-      label: 'Statistiken',
+      label: 'Statistiken anzeigen',
       click: () => openStatsWindow()
     }]
   }
