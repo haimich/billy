@@ -75,16 +75,15 @@ describe('billsRepository', () => {
 
       const updatedBill = await updateBill({
         invoice_id: PREFIX + '123',
-        amount: 99,
+        amount: 11,
         comment: 'bla foo',
-        customer_id: 2,
+        customer_id: 1,
         date_created: testDate,
         date_paid: testDate
       })
 
-      expect(updatedBill.amount).to.equal(99)
-      expect(updatedBill.amount).to.equal(99)
-      expect(updatedBill.customer.id).to.equal(2)
+      expect(updatedBill.amount).to.equal(11)
+      expect(updatedBill.comment).to.equal('bla foo')
       expect(updatedBill.date_paid).to.equal(testDate)
     })
   })

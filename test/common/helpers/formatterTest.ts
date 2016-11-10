@@ -23,7 +23,7 @@ describe('formatters', () => {
   describe('convertToNumberView', () => {
     it('should convert a number to a string with digits', () => {
       const result = numberFormatterView(12345)
-      expect(result).to.equal('12345')
+      expect(result).to.equal('12345,00')
     })
 
     it('should convert a float to a string with a comma', () => {

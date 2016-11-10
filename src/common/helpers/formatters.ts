@@ -35,9 +35,9 @@ export function numberFormatterDb(value?: string): number {
   return parseFloat(value.replace(',', '.').replace(' ', ''))
 }
 
-export function numberFormatterView(value?: number): string {
+export function numberFormatterView(value?: number, decimals = 2): string {
   if (value == null) {
     return ''
   }
-  return String(value).replace('.', ',')
+  return value.toFixed(decimals).replace('.', ',')
 }
