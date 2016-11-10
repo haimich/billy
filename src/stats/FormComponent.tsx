@@ -150,8 +150,8 @@ export class FormComponent extends React.Component<any, {}> {
             options={tableOptions}
             pagination={true}>
 
-            <TableHeaderColumn isKey={true} dataField="name" width="100" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
-            <TableHeaderColumn dataField="total" width="50" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
+            <TableHeaderColumn isKey={true} dataField="name" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
+            <TableHeaderColumn dataField="total" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
 
           </BootstrapTable>
         </div>
