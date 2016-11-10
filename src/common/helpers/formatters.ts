@@ -8,6 +8,14 @@ export function dateFormatterView(value?: string): string {
   return moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')
 }
 
+export function dateFormatterYearView(value?: string): string {
+  if (value == null || value === '') {
+    return ''
+  }
+
+  return moment(value, 'YYYY-MM-DD').format('YYYY')
+}
+
 export function dateFormatterDb(value?: string): string {
   if (value == null || value === '') {
     return ''

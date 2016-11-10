@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { isDev, getAppFolder } from './helpers/app'
 
 // Keep a global reference of the window objects to prevent gc
-let mainWindow, onboardingWindow, importWindow
+let mainWindow, onboardingWindow, importWindow, statsWindow
 
 export function openOnboardingWindow() {
   onboardingWindow = new BrowserWindow({
@@ -69,6 +69,24 @@ export function openImportWindow() {
 
   importWindow.on('closed', () => {
     importWindow = null
+  })
+}
+
+
+export function openStatsWindow() {
+  statsWindow = new BrowserWindow({
+    width: 500,
+    height: 300,
+    show: false
+  })
+  statsWindow.loadURL(`file://${getAppFolder()}/src/stats.html`)
+
+  statsWindow.once('ready-to-show', () => {
+    statsWindow.show()
+  })
+
+  statsWindow.on('closed', () => {
+    statsWindow = null
   })
 }
 

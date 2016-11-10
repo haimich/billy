@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
 import { } from './providers/importProvider'
-import { openImportWindow, reload, toggleDevTools } from './windows'
+import { openImportWindow, openStatsWindow, reload, toggleDevTools } from './windows'
 import { isMac } from './helpers/platform'
 
 function application(): any {
@@ -60,6 +60,9 @@ function edit() {
       label: 'Import',
       accelerator: 'CmdOrCtrl+I',
       click: () => openImportWindow()
+    }, {
+      label: 'Statistiken',
+      click: () => openStatsWindow()
     }]
   }
 }
