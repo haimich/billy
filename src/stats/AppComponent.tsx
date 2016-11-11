@@ -1,11 +1,12 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import t from '../common/helpers/i18n'
-import FilterComponent from './FormComponent'
+import FilterComponent from './FilterComponent'
 import Bill from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
 import TotalSumComponent from './TotalSumComponent'
+import ChartComponent from './ChartComponent'
+import t from '../common/helpers/i18n'
 import { asc, desc } from '../common/helpers/sorters'
 import { dateFormatterYearView, numberFormatterView } from '../common/helpers/formatters'
 import * as moment from 'moment'
@@ -159,6 +160,8 @@ export default class AppComponent extends React.Component<any, {}> {
         <TableComponent data={this.getTableData()} />
         
         <TotalSumComponent total={this.getTotal()} />
+
+        <ChartComponent />
 
       </div>
     )
