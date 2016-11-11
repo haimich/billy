@@ -20,3 +20,7 @@ body {
   margin-bottom: 0px;
   cursor: pointer;
 }
+
+#filter-container select {
+  margin-bottom: 8px;
+}

@@ -9,6 +9,15 @@ import { asc, desc } from '../common/helpers/sorters'
 import * as moment from 'moment'
 
 const SELECT_CUSTOMER_TEXT = t('Kunde auswählen')
+const SELECT_TYPE_TEXT = t('Alle')
+const SELECT_TYPE_TEXT_INTERPRET = t('Dolmetschen')
+const SELECT_TYPE_TEXT_TRANSLATE = t('Übersetzen')
+const SELECT_TYPE_TEXT_TRANSLATE_CERTIFY = t('Beglaubigen')
+const SELECT_TYPE_TEXT_OTHER = t('Andere')
+
+const TRANSLATE_REGEX = /[üÜ]bersetz/gi
+const TRANSLATE_CERTIFY_REGEX = /beglaubig.*[üÜ]bersetz/gi
+const INTERPRET_REGEX = /dolmetsch/gi
 
 export class FormComponent extends React.Component<any, {}> {
 
@@ -20,6 +29,7 @@ export class FormComponent extends React.Component<any, {}> {
   state: {
     selectedYear: string;
     selectedCustomer: string;
+    selectedType: string;
   }
 
   constructor(props) {
@@ -27,7 +37,8 @@ export class FormComponent extends React.Component<any, {}> {
 
     this.state = {
       selectedCustomer: SELECT_CUSTOMER_TEXT,
-      selectedYear: this.getAvailableYears() !== [] ? this.getAvailableYears()[0] : ''
+      selectedYear: this.getAvailableYears() !== [] ? this.getAvailableYears()[0] : '',
+      selectedType: SELECT_TYPE_TEXT
     }
   }
 
@@ -44,17 +55,11 @@ export class FormComponent extends React.Component<any, {}> {
     return years.sort(desc)
   }
 
-  // getAvailableCustomers(): string[] {
-  //   let customers: string[] = []
-
-  //   for (let customer of this.props.customers) {
-  //     if (customers.indexOf(customer.name) === -1) {
-  //       customers.push(customer.name)
-  //     }
-  //   }
-
-  //   return customers.sort(asc)
-  // }
+  handleTypeChange(element) {
+    this.setState({
+      selectedType: element.target.value
+    })
+  }
 
   handleYearChange(element) {
     this.setState({
@@ -73,7 +78,7 @@ export class FormComponent extends React.Component<any, {}> {
       <select
         className="form-control"
         id="year"
-        value={this.state.selectedYear} 
+        value={this.state.selectedYear}
         onChange={this.handleYearChange.bind(this)}
       >
         {options}
@@ -85,7 +90,7 @@ export class FormComponent extends React.Component<any, {}> {
     let total = 0
 
     for (let bill of this.props.bills) {
-      if (this.matchesSelectedYear(bill.date_created)) {
+      if (this.matchesFilters(bill)) {
         total += bill.amount
       }
     }
@@ -93,16 +98,40 @@ export class FormComponent extends React.Component<any, {}> {
     return numberFormatterView(total)
   }
 
+  matchesFilters(bill: Bill): boolean {
+    return this.matchesSelectedYear(bill.date_created) && this.matchesType(bill.comment)
+  }
+
   matchesSelectedYear(date: string): boolean {
     let year = '' + moment(date).year()
     return (year === this.state.selectedYear)
+  }
+
+  matchesType(text?: string): boolean {
+    if (text == null) {
+      return false
+    }
+
+    switch (this.state.selectedType) {
+      case SELECT_TYPE_TEXT: return true
+      case SELECT_TYPE_TEXT_INTERPRET: return INTERPRET_REGEX.test(text)
+      case SELECT_TYPE_TEXT_TRANSLATE_CERTIFY: return TRANSLATE_CERTIFY_REGEX.test(text)
+      case SELECT_TYPE_TEXT_TRANSLATE: return TRANSLATE_REGEX.test(text)
+      case SELECT_TYPE_TEXT_OTHER: {
+        return (! INTERPRET_REGEX.test(text) &&
+                ! TRANSLATE_CERTIFY_REGEX.test(text) &&
+                ! TRANSLATE_REGEX.test(text))
+      }
+    }
+
+    return false
   }
 
   getTotalForCustomers(): Customer[] {
     let customersWithTotals = {}
 
     for (let bill of this.props.bills) {
-      if (this.matchesSelectedYear(bill.date_created)) {
+      if (this.matchesFilters(bill)) {
         if (bill.customer == null || bill.customer.id == null) {
           continue
         }
@@ -140,6 +169,20 @@ export class FormComponent extends React.Component<any, {}> {
         <form id="filter-container">
           <label htmlFor="year">{t('Jahr')}</label>
           {this.generateYearSelectbox()}
+
+          <label htmlFor="type">{t('Auftragsart')}</label>
+          <select
+            className="form-control"
+            id="type"
+            value={this.state.selectedType}
+            onChange={this.handleTypeChange.bind(this)}
+          >
+            <option key="all" selected>{SELECT_TYPE_TEXT}</option>
+            <option key="translate">{SELECT_TYPE_TEXT_TRANSLATE}</option>
+            <option key="translate_certify">{SELECT_TYPE_TEXT_TRANSLATE_CERTIFY}</option>
+            <option key="interpret">{SELECT_TYPE_TEXT_INTERPRET}</option>
+            <option key="other">{SELECT_TYPE_TEXT_OTHER}</option>
+          </select>
         </form>
 
         <div id="table-container">
