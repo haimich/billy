@@ -75,8 +75,8 @@ export function openImportWindow() {
 
 export function openStatsWindow() {
   statsWindow = new BrowserWindow({
-    width: 400,
-    height: 600,
+    width: 600,
+    height: 800,
     show: false
   })
   statsWindow.loadURL(`file://${getAppFolder()}/src/stats.html`)

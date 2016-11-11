@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
-import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import Bill from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import t from '../common/helpers/i18n'
-import { dateFormatterYearView, numberFormatterView, currencyFormatter } from '../common/helpers/formatters'
+import { dateFormatterYearView, numberFormatterView } from '../common/helpers/formatters'
 import { asc, desc } from '../common/helpers/sorters'
 import * as moment from 'moment'
+import TableComponent from './TableComponent'
 
 const SELECT_CUSTOMER_TEXT = t('Kunde auswählen')
 const SELECT_TYPE_TEXT = t('Alle')
@@ -140,10 +140,12 @@ export class FormComponent extends React.Component<any, {}> {
           customersWithTotals[bill.customer.id] = {
             total: bill.amount,
             id: bill.customer.id,
-            name: bill.customer.name
+            name: bill.customer.name,
+            billCount: 1
           }
         } else {
           customersWithTotals[bill.customer.id].total += bill.amount
+          customersWithTotals[bill.customer.id].billCount += 1
         }
       }
     }
@@ -158,12 +160,6 @@ export class FormComponent extends React.Component<any, {}> {
   }
 
   render() {
-    const tableOptions: Options = {
-      sortName: 'total',
-      sortOrder: 'desc',
-      noDataText: t('Keine Einträge')
-    }
-
     return (
       <div>
         <form id="filter-container">
@@ -177,7 +173,7 @@ export class FormComponent extends React.Component<any, {}> {
             value={this.state.selectedType}
             onChange={this.handleTypeChange.bind(this)}
           >
-            <option key="all" selected>{SELECT_TYPE_TEXT}</option>
+            <option key="all">{SELECT_TYPE_TEXT}</option>
             <option key="translate">{SELECT_TYPE_TEXT_TRANSLATE}</option>
             <option key="translate_certify">{SELECT_TYPE_TEXT_TRANSLATE_CERTIFY}</option>
             <option key="interpret">{SELECT_TYPE_TEXT_INTERPRET}</option>
@@ -185,19 +181,7 @@ export class FormComponent extends React.Component<any, {}> {
           </select>
         </form>
 
-        <div id="table-container">
-          <BootstrapTable
-            data={this.getTotalForCustomers()}
-            striped={true}
-            hover={true}
-            options={tableOptions}
-            pagination={true}>
-
-            <TableHeaderColumn isKey={true} dataField="name" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
-            <TableHeaderColumn dataField="total" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
-
-          </BootstrapTable>
-        </div>
+        <TableComponent data={this.getTotalForCustomers()} />
 
         <div className="pull-right">
           <b>{t('SUMME')}:</b> {this.getTotal()} €

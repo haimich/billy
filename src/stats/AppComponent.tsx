@@ -4,7 +4,6 @@ import t from '../common/helpers/i18n'
 import { FormComponent } from './FormComponent'
 import Bill from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
-import * as NotificationSystem from 'react-notification-system'
 
 let notifications
 
@@ -34,7 +33,6 @@ export default class AppComponent extends React.Component<any, {}> {
     return (
       <div>
         <FormComponent bills={this.state.bills} customers={this.state.customers} />
-        <NotificationSystem ref="notificationSystem" />
       </div>
     )
   }
