@@ -73,7 +73,7 @@ function view() {
       accelerator: 'CmdOrCtrl+R',
       click: (item, focusedWindow) => reload(focusedWindow)
     }, {
-      label: t('Entwicklertools anzeigen'),
+      label: t('Entwicklertools'),
       accelerator: (() => {
         if (isMac()) {
           return 'Alt+Command+I'
@@ -83,7 +83,7 @@ function view() {
       })(),
       click: (item, focusedWindow) => toggleDevTools(focusedWindow)
     }, {
-      label: t('Statistiken anzeigen'),
+      label: t('Statistiken'),
       accelerator: 'CmdOrCtrl+T',
       click: () => openStatsWindow()
     }]
