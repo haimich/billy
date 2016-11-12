@@ -119,6 +119,39 @@ export default class AppComponent extends React.Component<any, {}> {
     return customers
   }
 
+  getChartLabels(): string[] {
+    return Array.from(Array(12).keys()).map(key => '' + (key + 1))
+  }
+
+  getChartData(): number[] {
+    let amountsPerMonth = {}
+
+    for (let bill of this.props.bills) {
+      if (this.matchesFilters(bill)) {
+        let month = moment(bill.date_paid).month() + 1
+        
+        if (amountsPerMonth[month] == null) {
+          amountsPerMonth[month] = bill.amount
+        } else {
+          amountsPerMonth[month] += bill.amount
+        }
+      }
+    }
+
+    let data: any[] = []
+    for (let i = 1; i <= 12; i++) {
+      let sum = amountsPerMonth[i]
+
+      if (sum == null) {
+        data.push(0)
+      } else {
+        data.push(sum.toFixed(2))
+      }      
+    }
+
+    return data
+  }
+
   matchesFilters(bill: Bill): boolean {
     return this.matchesSelectedYear(bill.date_paid) && this.matchesType(bill.comment)
   }
@@ -127,7 +160,7 @@ export default class AppComponent extends React.Component<any, {}> {
     if (date == null || date === '') {
       return false
     }
-    
+
     let year = '' + moment(date).year()
     return (year === this.state.selectedYear)
   }
@@ -169,7 +202,10 @@ export default class AppComponent extends React.Component<any, {}> {
         
         <TotalSumComponent total={this.getTotal()} />
 
-        <ChartComponent />
+        <ChartComponent
+          labels={this.getChartLabels()}
+          data={this.getChartData()}
+        />
 
       </div>
     )

@@ -1,18 +1,38 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-const chartjs = require('chart.js')
+import t from '../common/helpers/i18n'
+let LineChart = require('react-chartjs').Line
 
-export default class ChartComponent extends React.Component<any, {}> {
+interface Props {
+  labels: string[];
+  data: number[];
+}
 
-  constructor(props) {
-    super(props)
-
-    console.log(chartjs)
-  }
+export default class ChartComponent extends React.Component<Props, {}> {
 
   render() {
+    let chartData = {
+        labels: this.props.labels,
+        datasets: [{
+            label: 'Income per month',
+            xAxisID: t('Monate'),
+            yAxisID: t('Umsatz'),
+            data: this.props.data,
+            fillColor: 'rgba(75,192,192,0.4)',
+            borderWidth: 1,
+        }],
+    }
+    
+    const chartOptions = {
+    }
+
     return (
-      <div>foo</div>
+      <LineChart
+        data={chartData}
+        options={chartOptions}
+        width="600"
+        height="250"
+      />
     )
   }
 }
