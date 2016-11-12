@@ -2,37 +2,62 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import t from '../common/helpers/i18n'
 let LineChart = require('react-chartjs').Line
+let PieChart = require('react-chartjs').Pie
 
 interface Props {
-  labels: string[];
-  data: number[];
+  lineChartLabels: string[];
+  lineChartData: number[];
+  pieChartLabels: string[];
+  pieChartData: number[];
 }
 
 export default class ChartComponent extends React.Component<Props, {}> {
 
-  render() {
-    let chartData = {
-        labels: this.props.labels,
+  getLineChartData() {
+    return {
+        labels: this.props.lineChartLabels,
         datasets: [{
-            label: 'Income per month',
-            xAxisID: t('Monate'),
-            yAxisID: t('Umsatz'),
-            data: this.props.data,
+            label: t('Einkommen pro Monat'),
+            data: this.props.lineChartData,
             fillColor: 'rgba(75,192,192,0.4)',
             borderWidth: 1,
         }],
     }
-    
-    const chartOptions = {
+  }
+
+  getPieChartData(): any[] {
+    let data = []
+
+    for (let i = 0; i < this.props.pieChartLabels.length; i++) {
+      let label = this.props.pieChartLabels[i]
+      let value = this.props.pieChartData[i]
+
+      data.push({
+        label,
+        value
+      })
     }
 
+    return data
+  }
+
+  render() {    
     return (
-      <LineChart
-        data={chartData}
-        options={chartOptions}
-        width="600"
-        height="250"
-      />
+      <div>
+        <LineChart
+          data={this.getLineChartData()}
+          options={{}}
+          width="620"
+          height="250"
+        />
+
+        <PieChart
+          data={this.getPieChartData()}
+          options={{}}
+          width="620"
+          height="250"
+        />
+      </div>
     )
   }
 }

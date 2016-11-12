@@ -119,11 +119,18 @@ export default class AppComponent extends React.Component<any, {}> {
     return customers
   }
 
-  getChartLabels(): string[] {
+  getLineChartLabels(): string[] {
     return Array.from(Array(12).keys()).map(key => '' + (key + 1))
   }
 
-  getChartData(): number[] {
+  getPieChartLabels(): string[] {
+    return [
+      SELECT_TYPE_TEXT_INTERPRET,
+      SELECT_TYPE_TEXT_TRANSLATE
+    ]
+  }
+
+  getLineChartData(): number[] {
     let amountsPerMonth = {}
 
     for (let bill of this.props.bills) {
@@ -152,25 +159,47 @@ export default class AppComponent extends React.Component<any, {}> {
     return data
   }
 
-  matchesFilters(bill: Bill): boolean {
-    return this.matchesSelectedYear(bill.date_paid) && this.matchesType(bill.comment)
+  getPieChartData(): number[] {
+    let sumInterpreting = 0
+    let sumTranslating = 0
+    
+    for (let bill of this.props.bills) {
+      if (! this.matchesYear(bill.date_paid, this.state.selectedYear)) {
+        continue
+      }
+
+      if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_INTERPRET)) {
+        sumInterpreting += 1
+      } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
+        sumTranslating += 1
+      }
+    }
+
+    return [
+      sumInterpreting,
+      sumTranslating
+    ]
   }
 
-  matchesSelectedYear(date: string): boolean {
+  matchesFilters(bill: Bill): boolean {
+    return this.matchesYear(bill.date_paid, this.state.selectedYear) && this.matchesType(bill.comment, this.state.selectedType)
+  }
+
+  matchesYear(date: string, year: string): boolean {
     if (date == null || date === '') {
       return false
     }
 
-    let year = '' + moment(date).year()
-    return (year === this.state.selectedYear)
+    let givenYear = '' + moment(date).year()
+    return (givenYear === year)
   }
 
-  matchesType(text?: string): boolean {
+  matchesType(text: string, type: string): boolean {
     if (text == null) {
       return false
     }
 
-    switch (this.state.selectedType) {
+    switch (type) {
       case SELECT_TYPE_TEXT: return true
       case SELECT_TYPE_TEXT_INTERPRET: return INTERPRET_REGEX.test(text)
       case SELECT_TYPE_TEXT_TRANSLATE_CERTIFY: return TRANSLATE_CERTIFY_REGEX.test(text)
@@ -203,8 +232,10 @@ export default class AppComponent extends React.Component<any, {}> {
         <TotalSumComponent total={this.getTotal()} />
 
         <ChartComponent
-          labels={this.getChartLabels()}
-          data={this.getChartData()}
+          lineChartLabels={this.getLineChartLabels()}
+          lineChartData={this.getLineChartData()}
+          pieChartLabels={this.getPieChartLabels()}
+          pieChartData={this.getPieChartData()}
         />
 
       </div>
