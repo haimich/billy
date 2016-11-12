@@ -123,7 +123,7 @@ export default class AppComponent extends React.Component<any, {}> {
     return Array.from(Array(12).keys()).map(key => '' + (key + 1))
   }
 
-  getPieChartLabels(): string[] {
+  getTypesPieChartLabels(): string[] {
     return [
       SELECT_TYPE_TEXT_INTERPRET,
       SELECT_TYPE_TEXT_TRANSLATE
@@ -159,7 +159,7 @@ export default class AppComponent extends React.Component<any, {}> {
     return data
   }
 
-  getPieChartData(): number[] {
+  getTypesPieChartData(): number[] {
     let sumInterpreting = 0
     let sumTranslating = 0
     
@@ -178,6 +178,28 @@ export default class AppComponent extends React.Component<any, {}> {
     return [
       sumInterpreting,
       sumTranslating
+    ]
+  }
+
+  getTypesIncomePieChartData(): number[] {
+    let sumInterpreting = 0
+    let sumTranslating = 0
+    
+    for (let bill of this.props.bills) {
+      if (! this.matchesYear(bill.date_paid, this.state.selectedYear)) {
+        continue
+      }
+
+      if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_INTERPRET)) {
+        sumInterpreting += bill.amount
+      } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
+        sumTranslating += bill.amount
+      }
+    }
+
+    return [
+      parseFloat(sumInterpreting.toFixed(2)),
+      parseFloat(sumTranslating.toFixed(2))
     ]
   }
 
@@ -234,8 +256,9 @@ export default class AppComponent extends React.Component<any, {}> {
         <ChartComponent
           lineChartLabels={this.getLineChartLabels()}
           lineChartData={this.getLineChartData()}
-          pieChartLabels={this.getPieChartLabels()}
-          pieChartData={this.getPieChartData()}
+          typesPieChartLabels={this.getTypesPieChartLabels()}
+          typesPieChartData={this.getTypesPieChartData()}
+          typesIncomePieChartData={this.getTypesIncomePieChartData()}
         />
 
       </div>

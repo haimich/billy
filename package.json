@@ -17,7 +17,8 @@
     "watch:test": "chokidar --initial -c 'npm test' 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts'",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html build/src",
-    "publish:mac": "sudo rimraf output && npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.4.0 --out=output --overwrite --icon=static/images/billy.icns"
+    "publish:mac": "sudo rimraf output && npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.4.0 --out=output --overwrite --icon=static/images/billy.icns",
+    "install:mac": "sudo rimraf /Applications/Billy.app && cp -r output/Billy-darwin-x64/Billy.app /Applications"
   },
   "repository": {
     "type": "git",

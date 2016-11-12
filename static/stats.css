@@ -25,3 +25,8 @@ body {
 #filter-container select {
   margin-bottom: 8px;
 }
+
+.label-container {
+  display: flex;
+  justify-content: space-around
+}
