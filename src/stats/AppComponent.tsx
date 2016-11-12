@@ -64,7 +64,11 @@ export default class AppComponent extends React.Component<any, {}> {
     let years: string[] = []
 
     for (let bill of this.props.bills) {
-      let dateCreated = dateFormatterYearView(bill.date_created)
+      if (bill.date_paid == null || bill.date_paid === '') {
+        continue
+      }
+
+      let dateCreated = dateFormatterYearView(bill.date_paid)
       if (years.indexOf(dateCreated) === -1) {
         years.push(dateCreated)
       }
@@ -116,10 +120,14 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   matchesFilters(bill: Bill): boolean {
-    return this.matchesSelectedYear(bill.date_created) && this.matchesType(bill.comment)
+    return this.matchesSelectedYear(bill.date_paid) && this.matchesType(bill.comment)
   }
 
   matchesSelectedYear(date: string): boolean {
+    if (date == null || date === '') {
+      return false
+    }
+    
     let year = '' + moment(date).year()
     return (year === this.state.selectedYear)
   }

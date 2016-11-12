@@ -75,7 +75,7 @@ export function openImportWindow() {
 
 export function openStatsWindow() {
   statsWindow = new BrowserWindow({
-    width: 600,
+    width: 650,
     height: 800,
     show: false
   })
