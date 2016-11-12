@@ -84,6 +84,7 @@ function view() {
       click: (item, focusedWindow) => toggleDevTools(focusedWindow)
     }, {
       label: t('Statistiken anzeigen'),
+      accelerator: 'CmdOrCtrl+T',
       click: () => openStatsWindow()
     }]
   }
