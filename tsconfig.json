@@ -6,7 +6,7 @@
     "jsx": "react",
     "outDir": "build",
     "noImplicitAny": false,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noImplicitThis": true,
     "sourceMap": false
   },
