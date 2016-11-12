@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu, shell } from 'electron'
 import { } from './providers/importProvider'
 import { openImportWindow, openStatsWindow, reload, toggleDevTools } from './windows'
 import { isMac } from './helpers/platform'
+import t from './helpers/i18n'
 
 function application(): any {
   const name = 'Billy'
@@ -10,26 +11,26 @@ function application(): any {
     label: name,
     submenu: [
       {
-        label: 'About ' + name,
+        label: `${t('Über')} ${name}`,
         role: 'about'
       },
       {
         type: 'separator'
       },
       {
-        label: 'Hide ' + name,
+        label: `${name} ${t('verbergen')}`,
         accelerator: 'Command+H',
         role: 'hide'
       },
       {
-        label: 'Show All',
+        label: t('Alle Fenster zeigen'),
         role: 'unhide'
       },
       {
         type: 'separator'
       },
       {
-        label: 'Quit',
+        label: t('Beenden'),
         accelerator: 'Command+Q',
         click: function () { app.quit(); }
       },
@@ -39,43 +40,40 @@ function application(): any {
 
 function edit() {
   return {
-    label: 'Edit',
+    label: t('Bearbeiten'),
     submenu: [{
-      label: 'Cut',
+      label: t('Ausschneiden'),
       accelerator: 'CmdOrCtrl+X',
       role: 'cut'
     }, {
-      label: 'Copy',
+      label: t('Kopieren'),
       accelerator: 'CmdOrCtrl+C',
       role: 'copy'
     }, {
-      label: 'Paste',
+      label: t('Einfügen'),
       accelerator: 'CmdOrCtrl+V',
       role: 'paste'
     }, {
-      label: 'Select All',
+      label: t('Alles markieren'),
       accelerator: 'CmdOrCtrl+A',
       role: 'selectall'
     }, {
-      label: 'Import',
+      label: t('Importieren'),
       accelerator: 'CmdOrCtrl+I',
       click: () => openImportWindow()
-    }, {
-      label: 'Statistiken anzeigen',
-      click: () => openStatsWindow()
     }]
   }
 }
 
 function view() {
   return {
-    label: 'View',
+    label: t('Ansicht'),
     submenu: [{
-      label: 'Reload',
+      label: t('Neu laden'),
       accelerator: 'CmdOrCtrl+R',
       click: (item, focusedWindow) => reload(focusedWindow)
     }, {
-      label: 'Toggle Developer Tools',
+      label: t('Entwicklertools anzeigen'),
       accelerator: (() => {
         if (isMac()) {
           return 'Alt+Command+I'
@@ -84,22 +82,25 @@ function view() {
         }
       })(),
       click: (item, focusedWindow) => toggleDevTools(focusedWindow)
+    }, {
+      label: t('Statistiken anzeigen'),
+      click: () => openStatsWindow()
     }]
   }
 }
 
 function window() {
   return {
-    label: 'Window',
+    label: t('Fenster'),
     role: 'window',
     submenu: [
       {
-        label: 'Minimize',
+        label: t('Minimieren'),
         accelerator: 'CmdOrCtrl+M',
         role: 'minimize'
       },
       {
-        label: 'Close',
+        label: t('Schließen'),
         accelerator: 'CmdOrCtrl+W',
         role: 'close'
       },
@@ -109,10 +110,10 @@ function window() {
 
 function help() {
   return {
-    label: 'Help',
+    label: t('Hilfe'),
     role: 'help',
     submenu: [{
-      label: 'Learn More',
+      label: t('Mehr erfahren'),
       click: () => shell.openExternal('https://github.com/haimich/billy')
     }]
   }
