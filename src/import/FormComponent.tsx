@@ -116,7 +116,7 @@ export default class FormComponent extends React.Component<any, {}> {
                   type="checkbox"
                   checked={this.state.shouldDelete}
                   onChange={this.onCheckboxChange.bind(this)} />
-                {t('Bestehende Daten löschen?')}
+                {t('Bestehende Daten löschen')}
               </label>
               <p></p>
             </div>
