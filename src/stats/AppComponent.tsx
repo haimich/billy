@@ -130,12 +130,16 @@ export default class AppComponent extends React.Component<any, {}> {
     ]
   }
 
-  getLineChartData(): number[] {
+  getLineChartData(dateType: 'date_paid' | 'date_created'): number[] {
     let amountsPerMonth = {}
 
     for (let bill of this.props.bills) {
-      if (this.matchesFilters(bill)) {
-        let month = moment(bill.date_paid).month() + 1
+      if (this.matchesFilters(bill, dateType)) {
+        if (bill[dateType] == null) {
+          continue
+        }
+
+        let month = moment(bill[dateType]).month() + 1
         
         if (amountsPerMonth[month] == null) {
           amountsPerMonth[month] = bill.amount
@@ -203,8 +207,8 @@ export default class AppComponent extends React.Component<any, {}> {
     ]
   }
 
-  matchesFilters(bill: Bill): boolean {
-    return this.matchesYear(bill.date_paid, this.state.selectedYear) && this.matchesType(bill.comment, this.state.selectedType)
+  matchesFilters(bill: Bill, dateType: 'date_paid' | 'date_created' = 'date_paid'): boolean {
+    return this.matchesYear(bill[dateType], this.state.selectedYear) && this.matchesType(bill.comment, this.state.selectedType)
   }
 
   matchesYear(date: string, year: string): boolean {
@@ -255,7 +259,8 @@ export default class AppComponent extends React.Component<any, {}> {
 
         <ChartComponent
           lineChartLabels={this.getLineChartLabels()}
-          lineChartData={this.getLineChartData()}
+          lineChartDatePaidData={this.getLineChartData('date_paid')}
+          lineChartDateCreatedData={this.getLineChartData('date_created')}
           typesPieChartLabels={this.getTypesPieChartLabels()}
           typesPieChartData={this.getTypesPieChartData()}
           typesIncomePieChartData={this.getTypesIncomePieChartData()}

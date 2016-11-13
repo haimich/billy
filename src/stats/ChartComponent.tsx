@@ -6,7 +6,8 @@ let PieChart = require('react-chartjs').Pie
 
 interface Props {
   lineChartLabels: string[];
-  lineChartData: number[];
+  lineChartDatePaidData: number[];
+  lineChartDateCreatedData: number[];
   typesPieChartLabels: string[];
   typesPieChartData: number[];
   typesIncomePieChartData: number[];
@@ -18,9 +19,14 @@ export default class ChartComponent extends React.Component<Props, {}> {
     return {
         labels: this.props.lineChartLabels,
         datasets: [{
-            label: t('Einkommen pro Monat'),
-            data: this.props.lineChartData,
+            label: t('Einkommen pro Monat (bezahlt)'),
+            data: this.props.lineChartDatePaidData,
             fillColor: 'rgba(75,192,192,0.4)',
+            borderWidth: 1,
+        }, {
+            label: t('Einkommen pro Monat (Rechnung erstellt)'),
+            data: this.props.lineChartDateCreatedData,
+            fillColor: 'rgba(75,75,75,0.4)',
             borderWidth: 1,
         }],
     }
