@@ -4,11 +4,11 @@ import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Op
 import { currencyFormatter } from '../common/helpers/formatters'
 import t from '../common/helpers/i18n'
 
-export default class TableComponent extends React.Component<any, {}> {
+interface Props {
+  data: any[];
+}
 
-  props: {
-    data: any[];
-  }
+export default class TableComponent extends React.Component<Props, {}> {
 
   constructor(props) {
     super(props)

@@ -22,12 +22,12 @@ const TRANSLATE_REGEX = /[üÜ]bersetz/gi
 const TRANSLATE_CERTIFY_REGEX = /beglaubig.*[üÜ]bersetz/gi
 const INTERPRET_REGEX = /dolmetsch/gi
 
-export default class AppComponent extends React.Component<any, {}> {
+interface Props {
+  customers: Customer[];
+  bills: Bill[];
+}
 
-  props: {
-    customers: Customer[];
-    bills: Bill[];
-  }
+export default class AppComponent extends React.Component<Props, {}> {
 
   state: {
     customers: Customer[];

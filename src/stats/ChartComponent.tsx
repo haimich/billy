@@ -5,12 +5,12 @@ let LineChart = require('react-chartjs').Line
 let PieChart = require('react-chartjs').Pie
 
 interface Props {
-  lineChartLabels: string[];
-  lineChartDatePaidData: number[];
-  lineChartDateCreatedData: number[];
-  typesPieChartLabels: string[];
-  typesPieChartData: number[];
-  typesIncomePieChartData: number[];
+  lineChartLabels: string[]
+  lineChartDatePaidData: number[]
+  lineChartDateCreatedData: number[]
+  typesPieChartLabels: string[]
+  typesPieChartData: number[]
+  typesIncomePieChartData: number[]
 }
 
 export default class ChartComponent extends React.Component<Props, {}> {
@@ -19,14 +19,16 @@ export default class ChartComponent extends React.Component<Props, {}> {
     return {
         labels: this.props.lineChartLabels,
         datasets: [{
-            label: t('Einkommen pro Monat (bezahlt)'),
+            label: t('Einkommen nach Bezahldatum'),
             data: this.props.lineChartDatePaidData,
-            fillColor: 'rgba(75,192,192,0.4)',
+            fillColor: 'rgba(54, 162, 235, 0.2)',
+            pointColor: 'rgba(54, 162, 235, 0.4)',
             borderWidth: 1,
         }, {
-            label: t('Einkommen pro Monat (Rechnung erstellt)'),
+            label: t('Einkommen nach Rechnungsdatum'),
             data: this.props.lineChartDateCreatedData,
-            fillColor: 'rgba(75,75,75,0.4)',
+            fillColor: 'rgba(255,105,180, 0.2)',
+            pointColor: 'rgba(255,105,180, 0.4)',
             borderWidth: 1,
         }],
     }
@@ -82,12 +84,13 @@ export default class ChartComponent extends React.Component<Props, {}> {
     return data
   }
 
-  render() {    
+  render() {
     return (
       <div>
         <LineChart
           data={this.getLineChartData()}
           options={{}}
+          ref="chart"
           width="620"
           height="250"
         />

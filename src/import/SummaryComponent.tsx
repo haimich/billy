@@ -3,12 +3,12 @@ import * as ReactDOM from 'react-dom';
 import t from '../common/helpers/i18n'
 import Bill from '../common/models/BillModel'
 
-export default class SummaryComponent extends React.Component<any, {}> {
+interface Props {
+  failed: Bill[],
+  successful: Bill[]
+}
 
-  props: {
-    failed: Bill[],
-    successful: Bill[]
-  }
+export default class SummaryComponent extends React.Component<Props, {}> {
 
   render() {
     return (

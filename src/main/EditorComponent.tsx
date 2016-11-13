@@ -35,7 +35,7 @@ interface Props {
   notify: any;
 }
 
-export default class EditorComponent extends React.Component<any, {}> {
+export default class EditorComponent extends React.Component<Props, {}> {
 
   state: State
   props: Props
