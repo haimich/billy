@@ -13,6 +13,10 @@ interface Props {
   typesIncomePieChartData: number[]
 }
 
+const colors = [
+  '54, 162, 235', '255, 105, 180'
+]
+
 export default class ChartComponent extends React.Component<Props, {}> {
 
   getLineChartData() {
@@ -21,14 +25,14 @@ export default class ChartComponent extends React.Component<Props, {}> {
         datasets: [{
             label: t('Einkommen nach Bezahldatum'),
             data: this.props.lineChartDatePaidData,
-            fillColor: 'rgba(54, 162, 235, 0.2)',
-            pointColor: 'rgba(54, 162, 235, 0.4)',
+            fillColor: `rgba(${colors[0]}, 0.2)`,
+            pointColor: `rgba(${colors[0]}, 0.4)`,
             borderWidth: 1,
         }, {
             label: t('Einkommen nach Rechnungsdatum'),
             data: this.props.lineChartDateCreatedData,
-            fillColor: 'rgba(255,105,180, 0.2)',
-            pointColor: 'rgba(255,105,180, 0.4)',
+            fillColor: `rgba(${colors[1]}, 0.2)`,
+            pointColor: `rgba(${colors[1]}, 0.4)`,
             borderWidth: 1,
         }],
     }
@@ -49,10 +53,16 @@ export default class ChartComponent extends React.Component<Props, {}> {
     for (let i = 0; i < this.props.typesPieChartLabels.length; i++) {
       let label = this.props.typesPieChartLabels[i]
       let value = this.props.typesPieChartData[i]
+      let color = 'rgba(54, 162, 235, 0.4)'
+
+      if (colors.length >= i+1) {
+        color = 'rgba(' + colors[i] + ', 0.4)'
+      }
 
       data.push({
         label,
-        value
+        value,
+        color
       })
     }
 
@@ -74,10 +84,16 @@ export default class ChartComponent extends React.Component<Props, {}> {
     for (let i = 0; i < this.props.typesPieChartLabels.length; i++) {
       let label = this.props.typesPieChartLabels[i]
       let value = this.props.typesIncomePieChartData[i]
+      let color = 'rgba(54, 162, 235, 0.4)'
+
+      if (colors.length >= i+1) {
+        color = 'rgba(' + colors[i] + ', 0.4)'
+      }
 
       data.push({
         label,
-        value
+        value,
+        color
       })
     }
 
