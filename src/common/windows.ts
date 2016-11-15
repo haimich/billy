@@ -32,7 +32,7 @@ export function openOnboardingWindow() {
 export function openMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
-    height: isDev ? 900 : 710, // create room for dev tools 
+    height: isDev ? 900 : 710, // create room for dev tools
     show: false
   })
   mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
@@ -75,7 +75,7 @@ export function openImportWindow() {
 
 export function openStatsWindow() {
   statsWindow = new BrowserWindow({
-    width: 650,
+    width: 660,
     height: 815,
     show: false
   })
