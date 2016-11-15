@@ -4,6 +4,7 @@ import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import FileViewComponent from './FileViewComponent'
+import FileUploadComponent from './FileUploadComponent'
 import { billExists } from '../common/repositories/billsRepository'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
@@ -163,6 +164,10 @@ export default class EditorComponent extends React.Component<Props, {}> {
     event.preventDefault()
     this.setState({ file: this.getFile(event.dataTransfer.files) })
     this.onLeave()
+  }
+
+  handleFileChange(files: File[]) {
+    this.setState({ file: this.getFile(files) })    
   }
 
   async handleCustomerChange(selected: any) {
@@ -374,11 +379,8 @@ export default class EditorComponent extends React.Component<Props, {}> {
               </div>
               <div className="form-group">
                 <div className="col-sm-offset-4 col-sm-8">
-                  <label className="btn btn-default btn-sm">
-                    {t('Datei auswählen')}
-                    <input type="file" className="form-control hidden" onChange={(event: any) => this.setState({ file: this.getFile(event.target.files) })} />
-                  </label> &nbsp;
-                  
+                  <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} /> &nbsp;
+
                   <FileViewComponent file={this.state.file} />
                 </div>
               </div>
