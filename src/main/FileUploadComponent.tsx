@@ -14,12 +14,14 @@ export default class FileUploadComponent extends React.Component<Props, {}> {
 
   render() {
    return (
-     <span>
-       <label className="btn btn-default btn-sm">
-         {t('Datei auswählen')}
-         <input type="file" className="form-control hidden" onChange={this.handleOnChange.bind(this)} />
-       </label>
-     </span>
+     <div className="form-group">
+       <div className="col-sm-offset-4 col-sm-8">
+         <label className="btn btn-default btn-sm">
+          {t('Datei auswählen')}
+          <input type="file" className="form-control hidden" onChange={this.handleOnChange.bind(this)} />
+        </label>
+       </div>
+     </div>
    )
   }
 

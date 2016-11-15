@@ -377,13 +377,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
                   <textarea className="form-control" rows={3} id="comment" value={this.state.comment} onChange={(event: any) => this.setState({ comment: event.target.value })} />
                 </div>
               </div>
-              <div className="form-group">
-                <div className="col-sm-offset-4 col-sm-8">
-                  <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} /> &nbsp;
-
-                  <FileViewComponent file={this.state.file} />
-                </div>
-              </div>
+              
+              <FileViewComponent file={this.state.file} />
+              <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
             </div>
           </div>
 
