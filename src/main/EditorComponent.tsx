@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
+import FileViewComponent from './FileViewComponent'
 import { billExists } from '../common/repositories/billsRepository'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
-import { open } from '../common/providers/fileProvider'
 import * as path from 'path'
 
 const Datetime = require('react-datetime')
@@ -163,13 +163,6 @@ export default class EditorComponent extends React.Component<Props, {}> {
     event.preventDefault()
     this.setState({ file: this.getFile(event.dataTransfer.files) })
     this.onLeave()
-  }
-
-  openFile(event) {
-    event.preventDefault()
-    if (this.state.file != null) {
-      open(this.state.file.path)
-    }
   }
 
   async handleCustomerChange(selected: any) {
@@ -385,7 +378,8 @@ export default class EditorComponent extends React.Component<Props, {}> {
                     {t('Datei auswählen')}
                     <input type="file" className="form-control hidden" onChange={(event: any) => this.setState({ file: this.getFile(event.target.files) })} />
                   </label> &nbsp;
-                  <small className="fileview" onClick={this.openFile.bind(this)}>{this.state.file && this.state.file.name}</small>
+                  
+                  <FileViewComponent file={this.state.file} />
                 </div>
               </div>
             </div>
