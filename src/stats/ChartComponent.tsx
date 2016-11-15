@@ -126,8 +126,8 @@ export default class ChartComponent extends React.Component<Props, {}> {
         />
 
         <div className="label-container">
-          <section>{t('Anzahl Aufträge nach Typ')}</section>
-          <section className="pull-right">{t('Anzahl Aufträge nach Umsatz')}</section>
+          <section>{t('Aufträge nach Typ')}</section>
+          <section className="pull-right">{t('Aufträge nach Umsatz')}</section>
         </div>
       </div>
     )
