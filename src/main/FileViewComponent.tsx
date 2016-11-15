@@ -27,7 +27,14 @@ export default class FileViewComponent extends React.Component<Props, {}> {
     return (
       <div className="form-group">
         <div className="col-sm-offset-4 col-sm-8">
-          <small className="fileview" onClick={this.openFile.bind(this)}>{this.props.file.name}</small>
+          <table className="table">
+            <tbody><tr>
+              <td>
+                <small className="fileview" onClick={this.openFile.bind(this)}>{this.props.file.name}</small>
+              </td>
+              <td>open</td>
+            </tr></tbody>
+          </table>
         </div>
       </div>
     )

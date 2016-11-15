@@ -87,3 +87,7 @@ textarea {
 .fileview {
   cursor: pointer;
 }
+
+#editor-container table {
+  margin-bottom: 0px;
+}
