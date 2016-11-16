@@ -1,6 +1,6 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import { open } from '../common/providers/fileProvider'
+import { getFileIconHtml } from '../common/helpers/icons'
 
 interface Props {
   file?: File;
@@ -27,14 +27,13 @@ export default class FileViewComponent extends React.Component<Props, {}> {
     return (
       <div className="form-group">
         <div className="col-sm-offset-4 col-sm-8">
-          <table className="table">
-            <tbody><tr>
-              <td>
-                <small className="fileview" onClick={this.openFile.bind(this)}>{this.props.file.name}</small>
-              </td>
-              <td>open</td>
-            </tr></tbody>
-          </table>
+          <ul className="file-list">
+            <li>
+              <span className="file-icon">{getFileIconHtml(this.props.file.name)}</span>
+
+              <span className="file-view" onClick={this.openFile.bind(this)}>{this.props.file.name}</span>
+            </li>
+          </ul>
         </div>
       </div>
     )

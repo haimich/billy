@@ -30,7 +30,7 @@ textarea {
 
 #editor-container {
   position: relative;
-} 
+}
 
 .overlay {
   visibility: hidden;
@@ -69,7 +69,7 @@ textarea {
   border: none;
   margin: 5px 0px -8px 13px;
   padding: 4px;
-  font-size: 13px;  
+  font-size: 13px;
   color: #7b7b7b;
 }
 
@@ -84,10 +84,21 @@ textarea {
   color: indianred;
 }
 
-.fileview {
+.file-view {
   cursor: pointer;
 }
 
 #editor-container table {
   margin-bottom: 0px;
+}
+
+.file-list {
+  list-style: none;
+  padding-left: 0px;
+  margin-bottom: 0px;
+  font-size: 0.9em;
+}
+
+.file-icon {
+  margin-right: 8px;
 }
