@@ -84,10 +84,6 @@ textarea {
   color: indianred;
 }
 
-.file-view {
-  cursor: pointer;
-}
-
 #editor-container table {
   margin-bottom: 0px;
 }
@@ -101,4 +97,13 @@ textarea {
 
 .file-icon {
   margin-right: 8px;
+}
+
+.file-list li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.file-list li:hover {
+  background-color: #eee;
 }
