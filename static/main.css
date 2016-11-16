@@ -73,14 +73,14 @@ textarea {
   color: #7b7b7b;
 }
 
-.sub-label .glyphicon {
+#editor-container .glyphicon-remove-circle {
   top: 3px;
   font-size: 1.2em;
   color: #999;
   cursor: pointer;
 }
 
-.sub-label .glyphicon:hover {
+#editor-container .glyphicon-remove-circle:hover {
   color: indianred;
 }
 
@@ -101,9 +101,12 @@ textarea {
 
 .file-list li {
   padding: 5px;
-  cursor: pointer;
 }
 
 .file-list li:hover {
   background-color: #eee;
+}
+
+.file-open {
+  cursor: pointer;
 }

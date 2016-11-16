@@ -4,6 +4,7 @@ import { getFileIconHtml } from '../common/helpers/icons'
 
 interface Props {
   file?: File;
+  handleDeleteFile: () => void
 }
 
 export default class FileViewComponent extends React.Component<Props, {}> {
@@ -28,10 +29,14 @@ export default class FileViewComponent extends React.Component<Props, {}> {
       <div className="form-group">
         <div className="col-sm-offset-4 col-sm-8">
           <ul className="file-list">
-            <li onClick={this.openFile.bind(this)}>
-              <span className="file-icon">{getFileIconHtml(this.props.file.name)}</span>
+            <li>
+              <span className="file-open" onClick={this.openFile.bind(this)}>
+                <span className="file-icon">{getFileIconHtml(this.props.file.name)}</span>
 
-              <span className="file-view">{this.props.file.name}</span>
+                <span className="file-view">{this.props.file.name}</span>
+              </span>
+
+              <span className="glyphicon glyphicon-remove-circle pull-right" aria-hidden="true" onClick={this.props.handleDeleteFile.bind(this)} />
             </li>
           </ul>
         </div>

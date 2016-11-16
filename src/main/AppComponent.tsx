@@ -117,6 +117,14 @@ export default class AppComponent extends React.Component<any, {}> {
     }
   }
 
+  async deleteFile(invoiceId: string, filename: string) {
+    // get bill
+    // check if bill has file with given filename
+    // delete from DB
+    // delete from filesystem
+    // update this.state.bill
+  }
+
   notify(message: string, level: 'error' | 'success') {
     notifications.addNotification({
       message,
@@ -158,6 +166,7 @@ export default class AppComponent extends React.Component<any, {}> {
           updateBill={this.updateBill.bind(this)}
           updateCustomer={this.updateCustomer.bind(this)}
           notify={this.notify.bind(this)}
+          deleteFile={this.deleteFile.bind(this)}
         />
 
         <NotificationSystem ref="notificationSystem" />

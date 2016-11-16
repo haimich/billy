@@ -29,17 +29,17 @@ interface State {
 }
 
 interface Props {
-  updateBill: (row: Bill) => void;
-  saveBill: (row: Bill) => void;
-  updateCustomer: (row: Customer) => void;
-  bill?: BillDbModel;
-  notify: any;
+  updateBill: (row: Bill) => void
+  saveBill: (row: Bill) => void
+  updateCustomer: (row: Customer) => void
+  bill?: BillDbModel
+  notify: any
+  deleteFile: (invoiceId: string, filename: string) => void
 }
 
 export default class EditorComponent extends React.Component<Props, {}> {
 
   state: State
-  props: Props
   refs: {
     typeahead: any,
     invoiceId: any,
@@ -86,7 +86,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
       let customerList = await listCustomers()
       this.setState({ customerList })
     } catch (err) {
-      this.props.notify(t('Could not fetch typeahead data'), 'error')      
+      this.props.notify(t('Could not fetch typeahead data'), 'error')
     }
   }
 
@@ -167,7 +167,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
   }
 
   handleFileChange(files: File[]) {
-    this.setState({ file: this.getFile(files) })    
+    this.setState({ file: this.getFile(files) })
   }
 
   async handleCustomerChange(selected: any) {
@@ -264,6 +264,17 @@ export default class EditorComponent extends React.Component<Props, {}> {
     }
   }
 
+  handleDeleteFile() {
+    if (this.state.isNew) {
+      this.setState({ file: null })
+      return
+    }
+
+    if (this.state.file != null && this.state.file.name != null && confirm(t('Möchtest du die datei wirklich entfernen?'))) {
+      this.props.deleteFile(this.props.bill.invoice_id, this.state.file.name)
+    }
+  }
+
   render() {
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
@@ -312,7 +323,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
                       className="sub-input"
                       tabIndex={-1}
                       /> {
-                        this.state.selectedCustomer != null 
+                        this.state.selectedCustomer != null
                           ? <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" onClick={this.handleDeleteCustomer.bind(this)}></span>
                           : ''
                       }
@@ -377,8 +388,8 @@ export default class EditorComponent extends React.Component<Props, {}> {
                   <textarea className="form-control" rows={3} id="comment" value={this.state.comment} onChange={(event: any) => this.setState({ comment: event.target.value })} />
                 </div>
               </div>
-              
-              <FileViewComponent file={this.state.file} />
+
+              <FileViewComponent file={this.state.file} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
             </div>
           </div>
