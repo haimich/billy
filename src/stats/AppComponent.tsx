@@ -148,13 +148,13 @@ export default class AppComponent extends React.Component<Props, {}> {
     let customers: any[] = []
     for (let customerId of Object.keys(customersWithTotals)) {
       let customer = customersWithTotals[customerId]
-      let averageTimeToPay = getAverage(customer.daysToPayList)
-
+      let averageTimeToPay = Math.round(getAverage(customer.daysToPayList))
+      console.log(averageTimeToPay, averageTimeToPay === 1)
       customers.push({
         name: customer.name,
         total: customer.total,
         billCount: customer.billCount,
-        averageTimeToPay: averageTimeToPay + ' ' + (averageTimeToPay === 0 ? t('Tag') : t('Tage'))
+        averageTimeToPay: averageTimeToPay + ' ' + (averageTimeToPay === 1 ? t('Tag') : t('Tage'))
       })
     }
 
