@@ -33,6 +33,7 @@ export default class TableComponent extends React.Component<Props, {}> {
 
             <TableHeaderColumn isKey={true} dataField="name" width="140" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
             <TableHeaderColumn dataField="billCount" width="60" dataSort={true}>{t('Rechnungen')}</TableHeaderColumn>
+            <TableHeaderColumn dataField="averageTimeToPay" width="60" dataSort={true}>{t('Durchschn. Bezahldauer')}</TableHeaderColumn>
             <TableHeaderColumn dataField="total" width="100" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
 
           </BootstrapTable>

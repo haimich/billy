@@ -10,6 +10,7 @@ import t from '../common/helpers/i18n'
 import { asc, desc } from '../common/helpers/sorters'
 import { dateFormatterYearView, numberFormatterView } from '../common/helpers/formatters'
 import * as moment from 'moment'
+import { getAverage } from '../common/helpers/math'
 
 const SELECT_CUSTOMER_TEXT = t('Kunde auswählen')
 const SELECT_TYPE_TEXT = t('Alle')
@@ -23,17 +24,24 @@ const TRANSLATE_CERTIFY_REGEX = /beglaubig.*[üÜ]bersetz/gi
 const INTERPRET_REGEX = /dolmetsch/gi
 
 interface Props {
-  customers: Customer[];
-  bills: Bill[];
+  customers: Customer[]
+  bills: Bill[]
+}
+
+interface CustomerStats {
+  name: string
+  total: number
+  billCount: number
+  averageTimeToPay: string
 }
 
 export default class AppComponent extends React.Component<Props, {}> {
 
   state: {
-    customers: Customer[];
-    bills: Bill[];
-    selectedYear: string;
-    selectedType: string;
+    customers: Customer[]
+    bills: Bill[]
+    selectedYear: string
+    selectedType: string
   }
 
   constructor(props) {
@@ -87,7 +95,24 @@ export default class AppComponent extends React.Component<Props, {}> {
     ]
   }
 
-  getTableData(): Customer[] {
+  getDaysToPay(bill: Bill): number {
+    let createdDate = bill.date_created
+    let payDate = bill.date_paid
+
+    if (payDate != null) {
+      let diff = moment(payDate).diff(moment(createdDate), 'days')
+
+      if (diff < 0) {
+        return 0
+      } else {
+        return diff
+      }
+    } else {
+      return null
+    }
+  }
+
+  getTableData(): CustomerStats[] {
     let customersWithTotals = {}
 
     for (let bill of this.props.bills) {
@@ -96,16 +121,26 @@ export default class AppComponent extends React.Component<Props, {}> {
           continue
         }
 
+        let daysToPay = this.getDaysToPay(bill)
+        let daysToPayList = []
+
+        if (daysToPay != null) {
+          daysToPayList.push(daysToPay)
+        }
+
         if (customersWithTotals[bill.customer.id] == null) {
           customersWithTotals[bill.customer.id] = {
             total: bill.amount,
             id: bill.customer.id,
             name: bill.customer.name,
+            daysToPayList,
             billCount: 1
           }
         } else {
-          customersWithTotals[bill.customer.id].total += bill.amount
-          customersWithTotals[bill.customer.id].billCount += 1
+          let customer = customersWithTotals[bill.customer.id]
+          customer.total += bill.amount
+          customer.billCount += 1
+          customer.daysToPayList = customer.daysToPayList.concat(daysToPayList)
         }
       }
     }
@@ -113,7 +148,14 @@ export default class AppComponent extends React.Component<Props, {}> {
     let customers: any[] = []
     for (let customerId of Object.keys(customersWithTotals)) {
       let customer = customersWithTotals[customerId]
-      customers.push(customer)
+      let averageTimeToPay = getAverage(customer.daysToPayList)
+
+      customers.push({
+        name: customer.name,
+        total: customer.total,
+        billCount: customer.billCount,
+        averageTimeToPay: averageTimeToPay + ' ' + (averageTimeToPay === 0 ? t('Tag') : t('Tage'))
+      })
     }
 
     return customers
@@ -140,7 +182,7 @@ export default class AppComponent extends React.Component<Props, {}> {
         }
 
         let month = moment(bill[dateType]).month() + 1
-        
+
         if (amountsPerMonth[month] == null) {
           amountsPerMonth[month] = bill.amount
         } else {
@@ -157,7 +199,7 @@ export default class AppComponent extends React.Component<Props, {}> {
         data.push(0)
       } else {
         data.push(sum.toFixed(2))
-      }      
+      }
     }
 
     return data
@@ -166,7 +208,7 @@ export default class AppComponent extends React.Component<Props, {}> {
   getTypesPieChartData(): number[] {
     let sumInterpreting = 0
     let sumTranslating = 0
-    
+
     for (let bill of this.props.bills) {
       if (! this.matchesYear(bill.date_paid, this.state.selectedYear)) {
         continue
@@ -188,7 +230,7 @@ export default class AppComponent extends React.Component<Props, {}> {
   getTypesIncomePieChartData(): number[] {
     let sumInterpreting = 0
     let sumTranslating = 0
-    
+
     for (let bill of this.props.bills) {
       if (! this.matchesYear(bill.date_paid, this.state.selectedYear)) {
         continue
@@ -254,7 +296,7 @@ export default class AppComponent extends React.Component<Props, {}> {
         />
 
         <TableComponent data={this.getTableData()} />
-        
+
         <TotalSumComponent total={this.getTotal()} />
 
         <ChartComponent
