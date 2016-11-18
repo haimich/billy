@@ -25,14 +25,16 @@ export default class FilterComponent extends React.Component<Props, {}> {
     }
 
     return (
-      <select
-        className="form-control"
-        id="year"
-        value={this.props.selectedYear}
-        onChange={this.props.handleYearChange.bind(this)}
-      >
-        {options}
-      </select>
+      <div className="foo" >
+        <select
+          className="form-control"
+          id="year"
+          value={this.props.selectedYear}
+          onChange={this.props.handleYearChange.bind(this)}
+        >
+          {options}
+        </select>
+      </div>
     )
   }
 
@@ -63,7 +65,7 @@ export default class FilterComponent extends React.Component<Props, {}> {
 
         <label htmlFor="type">{t('Auftragsart')}</label>
         {this.generateTypeSelectbox()}
-        
+
       </form>
     )
   }
