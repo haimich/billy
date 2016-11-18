@@ -302,7 +302,6 @@ export default class AppComponent extends React.Component<Props, {}> {
         <ChartComponent
           lineChartLabels={this.getLineChartLabels()}
           lineChartDatePaidData={this.getLineChartData('date_paid')}
-          lineChartDateCreatedData={this.getLineChartData('date_created')}
           typesPieChartLabels={this.getTypesPieChartLabels()}
           typesPieChartData={this.getTypesPieChartData()}
           typesIncomePieChartData={this.getTypesIncomePieChartData()}

@@ -7,14 +7,14 @@ let PieChart = require('react-chartjs').Pie
 interface Props {
   lineChartLabels: string[]
   lineChartDatePaidData: number[]
-  lineChartDateCreatedData: number[]
   typesPieChartLabels: string[]
   typesPieChartData: number[]
   typesIncomePieChartData: number[]
 }
 
 const colors = [
-  '54, 162, 235', '255, 105, 180'
+  '54, 162, 235',
+  '255, 105, 180'
 ]
 
 export default class ChartComponent extends React.Component<Props, {}> {
@@ -28,23 +28,17 @@ export default class ChartComponent extends React.Component<Props, {}> {
             fillColor: `rgba(${colors[0]}, 0.2)`,
             pointColor: `rgba(${colors[0]}, 0.4)`,
             borderWidth: 1,
-        }, {
-            label: t('Einkommen nach Rechnungsdatum'),
-            data: this.props.lineChartDateCreatedData,
-            fillColor: `rgba(${colors[1]}, 0.2)`,
-            pointColor: `rgba(${colors[1]}, 0.4)`,
-            borderWidth: 1,
-        }],
+        }]
     }
   }
 
   /**
    * Get data for a pie chart displaying the different types of bills
    * with the total count of bills per type, eg:
-   * 
+   *
    * translate: 15 bills
    * interpret: 5 bills
-   * 
+   *
    * =>  25% of bills were for interpreting, 75% for translating
    */
   getTypesPieChartData(): any[] {
@@ -72,10 +66,10 @@ export default class ChartComponent extends React.Component<Props, {}> {
   /**
    * Get data for a pie chart displaying the different types of bills
    * with the total income per type, eg:
-   * 
+   *
    * translate: 15.000 €
    * interpret:  5.000 €
-   * 
+   *
    * =>  25% of the income came from interpreting, 75% from translating
    */
   getTypesIncomePieChartData(): any[] {
@@ -110,6 +104,10 @@ export default class ChartComponent extends React.Component<Props, {}> {
           width="620"
           height="250"
         />
+
+        <div className="label-container">
+          <section>{t('Einkommen nach Bezahldatum')}</section>
+        </div>
 
         <PieChart
           data={this.getTypesPieChartData()}
