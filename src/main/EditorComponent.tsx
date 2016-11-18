@@ -269,10 +269,12 @@ export default class EditorComponent extends React.Component<Props, {}> {
       this.setState({ file: null })
       return
     }
+    alert('Dieses Feature ist noch nicht implementiert, du kannst aber einfach eine neue Datei hochladen!')
 
-    if (this.state.file != null && this.state.file.name != null && confirm(t('Möchtest du die datei wirklich entfernen?'))) {
-      this.props.deleteFile(this.props.bill.invoice_id, this.state.file.name)
-    }
+    // if (this.state.file != null && this.state.file.path != null && confirm(t('Möchtest du die Datei wirklich entfernen?'))) {
+      // this.setState({ file: null })
+      // this.props.deleteFile(this.props.bill.invoice_id, this.state.file.path)
+    // }
   }
 
   render() {

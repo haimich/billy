@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { getBillByInvoiceId, createBill, updateBill, deleteBillByInvoiceId } from '../common/repositories/billsRepository'
 import { updateCustomer } from '../common/repositories/customersRepository'
-import { copyToAppDir, deleteFilesByInvoiceId } from '../common/providers/fileProvider'
+import { copyToAppDir, deleteFilesByInvoiceId, rmrf } from '../common/providers/fileProvider'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
@@ -117,12 +117,43 @@ export default class AppComponent extends React.Component<any, {}> {
     }
   }
 
-  async deleteFile(invoiceId: string, filename: string) {
-    // get bill
-    // check if bill has file with given filename
-    // delete from DB
-    // delete from filesystem
-    // update this.state.bill
+  async deleteFile(invoiceId: string, filepath: string) {
+    console.log('TODO')
+    // try {
+    //   let bill: BillDbModel = await getBillByInvoiceId(invoiceId)
+    //
+    //   if (bill.file_path === filepath) {
+    //     console.log('delete it', bill)
+    //     await rmrf(bill.file_path)
+    //
+    //     let updatedBill = await updateBill({
+    //       invoice_id: bill.invoice_id,
+    //       customer_id: bill.customer.id,
+    //       amount: bill.amount,
+    //       date_created: bill.date_created,
+    //       date_paid: bill.date_paid,
+    //       comment: bill.comment,
+    //       file_path: null
+    //     })
+    //
+    //
+    //     this.setState({
+    //       bills: this.state.bills.map((element) => {
+    //         if (element.invoice_id === bill.invoice_id) {
+    //           return updatedBill
+    //         } else {
+    //           return element
+    //         }
+    //       })
+    //     })
+    //   }
+    // } catch (err) {
+    //   this.handleError(err)
+    // }
+    //
+    // this.notify(t('Die Datei wurde erfolgreich gelöscht!'), 'success')
+
+    // TODO: check if bill has a different filename (then new file added)
   }
 
   notify(message: string, level: 'error' | 'success') {

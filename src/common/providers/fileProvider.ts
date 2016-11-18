@@ -49,7 +49,7 @@ function copyFile(inputFilePath, targetFilePath): Promise<string> {
 
       writeFile(targetFilePath, data, (err) => {
         if (err) reject(err)
-        
+
         resolve(targetFilePath)
       });
     });
@@ -90,7 +90,7 @@ export function exists(path: string): Promise<boolean> {
   })
 }
 
-function rmrf(filePattern: string): Promise<any> {
+export function rmrf(filePattern: string): Promise<any> {
   return new Promise((resolve, reject) => {
     rimraf(filePattern, (err) => {
       if (err) {
