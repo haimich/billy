@@ -14,6 +14,10 @@ export default class TableComponent extends React.Component<Props, {}> {
     super(props)
   }
 
+  dayFormatter(cell, row): string {
+    return cell + ' ' + (cell === 1 ? t('Tag') : t('Tage'))
+  }
+
   render() {
     const tableOptions: Options = {
       sortName: 'total',
@@ -33,7 +37,7 @@ export default class TableComponent extends React.Component<Props, {}> {
 
             <TableHeaderColumn isKey={true} dataField="name" width="140" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
             <TableHeaderColumn dataField="billCount" width="60" dataSort={true}>{t('Rechnungen')}</TableHeaderColumn>
-            <TableHeaderColumn dataField="averageTimeToPay" width="60" dataSort={true}>{t('Durchschn. Bezahldauer')}</TableHeaderColumn>
+            <TableHeaderColumn dataField="averageTimeToPay" width="60" dataFormat={this.dayFormatter.bind(this)} dataSort={true}>{t('Durchschn. Bezahldauer')}</TableHeaderColumn>
             <TableHeaderColumn dataField="total" width="100" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
 
           </BootstrapTable>

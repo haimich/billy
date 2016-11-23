@@ -32,7 +32,7 @@ interface CustomerStats {
   name: string
   total: number
   billCount: number
-  averageTimeToPay: string
+  averageTimeToPay: number
 }
 
 export default class AppComponent extends React.Component<Props, {}> {
@@ -149,12 +149,12 @@ export default class AppComponent extends React.Component<Props, {}> {
     for (let customerId of Object.keys(customersWithTotals)) {
       let customer = customersWithTotals[customerId]
       let averageTimeToPay = Math.round(getAverage(customer.daysToPayList))
-      console.log(averageTimeToPay, averageTimeToPay === 1)
+      
       customers.push({
         name: customer.name,
         total: customer.total,
         billCount: customer.billCount,
-        averageTimeToPay: averageTimeToPay + ' ' + (averageTimeToPay === 1 ? t('Tag') : t('Tage'))
+        averageTimeToPay
       })
     }
 
