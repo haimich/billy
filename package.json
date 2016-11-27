@@ -70,12 +70,9 @@
     "@types/react-bootstrap-table": "^2.3.29",
     "@types/react-dom": "^0.14.14",
     "@types/react-notification-system": "^0.2.28",
-<<<<<<< HEAD
     "@types/jsdom": "^2.0.29",
-    "jsdom": "^9.5.0",
-=======
     "@types/rimraf": "0.0.28",
->>>>>>> master
+    "jsdom": "^9.5.0",
     "chai": "^3.5.0",
     "chance": "^1.0.4",
     "chokidar-cli": "^1.2.0",
@@ -86,12 +83,8 @@
     "electron-reload": "^1.0.2",
     "enzyme": "^2.4.1",
     "mocha": "^3.0.2",
-<<<<<<< HEAD
     "npm-check-updates": "^2.8.0",
     "react-addons-test-utils": "^15.3.2",
-    "typescript": "^2.1.0-dev.20160824"
-=======
     "typescript": "^2.0.3"
->>>>>>> master
   }
 }
