@@ -44,6 +44,7 @@ export default class TableComponent extends React.Component<Props, {}> {
       deleteText: t('Löschen'),
       noDataText: t('Keine Einträge'),
       insertText: t('Neu'),
+      clearSearch: true,
       handleConfirmDeleteRow: this.handleConfirm.bind(this)
     }
     const selectRowProp: any = {
