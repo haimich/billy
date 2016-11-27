@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import FilterComponent from './FilterComponent'
-import Bill from '../common/models/BillDbModel'
+import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
 import TotalSumComponent from './TotalSumComponent'
@@ -25,7 +25,7 @@ const INTERPRET_REGEX = /dolmetsch/gi
 
 interface Props {
   customers: Customer[]
-  bills: Bill[]
+  bills: BillDbModel[]
 }
 
 interface CustomerStats {
@@ -39,7 +39,7 @@ export default class AppComponent extends React.Component<Props, {}> {
 
   state: {
     customers: Customer[]
-    bills: Bill[]
+    bills: BillDbModel[]
     selectedYear: string
     selectedType: string
   }
@@ -68,17 +68,18 @@ export default class AppComponent extends React.Component<Props, {}> {
     return numberFormatterView(total)
   }
 
-  getAvailableYears(): string[] {
+  getAvailableYears(dateType: 'date_paid' | 'date_created' = 'date_paid'): string[] {
     let years: string[] = []
 
     for (let bill of this.props.bills) {
-      if (bill.date_paid == null || bill.date_paid === '') {
+      if (bill[dateType] == null || bill[dateType] === '') {
         continue
       }
 
-      let dateCreated = dateFormatterYearView(bill.date_paid)
-      if (years.indexOf(dateCreated) === -1) {
-        years.push(dateCreated)
+      let newDate = dateFormatterYearView(bill[dateType])
+      
+      if (years.indexOf(newDate) === -1) {
+        years.push(newDate)
       }
     }
 
@@ -95,7 +96,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     ]
   }
 
-  getDaysToPay(bill: Bill): number {
+  getDaysToPay(bill: BillDbModel): number {
     let createdDate = bill.date_created
     let payDate = bill.date_paid
 
@@ -249,7 +250,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     ]
   }
 
-  matchesFilters(bill: Bill, dateType: 'date_paid' | 'date_created' = 'date_paid'): boolean {
+  matchesFilters(bill: BillDbModel, dateType: 'date_paid' | 'date_created' = 'date_paid'): boolean {
     return this.matchesYear(bill[dateType], this.state.selectedYear) && this.matchesType(bill.comment, this.state.selectedType)
   }
 
@@ -259,6 +260,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
 
     let givenYear = '' + moment(date).year()
+    
     return (givenYear === year)
   }
 
