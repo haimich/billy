@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { open } from '../common/providers/fileProvider'
+import { shortenFilename } from '../common/helpers/text'
 import { getFileIconHtml } from '../common/helpers/icons'
 
 interface Props {
@@ -33,7 +34,7 @@ export default class FileViewComponent extends React.Component<Props, {}> {
               <span className="file-open" onClick={this.openFile.bind(this)}>
                 <span className="file-icon">{getFileIconHtml(this.props.file.name)}</span>
 
-                <span className="file-view">{this.props.file.name}</span>
+                <span className="file-view">{shortenFilename(this.props.file.name, 38)}</span>
               </span>
 
               <span className="glyphicon glyphicon-remove-circle pull-right" aria-hidden="true" onClick={this.props.handleDeleteFile.bind(this)} />
