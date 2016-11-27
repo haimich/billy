@@ -8,6 +8,10 @@ import { prepareDom } from '../helpers'
 import { app, BrowserWindow } from 'electron'
 import { getAppFolder } from '../../src/common/helpers/app'
 
+beforeEach(() => {
+  prepareDom()
+})
+
 describe('<TableComponent />', () => {
 
   it('calls componentDidMount', () => {
