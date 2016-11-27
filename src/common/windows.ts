@@ -2,11 +2,22 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { isDev, getAppFolder } from './helpers/app'
 
 // Keep a global reference of the window objects to prevent gc
-let mainWindow, onboardingWindow, importWindow
+let mainWindow, onboardingWindow, importWindow, statsWindow
 
 export function openOnboardingWindow() {
-  onboardingWindow = new BrowserWindow({ width: 450, height: 338 })
+  onboardingWindow = new BrowserWindow({
+    width: 450,
+    height: 320,
+    show: false,
+    resizable: false,
+    titleBarStyle: 'hidden',
+    type: 'splash'
+  })
   onboardingWindow.loadURL(`file://${getAppFolder()}/src/onboarding.html`)
+
+  onboardingWindow.once('ready-to-show', () => {
+    onboardingWindow.show()
+  })
 
   ipcMain.on('onboarding-finished', () => {
     openMainWindow()
@@ -19,12 +30,21 @@ export function openOnboardingWindow() {
 }
 
 export function openMainWindow() {
-  mainWindow = new BrowserWindow({ width: 1200, height: 800 })
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: isDev ? 900 : 710, // create room for dev tools
+    show: false
+  })
   mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
 
   if (isDev) {
     mainWindow.webContents.openDevTools()
   }
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+    mainWindow.focus()
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -32,8 +52,16 @@ export function openMainWindow() {
 }
 
 export function openImportWindow() {
-  importWindow = new BrowserWindow({ width: 380, height: 260 })
+  importWindow = new BrowserWindow({
+    width: 380,
+    height: 260,
+    show: false
+  })
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
+
+  importWindow.once('ready-to-show', () => {
+    importWindow.show()
+  })
 
   ipcMain.on('import-finished', () => {
     importWindow.close()
@@ -44,8 +72,26 @@ export function openImportWindow() {
   })
 }
 
+
+export function openStatsWindow() {
+  statsWindow = new BrowserWindow({
+    width: 800,
+    height: 815,
+    show: false
+  })
+  statsWindow.loadURL(`file://${getAppFolder()}/src/stats.html`)
+
+  statsWindow.once('ready-to-show', () => {
+    statsWindow.show()
+  })
+
+  statsWindow.on('closed', () => {
+    statsWindow = null
+  })
+}
+
 export function allWindowsClosed() {
-  return (mainWindow === null && onboardingWindow === null && importWindow === null)
+  return (mainWindow == null && onboardingWindow == null && importWindow == null)
 }
 
 export function reload(focusedWindow) {

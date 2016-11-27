@@ -1,0 +1,32 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+#filter-container, #table-container {
+  flex: 1;
+  padding: 5px;
+}
+
+#filter-container {
+  margin-bottom: 20px;
+}
+
+#table-container table {
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+
+#filter-container select {
+  margin-bottom: 8px;
+}
+
+.label-container {
+  display: flex;
+  justify-content: space-around
+}

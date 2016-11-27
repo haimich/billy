@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom';
 import t from '../common/helpers/i18n'
 import { importCsv } from '../common/providers/importProvider'
 import { importBills, deleteAll } from '../common/repositories/billsRepository'
+import { listCustomers, createCustomer } from '../common/repositories/customersRepository'
+import Customer from '../common/models/CustomerModel'
 import SummaryComponent from './SummaryComponent'
 import Bill from '../common/models/BillModel'
 
@@ -63,7 +65,29 @@ export default class FormComponent extends React.Component<any, {}> {
         if (this.state.shouldDelete) {
           await deleteAll()
         }
+
+        let customerNames = await this.getCustomerNames()
+
+        const createCustomers: { [id: string]: Promise<Customer> } = {}
+        bills.forEach(bill => {
+          const customer = bill.customer
+          if (! (customer in customerNames || customer in createCustomers)) {
+            createCustomers[customer] = createCustomer({ name: bill.customer })
+          }
+        })
+
+        await Promise.all(values(createCustomers))
+
+        customerNames = await this.getCustomerNames()
+
+        bills.forEach(bill => {
+          bill.customer_id = customerNames[bill.customer]
+          delete bill.customer
+        })
+
         const results = await importBills(bills)
+
+        console.log(results)
 
         this.setState({
           failed: results.failed,
@@ -73,6 +97,11 @@ export default class FormComponent extends React.Component<any, {}> {
         console.error('Import failed', err)
       }
     }
+  }
+
+  async getCustomerNames() {
+    const customers = await listCustomers()
+    return customers.reduce((lookup, c) => (lookup[c.name] = c.id, lookup), {})
   }
 
   render() {
@@ -87,7 +116,7 @@ export default class FormComponent extends React.Component<any, {}> {
                   type="checkbox"
                   checked={this.state.shouldDelete}
                   onChange={this.onCheckboxChange.bind(this)} />
-                {t('Bestehende Daten löschen?')}
+                {t('Bestehende Daten löschen')}
               </label>
               <p></p>
             </div>
@@ -118,4 +147,8 @@ export default class FormComponent extends React.Component<any, {}> {
       </div>
     )
   }
+}
+
+function values(obj) {
+  return Object.keys(obj).map(k => obj[k]);
 }

@@ -1,44 +1,43 @@
 import * as moment from 'moment'
 
-export function dateFormatter(value: string): string {
+export function dateFormatterView(value?: string): string {
   if (value == null || value === '') {
     return ''
   }
 
-  return moment(value).format('DD.MM.YYYY')
+  return moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')
 }
 
-export function dateToString(date: Date | undefined): string | undefined {
-  if (date != null) {
-    return moment(date).toISOString()
+export function dateFormatterYearView(value?: string): string {
+  if (value == null || value === '') {
+    return ''
   }
+
+  return moment(value, 'YYYY-MM-DD').format('YYYY')
 }
 
-export function stringToDate(date: string | undefined): Date | undefined {
-  if (date != null) {
-    return moment(date).toDate()
+export function dateFormatterDb(value?: string): string {
+  if (value == null || value === '') {
+    return ''
   }
+
+  return moment(value, 'DD.MM.YYYY').format('YYYY-MM-DD')
 }
 
 export function currencyFormatter(value: number): string {
-  return value.toLocaleString('de-DE', {
-    style: 'currency',
-    currency: 'EUR',
-    maximumFractionDigits: 2,
-    useGrouping: true
-  })
+  return value.toLocaleString('de-DE', { minimumFractionDigits: 2 }) + ' €'
 }
 
-/**
- * Accepts int and float values (with . or , as separator)
- * 
- * 123,45 => 123.45
- * 123 => 123
- * 123.45 => 123.45
- */
-export function convertToNumber(value?: string): number {
+export function numberFormatterDb(value?: string): number {
   if (value == null) {
     return 0
   }
-  return parseFloat(value.replace(',','.').replace(' ',''))
+  return parseFloat(value.replace(',', '.').replace(' ', ''))
+}
+
+export function numberFormatterView(value?: number, decimals = 2): string {
+  if (value == null) {
+    return ''
+  }
+  return value.toFixed(decimals).replace('.', ',')
 }

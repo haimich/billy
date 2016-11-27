@@ -1,7 +1,7 @@
 exports.up = (knex, Promise) => {
   return knex.schema.createTable('customers', (table) => {
     table.increments('id').primary().notNullable()
-    table.text('name').notNullable()
+    table.text('name').notNullable().unique()
     table.text('telephone')
 
     table.index(('name'))
@@ -10,10 +10,10 @@ exports.up = (knex, Promise) => {
       return knex.schema.createTable('bills', (table) => {
         table.increments('id').primary().notNullable()
         table.text('invoice_id').unique().notNullable()
-        table.dateTime('date_created').defaultTo(knex.fn.now()).notNullable()
-        table.dateTime('date_paid')
         table.integer('customer_id').references('id').inTable('customer').notNullable()
         table.decimal('amount').notNullable()
+        table.date('date_created').notNullable()
+        table.date('date_paid')
         table.text('comment')
         table.text('file_path')
 

@@ -30,7 +30,7 @@ textarea {
 
 #editor-container {
   position: relative;
-} 
+}
 
 .overlay {
   visibility: hidden;
@@ -57,12 +57,56 @@ textarea {
   -webkit-filter: blur(2px);
   filter: blur(2px);
 }
+
 #editor-container.busy .overlay {
   visibility: visible;
   transition: visibility 0s, opacity 0s linear;
   opacity: 1;
 }
 
-.fileview {
+.sub-label .sub-input {
+  width: 90%;
+  border: none;
+  margin: 5px 0px -8px 13px;
+  padding: 4px;
+  font-size: 13px;
+  color: #7b7b7b;
+}
+
+#editor-container .glyphicon-remove-circle {
+  top: 3px;
+  font-size: 1.2em;
+  color: #999;
+  cursor: pointer;
+}
+
+#editor-container .glyphicon-remove-circle:hover {
+  color: indianred;
+}
+
+#editor-container table {
+  margin-bottom: 0px;
+}
+
+.file-list {
+  list-style: none;
+  padding-left: 0px;
+  margin-bottom: 0px;
+  font-size: 0.9em;
+}
+
+.file-icon {
+  margin-right: 8px;
+}
+
+.file-list li {
+  padding: 5px;
+}
+
+.file-list li:hover {
+  background-color: #eee;
+}
+
+.file-open {
   cursor: pointer;
 }

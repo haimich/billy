@@ -10,15 +10,15 @@ function removeHeaderRow(rows) {
 
 function createBill(record) {
   let bill = {
-    id: '' + record[6],
+    invoice_id: '' + record[6],
     customer: record[5],
     amount: record[3],
-    date_created: record[0],
-    date_paid: record[1],
+    date_created: record[4],
+    date_paid: record[8],
     comment: record[2]
   }
 
-  bill.id = bill.id.replace(/\./g, '')
+  bill.invoice_id = bill.invoice_id.replace(/\./g, '')
   bill.amount = bill.amount.replace('€', '')
   bill.amount = bill.amount.replace(/\./g, '')
   bill.amount = bill.amount.replace(',', '.')

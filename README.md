@@ -2,6 +2,8 @@
 
 ![billy](concept/accountants.png)
 
+**This is a screenshot of the application:** ![screenshot](concept/screenshot.png)
+
 ## Setup
 
 ```bash
@@ -18,8 +20,3 @@ To use the following dev tools open the browser console in the open app and inst
 
 * React dev tools: `require('electron-react-devtools').install()`
 * Electron devtron: `require('devtron').install()`
-
-## Links
-* http://electron.atom.io/docs/tutorial/application-distribution/
-* http://electron.atom.io/docs/tutorial/using-native-node-modules/
-* http://icon-icons.com/

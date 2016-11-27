@@ -6,7 +6,11 @@ export interface FormComponentValues {
   folder: string
 }
 
-export class FormComponent extends React.Component<any, {}> {
+interface Props { 
+  finishSetup: (values: FormComponentValues) => any;
+}
+
+export class FormComponent extends React.Component<Props, {}> {
 
   refs: {
     file: HTMLInputElement,
@@ -15,10 +19,6 @@ export class FormComponent extends React.Component<any, {}> {
 
   state: {
     folder?: File
-  }
-
-  props: {
-    finish
   }
 
   constructor(props) {
@@ -39,7 +39,7 @@ export class FormComponent extends React.Component<any, {}> {
 
   onSubmit(event) {
     event.preventDefault()
-    this.props.finish({
+    this.props.finishSetup({
       folder: this.state.folder!.path
     })
   }

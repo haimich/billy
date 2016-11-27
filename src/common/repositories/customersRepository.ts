@@ -40,3 +40,9 @@ export function deleteCustomerByNamePattern(namePattern: string): Promise<void> 
     .delete()
     .where('name', 'like', namePattern)
 }
+
+export function deleteCustomerById(id: number): Promise<void> {
+  return db('customers')
+    .delete()
+    .where('id', id)
+}

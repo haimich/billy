@@ -66,7 +66,7 @@ export default class AppComponent extends React.Component<any, {}> {
           <img src="../../../static/images/accountants.png" />
         </div>
 
-        <FormComponent finish={this.finishSetup.bind(this)} />
+        <FormComponent finishSetup={this.finishSetup.bind(this)} />
         <NotificationSystem ref="notificationSystem" />
       </div>
     )

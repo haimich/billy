@@ -3,14 +3,33 @@
  * @see https://www.npmjs.com/package/electron-settings
  */
 
+import { isDev } from '../helpers/app';
 const settings = require('electron-settings')
 
 settings.configure({
   prettify: true
 })
 
+const DEV_CONFIG = {
+  appDir: './',
+  knex: {
+    client: 'sqlite3',
+    connection: {
+      filename: 'bills.sqlite'
+    },
+    migrations: {
+      tableName: 'migrations',
+      directory: './sql/migrations'
+    },
+    seeds: {
+      directory: './sql/seeds'
+    },
+    useNullAsDefault: true // see http://knexjs.org/#Builder-insert
+  }
+};
+
 export async function userInputNeeded(): Promise<boolean> {
-  const appDir = await settings.get('appDir')
+  const appDir = await get('appDir')
 
   if (appDir == null || appDir === '') {
     return true
@@ -19,10 +38,21 @@ export async function userInputNeeded(): Promise<boolean> {
   }
 }
 
-export function get(value: string): Promise<string> {
+type settingKeys = 'appDir' | 'knex'
+
+export function get(value: settingKeys): Promise<string> {
+  if (isDev) {
+    return Promise.resolve(DEV_CONFIG[value])
+  }
+
   return settings.get(value)
 }
 
-export function set(key: string, value: any): Promise<string> {
+export function set(key: settingKeys, value: any): Promise<void> {
+  if (isDev) {
+    DEV_CONFIG[key] = value;
+    return Promise.resolve()
+  }
+  
   return settings.set(key, value)
 }

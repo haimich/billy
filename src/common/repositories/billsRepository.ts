@@ -8,6 +8,13 @@ export async function init(knexInstance): Promise<any> {
   db = knexInstance
 }
 
+export function billExists(invoiceId: string): Promise<boolean> {
+  return db('bills')
+    .select('invoice_id')
+    .where('invoice_id', invoiceId)
+    .then(rows => rows.length === 0 ? false : true)
+}
+
 export function createBill(bill: Bill): Promise<BillDbModel> {
   return db('bills')
     .insert(bill)
@@ -136,7 +143,7 @@ export async function importBills(bills): Promise<any> {
     try {
       await createBill(bill)
     } catch (err) {
-      failed.push(bill)
+      failed.push(err)
       continue
     }
     successful.push(bill)
@@ -148,10 +155,10 @@ export async function importBills(bills): Promise<any> {
   }
 }
 
-export function deleteBillsByInvoiceIds(invoiceIds): Promise<any> {
+export function deleteBillByInvoiceId(invoiceId: string): Promise<any> {
   return db('bills')
     .delete()
-    .whereIn('invoice_id', invoiceIds)
+    .where('invoice_id', invoiceId)
 }
 
 export function deleteBillsByInvoiceIdPattern(idPattern: string): Promise<any> {
