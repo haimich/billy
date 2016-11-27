@@ -197,17 +197,155 @@ describe.only('AppComponent', () => {
 
       const result = component.getTableData()
       expect(result.length).to.equal(1)
-      expect(result[0].total).to.equal(245.90)
+      expect(result[0].total).to.equal(246.90)
       expect(result[0].billCount).to.equal(2)
-      expect(result[0].averageTimeToPay).to.equal(7.5)
+      expect(result[0].averageTimeToPay).to.equal(8)
       expect(result[0].name).to.equal('Deine Mudda')
     })
   })
 
-  //getTableData
-  //getLineChartData
+  describe('getLineChartData', () => {
+    it('should return a list with the sum of all date_paid amounts', () => {
+      component = new AppComponent({
+        customers: [{
+          id: 123,
+          name: 'Your momma'
+        }],
+        bills: [{
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 123.45,
+          date_created: '2014-09-05',
+          date_paid: '2014-11-05',
+          comment: 'no comment'
+        }]
+      })
+      component.matchesFilters = () => true
 
-  //getTypesPieChartData
+      const result = component.getLineChartData('date_paid')
+      expect(result.length).to.equal(12) // the months
+
+      expect(result[10]).to.equal('123.45')
+    })
+
+    it('should return a list with the sum of all date_created amounts', () => {
+      component = new AppComponent({
+        customers: [{
+          id: 123,
+          name: 'Your momma'
+        }],
+        bills: [{
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 123.45,
+          date_created: '2014-09-05',
+          date_paid: '2014-11-05',
+          comment: 'no comment'
+        }]
+      })
+      component.matchesFilters = () => true
+
+      const result = component.getLineChartData('date_created')
+      expect(result.length).to.equal(12) // the months
+
+      expect(result[8]).to.equal('123.45')
+    })
+
+    it('should return a list with the sum of all amounts', () => {
+      component = new AppComponent({
+        customers: [{
+          id: 123,
+          name: 'Your momma'
+        }],
+        bills: [{
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 123.45,
+          date_created: '2013-09-05',
+          date_paid: '2014-01-01',
+          comment: 'no comment'
+        }, {
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 100.5,
+          date_created: '2014-09-05',
+          date_paid: '2014-11-05',
+          comment: 'no comment'
+        }, {
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 99.5,
+          date_created: '2014-09-05',
+          date_paid: '2014-11-05',
+          comment: 'no comment'
+        }]
+      })
+      component.matchesFilters = () => true
+
+      const result = component.getLineChartData('date_paid')
+      expect(result.length).to.equal(12) // the months
+
+      expect(result[0]).to.equal('123.45')
+      expect(result[10]).to.equal('200.00')
+    })
+  })
+
+
+  describe('getTypesPieChartData', () => {
+    it('should return the number of bills matching translating or interpreting', () => {
+      component = new AppComponent({
+        customers: [{
+          id: 123,
+          name: 'Your momma'
+        }],
+        bills: [{
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 100,
+          date_created: '2014-09-05',
+          date_paid: '2014-09-05',
+          comment: 'This was a übersetzen auftrag'
+        }, {
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 100,
+          date_created: '2014-09-05',
+          date_paid: '2014-09-05',
+          comment: 'This was a Dolmetsch-Auftrag'
+        }]
+      })
+      component.state.selectedYear = '2014'
+      component.matchesFilters = () => true
+
+      const result = component.getTypesPieChartData('date_paid')
+      expect(result.length).to.equal(2)
+      expect(result[0]).to.equal(1)
+      expect(result[1]).to.equal(1)
+    })
+  })
+
+  //
   //getTypesIncomePieChartData
 
 })  

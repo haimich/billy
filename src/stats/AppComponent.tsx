@@ -206,12 +206,12 @@ export default class AppComponent extends React.Component<Props, {}> {
     return data
   }
 
-  getTypesPieChartData(): number[] {
+  getTypesPieChartData(dateType: 'date_paid' | 'date_created' = 'date_paid'): number[] {
     let sumInterpreting = 0
     let sumTranslating = 0
 
     for (let bill of this.props.bills) {
-      if (! this.matchesYear(bill.date_paid, this.state.selectedYear)) {
+      if (! this.matchesYear(bill[dateType], this.state.selectedYear)) {
         continue
       }
 
