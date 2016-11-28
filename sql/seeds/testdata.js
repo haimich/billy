@@ -24,6 +24,22 @@ exports.seed = (knex, Promise) => {
       }
       return Promise.all(promises)
     })
+    .then(() => {
+      return knex('bills').select('*')
+    })
+    .then((bills) => {
+      let promises = []
+
+      for (let bill of bills) {
+        const filesToAdd = chance.natural({ min: 0, max: 3 })
+
+        for (let i = 0; i < filesToAdd; i++) {
+          promises.push(knex('files').insert(generateFile(bill.id)))
+        }
+      }
+
+      return Promise.all(promises)      
+    })
 }
 
 function generateCustomer() {
@@ -58,6 +74,13 @@ function generateBill() {
   }
 
   return bill
+}
+
+function generateFile(billId) {
+  return {
+    bill_id: billId,
+    path: '/foo/bla/' + chance.file()
+  }    
 }
 
 function addZeroIfNecessary(number) {

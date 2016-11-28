@@ -20,6 +20,12 @@ export function getFileById(id: number): Promise<File> {
     .first()
 }
 
+export function deleteFileById(id: number): Promise<void> {
+  return db('files')
+    .delete()
+    .where('id', id)
+}
+
 export function deleteFilesByPathPattern(pathPattern: string): Promise<any> {
   return db('files')
     .delete()

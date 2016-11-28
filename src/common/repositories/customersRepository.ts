@@ -35,14 +35,14 @@ export function listCustomers(): Promise<Customer[]> {
     .orderBy('name')
 }
 
-export function deleteCustomerByNamePattern(namePattern: string): Promise<void> {
-  return db('customers')
-    .delete()
-    .where('name', 'like', namePattern)
-}
-
 export function deleteCustomerById(id: number): Promise<void> {
   return db('customers')
     .delete()
     .where('id', id)
+}
+
+export function deleteCustomerByNamePattern(namePattern: string): Promise<void> {
+  return db('customers')
+    .delete()
+    .where('name', 'like', namePattern)
 }

@@ -9,7 +9,7 @@ interface BillDbModel {
   customer_name: string;
   customer: Customer;
   comment?: string;
-  file_path?: string;
+  files?: string[];
 }
 
 export default BillDbModel
