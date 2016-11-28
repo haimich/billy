@@ -27,21 +27,21 @@ export default class TableComponent extends React.Component<Props, {}> {
     }
 
     return (
-        <div id="table-container">
-          <BootstrapTable
-            data={this.props.data}
-            striped={true}
-            hover={true}
-            options={tableOptions}
-            pagination={true}>
+      <div id="table-container">
+        <BootstrapTable
+          data={this.props.data}
+          striped={true}
+          hover={true}
+          options={tableOptions}
+          pagination={true}>
 
-            <TableHeaderColumn isKey={true} dataField="name" width="140" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
-            <TableHeaderColumn dataField="billCount" width="60" dataSort={true}>{t('Rechnungen')}</TableHeaderColumn>
-            <TableHeaderColumn dataField="averageTimeToPay" width="60" dataFormat={this.dayFormatter.bind(this)} dataSort={true}>{t('Durchschn. Bezahldauer')}</TableHeaderColumn>
-            <TableHeaderColumn dataField="total" width="100" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
+          <TableHeaderColumn isKey={true} dataField="name" width="140" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="billCount" width="60" dataSort={true}>{t('Rechnungen')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="averageTimeToPay" width="60" dataFormat={this.dayFormatter.bind(this)} dataSort={true}>{t('Durchschn. Bezahldauer')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="total" width="100" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
 
-          </BootstrapTable>
-        </div>
+        </BootstrapTable>
+      </div>
     )
   }
 }
