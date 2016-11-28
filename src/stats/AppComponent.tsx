@@ -219,8 +219,6 @@ export default class AppComponent extends React.Component<Props, {}> {
         sumInterpreting += 1
       } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
         sumTranslating += 1
-      } else {
-        console.log('getTypesPieChartData: no match for', bill.comment)
       }
     }
 
@@ -243,8 +241,6 @@ export default class AppComponent extends React.Component<Props, {}> {
         sumInterpreting += bill.amount
       } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
         sumTranslating += bill.amount
-      } else {
-        console.log('getTypesIncomePieChartData: no match for', bill.comment)
       }
     }
     

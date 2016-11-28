@@ -96,37 +96,53 @@ export default class ChartComponent extends React.Component<Props, {}> {
 
   render() {
     return (
-      <div>
-        <LineChart
-          data={this.getLineChartData()}
-          options={{}}
-          ref="chart"
-          width="620"
-          height="250"
-        />
-
-        <div className="label-container">
-          <section>{t('Einkommen nach Bezahldatum')}</section>
+      <div className="container-fluid">
+        <div className="row">
+          <LineChart
+            data={this.getLineChartData()}
+            options={{
+              responsive: true
+            }}
+            ref="chart"
+            width="620"
+            height="250"
+            className="col-xs-12"
+          />
         </div>
 
-        <PieChart
-          data={this.getTypesPieChartData()}
-          options={{}}
-          width="310"
-          height="250"
-        />
-
-        <PieChart
-          data={this.getTypesIncomePieChartData()}
-          options={{}}
-          width="310"
-          height="250"
-        />
-
-        <div className="label-container">
-          <section>{t('Aufträge nach Typ')}</section>
-          <section className="pull-right">{t('Aufträge nach Umsatz')}</section>
+        <div className="row">
+          <div className="col-xs-12 label-container">
+            <section>{t('Einkommen nach Bezahldatum')}</section>
+          </div>
         </div>
+
+        <div className="row">
+          <div className="col-xs-6">
+            <PieChart
+              data={this.getTypesPieChartData()}
+              options={{
+                responsive: true
+              }}
+              width="310"
+            />
+          </div>
+
+          <div className="col-xs-6">
+            <PieChart
+              data={this.getTypesIncomePieChartData()}
+              options={{
+                responsive: true
+              }}
+              width="310"
+            />
+          </div>
+        </div>
+
+        <div className="row">
+            <section className="col-xs-6 label-container">{t('Aufträge nach Typ')}</section>
+            <section className="col-xs-6 label-container">{t('Aufträge nach Umsatz')}</section>
+        </div>
+
       </div>
     )
   }
