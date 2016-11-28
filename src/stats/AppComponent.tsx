@@ -219,6 +219,8 @@ export default class AppComponent extends React.Component<Props, {}> {
         sumInterpreting += 1
       } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
         sumTranslating += 1
+      } else {
+        console.log('getTypesPieChartData: no match for', bill.comment)
       }
     }
 
@@ -228,12 +230,12 @@ export default class AppComponent extends React.Component<Props, {}> {
     ]
   }
 
-  getTypesIncomePieChartData(): number[] {
+  getTypesIncomePieChartData(dateType: 'date_paid' | 'date_created' = 'date_paid'): number[] {
     let sumInterpreting = 0
     let sumTranslating = 0
 
     for (let bill of this.props.bills) {
-      if (! this.matchesYear(bill.date_paid, this.state.selectedYear)) {
+      if (! this.matchesYear(bill[dateType], this.state.selectedYear)) {
         continue
       }
 
@@ -241,9 +243,11 @@ export default class AppComponent extends React.Component<Props, {}> {
         sumInterpreting += bill.amount
       } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
         sumTranslating += bill.amount
+      } else {
+        console.log('getTypesIncomePieChartData: no match for', bill.comment)
       }
     }
-
+    
     return [
       parseFloat(sumInterpreting.toFixed(2)),
       parseFloat(sumTranslating.toFixed(2))

@@ -1,7 +1,7 @@
 import AppComponent from '../../src/stats/AppComponent'
 import { expect } from 'chai'
 
-describe.only('AppComponent', () => {
+describe('AppComponent', () => {
   let component = null
 
   beforeEach(() => {
@@ -305,9 +305,54 @@ describe.only('AppComponent', () => {
     })
   })
 
-
   describe('getTypesPieChartData', () => {
     it('should return the number of bills matching translating or interpreting', () => {
+      component = new AppComponent({
+        customers: [{
+          id: 123,
+          name: 'Your momma'
+        }],
+        bills: [
+          {
+          invoice_id: 'foo/123',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 100,
+          date_created: '2014-09-05',
+          date_paid: '2014-09-05',
+          comment: 'This was a übersetzen auftrag'
+        },
+         {
+          invoice_id: 'foo/124',
+          customer: {
+            id: 123,
+            name: 'Deine Mudda'
+          },
+          amount: 100,
+          date_created: '2014-09-05',
+          date_paid: '2014-09-05',
+          comment: 'This was a Dolmetsch-Auftrag dolmetschen'
+        }
+        ]
+      })
+      component.state.selectedYear = '2014'
+      component.matchesFilters = () => true
+      component.matchesYear = () => true
+
+      const result = component.getTypesPieChartData('date_paid')
+      expect(result.length).to.equal(2)
+      expect(result[0]).to.equal(1)
+      expect(result[1]).to.equal(1)
+      /*
+
+      */
+    })
+  })
+
+  describe('getTypesIncomePieChartData', () => {
+    it('should return the amount of income for translating and interpreting', () => {
       component = new AppComponent({
         customers: [{
           id: 123,
@@ -329,7 +374,7 @@ describe.only('AppComponent', () => {
             id: 123,
             name: 'Deine Mudda'
           },
-          amount: 100,
+          amount: 150,
           date_created: '2014-09-05',
           date_paid: '2014-09-05',
           comment: 'This was a Dolmetsch-Auftrag'
@@ -338,14 +383,11 @@ describe.only('AppComponent', () => {
       component.state.selectedYear = '2014'
       component.matchesFilters = () => true
 
-      const result = component.getTypesPieChartData('date_paid')
+      const result = component.getTypesIncomePieChartData('date_paid')
       expect(result.length).to.equal(2)
-      expect(result[0]).to.equal(1)
-      expect(result[1]).to.equal(1)
+      expect(result[0]).to.equal(150)
+      expect(result[1]).to.equal(100)
     })
   })
 
-  //
-  //getTypesIncomePieChartData
-
-})  
+})
