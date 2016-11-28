@@ -8,8 +8,16 @@ interface Props {
 
 export default class FileUploadComponent extends React.Component<Props, {}> {
 
+  refs: {
+    fileinput: HTMLInputElement
+  }
+
   handleOnChange(event: any) {
     this.props.handleFileChange(event.target.files)
+  }
+
+  resetValue() {
+    this.refs.fileinput.value = null
   }
 
   render() {
@@ -18,7 +26,13 @@ export default class FileUploadComponent extends React.Component<Props, {}> {
        <div className="col-sm-offset-4 col-sm-8">
          <label className="btn btn-default btn-sm">
           {t('Datei auswählen')}
-          <input type="file" className="form-control hidden" onChange={this.handleOnChange.bind(this)} />
+          <input
+            type="file"
+            ref="fileinput"
+            className="form-control hidden"
+            onChange={this.handleOnChange.bind(this)}
+            onClick={this.resetValue.bind(this)}
+          />
         </label>
        </div>
      </div>

@@ -47,8 +47,7 @@ describe('billsRepository', () => {
         comment: 'bla',
         customer_id: 1,
         date_created: testDate,
-        date_paid: testDate,
-        file_path: '/tmp/test.md'
+        date_paid: testDate
       })
 
       expect(bill.invoice_id).to.equal(PREFIX + '123')
@@ -57,7 +56,6 @@ describe('billsRepository', () => {
       expect(bill.customer.id).to.equal(1)
       expect(bill.date_created).to.equal(testDate)
       expect(bill.date_paid).to.equal(testDate)
-      expect(bill.file_path).to.equal('/tmp/test.md')
     })
   })
 

@@ -1,4 +1,5 @@
 import * as moment from 'moment'
+import * as path from 'path'
 
 export function dateFormatterView(value?: string): string {
   if (value == null || value === '') {
@@ -40,4 +41,12 @@ export function numberFormatterView(value?: number, decimals = 2): string {
     return ''
   }
   return value.toFixed(decimals).replace('.', ',')
+}
+
+export function getFilename(filePath: string): string {
+  if (filePath == null || filePath === '') {
+    return ''
+  } else {
+    return path.basename(filePath)
+  }
 }

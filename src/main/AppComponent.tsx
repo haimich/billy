@@ -5,6 +5,7 @@ import { updateCustomer } from '../common/repositories/customersRepository'
 import { copyToAppDir, deleteFilesByInvoiceId, rmrf } from '../common/providers/fileProvider'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
+import FileModel from '../common/models/FileModel'
 import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
 import EditorComponent from './EditorComponent'
@@ -38,50 +39,52 @@ export default class AppComponent extends React.Component<any, {}> {
     notifications = this.refs.notificationSystem
   }
 
-  async saveBill(bill: Bill) {
-    let createdBill
+  async save(bill: Bill, files: FileModel[]) {
+    console.log('TODO: migrate')
+    // let createdBill
 
-    try {
-      if (bill.file_path != null) {
-        bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
-      }
+    // try {
+    //   if (bill.file_path != null) {
+    //     bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
+    //   }
 
-      createdBill = await createBill(bill)
-    } catch (err) {
-      this.handleError(err)
-      return
-    }
+    //   createdBill = await createBill(bill)
+    // } catch (err) {
+    //   this.handleError(err)
+    //   return
+    // }
 
-    this.setState({
-      selectedBill: undefined,
-      bills: [ createdBill ].concat(this.state.bills)
-    })
+    // this.setState({
+    //   selectedBill: undefined,
+    //   bills: [ createdBill ].concat(this.state.bills)
+    // })
   }
 
-  async updateBill(bill: Bill) {
-    let updatedBill
+  async update(bill: Bill, files: FileModel[]) {
+    console.log('TODO: migrate')
+    // let updatedBill
 
-    try {
-      if (bill.file_path != null) {
-        bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
-      }
+    // try {
+    //   if (bill.file_path != null) {
+    //     bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
+    //   }
 
-      updatedBill = await updateBill(bill)
-    } catch (err) {
-      this.handleError(err)
-      return
-    }
+    //   updatedBill = await update(bill)
+    // } catch (err) {
+    //   this.handleError(err)
+    //   return
+    // }
 
-    this.setState({
-      selectedBill: undefined,
-      bills: this.state.bills.map((element) => {
-        if (element.invoice_id === bill.invoice_id) {
-          return updatedBill
-        } else {
-          return element
-        }
-      })
-    })
+    // this.setState({
+    //   selectedBill: undefined,
+    //   bills: this.state.bills.map((element) => {
+    //     if (element.invoice_id === bill.invoice_id) {
+    //       return updatedBill
+    //     } else {
+    //       return element
+    //     }
+    //   })
+    // })
   }
 
   async deleteBill(billIds: string[]) {
@@ -117,7 +120,7 @@ export default class AppComponent extends React.Component<any, {}> {
     }
   }
 
-  async deleteFile(invoiceId: string, filepath: string) {
+  async deleteFile(file: FileModel) {
     console.log('TODO')
     // try {
     //   let bill: BillDbModel = await getBillByInvoiceId(invoiceId)
@@ -126,7 +129,7 @@ export default class AppComponent extends React.Component<any, {}> {
     //     console.log('delete it', bill)
     //     await rmrf(bill.file_path)
     //
-    //     let updatedBill = await updateBill({
+    //     let updatedBill = await update({
     //       invoice_id: bill.invoice_id,
     //       customer_id: bill.customer.id,
     //       amount: bill.amount,
@@ -138,7 +141,7 @@ export default class AppComponent extends React.Component<any, {}> {
     //
     //
     //     this.setState({
-    //       bills: this.state.bills.map((element) => {
+    //       bills: this.state.bills.map(element => {
     //         if (element.invoice_id === bill.invoice_id) {
     //           return updatedBill
     //         } else {
@@ -193,11 +196,10 @@ export default class AppComponent extends React.Component<any, {}> {
         />
         <EditorComponent
           bill={this.state.selectedBill}
-          saveBill={this.saveBill.bind(this)}
-          updateBill={this.updateBill.bind(this)}
+          save={this.save.bind(this)}
+          update={this.update.bind(this)}
           updateCustomer={this.updateCustomer.bind(this)}
           notify={this.notify.bind(this)}
-          deleteFile={this.deleteFile.bind(this)}
         />
 
         <NotificationSystem ref="notificationSystem" />

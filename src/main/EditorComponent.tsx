@@ -3,18 +3,19 @@ import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
+import FileModel from '../common/models/FileModel'
 import FileViewComponent from './FileViewComponent'
 import FileUploadComponent from './FileUploadComponent'
 import { billExists } from '../common/repositories/billsRepository'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/repositories/customersRepository'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
-import * as path from 'path'
 
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
 
 interface State {
+  id?: number;
   invoice_id: string;
   amount?: string;
   date_created?: string;
@@ -25,16 +26,15 @@ interface State {
   isNew: boolean;
   isDirty: boolean;
   invoiceIdValid: boolean;
-  file?: File;
+  files?: FileModel[];
 }
 
 interface Props {
-  updateBill: (row: Bill) => void
-  saveBill: (row: Bill) => void
+  update: (row: Bill, files: FileModel[]) => void
+  save: (row: Bill, files: FileModel[]) => void
   updateCustomer: (row: Customer) => void
   bill?: BillDbModel
   notify: any
-  deleteFile: (invoiceId: string, filename: string) => void
 }
 
 export default class EditorComponent extends React.Component<Props, {}> {
@@ -67,6 +67,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   getDefaultState(): State {
     return {
+      id: undefined,
       invoice_id: '',
       amount: '',
       date_created: undefined,
@@ -77,7 +78,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
       isNew: true,
       isDirty: false,
       invoiceIdValid: true,
-      file: undefined
+      files: []
     }
   }
 
@@ -104,8 +105,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
       amount: numberFormatterDb(this.state.amount),
       date_created: dateFormatterDb(this.state.date_created),
       date_paid: dateFormatterDb(this.state.date_paid),
-      comment: this.state.comment,
-      file_path: this.state.file && this.state.file.path
+      comment: this.state.comment
     }
 
     try {
@@ -120,9 +120,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
     }
 
     if (this.state.isNew) {
-      this.props.saveBill(bill)
+      this.props.save(bill, this.state.files)
     } else {
-      this.props.updateBill(bill)
+      this.props.update(bill, this.state.files)
     }
 
     this.props.updateCustomer(this.state.selectedCustomer[0])
@@ -138,10 +138,35 @@ export default class EditorComponent extends React.Component<Props, {}> {
     return
   }
 
-  getFile(files) {
+  getFile(files: File[]): FileModel {
     if (files.length >= 1) {
-      return files[0]
+      return {
+        bill_id: this.state.id,
+        path: files[0].path
+      }
     }
+  }
+
+  addFile(file: FileModel) {
+    if (file == null || this.fileExists(file)) {
+      return
+    }
+
+    this.setState({ 
+      files: this.state.files.concat(file)
+    })
+  }
+
+  fileExists(file: FileModel): boolean {
+    for (let element of this.state.files) {
+      if (file.id != null && element.id != null && file.id === element.id) {
+        return true
+      } else if (file.path === element.path) {
+        return true
+      }
+    }
+
+    return false
   }
 
   onDrag(event) {
@@ -162,12 +187,12 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   onDrop(event) {
     event.preventDefault()
-    this.setState({ file: this.getFile(event.dataTransfer.files) })
+    this.addFile(this.getFile(event.dataTransfer.files))
     this.onLeave()
   }
 
   handleFileChange(files: File[]) {
-    this.setState({ file: this.getFile(files) })
+    this.addFile(this.getFile(files))
   }
 
   async handleCustomerChange(selected: any) {
@@ -264,17 +289,20 @@ export default class EditorComponent extends React.Component<Props, {}> {
     }
   }
 
-  handleDeleteFile() {
-    if (this.state.isNew) {
-      this.setState({ file: null })
-      return
+  handleDeleteFile(file: FileModel) {
+    if (confirm(t('Möchtest du die Datei wirklich entfernen?'))) {
+      this.setState({
+        files: this.state.files.filter(element => {
+          if (file.id != null && element.id != null && file.id === element.id) {
+            return false
+          } else if (file.path === element.path) {
+            return false
+          } else {
+            return true
+          }
+        })
+      })
     }
-    alert('Dieses Feature ist noch nicht implementiert, du kannst aber einfach eine neue Datei hochladen!')
-
-    // if (this.state.file != null && this.state.file.path != null && confirm(t('Möchtest du die Datei wirklich entfernen?'))) {
-      // this.setState({ file: null })
-      // this.props.deleteFile(this.props.bill.invoice_id, this.state.file.path)
-    // }
   }
 
   render() {
@@ -391,7 +419,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
                 </div>
               </div>
 
-              <FileViewComponent file={this.state.file} handleDeleteFile={this.handleDeleteFile.bind(this)} />
+              <FileViewComponent files={this.state.files} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
             </div>
           </div>
@@ -460,11 +488,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
       this.resetState()
     } else {
       this.setState({
+        id: bill.id,
         invoice_id: bill.invoice_id,
-        file: {
-          path: bill.file_path,
-          name: bill.file_path && path.basename(bill.file_path)
-        },
+        files: (bill.files != null) ? bill.files : [],
         selectedCustomer: [bill.customer],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),

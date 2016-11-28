@@ -30,8 +30,7 @@ export function updateBill(bill: Bill): Promise<BillDbModel> {
       customer_id: bill.customer_id,
       date_created: bill.date_created,
       date_paid: bill.date_paid,
-      comment: bill.comment,
-      file_path: bill.file_path
+      comment: bill.comment
     })
     .where('invoice_id', bill.invoice_id)
     .then(() => {
@@ -48,7 +47,6 @@ function getBillById(id: number): Promise<BillDbModel> {
       b.date_paid,
       b.amount,
       b.comment,
-      b.file_path,
       c.id as customer_id,
       c.name as customer_name,
       c.telephone as customer_telephone
@@ -81,7 +79,6 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
       b.date_paid,
       b.amount,
       b.comment,
-      b.file_path,
       c.id as customer_id,
       c.name as customer_name,
       c.telephone as customer_telephone
@@ -114,7 +111,6 @@ export function listBills(): Promise<BillDbModel[]> {
       b.date_paid,
       b.amount,
       b.comment,
-      b.file_path,
       c.id as customer_id,
       c.name as customer_name,
       c.telephone as customer_telephone

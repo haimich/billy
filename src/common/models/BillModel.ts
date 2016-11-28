@@ -5,7 +5,6 @@ interface Bill {
   date_created: string;
   date_paid?: string;
   comment?: string;
-  file_path?: string;
 }
 
 export default Bill
