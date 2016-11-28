@@ -42,6 +42,7 @@ export function updateBill(bill: Bill): Promise<BillDbModel> {
 function getBillById(id: number): Promise<BillDbModel> {
   return db.raw(`
     select
+      b.id,
       b.invoice_id,
       b.date_created,
       b.date_paid,
