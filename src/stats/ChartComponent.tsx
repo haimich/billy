@@ -140,7 +140,7 @@ export default class ChartComponent extends React.Component<Props, {}> {
 
         <div className="row">
             <section className="col-xs-6 label-container">{t('Aufträge nach Typ')}</section>
-            <section className="col-xs-6 label-container">{t('Aufträge nach Umsatz')}</section>
+            <section className="col-xs-6 label-container">{t('Aufträge nach Umsatz (€)')}</section>
         </div>
 
       </div>
