@@ -95,8 +95,14 @@ describe('AppComponent', () => {
   })
 
   describe('matchesType', () => {
-    it('should return true if the text matches the type', () => {
-      expect(component.matchesType('bla foo übersetzen deine mudda', 'Übersetzen')).to.be.true
+    it('should return true if the text matches übersetzen', () => {
+      expect(component.matchesType('Übersetzen und Lektorat Brazda 2016/2', 'Übersetzen')).to.be.true
+      expect(component.matchesType('Übersetzung RO-DE Geburtsurkunde', 'Übersetzen')).to.be.true
+      expect(component.matchesType('Beglaubigte Übersetzung RO-DE einer Geburtsurkunde', 'Übersetzen')).to.be.true
+      expect(component.matchesType('Übersetzungen Deine Mudda FR-DE', 'Übersetzen')).to.be.true
+    })
+
+    it('should return true if the text matches dolmetschen', () => {
       expect(component.matchesType('bla foo Dolmetschen deine mudda', 'Dolmetschen')).to.be.true
     })
   })
@@ -345,9 +351,6 @@ describe('AppComponent', () => {
       expect(result.length).to.equal(2)
       expect(result[0]).to.equal(1)
       expect(result[1]).to.equal(1)
-      /*
-
-      */
     })
   })
 

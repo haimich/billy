@@ -19,7 +19,7 @@ const SELECT_TYPE_TEXT_TRANSLATE = t('Übersetzen')
 const SELECT_TYPE_TEXT_TRANSLATE_CERTIFY = t('Beglaubigen')
 const SELECT_TYPE_TEXT_OTHER = t('Andere')
 
-const TRANSLATE_REGEX = /[üÜ]bersetz/gi
+const TRANSLATE_REGEX = /.*[üÜ]bersetz.*/gi
 const TRANSLATE_CERTIFY_REGEX = /beglaubig.*[üÜ]bersetz/gi
 const INTERPRET_REGEX = /dolmetsch/gi
 
@@ -273,15 +273,16 @@ export default class AppComponent extends React.Component<Props, {}> {
       return false
     }
 
+
     switch (type) {
       case SELECT_TYPE_TEXT: return true
-      case SELECT_TYPE_TEXT_INTERPRET: return INTERPRET_REGEX.test(text)
-      case SELECT_TYPE_TEXT_TRANSLATE_CERTIFY: return TRANSLATE_CERTIFY_REGEX.test(text)
-      case SELECT_TYPE_TEXT_TRANSLATE: return TRANSLATE_REGEX.test(text)
+      case SELECT_TYPE_TEXT_INTERPRET: return text.search(INTERPRET_REGEX) !== -1
+      case SELECT_TYPE_TEXT_TRANSLATE_CERTIFY: return text.search(TRANSLATE_CERTIFY_REGEX) !== -1
+      case SELECT_TYPE_TEXT_TRANSLATE: return text.search(TRANSLATE_REGEX) !== -1
       case SELECT_TYPE_TEXT_OTHER: {
-        return (!INTERPRET_REGEX.test(text) &&
-          !TRANSLATE_CERTIFY_REGEX.test(text) &&
-          !TRANSLATE_REGEX.test(text))
+        return (text.search(INTERPRET_REGEX) === -1 &&
+          text.search(TRANSLATE_CERTIFY_REGEX) === -1 &&
+          text.search(TRANSLATE_REGEX) === -1)
       }
     }
 
