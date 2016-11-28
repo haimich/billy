@@ -33,28 +33,6 @@ export default class FormComponent extends React.Component<any, {}> {
     }
   }
 
-  onCheckboxChange(event) {
-    this.setState({
-      shouldDelete: !this.state.shouldDelete
-    })
-  }
-
-  onFileinputChange(event) {
-    const files = event.target.files
-    if (files.length >= 1) {
-      this.setState({ file: files[0] })
-      this.refs.importButton.removeAttribute('disabled')
-    }
-  }
-
-  userConfirmed(): boolean {
-    if (this.state.shouldDelete) {
-      return window.confirm(t('Bist du sicher, dass die bestehenden Daten gelöscht werden sollen?'))
-    } else {
-      return true
-    }
-  }
-
   async handleSubmit(event) {
     event.preventDefault()
 
@@ -102,6 +80,28 @@ export default class FormComponent extends React.Component<any, {}> {
   async getCustomerNames() {
     const customers = await listCustomers()
     return customers.reduce((lookup, c) => (lookup[c.name] = c.id, lookup), {})
+  }
+
+  onCheckboxChange(event) {
+    this.setState({
+      shouldDelete: !this.state.shouldDelete
+    })
+  }
+
+  onFileinputChange(event) {
+    const files = event.target.files
+    if (files.length >= 1) {
+      this.setState({ file: files[0] })
+      this.refs.importButton.removeAttribute('disabled')
+    }
+  }
+
+  userConfirmed(): boolean {
+    if (this.state.shouldDelete) {
+      return window.confirm(t('Bist du sicher, dass die bestehenden Daten gelöscht werden sollen?'))
+    } else {
+      return true
+    }
   }
 
   render() {
