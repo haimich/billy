@@ -5,6 +5,7 @@ const openWithOs = require('open')
 import { stat, readFile, writeFile } from 'fs'
 import { posix } from 'path'
 import * as rimraf from 'rimraf'
+import FileModel from '../models/FileModel'
 
 export const BILL_FOLDER_SUFFIX = '/files'
 
@@ -88,6 +89,10 @@ export function exists(path: string): Promise<boolean> {
       }
     })
   })
+}
+
+export async function deleteFile(file: FileModel) {
+  console.log(await get('appDir') + file.path)
 }
 
 export function rmrf(filePattern: string): Promise<any> {

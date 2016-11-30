@@ -1,4 +1,4 @@
-import File from '../models/FileModel'
+import FileModel from '../models/FileModel'
 
 let db
 
@@ -6,7 +6,7 @@ export async function init(knexInstance): Promise<any> {
   db = knexInstance
 }
 
-export function createFile(file: File): Promise<File> {
+export function createFile(file: FileModel): Promise<FileModel> {
   return db('files')
     .insert(file)
     .then((rows) => {
@@ -14,7 +14,7 @@ export function createFile(file: File): Promise<File> {
     })
 }
 
-export function getFileById(id: number): Promise<File> {
+export function getFileById(id: number): Promise<FileModel> {
   return db('files')
     .where('id', id)
     .first()
@@ -30,4 +30,10 @@ export function deleteFilesByPathPattern(pathPattern: string): Promise<any> {
   return db('files')
     .delete()
     .where('path', 'like', pathPattern)
+}
+
+export function getFilesForBillId(id: number): Promise<FileModel[]> {
+  return db('files')
+    .select('*')
+    .where('bill_id', id)
 }

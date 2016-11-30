@@ -1,5 +1,5 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
-import { init as initFiles, createFile, deleteFileById, deleteFilesByPathPattern } from '../../../src/common/repositories/filesRepository'
+import { init as initFiles, createFile, deleteFileById, deleteFilesByPathPattern, getFilesForBillId } from '../../../src/common/repositories/filesRepository'
 import { init as initBills, createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/repositories/billsRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'
@@ -53,6 +53,25 @@ describe('filesRepository', () => {
 
       expect(file.path).to.equal(PREFIX + '/foo/bla.doc')
       expect(file.bill_id).to.equal(bill.id)
+    })
+  })
+
+  describe('getFilesForBillId', () => {
+    it('should return the files associated with the given bill ID', async () => {
+      await createFile({
+        bill_id: bill.id,
+        path: PREFIX + '/foo/bar.doc'
+      })
+      await createFile({
+        bill_id: bill.id,
+        path: PREFIX + '/foo/baz.doc'
+      })
+
+      const files = await getFilesForBillId(bill.id)
+
+      expect(files.length).to.equal(2)
+      expect(files[0].path).to.equal(PREFIX + '/foo/bar.doc')
+      expect(files[1].path).to.equal(PREFIX + '/foo/baz.doc')
     })
   })
 

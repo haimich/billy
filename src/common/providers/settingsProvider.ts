@@ -53,6 +53,6 @@ export function set(key: settingKeys, value: any): Promise<void> {
     DEV_CONFIG[key] = value;
     return Promise.resolve()
   }
-  
+
   return settings.set(key, value)
 }
