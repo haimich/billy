@@ -19,9 +19,9 @@ const SELECT_TYPE_TEXT_TRANSLATE = t('Übersetzen')
 const SELECT_TYPE_TEXT_TRANSLATE_CERTIFY = t('Beglaubigen')
 const SELECT_TYPE_TEXT_OTHER = t('Andere')
 
-const TRANSLATE_REGEX = /.*[üÜ]bersetz.*/gi
-const TRANSLATE_CERTIFY_REGEX = /beglaubig.*[üÜ]bersetz/gi
-const INTERPRET_REGEX = /dolmetsch/gi
+const TRANSLATE_REGEX = /übersetz/i
+const TRANSLATE_CERTIFY_REGEX = /beglaubig.*übersetz/i
+const INTERPRET_REGEX = /dolmetsch/i
 
 interface Props {
   customers: Customer[]
@@ -77,7 +77,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       }
 
       let newDate = dateFormatterYearView(bill[dateType])
-      
+
       if (years.indexOf(newDate) === -1) {
         years.push(newDate)
       }
@@ -150,7 +150,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     for (let customerId of Object.keys(customersWithTotals)) {
       let customer = customersWithTotals[customerId]
       let averageTimeToPay = Math.round(getAverage(customer.daysToPayList))
-      
+
       customers.push({
         name: customer.name,
         total: customer.total,
@@ -243,7 +243,7 @@ export default class AppComponent extends React.Component<Props, {}> {
         sumTranslating += bill.amount
       }
     }
-    
+
     return [
       parseFloat(sumInterpreting.toFixed(2)),
       parseFloat(sumTranslating.toFixed(2))
@@ -260,7 +260,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
 
     let givenYear = '' + moment(date).year()
-    
+
     return (givenYear === year)
   }
 
@@ -269,16 +269,15 @@ export default class AppComponent extends React.Component<Props, {}> {
       return false
     }
 
-
     switch (type) {
       case SELECT_TYPE_TEXT: return true
-      case SELECT_TYPE_TEXT_INTERPRET: return text.search(INTERPRET_REGEX) !== -1
-      case SELECT_TYPE_TEXT_TRANSLATE_CERTIFY: return text.search(TRANSLATE_CERTIFY_REGEX) !== -1
-      case SELECT_TYPE_TEXT_TRANSLATE: return text.search(TRANSLATE_REGEX) !== -1
+      case SELECT_TYPE_TEXT_INTERPRET: return INTERPRET_REGEX.test(text)
+      case SELECT_TYPE_TEXT_TRANSLATE_CERTIFY: return TRANSLATE_CERTIFY_REGEX.test(text)
+      case SELECT_TYPE_TEXT_TRANSLATE: return TRANSLATE_REGEX.test(text)
       case SELECT_TYPE_TEXT_OTHER: {
-        return (text.search(INTERPRET_REGEX) === -1 &&
-          text.search(TRANSLATE_CERTIFY_REGEX) === -1 &&
-          text.search(TRANSLATE_REGEX) === -1)
+        return (INTERPRET_REGEX.test(text) &&
+          TRANSLATE_CERTIFY_REGEX.test(text) &&
+          TRANSLATE_REGEX.test(text))
       }
     }
 
