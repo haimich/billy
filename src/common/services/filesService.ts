@@ -4,9 +4,9 @@ import { copyToAppDir, deleteFile } from '../providers/fileProvider'
 import { createFile, deleteFileById, getFilesForBillId } from '../repositories/filesRepository'
 
 export async function saveFiles(bill: BillDbModel, files: FileModel[]) {
-  await Promise.all(saveNewFiles(bill.invoice_id, files))
-
   const existingFiles = await getFilesForBillId(bill.id)
+
+  await Promise.all(saveNewFiles(bill.invoice_id, files))
   await Promise.all(deleteObsoleteFiles(existingFiles, files))
 }
 
@@ -22,13 +22,28 @@ async function save(invoiceId: string, file: FileModel): Promise<any> {
 }
 
 function deleteObsoleteFiles(existingFiles, files): Promise<any>[] {
-  const fileIds = files.reduce((ids, file) => (ids[file.id] = true, ids), {})
   return existingFiles
-    .filter(file => ! fileIds[file.id])
+    .filter(file => ! isIncluded(file.id, files))
     .map(del)
 }
 
 async function del(file: FileModel): Promise<any> {
   await deleteFileById(file.id)
   await deleteFile(file)
+}
+
+function isIncluded(fileId: number, files: FileModel[]): boolean {
+  for (let file of files) {
+    if (isExisting(file)) {
+      if (file.id === fileId) {
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
+function isExisting(file: FileModel): boolean {
+  return file.id != null
 }

@@ -91,8 +91,8 @@ export function exists(path: string): Promise<boolean> {
   })
 }
 
-export async function deleteFile(file: FileModel) {
-  console.log(await get('appDir') + file.path)
+export async function deleteFile(file: FileModel): Promise<any> {
+  return rmrf(await get('appDir') + file.path)
 }
 
 export function rmrf(filePattern: string): Promise<any> {

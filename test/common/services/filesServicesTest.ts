@@ -38,7 +38,6 @@ describe('filesService', () => {
     const baseDir = './'
 
     it('should save files', async () => {
-
       expect(await getFilesForBillId(bill.id)).to.be.empty
 
       await saveFiles(bill, [
@@ -56,7 +55,6 @@ describe('filesService', () => {
     })
 
     it('should save only new files', async () => {
-
       await saveFiles(bill, [
         { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt`, id: 42 },
         { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
@@ -71,7 +69,6 @@ describe('filesService', () => {
     })
 
     it('should delete obsolete files', async () => {
-
       await saveFiles(bill, [
         { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
       ])
