@@ -33,18 +33,20 @@ describe('filesService', () => {
     })
   })
 
-  describe.only('saveFiles', () => {
+  describe('saveFiles', () => {
 
     const baseDir = './'
 
-    it('should save files', async () => {
+    it('should add new files', async () => {
       expect(await getFilesForBillId(bill.id)).to.be.empty
 
-      await saveFiles(bill, [
-        { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` },
-        { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
-        { bill_id: bill.id, path: `${baseDir}/test/resources/c.txt` }
-      ])
+      await saveFiles(bill, {
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` },
+          { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
+          { bill_id: bill.id, path: `${baseDir}/test/resources/c.txt` }
+        ]
+      })
 
       const existingFiles = await getFilesForBillId(bill.id)
 
@@ -54,31 +56,51 @@ describe('filesService', () => {
       expect(existingFiles[2].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
     })
 
-    it('should save only new files', async () => {
-      await saveFiles(bill, [
-        { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt`, id: 42 },
-        { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
-        { bill_id: bill.id, path: `${baseDir}/test/resources/c.txt` }
-      ])
+    it('should only change new files', async () => {
+      await saveFiles(bill, {
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
+        ]
+      })
 
-      const existingFiles = await getFilesForBillId(bill.id)
+      let existingFiles = await getFilesForBillId(bill.id)
+      expect(existingFiles.length).to.equal(1)
 
-      expect(existingFiles.length).to.equal(2)
-      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/b.txt`)
-      expect(existingFiles[1].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
+      await saveFiles(bill, {
+        keep: [
+          { bill_id: bill.id, path: `${baseDir}/files/${bill.invoice_id}/a.txt` }
+        ],
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
+          { bill_id: bill.id, path: `${baseDir}/test/resources/c.txt` }
+        ]
+      })
+
+      existingFiles = await getFilesForBillId(bill.id)
+
+      expect(existingFiles.length).to.equal(3)
+      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
+      expect(existingFiles[1].path).to.equal(`${baseDir}/files/${bill.invoice_id}/b.txt`)
+      expect(existingFiles[2].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
     })
 
     it('should delete obsolete files', async () => {
-      await saveFiles(bill, [
+      await saveFiles(bill, {
+        add: [
         { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
-      ])
+      ]})
 
-      await saveFiles(bill, [
-        { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
-        { bill_id: bill.id, path: `${baseDir}/test/resources/c.txt` }
-      ])
+      let existingFiles = await getFilesForBillId(bill.id)
 
-      const existingFiles = await getFilesForBillId(bill.id)
+      await saveFiles(bill, {
+        delete: existingFiles,
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
+          { bill_id: bill.id, path: `${baseDir}/test/resources/c.txt` }
+        ]
+      })
+
+      existingFiles = await getFilesForBillId(bill.id)
 
       expect(existingFiles.length).to.equal(2)
       expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/b.txt`)
