@@ -83,30 +83,26 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   async deleteBills(invoiceIds: string[]) {
-    console.log('todo delete')
-    // try {
-    //   for (let invoiceId of invoiceIds) {
-    //     const bill = getBillByInvoiceId(invoiceId)
-    //     await deleteAllFilesForBillId(invoiceId)
-    //     await deleteBillByInvoiceId(invoiceId)
-    //   }
-    // } catch (err) {
-    //   this.handleError(err)
-    // }
+    let invoiceIdMap = {}
 
-    // this.setState({
-    //   bills: this.state.bills.filter((element) => {
-    //     for (let invoiceId of billIds) {
-    //       if (element.invoice_id === invoiceId) {
-    //         return false
-    //       }
-    //     }
-    //     return true
-    //   }),
-    //   selectedBill: undefined
-    // })
+    try {
+      for (let invoiceId of invoiceIds) {
+        invoiceIdMap[invoiceId] = true
 
-    // this.notify(t('Löschen erfolgreich'), 'success')
+        const bill = await getBillByInvoiceId(invoiceId)
+        await deleteAllFilesForBill(bill.id, invoiceId)
+        await deleteBillByInvoiceId(invoiceId)
+      }
+    } catch (err) {
+      this.handleError(err)
+    }
+
+    this.setState({
+      bills: this.state.bills.filter(element => ! invoiceIdMap[element.invoice_id]),
+      selectedBill: undefined
+    })
+
+    this.notify(t('Löschen erfolgreich'), 'success')
   }
 
   async updateCustomer(customer: Customer) {
