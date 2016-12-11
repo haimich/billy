@@ -10,7 +10,7 @@ import * as filesRepo from '../repositories/filesRepository'
 export async function performFileActions(bill: BillDbModel, fileActions: FileActions) {
   if (fileActions.add != null) {
     await Promise.all(
-      fileActions.add.map(file => save(bill.invoice_id, file))
+      fileActions.add.map(file => save(bill.invoice_id, bill.id, file))
     )
   }
 
@@ -21,9 +21,9 @@ export async function performFileActions(bill: BillDbModel, fileActions: FileAct
   }
 }
 
-async function save(invoiceId: string, file: FileModel): Promise<any> {
+async function save(invoiceId: string, billId: number, file: FileModel): Promise<any> {
   const copiedFilePath = await copyToAppDir(invoiceId, file.path)
-  await createFile({ path: copiedFilePath, bill_id: file.bill_id })
+  await createFile({ path: copiedFilePath, bill_id: billId })
 }
 
 async function del(file: FileModel): Promise<any> {
@@ -49,4 +49,8 @@ export function deleteFilesByPathPattern(pathPattern: string): Promise<any> {
 
 export function getFilesForBillId(id: number): Promise<FileModel[]> {
   return filesRepo.getFilesForBillId(id)
+}
+
+export function deleteAllFilesForBillId(id: number): Promise<void> {
+  return filesRepo.deleteAllFilesForBillId(id)
 }

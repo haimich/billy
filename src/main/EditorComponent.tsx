@@ -324,6 +324,10 @@ export default class EditorComponent extends React.Component<Props, {}> {
     }
   }
 
+  getFilesForView(): FileModel[] {
+    return this.state.fileActions.keep.concat(this.state.fileActions.add)
+  }
+
   render() {
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
@@ -438,7 +442,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
                 </div>
               </div>
 
-              <FileViewComponent files={this.state.fileActions.keep} handleDeleteFile={this.handleDeleteFile.bind(this)} />
+              <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
             </div>
           </div>

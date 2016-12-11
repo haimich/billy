@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createBill, updateBill, deleteBillByInvoiceId } from '../common/services/billsService'
-import { performFileActions } from '../common/services/filesService'
+import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
+import { performFileActions, deleteAllFilesForBillId } from '../common/services/filesService'
 import { updateCustomer } from '../common/services/customersService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
@@ -41,11 +41,12 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   async save(bill: Bill, fileActions: FileActions) {
-    let createdBill
+    let billWithFiles
 
     try {
-      createdBill = await createBill(bill)
+      const createdBill = await createBill(bill)
       await performFileActions(createdBill, fileActions)
+      billWithFiles = await getBillByInvoiceId(createdBill.invoice_id)
     } catch (err) {
       this.handleError(err)
       return
@@ -53,42 +54,41 @@ export default class AppComponent extends React.Component<any, {}> {
 
     this.setState({
       selectedBill: undefined,
-      bills: [ createdBill ].concat(this.state.bills)
+      bills: [ billWithFiles ].concat(this.state.bills)
     })
   }
 
   async update(bill: Bill, fileActions: FileActions) {
-    console.log('TODO: save')
-    // let updatedBill
+    let billWithFiles
 
-    // try {
-    //   if (bill.file_path != null) {
-    //     bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
-    //   }
+    try {
+      const updatedBill = await updateBill(bill)
+      await performFileActions(updatedBill, fileActions)
+      billWithFiles = await getBillByInvoiceId(updatedBill.invoice_id)
+    } catch (err) {
+      this.handleError(err)
+      return
+    }
 
-    //   updatedBill = await update(bill)
-    // } catch (err) {
-    //   this.handleError(err)
-    //   return
-    // }
-
-    // this.setState({
-    //   selectedBill: undefined,
-    //   bills: this.state.bills.map((element) => {
-    //     if (element.invoice_id === bill.invoice_id) {
-    //       return updatedBill
-    //     } else {
-    //       return element
-    //     }
-    //   })
-    // })
+    this.setState({
+      selectedBill: undefined,
+      bills: this.state.bills.map((element) => {
+        if (element.invoice_id === bill.invoice_id) {
+          return billWithFiles
+        } else {
+          return element
+        }
+      })
+    })
   }
 
-  async deleteBill(billIds: string[]) {
+  async deleteBills(invoiceIds: string[]) {
+    console.log('todo delete')
     // try {
-    //   for (let invoiceId of billIds) {
+    //   for (let invoiceId of invoiceIds) {
+    //     const bill = getBillByInvoiceId(invoiceId)
+    //     await deleteAllFilesForBillId(invoiceId)
     //     await deleteBillByInvoiceId(invoiceId)
-    //     await deleteFilesByInvoiceId(invoiceId)
     //   }
     // } catch (err) {
     //   this.handleError(err)
@@ -132,6 +132,7 @@ export default class AppComponent extends React.Component<any, {}> {
       message = t('Datenbank Fehler duplicate id')
     }
 
+    console.error(err)
     this.notify(message, 'error')
   }
 
@@ -148,7 +149,7 @@ export default class AppComponent extends React.Component<any, {}> {
       <div>
         <TableComponent
           bills={this.state.bills}
-          delete={this.deleteBill.bind(this)}
+          delete={this.deleteBills.bind(this)}
           select={this.billSelected.bind(this)}
           selectedInvoiceId={this.state.selectedBill && this.state.selectedBill.invoice_id}
         />

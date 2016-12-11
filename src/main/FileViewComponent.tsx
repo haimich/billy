@@ -41,9 +41,9 @@ export default class FileViewComponent extends React.Component<Props, {}> {
     }
 
     return (
-      <div className="form-group">
+      <div className="form-group file-list">
         <div className="col-sm-offset-4 col-sm-8">
-          <ul className="file-list">
+          <ul>
             {fileList}
           </ul>
         </div>
