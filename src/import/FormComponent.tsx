@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import t from '../common/helpers/i18n'
 import { importCsv } from '../common/providers/importProvider'
-import { importBills, deleteAll } from '../common/repositories/billsRepository'
-import { listCustomers, createCustomer } from '../common/repositories/customersRepository'
+import { importBills, deleteAll } from '../common/services/billsService'
+import { listCustomers, createCustomer } from '../common/services/customersService'
 import Customer from '../common/models/CustomerModel'
 import SummaryComponent from './SummaryComponent'
 import Bill from '../common/models/BillModel'

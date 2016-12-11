@@ -4,12 +4,12 @@ import * as ReactDOM from 'react-dom'
 import AppComponent from './main/AppComponent'
 import { initDb } from './common/providers/dbProvider'
 import { get } from './common/providers/settingsProvider'
-import { init as initBillsRepo, listBills } from './common/repositories/billsRepository'
+import { init as initBillsRepo } from './common/repositories/billsRepository'
+import { listBills } from './common/services/billsService'
 import { init as initCustomersRepo } from './common/repositories/customersRepository'
+import { init as initFilesRepo } from './common/repositories/filesRepository'
 
 async function init() {
-  console.log('init main window')
-  
   let bills
 
   try {
@@ -17,6 +17,7 @@ async function init() {
     const knexInstance = await initDb(knexConfig)
     initBillsRepo(knexInstance)
     initCustomersRepo(knexInstance)
+    initFilesRepo(knexInstance)
 
     bills = await listBills()
   } catch (err) {

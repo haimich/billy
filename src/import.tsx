@@ -7,8 +7,6 @@ import { init as initCustomersRepo } from './common/repositories/customersReposi
 import AppComponent from './import/AppComponent'
 
 async function init() {
-  console.log('init import window');
-  
   try {
     const knexConfig = await get('knex')
     const knexInstance = await initDb(knexConfig)

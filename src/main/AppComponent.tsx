@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { getBillByInvoiceId, createBill, updateBill, deleteBillByInvoiceId } from '../common/repositories/billsRepository'
-import { updateCustomer } from '../common/repositories/customersRepository'
-import { copyToAppDir, deleteFilesByInvoiceId, rmrf } from '../common/providers/fileProvider'
+import { createBill, updateBill, deleteBillByInvoiceId } from '../common/services/billsService'
+import { performFileActions } from '../common/services/filesService'
+import { updateCustomer } from '../common/services/customersService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import FileModel from '../common/models/FileModel'
@@ -41,24 +41,20 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   async save(bill: Bill, fileActions: FileActions) {
-    console.log('TODO: save')
-    // let createdBill
+    let createdBill
 
-    // try {
-    //   if (bill.file_path != null) {
-    //     bill.file_path = await copyToAppDir(bill.invoice_id, bill.file_path)
-    //   }
+    try {
+      createdBill = await createBill(bill)
+      await performFileActions(createdBill, fileActions)
+    } catch (err) {
+      this.handleError(err)
+      return
+    }
 
-    //   createdBill = await createBill(bill)
-    // } catch (err) {
-    //   this.handleError(err)
-    //   return
-    // }
-
-    // this.setState({
-    //   selectedBill: undefined,
-    //   bills: [ createdBill ].concat(this.state.bills)
-    // })
+    this.setState({
+      selectedBill: undefined,
+      bills: [ createdBill ].concat(this.state.bills)
+    })
   }
 
   async update(bill: Bill, fileActions: FileActions) {
@@ -89,28 +85,28 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   async deleteBill(billIds: string[]) {
-    try {
-      for (let invoiceId of billIds) {
-        await deleteBillByInvoiceId(invoiceId)
-        await deleteFilesByInvoiceId(invoiceId)
-      }
-    } catch (err) {
-      this.handleError(err)
-    }
+    // try {
+    //   for (let invoiceId of billIds) {
+    //     await deleteBillByInvoiceId(invoiceId)
+    //     await deleteFilesByInvoiceId(invoiceId)
+    //   }
+    // } catch (err) {
+    //   this.handleError(err)
+    // }
 
-    this.setState({
-      bills: this.state.bills.filter((element) => {
-        for (let invoiceId of billIds) {
-          if (element.invoice_id === invoiceId) {
-            return false
-          }
-        }
-        return true
-      }),
-      selectedBill: undefined
-    })
+    // this.setState({
+    //   bills: this.state.bills.filter((element) => {
+    //     for (let invoiceId of billIds) {
+    //       if (element.invoice_id === invoiceId) {
+    //         return false
+    //       }
+    //     }
+    //     return true
+    //   }),
+    //   selectedBill: undefined
+    // })
 
-    this.notify(t('Löschen erfolgreich'), 'success')
+    // this.notify(t('Löschen erfolgreich'), 'success')
   }
 
   async updateCustomer(customer: Customer) {

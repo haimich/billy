@@ -3,19 +3,19 @@ import * as ReactDOM from 'react-dom'
 import { initDb } from './common/providers/dbProvider'
 import { get } from './common/providers/settingsProvider'
 import AppComponent from './stats/AppComponent'
-import { init as initBillsRepo, listBills } from './common/repositories/billsRepository'
+import { init as initBillsRepo } from './common/repositories/billsRepository'
+import { listBills } from './common/services/billsService'
 import { init as initCustomersRepo, listCustomers } from './common/repositories/customersRepository'
+import { init as initFilesRepo } from './common/repositories/filesRepository'
 
 async function init() {
-  console.log('open stats window');
-  
-
   let bills, customers
 
   try {
     const knexConfig = await get('knex')
     const knexInstance = await initDb(knexConfig)
     initBillsRepo(knexInstance)
+    initFilesRepo(knexInstance)
     initCustomersRepo(knexInstance); // semicolon intended
 
     [bills, customers] = await Promise.all([

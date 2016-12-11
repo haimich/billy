@@ -2,7 +2,7 @@ import { initDb } from '../../../src/common/providers/dbProvider'
 import { rmrf } from '../../../src/common/providers/fileProvider'
 import { init as initFiles, createFile, deleteFilesByPathPattern, getFilesForBillId } from '../../../src/common/repositories/filesRepository'
 import { init as initBills, createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/repositories/billsRepository'
-import { saveFiles } from '../../../src/common/services/filesService'
+import { performFileActions } from '../../../src/common/services/filesService'
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
@@ -40,7 +40,7 @@ describe('filesService', () => {
     it('should add new files', async () => {
       expect(await getFilesForBillId(bill.id)).to.be.empty
 
-      await saveFiles(bill, {
+      await performFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` },
           { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
@@ -57,7 +57,7 @@ describe('filesService', () => {
     })
 
     it('should only change new files', async () => {
-      await saveFiles(bill, {
+      await performFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
         ]
@@ -66,7 +66,7 @@ describe('filesService', () => {
       let existingFiles = await getFilesForBillId(bill.id)
       expect(existingFiles.length).to.equal(1)
 
-      await saveFiles(bill, {
+      await performFileActions(bill, {
         keep: [
           { bill_id: bill.id, path: `${baseDir}/files/${bill.invoice_id}/a.txt` }
         ],
@@ -85,14 +85,14 @@ describe('filesService', () => {
     })
 
     it('should delete obsolete files', async () => {
-      await saveFiles(bill, {
+      await performFileActions(bill, {
         add: [
         { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
       ]})
 
       let existingFiles = await getFilesForBillId(bill.id)
 
-      await saveFiles(bill, {
+      await performFileActions(bill, {
         delete: existingFiles,
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
