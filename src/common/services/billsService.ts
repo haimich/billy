@@ -41,7 +41,7 @@ export async function importBills(bills): Promise<any> {
   return billsRepo.importBills(bills)
 }
 
-export function deleteBillByInvoiceId(invoiceId: string): Promise<any> {
+export async function deleteBillByInvoiceId(invoiceId: string): Promise<any> {
   return billsRepo.deleteBillByInvoiceId(invoiceId)
 }
 

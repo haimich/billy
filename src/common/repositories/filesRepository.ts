@@ -20,6 +20,12 @@ export function getFileById(id: number): Promise<FileModel> {
     .first()
 }
 
+export function getFilesForBillId(id: number): Promise<FileModel[]> {
+  return db('files')
+    .select('*')
+    .where('bill_id', id)
+}
+
 export function deleteFileById(id: number): Promise<void> {
   return db('files')
     .delete()
@@ -32,8 +38,8 @@ export function deleteFilesByPathPattern(pathPattern: string): Promise<any> {
     .where('path', 'like', pathPattern)
 }
 
-export function getFilesForBillId(id: number): Promise<FileModel[]> {
+export function deleteAllFilesForBillId(id: number): Promise<void> {
   return db('files')
-    .select('*')
+    .delete()
     .where('bill_id', id)
 }

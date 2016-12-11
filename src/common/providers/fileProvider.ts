@@ -95,6 +95,10 @@ export async function deleteFile(file: FileModel): Promise<any> {
   return rmrf(await get('appDir') + file.path)
 }
 
+export async function deleteBillDir(invoiceId: string): Promise<any> {
+  return rmrf(await getFilePath(invoiceId))
+}
+
 export function rmrf(filePattern: string): Promise<any> {
   return new Promise((resolve, reject) => {
     rimraf(filePattern, (err) => {

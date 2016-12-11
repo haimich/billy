@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
-import { performFileActions, deleteAllFilesForBillId } from '../common/services/filesService'
+import { performFileActions, deleteAllFilesForBill } from '../common/services/filesService'
 import { updateCustomer } from '../common/services/customersService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'

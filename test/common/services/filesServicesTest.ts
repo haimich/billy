@@ -1,7 +1,9 @@
 import { initDb } from '../../../src/common/providers/dbProvider'
-import { rmrf } from '../../../src/common/providers/fileProvider'
-import { init as initFiles, createFile, deleteFilesByPathPattern, getFilesForBillId } from '../../../src/common/repositories/filesRepository'
-import { init as initBills, createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/repositories/billsRepository'
+import { rmrf, exists } from '../../../src/common/providers/fileProvider'
+import { init as initFiles } from '../../../src/common/repositories/filesRepository'
+import { init as initBills } from '../../../src/common/repositories/billsRepository'
+import { createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/services/billsService'
+import { createFile, deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId } from '../../../src/common/services/filesService'
 import { performFileActions } from '../../../src/common/services/filesService'
 import { expect } from 'chai'
 
@@ -20,6 +22,8 @@ afterEach(async () => {
   await rmrf(`./files/${PREFIX}*`)
 })
 
+const baseDir = './'
+
 describe('filesService', () => {
 
   let bill
@@ -34,8 +38,6 @@ describe('filesService', () => {
   })
 
   describe('saveFiles', () => {
-
-    const baseDir = './'
 
     it('should add new files', async () => {
       expect(await getFilesForBillId(bill.id)).to.be.empty
@@ -105,6 +107,27 @@ describe('filesService', () => {
       expect(existingFiles.length).to.equal(2)
       expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/b.txt`)
       expect(existingFiles[1].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
+    })
+
+  })
+
+  describe.only('deleteAllFilesForBillId', () => {
+
+    it('should delete all files for a bill', async () => {
+      await performFileActions(bill, {
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` },
+          { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` }
+        ]
+      })
+
+      await deleteAllFilesForBill(bill.id, bill.invoice_id)
+
+      let existingFiles = await getFilesForBillId(bill.id)
+      expect(existingFiles.length).to.equal(0)
+
+      let folderExists = await exists(`${baseDir}/files/${bill.invoice_id}`)
+      expect(folderExists).to.be.false
     })
 
   })

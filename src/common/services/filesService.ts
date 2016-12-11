@@ -1,7 +1,7 @@
 import BillDbModel from '../models/BillDbModel'
 import FileModel from '../models/FileModel'
 import FileActions from '../models/FileActions'
-import { copyToAppDir, deleteFile } from '../providers/fileProvider'
+import { copyToAppDir, deleteFile, deleteBillDir } from '../providers/fileProvider'
 import * as filesRepo from '../repositories/filesRepository'
 
 /**
@@ -51,6 +51,7 @@ export function getFilesForBillId(id: number): Promise<FileModel[]> {
   return filesRepo.getFilesForBillId(id)
 }
 
-export function deleteAllFilesForBillId(id: number): Promise<void> {
-  return filesRepo.deleteAllFilesForBillId(id)
+export async function deleteAllFilesForBill(billId: number, invoiceId: string): Promise<void> {
+  await filesRepo.deleteAllFilesForBillId(billId)
+  await deleteBillDir(invoiceId)
 }
