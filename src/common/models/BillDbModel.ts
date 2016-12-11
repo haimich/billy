@@ -1,4 +1,5 @@
 import Customer from './CustomerModel'
+import FileModel from './FileModel'
 
 interface BillDbModel {
   id: number;
@@ -9,7 +10,7 @@ interface BillDbModel {
   customer_name: string;
   customer: Customer;
   comment?: string;
-  files?: string[];
+  files: FileModel[];
 }
 
 export default BillDbModel

@@ -6,6 +6,7 @@ import { copyToAppDir, deleteFilesByInvoiceId, rmrf } from '../common/providers/
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import FileModel from '../common/models/FileModel'
+import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
 import EditorComponent from './EditorComponent'
@@ -39,8 +40,8 @@ export default class AppComponent extends React.Component<any, {}> {
     notifications = this.refs.notificationSystem
   }
 
-  async save(bill: Bill, files: FileModel[]) {
-    console.log('TODO: migrate')
+  async save(bill: Bill, fileActions: FileActions) {
+    console.log('TODO: save')
     // let createdBill
 
     // try {
@@ -60,8 +61,8 @@ export default class AppComponent extends React.Component<any, {}> {
     // })
   }
 
-  async update(bill: Bill, files: FileModel[]) {
-    console.log('TODO: migrate')
+  async update(bill: Bill, fileActions: FileActions) {
+    console.log('TODO: save')
     // let updatedBill
 
     // try {
@@ -118,45 +119,6 @@ export default class AppComponent extends React.Component<any, {}> {
     } catch (err) {
       this.handleError(err)
     }
-  }
-
-  async deleteFile(file: FileModel) {
-    console.log('TODO')
-    // try {
-    //   let bill: BillDbModel = await getBillByInvoiceId(invoiceId)
-    //
-    //   if (bill.file_path === filepath) {
-    //     console.log('delete it', bill)
-    //     await rmrf(bill.file_path)
-    //
-    //     let updatedBill = await update({
-    //       invoice_id: bill.invoice_id,
-    //       customer_id: bill.customer.id,
-    //       amount: bill.amount,
-    //       date_created: bill.date_created,
-    //       date_paid: bill.date_paid,
-    //       comment: bill.comment,
-    //       file_path: null
-    //     })
-    //
-    //
-    //     this.setState({
-    //       bills: this.state.bills.map(element => {
-    //         if (element.invoice_id === bill.invoice_id) {
-    //           return updatedBill
-    //         } else {
-    //           return element
-    //         }
-    //       })
-    //     })
-    //   }
-    // } catch (err) {
-    //   this.handleError(err)
-    // }
-    //
-    // this.notify(t('Die Datei wurde erfolgreich gelöscht!'), 'success')
-
-    // TODO: check if bill has a different filename (then new file added)
   }
 
   notify(message: string, level: 'error' | 'success') {

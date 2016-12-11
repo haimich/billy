@@ -74,6 +74,7 @@ function getBillById(id: number): Promise<BillDbModel> {
 export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
   return db.raw(`
     select
+      b.id,
       b.invoice_id,
       b.date_created,
       b.date_paid,
@@ -93,11 +94,13 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
         return
       }
 
-      return Object.assign(rows[0], {
+      let bill = rows[0]
+
+      return Object.assign(bill, {
         customer: {
-          id: rows[0].customer_id,
-          name: rows[0].customer_name,
-          telephone: rows[0].customer_telephone
+          id: bill.customer_id,
+          name: bill.customer_name,
+          telephone: bill.customer_telephone
         }
       })
     })
@@ -106,6 +109,7 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
 export function listBills(): Promise<BillDbModel[]> {
   return db.raw(`
     select
+      b.id,
       b.invoice_id,
       b.date_created,
       b.date_paid,

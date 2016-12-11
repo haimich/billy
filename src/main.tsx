@@ -8,6 +8,8 @@ import { init as initBillsRepo, listBills } from './common/repositories/billsRep
 import { init as initCustomersRepo } from './common/repositories/customersRepository'
 
 async function init() {
+  console.log('init main window')
+  
   let bills
 
   try {

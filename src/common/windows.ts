@@ -5,6 +5,8 @@ import { isDev, getAppFolder } from './helpers/app'
 let mainWindow, onboardingWindow, importWindow, statsWindow
 
 export function openOnboardingWindow() {
+  console.log('open onboarding window')
+  
   onboardingWindow = new BrowserWindow({
     width: 450,
     height: 320,
@@ -30,6 +32,8 @@ export function openOnboardingWindow() {
 }
 
 export function openMainWindow() {
+  console.log('open main window')
+
   mainWindow = new BrowserWindow({
     width: 1200,
     height: isDev ? 900 : 710, // create room for dev tools
@@ -52,6 +56,8 @@ export function openMainWindow() {
 }
 
 export function openImportWindow() {
+  console.log('open import window')
+  
   importWindow = new BrowserWindow({
     width: 380,
     height: 260,
@@ -74,6 +80,8 @@ export function openImportWindow() {
 
 
 export function openStatsWindow() {
+  console.log('open stats window')
+  
   statsWindow = new BrowserWindow({
     width: 800,
     height: 815,

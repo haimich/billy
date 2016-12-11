@@ -7,6 +7,9 @@ import { init as initBillsRepo, listBills } from './common/repositories/billsRep
 import { init as initCustomersRepo, listCustomers } from './common/repositories/customersRepository'
 
 async function init() {
+  console.log('open stats window');
+  
+
   let bills, customers
 
   try {

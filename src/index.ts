@@ -10,6 +10,8 @@ if (isDev) {
 }
 
 async function createWindow() {
+  console.log('createWindow')
+  
   try {
     initMenu()
 

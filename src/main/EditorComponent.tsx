@@ -4,6 +4,7 @@ import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Customer from '../common/models/CustomerModel'
 import FileModel from '../common/models/FileModel'
+import FileActions from '../common/models/FileActions'
 import FileViewComponent from './FileViewComponent'
 import FileUploadComponent from './FileUploadComponent'
 import { billExists } from '../common/repositories/billsRepository'
@@ -26,12 +27,12 @@ interface State {
   isNew: boolean;
   isDirty: boolean;
   invoiceIdValid: boolean;
-  files?: FileModel[];
+  fileActions: FileActions;
 }
 
 interface Props {
-  update: (row: Bill, files: FileModel[]) => void
-  save: (row: Bill, files: FileModel[]) => void
+  update: (row: Bill, fileActions: FileActions) => void
+  save: (row: Bill, FileActions: FileActions) => void
   updateCustomer: (row: Customer) => void
   bill?: BillDbModel
   notify: any
@@ -78,7 +79,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
       isNew: true,
       isDirty: false,
       invoiceIdValid: true,
-      files: []
+      fileActions: { add: [], keep: [], delete: []}
     }
   }
 
@@ -120,9 +121,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
     }
 
     if (this.state.isNew) {
-      this.props.save(bill, this.state.files)
+      this.props.save(bill, this.state.fileActions)
     } else {
-      this.props.update(bill, this.state.files)
+      this.props.update(bill, this.state.fileActions)
     }
 
     this.props.updateCustomer(this.state.selectedCustomer[0])
@@ -153,12 +154,16 @@ export default class EditorComponent extends React.Component<Props, {}> {
     }
 
     this.setState({ 
-      files: this.state.files.concat(file)
+      fileActions: {
+        keep: this.state.fileActions.keep,
+        add: this.state.fileActions.add.concat(file),
+        delete: this.state.fileActions.delete
+      }
     })
   }
 
   fileExists(file: FileModel): boolean {
-    for (let element of this.state.files) {
+    for (let element of this.state.fileActions.add) {
       if (file.id != null && element.id != null && file.id === element.id) {
         return true
       } else if (file.path === element.path) {
@@ -291,16 +296,30 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   handleDeleteFile(file: FileModel) {
     if (confirm(t('Möchtest du die Datei wirklich entfernen?'))) {
+      const isExisting = (file.id != null)
+
       this.setState({
-        files: this.state.files.filter(element => {
-          if (file.id != null && element.id != null && file.id === element.id) {
-            return false
-          } else if (file.path === element.path) {
-            return false
-          } else {
-            return true
-          }
-        })
+        fileActions: {
+          keep: this.state.fileActions.keep.filter(element => {
+            if (isExisting && file.id === element.id) {
+              // existing file should be deleted
+              return false
+            } else {
+              return true
+            }
+          }),
+          add: this.state.fileActions.add.filter(element => {
+            if (file.path === element.path) {
+              // added file should be unadded
+              return false
+            } else {
+              return true
+            }
+          }),
+          delete: (isExisting)
+            ? this.state.fileActions.delete.concat([file])
+            : this.state.fileActions.delete
+        }
       })
     }
   }
@@ -419,7 +438,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
                 </div>
               </div>
 
-              <FileViewComponent files={this.state.files} handleDeleteFile={this.handleDeleteFile.bind(this)} />
+              <FileViewComponent files={this.state.fileActions.keep} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
             </div>
           </div>
@@ -490,7 +509,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
       this.setState({
         id: bill.id,
         invoice_id: bill.invoice_id,
-        files: (bill.files != null) ? bill.files : [],
+        fileActions: (bill.files != null)
+          ? { add: [], keep: bill.files, delete: []}
+          : { add: [], keep: [], delete: []},
         selectedCustomer: [bill.customer],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),
