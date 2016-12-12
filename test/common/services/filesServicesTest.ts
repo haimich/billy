@@ -58,6 +58,31 @@ describe('filesService', () => {
       expect(existingFiles[2].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
     })
 
+    it('should allow to add same file after it was previously removed', async () => {
+      await performFileActions(bill, {
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
+        ]
+      })
+
+      await performFileActions(bill, {
+        delete: [
+          (await getFilesForBillId(bill.id))[0]
+        ]
+      })
+
+      await performFileActions(bill, {
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
+        ]
+      })
+
+      const existingFiles = await getFilesForBillId(bill.id)
+
+      expect(existingFiles.length).to.equal(1)
+      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
+    })
+
     it('should only change new files', async () => {
       await performFileActions(bill, {
         add: [

@@ -27,6 +27,9 @@ async function save(invoiceId: string, billId: number, file: FileModel): Promise
 }
 
 async function del(file: FileModel): Promise<any> {
+  if (file.id == null) {
+    throw new Error(`Could not delete file due to missing "id" field: ${file.bill_id} - ${file.path}`)
+  }
   await deleteFileById(file.id)
   await deleteFile(file)
 }
