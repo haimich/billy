@@ -79,7 +79,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
       isNew: true,
       isDirty: false,
       invoiceIdValid: true,
-      fileActions: { add: [], keep: [], delete: []}
+      fileActions: { add: [], keep: [], delete: [] }
     }
   }
 
@@ -139,46 +139,59 @@ export default class EditorComponent extends React.Component<Props, {}> {
     return
   }
 
-  getFile(files: File[]): FileModel {
-    if (files.length >= 1) {
-      return {
+  getFileModels(files: File[]): FileModel[] {
+    let fileModels = []
+
+    for (let file of files) {
+      fileModels.push({
         bill_id: this.state.id,
-        path: files[0].path
-      }
+        path: file.path
+      })
     }
+
+    return fileModels
   }
 
-  addFile(file: FileModel) {
-    if (file == null || this.fileExists(file, this.state.fileActions.add)) {
+  addFiles(files: FileModel[]) {
+    if (files == null) {
       return
     }
 
     let keepList = this.state.fileActions.keep
     let deleteList = this.state.fileActions.delete
+    let addList = this.state.fileActions.add
 
-    if (this.fileWithNameExists(file.path, this.state.fileActions.keep)) {
-      if (! confirm(t('Diese Datei existiert bereits. Soll sie überschrieben werden?'))) {
-        return
+    for (let file of files) {
+      if (this.fileExists(file, this.state.fileActions.add)) {
+        continue
       }
 
-      let originalFile
-
-      keepList = keepList.filter(element => {
-        if (getFilename(element.path) !== getFilename(file.path)) {
-          return true
-        } else {
-          // we found the file to be overwritten
-          originalFile = element
-          return false
+      if (this.fileWithNameExists(file.path, this.state.fileActions.keep)) {
+        if (!confirm(t(`Eine Datei mit dem Namen "${getFilename(file.path)}" existiert bereits. Soll sie überschrieben werden?`))) {
+          continue
         }
-      })
-      deleteList = deleteList.concat(originalFile)
+
+        let originalFile
+
+        keepList = keepList.filter(element => {
+          if (getFilename(element.path) !== getFilename(file.path)) {
+            return true
+          } else {
+            // we found the file to be overwritten
+            originalFile = element
+            return false
+          }
+        })
+        deleteList = deleteList.concat(originalFile)
+      }
+
+      addList = addList.concat(file)
     }
 
-    this.setState({ 
+    this.setState({
       fileActions: {
         keep: keepList,
-        add: this.state.fileActions.add.concat(file),
+        add: addList,
         delete: deleteList
       }
     })
@@ -224,12 +237,12 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   onDrop(event) {
     event.preventDefault()
-    this.addFile(this.getFile(event.dataTransfer.files))
+    this.addFiles(this.getFileModels(event.dataTransfer.files))
     this.onLeave()
   }
 
   handleFileChange(files: File[]) {
-    this.addFile(this.getFile(files))
+    this.addFiles(this.getFileModels(files))
   }
 
   async handleCustomerChange(selected: any) {
@@ -408,10 +421,10 @@ export default class EditorComponent extends React.Component<Props, {}> {
                       className="sub-input"
                       tabIndex={-1}
                       /> {
-                        this.state.selectedCustomer != null
-                          ? <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" onClick={this.handleDeleteCustomer.bind(this)}></span>
-                          : ''
-                      }
+                      this.state.selectedCustomer != null
+                        ? <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" onClick={this.handleDeleteCustomer.bind(this)}></span>
+                        : ''
+                    }
                   </span>
                 </div>
               </div>
@@ -508,11 +521,11 @@ export default class EditorComponent extends React.Component<Props, {}> {
   }
 
   resetFormValidationErrors() {
-    this.getInputs().forEach(input => input.closest('.form-group')!.classList.remove('has-error'))
+    this.getInputs().forEach(input => input.closest('.form-group') !.classList.remove('has-error'))
   }
 
   getInputs() {
-    return [ ...ReactDOM.findDOMNode(this).querySelectorAll('input,textarea') ]
+    return [...ReactDOM.findDOMNode(this).querySelectorAll('input,textarea')]
   }
 
   revalidate(input) {
@@ -535,7 +548,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
     const bill: BillDbModel = nextProps.bill
     const isNew = (bill == null)
 
-    if (this.state.isDirty && ! confirm(t('Möchtest du die Änderungen verwerfen?'))) return
+    if (this.state.isDirty && !confirm(t('Möchtest du die Änderungen verwerfen?'))) return
 
     this.resetFormValidationErrors()
 
@@ -546,8 +559,8 @@ export default class EditorComponent extends React.Component<Props, {}> {
         id: bill.id,
         invoice_id: bill.invoice_id,
         fileActions: (bill.files != null)
-          ? { add: [], keep: bill.files, delete: []}
-          : { add: [], keep: [], delete: []},
+          ? { add: [], keep: bill.files, delete: [] }
+          : { add: [], keep: [], delete: [] },
         selectedCustomer: [bill.customer],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),

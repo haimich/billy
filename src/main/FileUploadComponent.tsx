@@ -30,6 +30,7 @@ export default class FileUploadComponent extends React.Component<Props, {}> {
             type="file"
             ref="fileinput"
             className="form-control hidden"
+            multiple
             onChange={this.handleOnChange.bind(this)}
             onClick={this.resetValue.bind(this)}
           />
