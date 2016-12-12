@@ -111,7 +111,7 @@ describe('filesService', () => {
 
   })
 
-  describe.only('deleteAllFilesForBillId', () => {
+  describe('deleteAllFilesForBillId', () => {
 
     it('should delete all files for a bill', async () => {
       await performFileActions(bill, {
