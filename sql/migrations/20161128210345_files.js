@@ -21,10 +21,13 @@ exports.up = (knex, Promise) => {
           continue
         }
 
-        console.log('Creating file for bill ' + bill.id + ' with path ' + bill.file_path)
+        // fix for https://github.com/haimich/billy/issues/46
+        let correctedPath = bill.file_path.replace('.//', './')
+
+        console.log('Creating file for bill ' + bill.id + ' with path ' + correctedPath)
         promises.push(knex('files').insert({
           bill_id: bill.id,
-          path: bill.file_path
+          path: correctedPath
         }))
       }
 

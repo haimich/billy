@@ -7,7 +7,7 @@ import { posix } from 'path'
 import * as rimraf from 'rimraf'
 import FileModel from '../models/FileModel'
 
-export const BILL_FOLDER_SUFFIX = '/files'
+export const BILL_FOLDER_SUFFIX = 'files'
 
 export function open(fileName) {
   openWithOs(fileName)

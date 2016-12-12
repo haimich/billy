@@ -4,3 +4,5 @@ output/
 *.log
 *.sqlite
 files/
+
+.DS_STORE
