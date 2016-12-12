@@ -8,15 +8,15 @@ import * as filesRepo from '../repositories/filesRepository'
  * Save all new files for a bill and remove files that are marked for deletion.
  */
 export async function performFileActions(bill: BillDbModel, fileActions: FileActions) {
-  if (fileActions.add != null) {
-    await Promise.all(
-      fileActions.add.map(file => save(bill.invoice_id, bill.id, file))
-    )
-  }
-
   if (fileActions.delete != null) {
     await Promise.all(
       fileActions.delete.map(file => del(file))
+    )
+  }
+
+  if (fileActions.add != null) {
+    await Promise.all(
+      fileActions.add.map(file => save(bill.invoice_id, bill.id, file))
     )
   }
 }

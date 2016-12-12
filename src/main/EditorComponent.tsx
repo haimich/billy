@@ -10,7 +10,7 @@ import FileUploadComponent from './FileUploadComponent'
 import { billExists } from '../common/services/billsService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
-import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/helpers/formatters'
 
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
@@ -149,21 +149,53 @@ export default class EditorComponent extends React.Component<Props, {}> {
   }
 
   addFile(file: FileModel) {
-    if (file == null || this.fileExists(file)) {
+    if (file == null || this.fileExists(file, this.state.fileActions.add)) {
       return
+    }
+
+    let keepList = this.state.fileActions.keep
+    let deleteList = this.state.fileActions.delete
+
+    if (this.fileWithNameExists(file.path, this.state.fileActions.keep)) {
+      if (! confirm(t('Diese Datei existiert bereits. Soll sie überschrieben werden?'))) {
+        return
+      }
+
+      let originalFile
+
+      keepList = keepList.filter(element => {
+        if (getFilename(element.path) !== getFilename(file.path)) {
+          return true
+        } else {
+          // we found the file to be overwritten
+          originalFile = element
+          return false
+        }
+      })
+      deleteList = deleteList.concat(originalFile)
     }
 
     this.setState({ 
       fileActions: {
-        keep: this.state.fileActions.keep,
+        keep: keepList,
         add: this.state.fileActions.add.concat(file),
-        delete: this.state.fileActions.delete
+        delete: deleteList
       }
     })
   }
 
-  fileExists(file: FileModel): boolean {
-    for (let element of this.state.fileActions.add) {
+  fileWithNameExists(filePath: string, existingFiles: FileModel[]): boolean {
+    for (let file of existingFiles) {
+      if (getFilename(file.path) === getFilename(filePath)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  fileExists(file: FileModel, fileList: FileModel[]): boolean {
+    for (let element of fileList) {
       if (file.id != null && element.id != null && file.id === element.id) {
         return true
       } else if (file.path === element.path) {

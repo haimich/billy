@@ -83,6 +83,28 @@ describe('filesService', () => {
       expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
     })
 
+    it('should allow to overwrite a file with a newer version of itself', async () => {
+      await performFileActions(bill, {
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
+        ]
+      })
+
+      await performFileActions(bill, {
+        delete: [
+          (await getFilesForBillId(bill.id))[0]
+        ],
+        add: [
+          { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
+        ]
+      })
+
+      const existingFiles = await getFilesForBillId(bill.id)
+
+      expect(existingFiles.length).to.equal(1)
+      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
+    })
+
     it('should only change new files', async () => {
       await performFileActions(bill, {
         add: [
