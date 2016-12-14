@@ -90,7 +90,7 @@ textarea {
 
 .file-list {
   max-height: 126px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .file-list ul {
