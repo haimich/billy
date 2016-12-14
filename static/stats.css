@@ -31,3 +31,21 @@ body {
   justify-content: space-around;
   margin-bottom: 12px;
 }
+
+.pie-legend {
+  list-style-type: none;
+}
+
+.pie-legend-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.pie-legend-text {
+  margin-left: 9px;
+}
+
+.chart-heading {
+  font-weight: 500;
+}

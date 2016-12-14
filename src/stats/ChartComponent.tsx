@@ -12,12 +12,22 @@ interface Props {
   typesIncomePieChartData: number[]
 }
 
+interface State {
+  typesPiechartLegend: any;
+  typesIncomePiechartLegend: any;
+}
+
 const colors = [
   '54, 162, 235',
   '255, 105, 180'
 ]
 
-export default class ChartComponent extends React.Component<Props, {}> {
+export default class ChartComponent extends React.Component<Props, State> {
+
+  refs: {
+    typesPiechart;
+    typesIncomePiechart
+  }
 
   getLineChartData() {
     return {
@@ -56,7 +66,8 @@ export default class ChartComponent extends React.Component<Props, {}> {
       data.push({
         label,
         value,
-        color
+        color,
+        fillColor: color
       })
     }
 
@@ -87,7 +98,8 @@ export default class ChartComponent extends React.Component<Props, {}> {
       data.push({
         label,
         value,
-        color
+        color,
+        fillColor: color
       })
     }
 
@@ -95,6 +107,9 @@ export default class ChartComponent extends React.Component<Props, {}> {
   }
 
   render() {
+    let typesPiechartLegend = this.state && this.state.typesPiechartLegend || '';
+    let typesIncomePiechartLegend = this.state && this.state.typesIncomePiechartLegend || '';
+
     return (
       <div className="container-fluid">
         <div className="row">
@@ -112,7 +127,7 @@ export default class ChartComponent extends React.Component<Props, {}> {
 
         <div className="row">
           <div className="col-xs-12 label-container">
-            <section>{t('Einkommen nach Bezahldatum')}</section>
+            <section className="chart-heading">{t('Einkommen nach Bezahldatum')}</section>
           </div>
         </div>
 
@@ -120,6 +135,7 @@ export default class ChartComponent extends React.Component<Props, {}> {
           <div className="col-xs-6">
             <PieChart
               data={this.getTypesPieChartData()}
+              ref="typesPiechart"
               options={{
                 responsive: true
               }}
@@ -130,6 +146,7 @@ export default class ChartComponent extends React.Component<Props, {}> {
           <div className="col-xs-6">
             <PieChart
               data={this.getTypesIncomePieChartData()}
+              ref="typesIncomePiechart"
               options={{
                 responsive: true
               }}
@@ -139,11 +156,31 @@ export default class ChartComponent extends React.Component<Props, {}> {
         </div>
 
         <div className="row">
-            <section className="col-xs-6 label-container">{t('Aufträge nach Typ')}</section>
-            <section className="col-xs-6 label-container">{t('Aufträge nach Umsatz (€)')}</section>
+            <section className="col-xs-6 label-container chart-heading">{t('Aufträge nach Typ')}</section>
+            <section className="col-xs-6 label-container chart-heading">{t('Aufträge nach Umsatz (€)')}</section>
+        </div>
+
+        <div className="row">
+          <div className="col-xs-6">
+            <div dangerouslySetInnerHTML={{ __html: typesPiechartLegend }} />
+          </div>
+          <div className="col-xs-6">
+            <div dangerouslySetInnerHTML={{ __html: typesIncomePiechartLegend }} />
+          </div>
         </div>
 
       </div>
     )
   }
+
+  componentDidMount() {
+    let typesPiechartLegend = this.refs.typesPiechart.getChart().generateLegend();
+    let typesIncomePiechartLegend = this.refs.typesPiechart.getChart().generateLegend();
+
+    this.setState({
+      typesPiechartLegend,
+      typesIncomePiechartLegend
+    });
+  }
+
 }
