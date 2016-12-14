@@ -22,7 +22,7 @@ afterEach(async () => {
   await rmrf(`./files/${PREFIX}*`)
 })
 
-const baseDir = './'
+const baseDir = '.'
 
 describe('filesService', () => {
 
