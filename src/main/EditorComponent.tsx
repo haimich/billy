@@ -193,7 +193,8 @@ export default class EditorComponent extends React.Component<Props, {}> {
         keep: keepList,
         add: addList,
         delete: deleteList
-      }
+      },
+      isDirty: true
     })
   }
 
