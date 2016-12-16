@@ -3,12 +3,14 @@ import * as ReactDOM from 'react-dom'
 import t from '../common/helpers/i18n'
 
  interface Props {
-  years: string[];
-  types: string[];
-  selectedYear: string;
-  handleYearChange;
-  selectedType: string;
-  handleTypeChange;
+  years: string[]
+  types: string[]
+  selectedYear: string
+  handleYearChange
+  selectedType: string
+  handleTypeChange
+  billDateToUse: 'date_paid' | 'date_created'
+  changeBillDateToUse
 }
 
 export default class FilterComponent extends React.Component<Props, {}> {
@@ -55,6 +57,14 @@ export default class FilterComponent extends React.Component<Props, {}> {
     )
   }
 
+  isDatefieldSelected(dateField: string): boolean {
+    return this.props.billDateToUse === dateField
+  }
+
+  handleRadiobuttonClick(dateField) {
+    this.props.changeBillDateToUse(dateField)
+  }
+
   render() {
     return (
       <form id="filter-container">
@@ -63,6 +73,24 @@ export default class FilterComponent extends React.Component<Props, {}> {
 
         <label htmlFor="type">{t('Auftragsart')}</label>
         {this.generateTypeSelectbox()}
+
+        <label>Datumsfeld</label>
+        <p>
+          <label className="radio-inline">
+            <input
+              type="radio"
+              checked={this.isDatefieldSelected('date_paid')}
+              onChange={() => this.handleRadiobuttonClick('date_paid')}
+            /> {t('Bezahldatum')}
+          </label>
+          <label className="radio-inline">
+            <input
+              type="radio"
+              checked={this.isDatefieldSelected('date_created')}
+              onChange={() => this.handleRadiobuttonClick('date_created')}
+            /> {t('Rechnungsdatum')}
+          </label>
+        </p>
         
       </form>
     )

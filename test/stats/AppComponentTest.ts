@@ -26,13 +26,15 @@ describe('AppComponent', () => {
 
   describe('getAvailableYears', () => {
     it('should return all date_paid years', () => {
-      const result = component.getAvailableYears('date_paid')
+      component.state.billDateToUse = 'date_paid'
+      const result = component.getAvailableYears()
       expect(result.length).to.equal(1)
       expect(result[0]).to.equal('2015')
     })
 
     it('should return all date_created years', () => {
-      const result = component.getAvailableYears('date_created')
+      component.state.billDateToUse = 'date_created'
+      const result = component.getAvailableYears()
       expect(result.length).to.equal(1)
       expect(result[0]).to.equal('2014')
     })
@@ -231,7 +233,8 @@ describe('AppComponent', () => {
       })
       component.matchesFilters = () => true
 
-      const result = component.getLineChartData('date_paid')
+      component.state.billDateToUse = 'date_paid'
+      const result = component.getLineChartData()
       expect(result.length).to.equal(12) // the months
 
       expect(result[10]).to.equal('123.45')
@@ -257,7 +260,8 @@ describe('AppComponent', () => {
       })
       component.matchesFilters = () => true
 
-      const result = component.getLineChartData('date_created')
+      component.state.billDateToUse = 'date_created'
+      const result = component.getLineChartData()
       expect(result.length).to.equal(12) // the months
 
       expect(result[8]).to.equal('123.45')
@@ -303,7 +307,8 @@ describe('AppComponent', () => {
       })
       component.matchesFilters = () => true
 
-      const result = component.getLineChartData('date_paid')
+      component.state.billDateToUse = 'date_paid'      
+      const result = component.getLineChartData()
       expect(result.length).to.equal(12) // the months
 
       expect(result[0]).to.equal('123.45')
@@ -347,7 +352,8 @@ describe('AppComponent', () => {
       component.matchesFilters = () => true
       component.matchesYear = () => true
 
-      const result = component.getTypesPieChartData('date_paid')
+      component.state.billDateToUse = 'date_paid'      
+      const result = component.getTypesPieChartData()
       expect(result.length).to.equal(2)
       expect(result[0]).to.equal(1)
       expect(result[1]).to.equal(1)
@@ -386,7 +392,8 @@ describe('AppComponent', () => {
       component.state.selectedYear = '2014'
       component.matchesFilters = () => true
 
-      const result = component.getTypesIncomePieChartData('date_paid')
+      component.state.billDateToUse = 'date_paid'      
+      const result = component.getTypesIncomePieChartData()
       expect(result.length).to.equal(2)
       expect(result[0]).to.equal(150)
       expect(result[1]).to.equal(100)

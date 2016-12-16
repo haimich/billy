@@ -40,8 +40,9 @@ export default class AppComponent extends React.Component<Props, {}> {
   state: {
     customers: Customer[]
     bills: BillDbModel[]
-    selectedYear: string
     selectedType: string
+    selectedYear?: string
+    billDateToUse: 'date_paid' | 'date_created'
   }
 
   constructor(props) {
@@ -51,8 +52,14 @@ export default class AppComponent extends React.Component<Props, {}> {
     this.state = {
       bills: props.bills,
       customers: props.customers,
-      selectedYear: this.getAvailableYears() !== [] ? this.getAvailableYears()[0] : '',
-      selectedType: SELECT_TYPE_TEXT
+      selectedType: SELECT_TYPE_TEXT,
+      billDateToUse: 'date_paid'
+    }
+
+    if (this.getAvailableYears() !== []) {
+      this.state.selectedYear = this.getAvailableYears()[0]
+    } else {
+      this.state.selectedYear = ''
     }
   }
 
@@ -68,15 +75,15 @@ export default class AppComponent extends React.Component<Props, {}> {
     return numberFormatterView(total)
   }
 
-  getAvailableYears(dateType: 'date_paid' | 'date_created' = 'date_paid'): string[] {
+  getAvailableYears(): string[] {
     let years: string[] = []
 
     for (let bill of this.props.bills) {
-      if (bill[dateType] == null || bill[dateType] === '') {
+      if (bill[this.state.billDateToUse] == null || bill[this.state.billDateToUse] === '') {
         continue
       }
 
-      let newDate = dateFormatterYearView(bill[dateType])
+      let newDate = dateFormatterYearView(bill[this.state.billDateToUse])
 
       if (years.indexOf(newDate) === -1) {
         years.push(newDate)
@@ -173,16 +180,16 @@ export default class AppComponent extends React.Component<Props, {}> {
     ]
   }
 
-  getLineChartData(dateType: 'date_paid' | 'date_created'): number[] {
+  getLineChartData(): number[] {
     let amountsPerMonth = {}
 
     for (let bill of this.props.bills) {
-      if (this.matchesFilters(bill, dateType)) {
-        if (bill[dateType] == null) {
+      if (this.matchesFilters(bill)) {
+        if (bill[this.state.billDateToUse] == null) {
           continue
         }
 
-        let month = moment(bill[dateType]).month() + 1
+        let month = moment(bill[this.state.billDateToUse]).month() + 1
 
         if (amountsPerMonth[month] == null) {
           amountsPerMonth[month] = bill.amount
@@ -206,12 +213,12 @@ export default class AppComponent extends React.Component<Props, {}> {
     return data
   }
 
-  getTypesPieChartData(dateType: 'date_paid' | 'date_created' = 'date_paid'): number[] {
+  getTypesPieChartData(): number[] {
     let sumInterpreting = 0
     let sumTranslating = 0
 
     for (let bill of this.props.bills) {
-      if (! this.matchesYear(bill[dateType], this.state.selectedYear)) {
+      if (! this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
         continue
       }
 
@@ -228,12 +235,12 @@ export default class AppComponent extends React.Component<Props, {}> {
     ]
   }
 
-  getTypesIncomePieChartData(dateType: 'date_paid' | 'date_created' = 'date_paid'): number[] {
+  getTypesIncomePieChartData(): number[] {
     let sumInterpreting = 0
     let sumTranslating = 0
 
     for (let bill of this.props.bills) {
-      if (! this.matchesYear(bill[dateType], this.state.selectedYear)) {
+      if (! this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
         continue
       }
 
@@ -250,8 +257,9 @@ export default class AppComponent extends React.Component<Props, {}> {
     ]
   }
 
-  matchesFilters(bill: BillDbModel, dateType: 'date_paid' | 'date_created' = 'date_paid'): boolean {
-    return this.matchesYear(bill[dateType], this.state.selectedYear) && this.matchesType(bill.comment, this.state.selectedType)
+  matchesFilters(bill: BillDbModel): boolean {
+    return this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)
+      && this.matchesType(bill.comment, this.state.selectedType)
   }
 
   matchesYear(date: string, year: string): boolean {
@@ -284,6 +292,12 @@ export default class AppComponent extends React.Component<Props, {}> {
     return false
   }
 
+  changeBillDateToUse(dateField: 'date_paid' | 'date_created') {
+    this.setState({
+      billDateToUse: dateField
+    })
+  }
+
   render() {
     return (
       <div>
@@ -295,6 +309,8 @@ export default class AppComponent extends React.Component<Props, {}> {
           handleTypeChange={element => this.setState({selectedType: element.target.value})}
           selectedType={this.state.selectedType}
           selectedYear={this.state.selectedYear}
+          billDateToUse={this.state.billDateToUse}
+          changeBillDateToUse={this.changeBillDateToUse.bind(this)}
         />
 
         <TableComponent data={this.getTableData()} />
@@ -303,7 +319,7 @@ export default class AppComponent extends React.Component<Props, {}> {
 
         <ChartComponent
           lineChartLabels={this.getLineChartLabels()}
-          lineChartDatePaidData={this.getLineChartData('date_paid')}
+          lineChartDatePaidData={this.getLineChartData()}
           typesPieChartLabels={this.getTypesPieChartLabels()}
           typesPieChartData={this.getTypesPieChartData()}
           typesIncomePieChartData={this.getTypesIncomePieChartData()}
