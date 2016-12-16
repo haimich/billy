@@ -120,10 +120,15 @@ export default class EditorComponent extends React.Component<Props, {}> {
       return
     }
 
-    if (this.state.isNew) {
-      this.props.save(bill, this.state.fileActions)
-    } else {
-      this.props.update(bill, this.state.fileActions)
+    try {
+      if (this.state.isNew) {
+        await this.props.save(bill, this.state.fileActions)
+      } else {
+        await this.props.update(bill, this.state.fileActions)
+      }
+    } catch(error) {
+      // don't reset editor on error
+      return
     }
 
     this.props.updateCustomer(this.state.selectedCustomer[0])

@@ -49,7 +49,7 @@ export default class AppComponent extends React.Component<any, {}> {
       billWithFiles = await getBillByInvoiceId(createdBill.invoice_id)
     } catch (err) {
       this.handleError(err)
-      return
+      throw err
     }
 
     this.setState({
@@ -67,7 +67,7 @@ export default class AppComponent extends React.Component<any, {}> {
       billWithFiles = await getBillByInvoiceId(updatedBill.invoice_id)
     } catch (err) {
       this.handleError(err)
-      return
+      throw err
     }
 
     this.setState({
@@ -95,6 +95,7 @@ export default class AppComponent extends React.Component<any, {}> {
       }
     } catch (err) {
       this.handleError(err)
+      throw err
     }
 
     this.setState({
