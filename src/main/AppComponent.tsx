@@ -40,49 +40,74 @@ export default class AppComponent extends React.Component<any, {}> {
     notifications = this.refs.notificationSystem
   }
 
-  async save(bill: Bill, fileActions: FileActions) {
-    let billWithFiles
+  save(bill: Bill, fileActions: FileActions): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let createdBill
 
-    try {
-      const createdBill = await createBill(bill)
-      await performFileActions(createdBill, fileActions)
-      billWithFiles = await getBillByInvoiceId(createdBill.invoice_id)
-    } catch (err) {
-      this.handleError(err)
-      throw err
-    }
+      createBill(bill)
+        .then(result => {
+          createdBill = result
+          return performFileActions(createdBill, fileActions)
+        })
+        .then(() => {
+          return getBillByInvoiceId(createdBill.invoice_id)
+        })
+        .then(billWithFiles => {
+          resolve() // let the editor know that we're good
 
-    this.setState({
-      selectedBill: undefined,
-      bills: [ billWithFiles ].concat(this.state.bills)
+          // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
+          process.nextTick(() => {
+            this.setState({
+              selectedBill: undefined,
+              bills: [ billWithFiles ].concat(this.state.bills)
+            })
+          })
+        })
+        .catch(err => {
+          this.handleError(err)
+          reject(err)
+        })
+    })
+
+  }
+
+  update(bill: Bill, fileActions: FileActions): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let updatedBill
+
+      updateBill(bill)
+        .then(result => {
+          updatedBill = result
+          return performFileActions(updatedBill, fileActions)
+        })
+        .then(() => {
+          return getBillByInvoiceId(updatedBill.invoice_id)
+        })
+        .then(billWithFiles => {
+          resolve() // let the editor know that we're good
+
+          // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
+          process.nextTick(() => {
+            this.setState({
+              selectedBill: undefined,
+              bills: this.state.bills.map(element => {
+                if (element.invoice_id === bill.invoice_id) {
+                  return billWithFiles
+                } else {
+                  return element
+                }
+              })
+            })
+          })
+        })
+        .catch(err => {
+          this.handleError(err)
+          reject(err)
+        })
     })
   }
 
-  async update(bill: Bill, fileActions: FileActions) {
-    let billWithFiles
-
-    try {
-      const updatedBill = await updateBill(bill)
-      await performFileActions(updatedBill, fileActions)
-      billWithFiles = await getBillByInvoiceId(updatedBill.invoice_id)
-    } catch (err) {
-      this.handleError(err)
-      throw err
-    }
-
-    this.setState({
-      selectedBill: undefined,
-      bills: this.state.bills.map((element) => {
-        if (element.invoice_id === bill.invoice_id) {
-          return billWithFiles
-        } else {
-          return element
-        }
-      })
-    })
-  }
-
-  async deleteBills(invoiceIds: string[]) {
+  async deleteBills(invoiceIds: string[]): Promise<any> {
     let invoiceIdMap = {}
 
     try {
@@ -124,11 +149,6 @@ export default class AppComponent extends React.Component<any, {}> {
 
   handleError(err: Error) {
     let message = t('Es ist ein Fehler aufgetreten: ') + err.message
-
-    if (err['code'] === 'SQLITE_CONSTRAINT') {
-      message = t('Datenbank Fehler duplicate id')
-    }
-
     console.error(err)
     this.notify(message, 'error')
   }

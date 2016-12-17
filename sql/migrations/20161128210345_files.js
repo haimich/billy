@@ -4,7 +4,6 @@ exports.up = (knex, Promise) => {
     table.integer('bill_id').notNullable()
     table.text('path').notNullable()
 
-    table.index(('bill_id'))
     table.unique(['bill_id', 'path'])
   })
     .then(() => {
@@ -38,6 +37,10 @@ exports.up = (knex, Promise) => {
 
       return knex.schema.table('bills', (table) => {
         table.dropColumn('file_path')
+
+        // Due to a bug in knex.js we need to recreate the indexes (https://github.com/tgriesser/knex/issues/631)
+        table.unique('invoice_id')
+        table.index('invoice_id')
       })
     })
 }

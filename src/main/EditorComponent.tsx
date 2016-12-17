@@ -121,17 +121,16 @@ export default class EditorComponent extends React.Component<Props, {}> {
     }
 
     try {
+      await this.props.updateCustomer(this.state.selectedCustomer[0])
+      
       if (this.state.isNew) {
         await this.props.save(bill, this.state.fileActions)
       } else {
         await this.props.update(bill, this.state.fileActions)
       }
-    } catch(error) {
-      // don't reset editor on error
-      return
+    } catch (err) {
+      return // don't reset state on error
     }
-
-    this.props.updateCustomer(this.state.selectedCustomer[0])
 
     this.resetState()
   }
@@ -317,32 +316,36 @@ export default class EditorComponent extends React.Component<Props, {}> {
   }
 
   async handleDeleteCustomer() {
-    if (this.state.selectedCustomer != null && this.state.selectedCustomer[0] != null) {
-      let customer = this.state.selectedCustomer[0]
-      if (confirm(t(`Möchtest du den Kunden "${customer.name}" wirklich löschen?`))) {
-        try {
-          await deleteCustomerById(customer.id!)
-        } catch (err) {
-          this.props.notify(t('Could not delete customer'), 'error')
-          return
-        }
-
-        this.refs.typeahead.getInstance().clear()
-
-        let newCustomerList: Customer[] = []
-        for (let i = 0; i < this.state.customerList.length; i++) {
-          if (customer.id === this.state.customerList[i].id) {
-            continue
-          }
-          newCustomerList.push(this.state.customerList[i])
-        }
-
-        this.setState({
-          customerList: newCustomerList,
-          selectedCustomer: undefined
-        })
-      }
+    if (this.state.selectedCustomer == null || this.state.selectedCustomer[0] == null) {
+      return
     }
+
+    let customer = this.state.selectedCustomer[0]
+    if (! confirm(t(`Möchtest du den Kunden "${customer.name}" wirklich löschen?`))) {
+      return
+    }
+
+    try {
+      await deleteCustomerById(customer.id!)
+    } catch (err) {
+      this.props.notify(t('Could not delete customer'), 'error')
+      return
+    }
+
+    this.refs.typeahead.getInstance().clear()
+
+    let newCustomerList: Customer[] = []
+    for (let i = 0; i < this.state.customerList.length; i++) {
+      if (customer.id === this.state.customerList[i].id) {
+        continue
+      }
+      newCustomerList.push(this.state.customerList[i])
+    }
+
+    this.setState({
+      customerList: newCustomerList,
+      selectedCustomer: undefined
+    })
   }
 
   handleDeleteFile(file: FileModel) {
