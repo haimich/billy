@@ -17,7 +17,7 @@
     "watch:test": "nodemon -w ./src -w ./test -e ts,tsx -x npm test",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html build/src",
-    "publish:mac": "sudo rimraf output && npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.4.0 --out=output --overwrite --icon=static/images/billy.icns",
+    "publish:mac": "sudo rimraf output && npm install && npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.4.0 --out=output --overwrite --icon=static/images/billy.icns",
     "install:mac": "sudo rimraf /Applications/Billy.app && mv output/Billy-darwin-x64/Billy.app /Applications"
   },
   "repository": {
