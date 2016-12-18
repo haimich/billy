@@ -49,14 +49,17 @@ function getBillById(id: number): Promise<BillDbModel> {
       b.comment,
       c.id as customer_id,
       c.name as customer_name,
-      c.telephone as customer_telephone
+      c.telephone as customer_telephone,
+      bt.type
 
-      from bills b, customers c
+      from bills b
 
-      where b.customer_id = c.id
-      and   b.id = ?
+      LEFT JOIN customers c ON b.customer_id = c.id
+      LEFT JOIN bill_types bt ON b.type_id = bt.id
+
+      where b.id = ?
   `, [id])
-    .then((rows) => {
+    .then(rows => {
       if (rows == null || rows.length !== 1) {
         return
       }
@@ -82,14 +85,17 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
       b.comment,
       c.id as customer_id,
       c.name as customer_name,
-      c.telephone as customer_telephone
+      c.telephone as customer_telephone,
+      bt.type
 
-      from bills b, customers c
+      from bills b
 
-      where b.customer_id = c.id
-      and   b.invoice_id = ?
+      LEFT JOIN customers c ON b.customer_id = c.id
+      LEFT JOIN bill_types bt ON b.type_id = bt.id
+
+      where b.invoice_id = ?
   `, [invoiceId])
-    .then((rows) => {
+    .then(rows => {
       if (rows == null || rows.length !== 1) {
         return
       }
@@ -117,13 +123,16 @@ export function listBills(): Promise<BillDbModel[]> {
       b.comment,
       c.id as customer_id,
       c.name as customer_name,
-      c.telephone as customer_telephone
+      c.telephone as customer_telephone,
+      bt.type
+      
+      from bills b
 
-      from bills b, customers c
+      LEFT JOIN customers c ON b.customer_id = c.id
+      LEFT JOIN bill_types bt ON b.type_id = bt.id
 
-      where b.customer_id = c.id
       order by b.date_created
-  `).then((rows) => {
+  `).then(rows => {
       return rows.map(row => {
         return Object.assign(row, {
           customer: {

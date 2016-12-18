@@ -32,6 +32,7 @@ describe('billsService', () => {
       expect(bills[0].customer).to.be.ok
       expect(bills[0].customer_name).to.equal(bills[0].customer.name)
       expect(bills[0].files).to.be.ok
+      expect(bills[0].type).to.be.ok
     })
   })
 
