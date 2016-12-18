@@ -7,8 +7,7 @@ exports.up = (knex, Promise) => {
     table.unique(['bill_id', 'path'])
   })
     .then(() => {
-      return knex('bills')
-        .select('*')
+      return knex('bills').select('*')
     })
     .then(bills => {
       let promises = []
