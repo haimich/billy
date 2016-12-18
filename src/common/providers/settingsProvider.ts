@@ -24,6 +24,9 @@ const DEV_CONFIG = {
     seeds: {
       directory: './sql/seeds'
     },
+    pool: {
+      afterCreate: (conn, done) => conn.run('PRAGMA foreign_keys = ON', done) // see https://github.com/tgriesser/knex/issues/453
+    },
     useNullAsDefault: true // see http://knexjs.org/#Builder-insert
   }
 };

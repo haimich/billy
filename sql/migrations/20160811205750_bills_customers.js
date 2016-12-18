@@ -10,7 +10,7 @@ exports.up = (knex, Promise) => {
       return knex.schema.createTable('bills', (table) => {
         table.increments('id').primary().notNullable()
         table.text('invoice_id').unique().notNullable()
-        table.integer('customer_id').references('id').inTable('customer').notNullable()
+        table.integer('customer_id').references('id').inTable('customers').notNullable()
         table.decimal('amount').notNullable()
         table.date('date_created').notNullable()
         table.date('date_paid')

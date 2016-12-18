@@ -255,6 +255,25 @@ describe('AppComponent', () => {
       expect(result[0].billCount).to.equal(5)
       expect(result[0].averageTimeToPay).to.equal(16)
     })
+
+    it('should return a table row with the mean time to pay for single customer', () => {
+      const theCustomer = { id: 456, name: 'Dolmetscherbüro Deine Mudda' }
+
+      component = new AppComponent({
+        customers: [theCustomer],
+        bills: [{
+          invoice_id: '20112',
+          customer: theCustomer,
+          amount: 3495.00,
+          date_created: '2011-04-16'
+        }]
+      })
+      component.matchesFilters = () => true
+      
+      const result = component.getTableData()
+      
+      expect(result[0].averageTimeToPay).to.equal(0)
+    })
   })
 
   describe('getLineChartData', () => {
