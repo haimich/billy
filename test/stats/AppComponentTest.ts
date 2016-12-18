@@ -210,6 +210,51 @@ describe('AppComponent', () => {
       expect(result[0].averageTimeToPay).to.equal(8)
       expect(result[0].name).to.equal('Deine Mudda')
     })
+
+    it('should return a table row with the mean time to pay', () => {
+      const theCustomer = { id: 123, name: 'Deine Mudda' }
+      const theInvoiceId = 'foo/123'
+      const theAmount = 123.45
+
+      component = new AppComponent({
+        customers: [theCustomer],
+        bills: [{
+          invoice_id: theInvoiceId,
+          customer: theCustomer,
+          amount: theAmount,
+          date_created: '2016-02-26',
+          date_paid: '2016-03-25'
+        }, {
+          invoice_id: theInvoiceId,
+          customer: theCustomer,
+          amount: theAmount,
+          date_created: '2016-10-09',
+          date_paid: '2016-10-13'
+        }, {
+          invoice_id: theInvoiceId,
+          customer: theCustomer,
+          amount: theAmount,
+          date_created: '2016-12-01'
+        }, {
+          invoice_id: theInvoiceId,
+          customer: theCustomer,
+          amount: theAmount,
+          date_created: '2016-02-13'
+        }, {
+          invoice_id: theInvoiceId,
+          customer: theCustomer,
+          amount: theAmount,
+          date_created: '2016-09-17'
+        }]
+      })
+      component.matchesFilters = () => true
+      
+      const result = component.getTableData()
+      expect(result.length).to.equal(1)
+      expect(result[0].total).to.equal(theAmount * 5)
+      expect(result[0].billCount).to.equal(5)
+      expect(result[0].averageTimeToPay).to.equal(16)
+    })
   })
 
   describe('getLineChartData', () => {
