@@ -98,6 +98,7 @@ export default class TableComponent extends React.Component<Props, {}> {
     preventDragAndDrop(ReactDOM.findDOMNode(this))
     this.scrollDown()
 
+    document.querySelector(`.react-bs-table-search-form button`).innerHTML = t('Leeren')
     document.querySelector(`.react-bs-table-add-btn`).addEventListener('click', this.handleAdd.bind(this))
   }
 
