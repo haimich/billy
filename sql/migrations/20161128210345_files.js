@@ -10,7 +10,7 @@ exports.up = (knex, Promise) => {
       return knex('bills')
         .select('*')
     })
-    .then((bills) => {
+    .then(bills => {
       let promises = []
 
       console.log(bills)
@@ -35,7 +35,7 @@ exports.up = (knex, Promise) => {
     .then(() => {
       console.log('Dropping column "file_path" in bills')
 
-      return knex.schema.table('bills', (table) => {
+      return knex.schema.table('bills', table => {
         table.dropColumn('file_path')
 
         // Due to a bug in knex.js we need to recreate the indexes (https://github.com/tgriesser/knex/issues/631)
