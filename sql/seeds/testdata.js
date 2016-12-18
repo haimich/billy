@@ -5,12 +5,17 @@ const chance = new Chance()
 const NUMBER_OF_CUSTOMERS = 25
 const NUMBER_OF_BILLS = 100
 let counter = 1
+let billTypes = ['Other', 'Translating', 'Interpreting']
 
 // Deletes ALL existing entries!
 exports.seed = (knex, Promise) => {
   return knex('bills').del()
+    .then(() => knex('bill_types').del())
     .then(() => knex('customers').del())
+    .then(() => knex('files').del())
     .then(() => {
+      console.log('Creating customers')
+
       let promises = []
       for (let i = 0; i < NUMBER_OF_CUSTOMERS; i++) {
         promises.push(knex('customers').insert(generateCustomer()))
@@ -18,6 +23,17 @@ exports.seed = (knex, Promise) => {
       return Promise.all(promises)
     })
     .then(() => {
+      console.log('Creating bill types')
+
+      let promises = []
+      for (let type of billTypes) {
+        promises.push(knex('bill_types').insert({ type }))
+      }
+      return Promise.all(promises)
+    })
+    .then(() => {
+      console.log('Creating bills')
+
       let promises = []
       for (let i = 0; i < NUMBER_OF_BILLS; i++) {
         promises.push(knex('bills').insert(generateBill()))
@@ -28,6 +44,8 @@ exports.seed = (knex, Promise) => {
       return knex('bills').select('*')
     })
     .then((bills) => {
+      console.log('Creating files')
+
       let promises = []
 
       for (let bill of bills) {
@@ -71,6 +89,10 @@ function generateBill() {
   if (chance.bool()) {
     const daysToAdd = chance.natural({ min: 0, max: 90 })
     bill.date_paid = dateCreated.add(daysToAdd, 'days').format('YYYY-MM-DD')
+  }
+
+  if (chance.bool()) {
+    bill.type_id = chance.natural({ min: 1, max: billTypes.length})
   }
 
   return bill

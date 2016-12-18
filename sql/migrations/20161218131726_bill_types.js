@@ -6,6 +6,7 @@ exports.up = (knex, Promise) => {
   let billTypes = new Set()
   let bills
 
+  console.log('Creating table bill_types')
   return knex.schema.createTable('bill_types', (table) => {
     table.increments('id').primary().notNullable()
     table.integer('type').notNullable().unique()
@@ -13,8 +14,10 @@ exports.up = (knex, Promise) => {
     table.index('type')
   })
     .then(() => {
+      console.log('Adding column "type_id" and foreign key constraint to bills')
+
       return knex.schema.table('bills', table => {
-        table.integer('type_id').references('id').inTable('customers')
+        table.integer('type_id').references('id').inTable('bill_types')
       })
     })
     .then(() => {
