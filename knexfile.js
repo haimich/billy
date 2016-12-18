@@ -20,7 +20,6 @@ module.exports = {
           console.log(err)
           return
         }
-        console.log('Ran afterCreate query')
         done()
       })
     }
