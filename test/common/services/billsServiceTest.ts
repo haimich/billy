@@ -30,9 +30,9 @@ describe('billsService', () => {
       expect(bills.length).to.be.above(1)
       expect(moment(bills[0].date_created).isBefore(moment(bills[1].date_created))).to.be.true
       expect(bills[0].customer).to.be.ok
+      expect(bills[0].customer.id).to.be.ok
       expect(bills[0].customer_name).to.equal(bills[0].customer.name)
       expect(bills[0].files).to.be.ok
-      expect(bills[0].type).to.be.ok
     })
   })
 
@@ -42,6 +42,7 @@ describe('billsService', () => {
         invoice_id: PREFIX + '456',
         amount: 123.45,
         customer_id: 1,
+        type_id: 1,
         date_created: moment().toISOString()
       })
       const result = await getBillByInvoiceId(PREFIX + '456')
@@ -49,6 +50,8 @@ describe('billsService', () => {
       expect(result.invoice_id).to.equal(PREFIX + '456')
       expect(result.amount).to.equal(123.45)
       expect(result.files).to.be.ok
+      expect(result.type).to.be.ok
+      expect(result.type.id).to.be.ok
     })
 
     it('should return the bill that matches the invoice id including its files', async () => {
@@ -56,6 +59,7 @@ describe('billsService', () => {
         invoice_id: PREFIX + '456',
         amount: 123.45,
         customer_id: 1,
+        type_id: 1,
         date_created: moment().toISOString()
       })
       await createFile({
@@ -67,6 +71,8 @@ describe('billsService', () => {
       expect(result.invoice_id).to.equal(PREFIX + '456')
       expect(result.files.length).to.equal(1)
       expect(result.files[0].path).to.equal(PREFIX + '/foo/bla.doc')
+      expect(result.type).to.be.ok
+      expect(result.type.id).to.be.ok
     })
   })
 })

@@ -79,6 +79,7 @@ export default class TableComponent extends React.Component<Props, {}> {
           <TableHeaderColumn dataField="amount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Betrag')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_created" width="170" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_paid" width="190" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlung erhalten am')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="120" dataSort={true}>{t('Typ')}</TableHeaderColumn>
           <TableHeaderColumn dataField="comment" width="400" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
 
         </BootstrapTable>

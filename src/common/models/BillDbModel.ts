@@ -1,5 +1,6 @@
 import Customer from './CustomerModel'
 import FileModel from './FileModel'
+import BillTypeModel from './BillTypeModel'
 
 interface BillDbModel {
   id: number
@@ -9,7 +10,8 @@ interface BillDbModel {
   date_paid?: string
   customer_name: string
   customer: Customer
-  type?: string
+  type?: BillTypeModel
+  type_name?: string
   comment?: string
   files: FileModel[]
 }

@@ -30,6 +30,7 @@ export function updateBill(bill: Bill): Promise<BillDbModel> {
       customer_id: bill.customer_id,
       date_created: bill.date_created,
       date_paid: bill.date_paid,
+      type_id: bill.type_id,
       comment: bill.comment
     })
     .where('invoice_id', bill.invoice_id)
@@ -50,6 +51,8 @@ function getBillById(id: number): Promise<BillDbModel> {
       c.id as customer_id,
       c.name as customer_name,
       c.telephone as customer_telephone,
+      bt.id as type_id,
+      bt.type as type_name,
       bt.type
 
       from bills b
@@ -64,13 +67,7 @@ function getBillById(id: number): Promise<BillDbModel> {
         return
       }
 
-      return Object.assign(rows[0], {
-        customer: {
-          id: rows[0].customer_id,
-          name: rows[0].customer_name,
-          telephone: rows[0].customer_telephone
-        }
-      })
+      return createBillDbModel(rows[0])
     })
 }
 
@@ -86,6 +83,8 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
       c.id as customer_id,
       c.name as customer_name,
       c.telephone as customer_telephone,
+      bt.id as type_id,
+      bt.type as type_name,
       bt.type
 
       from bills b
@@ -100,15 +99,7 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
         return
       }
 
-      let bill = rows[0]
-
-      return Object.assign(bill, {
-        customer: {
-          id: bill.customer_id,
-          name: bill.customer_name,
-          telephone: bill.customer_telephone
-        }
-      })
+      return createBillDbModel(rows[0])
     })
 }
 
@@ -124,6 +115,8 @@ export function listBills(): Promise<BillDbModel[]> {
       c.id as customer_id,
       c.name as customer_name,
       c.telephone as customer_telephone,
+      bt.id as type_id,
+      bt.type as type_name,
       bt.type
       
       from bills b
@@ -132,17 +125,7 @@ export function listBills(): Promise<BillDbModel[]> {
       LEFT JOIN bill_types bt ON b.type_id = bt.id
 
       order by b.date_created
-  `).then(rows => {
-      return rows.map(row => {
-        return Object.assign(row, {
-          customer: {
-            id: row.customer_id,
-            name: row.customer_name,
-            telephone: row.customer_telephone
-          }
-        })
-      })
-    })
+  `).then(rows => rows.map(createBillDbModel))
 }
 
 export async function importBills(bills): Promise<any> {
@@ -180,4 +163,23 @@ export function deleteBillsByInvoiceIdPattern(idPattern: string): Promise<any> {
 export function deleteAll(): Promise<any> {
   return db('bills')
     .delete()
+}
+
+function createBillDbModel(row: any): BillDbModel {
+  let bill = Object.assign(row, {
+    customer: {
+      id: row.customer_id,
+      name: row.customer_name,
+      telephone: row.customer_telephone
+    }
+  })
+
+  if (bill.type_id != null) {
+    bill.type = {
+      id: bill.type_id,
+      type: bill.type
+    }
+  }
+  
+  return bill
 }

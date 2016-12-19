@@ -2,12 +2,14 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
+import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
 import FileModel from '../common/models/FileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from './FileViewComponent'
 import FileUploadComponent from './FileUploadComponent'
 import { billExists } from '../common/services/billsService'
+import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/helpers/formatters'
@@ -16,18 +18,20 @@ const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
 
 interface State {
-  id?: number;
-  invoice_id: string;
-  amount?: string;
-  date_created?: string;
-  date_paid?: string;
-  comment: string;
-  selectedCustomer?: Customer[];
-  customerList: Customer[];
-  isNew: boolean;
-  isDirty: boolean;
-  invoiceIdValid: boolean;
-  fileActions: FileActions;
+  id?: number
+  invoice_id: string
+  amount?: string
+  date_created?: string
+  date_paid?: string
+  comment: string
+  selectedCustomer?: Customer[]
+  selectedBillType?: BillTypeModel[]
+  customerList: Customer[]
+  billTypeList: BillTypeModel[]
+  isNew: boolean
+  isDirty: boolean
+  invoiceIdValid: boolean
+  fileActions: FileActions
 }
 
 interface Props {
@@ -42,8 +46,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   state: State
   refs: {
-    typeahead: any,
-    invoiceId: any,
+    customerTypeahead: any,
+    billTypeTypeahead: any,
+    invoice: any,
     date_created: any,
     date_paid: any
   }
@@ -60,9 +65,10 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   resetState() {
     this.setState(this.getDefaultState())
-    this.refs.typeahead.getInstance().clear()
+    this.refs.customerTypeahead.getInstance().clear()
+    this.refs.billTypeTypeahead.getInstance().clear()
     this.fetchTypeaheadData()
-    setTimeout(() => this.refs.invoiceId.focus())
+    process.nextTick(() => this.refs.invoice.focus())
     this.dragCounter = 0;
   }
 
@@ -75,9 +81,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
       date_paid: undefined,
       comment: '',
       selectedCustomer: undefined,
-      // selectedBillType: undefined,
+      selectedBillType: undefined,
       customerList: [],
-      // billTypeList: [],
+      billTypeList: [],
       isNew: true,
       isDirty: false,
       invoiceIdValid: true,
@@ -87,10 +93,17 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   async fetchTypeaheadData() {
     try {
-      let customerList = await listCustomers()
-      this.setState({ customerList })
+      let results = await Promise.all([
+        listCustomers(),
+        listBillTypes()
+      ])
+
+      this.setState({
+        customerList: results[0],
+        billTypeList: results[1]
+      })
     } catch (err) {
-      this.props.notify(t('Could not fetch typeahead data'), 'error')
+      this.props.notify(t('Typeahead-Daten konnten nicht geladen werden') + err, 'error')
     }
   }
 
@@ -108,6 +121,9 @@ export default class EditorComponent extends React.Component<Props, {}> {
       amount: numberFormatterDb(this.state.amount),
       date_created: dateFormatterDb(this.state.date_created),
       date_paid: dateFormatterDb(this.state.date_paid),
+      type_id: (this.state.selectedBillType == null || this.state.selectedBillType[0] == null)
+        ? undefined
+        : this.state.selectedBillType[0].id,
       comment: this.state.comment
     }
 
@@ -118,7 +134,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
         return
       }
     } catch (err) {
-      this.props.notify(t('checkValidity threw an error'), 'error')
+      this.props.notify(t('Die Validierung ist fehlgeschlagen: ') + err, 'error')
       return
     }
 
@@ -139,7 +155,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
   async checkValidity(bill: Bill): Promise<string | undefined> {
     if (this.state.isNew && await billExists(bill.invoice_id)) {
-      return t('Datenbank Fehler duplicate id')
+      return t('Eine Rechnung mit dieser Rechnungsnummer existiert bereits.')
     }
 
     return
@@ -284,7 +300,39 @@ export default class EditorComponent extends React.Component<Props, {}> {
       this.setState({ selectedCustomer: selected })
     }
 
-    this.revalidate(ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelector('input[name=customer]'))
+    this.revalidate(ReactDOM.findDOMNode(this.refs.customerTypeahead.getInstance()).querySelector('input[name=customer]'))
+  }
+
+  async handleBillTypeChange(selected: any) {
+    if (selected == null || selected.length !== 1) {
+      return
+    }
+
+    let selectedBillType = selected[0]
+    let isNewBillType = false
+
+    if (selectedBillType.customOption && (await getBillTypeById(selectedBillType.id) == null)) {
+      isNewBillType = true
+    }
+
+    if (isNewBillType) {
+      let billType
+
+      try {
+        billType = await createBillType({
+          type: selectedBillType.type
+        })
+      } catch (err) {
+        this.props.notify(t('Der Rechnungstyp konnte nicht angelegt werden: ') + err, 'error')
+      }
+
+      this.setState({
+        selectedBillType: [billType],
+        billTypeList: [billType].concat(this.state.billTypeList)
+      })
+    } else {
+      this.setState({ selectedBillType: selected })
+    }
   }
 
   handleCustomerTelephoneChange(event: any) {
@@ -334,7 +382,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
       return
     }
 
-    this.refs.typeahead.getInstance().clear()
+    this.refs.customerTypeahead.getInstance().clear()
 
     let newCustomerList: Customer[] = []
     for (let i = 0; i < this.state.customerList.length; i++) {
@@ -392,13 +440,13 @@ export default class EditorComponent extends React.Component<Props, {}> {
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnr.')}</label>
+                <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnummer')}</label>
                 <div className="col-sm-8">
                   <input
                     type="text"
                     className="form-control"
                     id="id"
-                    ref="invoiceId"
+                    ref="invoice"
                     readOnly={!this.state.isNew}
                     required
                     value={this.state.invoice_id}
@@ -417,7 +465,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
                     onBlur={this.handleCustomerChange.bind(this)}
                     selected={this.state.selectedCustomer}
                     labelKey={'name'}
-                    ref='typeahead'
+                    ref='customerTypeahead'
                     name="customer"
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
@@ -476,6 +524,25 @@ export default class EditorComponent extends React.Component<Props, {}> {
             </div>
 
             <div className="col-md-6">
+             <div className="form-group">
+                <label htmlFor="billType" className="col-sm-4 control-label">{t('Typ')}</label>
+                <div className="col-sm-8">
+                  <Typeahead
+                    options={this.state.billTypeList}
+                    allowNew={true}
+                    onChange={this.handleBillTypeChange.bind(this)}
+                    onBlur={this.handleBillTypeChange.bind(this)}
+                    selected={this.state.selectedBillType}
+                    labelKey={'type'}
+                    ref='billTypeTypeahead'
+                    name="billType"
+                    placeholder=""
+                    emptyLabel={t('Keine Einträge vorhanden')}
+                    newSelectionPrefix={t('Typ anlegen: ')}
+                    tabIndex={5}
+                    />
+                </div>
+              </div>
               <div className="form-group">
                 <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
                 <Datetime
@@ -544,15 +611,21 @@ export default class EditorComponent extends React.Component<Props, {}> {
     input.closest('.form-group').classList.remove('has-error')
     setTimeout(() => input.checkValidity())
   }
+  
+  enableTypeaheadFeatures(typeahead: any, name: string, required: boolean) {
+    const typeaheadInput =
+      ReactDOM.findDOMNode(typeahead.getInstance()).querySelector(`input[name=${name}]`)
+    typeaheadInput.setAttribute('id', name)
+
+    if (required) {
+      typeaheadInput.setAttribute('required', 'true')
+    }
+  }
 
   componentDidMount() {
     this.addFormValidation()
-
-    // Hack: enable features for Typeahead component
-    const typeaheadInput =
-      ReactDOM.findDOMNode(this.refs.typeahead.getInstance()).querySelector('input[name=customer]')
-    typeaheadInput.setAttribute('id', 'customer')
-    typeaheadInput.setAttribute('required', 'true')
+    this.enableTypeaheadFeatures(this.refs.customerTypeahead, 'customer', true)
+    this.enableTypeaheadFeatures(this.refs.billTypeTypeahead, 'billType', false)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -573,6 +646,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
           ? { add: [], keep: bill.files, delete: [] }
           : { add: [], keep: [], delete: [] },
         selectedCustomer: [bill.customer],
+        selectedBillType: [bill.type],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),
         amount: numberFormatterView(bill.amount),

@@ -140,6 +140,11 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   notify(message: string, level: 'error' | 'success') {
+    if (notifications == null) {
+      console.log(level + ': ' + message)
+      return
+    }
+
     notifications.addNotification({
       message,
       level,
