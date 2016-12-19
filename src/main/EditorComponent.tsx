@@ -561,7 +561,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
               <div className="form-group">
                 <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
                 <div className="col-sm-8">
-                  <textarea className="form-control" rows={3} id="comment" value={this.state.comment} onChange={(event: any) => this.setState({ comment: event.target.value })} />
+                  <textarea className="form-control" rows={1} id="comment" value={this.state.comment} onChange={(event: any) => this.setState({ comment: event.target.value })} />
                 </div>
               </div>
 

@@ -115,3 +115,8 @@ textarea {
 .file-open {
   cursor: pointer;
 }
+
+.file-list .empty {
+  font-style: italic;
+  font-size: .8em;
+}

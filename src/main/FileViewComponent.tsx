@@ -4,6 +4,7 @@ import { getFilename } from '../common/helpers/formatters'
 import { open } from '../common/providers/fileProvider'
 import { shortenFilename } from '../common/helpers/text'
 import { getFileIconHtml } from '../common/helpers/icons'
+import t from '../common/helpers/i18n'
 
 interface Props {
   files: File[];
@@ -16,9 +17,9 @@ export default class FileViewComponent extends React.Component<Props, {}> {
     super(props)
   }
 
-  render() {
+  getFileList() {
     let fileList = []
-
+    
     for (let i = 0; i < this.props.files.length; i++) {
       const file = this.props.files[i]
 
@@ -40,12 +41,22 @@ export default class FileViewComponent extends React.Component<Props, {}> {
       </li>)
     }
 
+    if (fileList.length === 0) {
+      return (
+        <span className="empty">- {t('keine Dateien')} -</span>
+      )
+    } else {
+      return (
+        <ul>{fileList}</ul>
+      )
+    }
+  }
+
+  render() {
     return (
       <div className="form-group file-list">
         <div className="col-sm-offset-4 col-sm-8">
-          <ul>
-            {fileList}
-          </ul>
+          {this.getFileList()}
         </div>
       </div>
     )
