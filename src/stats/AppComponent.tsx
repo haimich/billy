@@ -1,7 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import FilterComponent from './FilterComponent'
+import FilterComponent, { SELECT_TYPE_ALL } from './FilterComponent'
 import BillDbModel from '../common/models/BillDbModel'
+import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
 import TotalSumComponent from './TotalSumComponent'
@@ -12,20 +13,10 @@ import { dateFormatterYearView, numberFormatterView } from '../common/helpers/fo
 import * as moment from 'moment'
 import { getAverage } from '../common/helpers/math'
 
-const SELECT_CUSTOMER_TEXT = t('Kunde auswählen')
-const SELECT_TYPE_TEXT = t('Alle')
-const SELECT_TYPE_TEXT_INTERPRET = t('Dolmetschen')
-const SELECT_TYPE_TEXT_TRANSLATE = t('Übersetzen')
-const SELECT_TYPE_TEXT_TRANSLATE_CERTIFY = t('Beglaubigen')
-const SELECT_TYPE_TEXT_OTHER = t('Andere')
-
-const TRANSLATE_REGEX = /übersetz/i
-const TRANSLATE_CERTIFY_REGEX = /beglaubig.*übersetz/i
-const INTERPRET_REGEX = /dolmetsch/i
-
 interface Props {
   customers: Customer[]
   bills: BillDbModel[]
+  billTypes: BillTypeModel[]
 }
 
 interface CustomerStats {
@@ -38,9 +29,7 @@ interface CustomerStats {
 export default class AppComponent extends React.Component<Props, {}> {
 
   state: {
-    customers: Customer[]
-    bills: BillDbModel[]
-    selectedType: string
+    selectedBillType: string
     selectedYear?: string
     billDateToUse: 'date_paid' | 'date_created'
   }
@@ -48,11 +37,8 @@ export default class AppComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props)
 
-    // we convert props to state here to be able to load bills before render() is called
     this.state = {
-      bills: props.bills,
-      customers: props.customers,
-      selectedType: SELECT_TYPE_TEXT,
+      selectedBillType: SELECT_TYPE_ALL,
       billDateToUse: 'date_paid'
     }
 
@@ -91,16 +77,6 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
 
     return years.sort(desc)
-  }
-
-  getAvailableTypes(): string[] {
-    return [
-      SELECT_TYPE_TEXT,
-      SELECT_TYPE_TEXT_TRANSLATE,
-      SELECT_TYPE_TEXT_TRANSLATE_CERTIFY,
-      SELECT_TYPE_TEXT_INTERPRET,
-      SELECT_TYPE_TEXT_OTHER,
-    ]
   }
 
   getDaysToPay(bill: BillDbModel): number {
@@ -174,10 +150,7 @@ export default class AppComponent extends React.Component<Props, {}> {
   }
 
   getTypesPieChartLabels(): string[] {
-    return [
-      SELECT_TYPE_TEXT_INTERPRET,
-      SELECT_TYPE_TEXT_TRANSLATE
-    ]
+    return this.props.billTypes.map(type => type.type)
   }
 
   getLineChartData(): number[] {
@@ -214,52 +187,56 @@ export default class AppComponent extends React.Component<Props, {}> {
   }
 
   getTypesPieChartData(): number[] {
-    let sumInterpreting = 0
-    let sumTranslating = 0
+    let typeSums = {}
+    
+    for (let type of this.props.billTypes) {
+      typeSums[type.type] = 0
+    }
 
     for (let bill of this.props.bills) {
       if (! this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
         continue
+      } else if (bill.type == null) {
+        continue
       }
 
-      if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_INTERPRET)) {
-        sumInterpreting += 1
-      } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
-        sumTranslating += 1
+      for (let type of this.props.billTypes) {
+        if (bill.type.type === type.type) {
+          typeSums[bill.type.type] += 1
+        }
       }
     }
 
-    return [
-      sumInterpreting,
-      sumTranslating
-    ]
+    return Object.keys(typeSums).map(type => typeSums[type])
   }
 
   getTypesIncomePieChartData(): number[] {
-    let sumInterpreting = 0
-    let sumTranslating = 0
+    let typeSums = {}
+    
+    for (let type of this.props.billTypes) {
+      typeSums[type.type] = 0
+    }
 
     for (let bill of this.props.bills) {
       if (! this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
         continue
+      } else if (bill.type == null) {
+        continue
       }
 
-      if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_INTERPRET)) {
-        sumInterpreting += bill.amount
-      } else if (this.matchesType(bill.comment, SELECT_TYPE_TEXT_TRANSLATE)) {
-        sumTranslating += bill.amount
+      for (let type of this.props.billTypes) {
+        if (bill.type.type === type.type) {
+          typeSums[bill.type.type] += bill.amount
+        }
       }
     }
 
-    return [
-      parseFloat(sumInterpreting.toFixed(2)),
-      parseFloat(sumTranslating.toFixed(2))
-    ]
+    return Object.keys(typeSums).map(type => typeSums[type])
   }
 
   matchesFilters(bill: BillDbModel): boolean {
     return this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)
-      && this.matchesType(bill.comment, this.state.selectedType)
+      && this.matchesBillType(bill)
   }
 
   matchesYear(date: string, year: string): boolean {
@@ -272,23 +249,17 @@ export default class AppComponent extends React.Component<Props, {}> {
     return (givenYear === year)
   }
 
-  matchesType(text: string, type: string): boolean {
-    if (text == null) {
-      return false
+  matchesBillType(bill: BillDbModel): boolean {
+    if (this.state.selectedBillType == null || this.state.selectedBillType === '' || this.state.selectedBillType === SELECT_TYPE_ALL) {
+      return true
     }
 
-    switch (type) {
-      case SELECT_TYPE_TEXT: return true
-      case SELECT_TYPE_TEXT_INTERPRET: return INTERPRET_REGEX.test(text)
-      case SELECT_TYPE_TEXT_TRANSLATE_CERTIFY: return TRANSLATE_CERTIFY_REGEX.test(text)
-      case SELECT_TYPE_TEXT_TRANSLATE: return TRANSLATE_REGEX.test(text)
-      case SELECT_TYPE_TEXT_OTHER: {
-        return (INTERPRET_REGEX.test(text) &&
-          TRANSLATE_CERTIFY_REGEX.test(text) &&
-          TRANSLATE_REGEX.test(text))
+    if (bill.type != null) {
+      if (bill.type.type === this.state.selectedBillType) {
+        return true
       }
     }
-
+    
     return false
   }
 
@@ -304,10 +275,10 @@ export default class AppComponent extends React.Component<Props, {}> {
 
         <FilterComponent
           years={this.getAvailableYears()}
-          types={this.getAvailableTypes()}
+          billTypes={this.props.billTypes}
           handleYearChange={element => this.setState({selectedYear: element.target.value})}
-          handleTypeChange={element => this.setState({selectedType: element.target.value})}
-          selectedType={this.state.selectedType}
+          handleBillTypeChange={element => this.setState({selectedBillType: element.target.value})}
+          selectedBillType={this.state.selectedBillType}
           selectedYear={this.state.selectedYear}
           billDateToUse={this.state.billDateToUse}
           changeBillDateToUse={this.changeBillDateToUse.bind(this)}

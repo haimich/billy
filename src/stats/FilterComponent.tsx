@@ -1,14 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
+import BillTypeModel from '../common/models/BillTypeModel'
 import t from '../common/helpers/i18n'
 
- interface Props {
+export const SELECT_TYPE_ALL = t('Alle')
+
+interface Props {
   years: string[]
-  types: string[]
+  billTypes: BillTypeModel[]
   selectedYear: string
   handleYearChange
-  selectedType: string
-  handleTypeChange
+  selectedBillType: string
+  handleBillTypeChange
   billDateToUse: 'date_paid' | 'date_created'
   changeBillDateToUse
 }
@@ -38,19 +41,19 @@ export default class FilterComponent extends React.Component<Props, {}> {
     )
   }
 
-  generateTypeSelectbox() {
-    let options: JSX.Element[] = []
+  generateBillTypeSelectbox() {
+    let options: JSX.Element[] = [ <option key={100000}>{SELECT_TYPE_ALL}</option> ]
 
-    for (let type of this.props.types) {
-      options.push(<option key={type}>{type}</option>)
+    for (let type of this.props.billTypes) {
+      options.push(<option key={type.id}>{type.type}</option>)
     }
 
     return (
       <select
         className="form-control"
-        id="type"
-        value={this.props.selectedType}
-        onChange={this.props.handleTypeChange.bind(this)}
+        id="billType"
+        value={this.props.selectedBillType}
+        onChange={this.props.handleBillTypeChange.bind(this)}
       >
         {options}
       </select>
@@ -71,10 +74,10 @@ export default class FilterComponent extends React.Component<Props, {}> {
         <label htmlFor="year">{t('Jahr')}</label>
         {this.generateYearSelectbox()}
 
-        <label htmlFor="type">{t('Auftragsart')}</label>
-        {this.generateTypeSelectbox()}
+        <label htmlFor="billType">{t('Auftragsart')}</label>
+        {this.generateBillTypeSelectbox()}
 
-        <label>Datumsfeld</label>
+        <label>{t('Datumsfeld')}</label>
         <p>
           <label className="radio-inline">
             <input

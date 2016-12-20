@@ -527,7 +527,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
 
             <div className="col-md-6">
              <div className="form-group">
-                <label htmlFor="billType" className="col-sm-4 control-label">{t('Typ')}</label>
+                <label htmlFor="billType" className="col-sm-4 control-label">{t('Auftragsart')}</label>
                 <div className="col-sm-8">
                   <Typeahead
                     options={this.state.billTypeList}
