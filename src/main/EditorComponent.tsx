@@ -13,6 +13,7 @@ import { listBillTypes, getBillTypeById, createBillType } from '../common/servic
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/helpers/formatters'
+import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
@@ -562,7 +563,14 @@ export default class EditorComponent extends React.Component<Props, {}> {
               <div className="form-group">
                 <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
                 <div className="col-sm-8">
-                  <textarea className="form-control" rows={1} id="comment" value={this.state.comment} onChange={(event: any) => this.setState({ comment: event.target.value })} />
+                  <Textarea
+                    className="form-control"
+                    minRows={1}
+                    maxRows={3}
+                    id="comment"
+                    value={this.state.comment}
+                    onChange={(event: any) => this.setState({ comment: event.target.value })}
+                  />
                 </div>
               </div>
 

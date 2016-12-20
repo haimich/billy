@@ -53,6 +53,7 @@
     "react-datetime": "^2.6.0",
     "react-dom": "^15.3.0",
     "react-notification-system": "^0.2.9",
+    "react-textarea-autosize": "^4.0.5",
     "rimraf": "^2.5.4",
     "sqlite3": "^3.1.6"
   },
@@ -67,6 +68,7 @@
     "@types/react-bootstrap-table": "^2.3.29",
     "@types/react-dom": "^0.14.14",
     "@types/react-notification-system": "^0.2.28",
+    "@types/react-textarea-autosize": "^4.0.5",
     "@types/rimraf": "0.0.28",
     "chai": "^3.5.0",
     "chance": "^1.0.4",
