@@ -69,7 +69,8 @@ export default class EditorComponent extends React.Component<Props, {}> {
     this.refs.billTypeTypeahead.getInstance().clear()
     this.fetchTypeaheadData()
     process.nextTick(() => this.refs.invoice.focus())
-    this.dragCounter = 0;
+    this.dragCounter = 0
+    this.resetFormValidationErrors()
   }
 
   getDefaultState(): State {
