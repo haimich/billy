@@ -61,6 +61,22 @@ export default class AppComponent extends React.Component<Props, {}> {
     return total
   }
 
+  getTotalUnpaid(): number {
+    let total = 0
+
+    for (let bill of this.props.bills) {
+      const matchesFilters = (this.matchesYear(bill.date_created, this.state.selectedYear)
+        && this.matchesBillType(bill))
+      const isUnpaid = (bill.date_paid == null || bill.date_paid === '')
+
+      if (matchesFilters && isUnpaid) {
+        total += bill.amount
+      }
+    }
+
+    return total
+  }
+
   getAvailableYears(): string[] {
     let years: string[] = []
 
@@ -286,9 +302,21 @@ export default class AppComponent extends React.Component<Props, {}> {
 
         <TableComponent data={this.getTableData()} />
 
-        <div className="container-fluid panel-container">
+        <div className="panel-container">
           <div className="row">
-            <PanelComponent title={t('Jahresumsatz')} value={this.getTotal()} icon="fa-eur" />
+            <div className="col-xs-1" />
+          
+            <div className="col-xs-4 panel-display">
+              <PanelComponent title={t('Jahresumsatz')} value={this.getTotal()} icon="fa-line-chart" />
+            </div>
+
+            <div className="col-xs-2" />
+
+            <div className="col-xs-4 panel-display">
+              <PanelComponent title={t('Unbezahlt')} value={this.getTotalUnpaid()} icon="fa-exclamation-circle" />
+            </div>
+
+            <div className="col-xs-1" />            
           </div>
         </div>
 
