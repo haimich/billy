@@ -119,4 +119,6 @@ textarea {
 .file-list .empty {
   font-style: italic;
   font-size: .8em;
+  display: flex;
+ justify-content: center;
 }

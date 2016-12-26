@@ -5,11 +5,11 @@ import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
-import TotalSumComponent from './TotalSumComponent'
+import PanelComponent from './PanelComponent'
 import ChartComponent from './ChartComponent'
 import t from '../common/helpers/i18n'
 import { asc, desc } from '../common/helpers/sorters'
-import { dateFormatterYearView, numberFormatterView } from '../common/helpers/formatters'
+import { dateFormatterYearView } from '../common/helpers/formatters'
 import * as moment from 'moment'
 import { getAverage } from '../common/helpers/math'
 
@@ -49,7 +49,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
   }
 
-  getTotal(): string {
+  getTotal(): number {
     let total = 0
 
     for (let bill of this.props.bills) {
@@ -58,7 +58,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       }
     }
 
-    return numberFormatterView(total)
+    return total
   }
 
   getAvailableYears(): string[] {
@@ -286,7 +286,11 @@ export default class AppComponent extends React.Component<Props, {}> {
 
         <TableComponent data={this.getTableData()} />
 
-        <TotalSumComponent total={this.getTotal()} />
+        <div className="container-fluid panel-container">
+          <div className="row">
+            <PanelComponent title={t('Jahresumsatz')} value={this.getTotal()} icon="fa-eur" />
+          </div>
+        </div>
 
         <ChartComponent
           lineChartLabels={this.getLineChartLabels()}
