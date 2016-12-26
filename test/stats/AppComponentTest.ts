@@ -170,7 +170,7 @@ describe('AppComponent', () => {
 
 
     describe('getTotal', () => {
-      it('should return the formatted sum of the bill amount', () => {
+      it('should return the sum of the bill amount', () => {
         component = new AppComponent({
           customers: [{
             id: 123,
@@ -189,7 +189,7 @@ describe('AppComponent', () => {
         component.matchesFilters = () => true
 
         const result = component.getTotal()
-        expect(result).to.equal('123,45')
+        expect(result).to.equal(123.45)
       })
 
       it('should return the formatted and rounded sum of all bill amounts', () => {
@@ -219,7 +219,7 @@ describe('AppComponent', () => {
         component.matchesFilters = () => true
 
         const result = component.getTotal()
-        expect(result).to.equal('144,00')
+        expect(result).to.equal(144.001)
       })
     })
 
