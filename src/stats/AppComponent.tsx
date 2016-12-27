@@ -279,7 +279,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     return false
   }
 
-  changeBillDateToUse(dateField: 'date_paid' | 'date_created') {
+  handleBillDateToUseChange(dateField: 'date_paid' | 'date_created') {
     this.setState({
       billDateToUse: dateField
     })
@@ -294,10 +294,10 @@ export default class AppComponent extends React.Component<Props, {}> {
           billTypes={this.props.billTypes}
           handleYearChange={element => this.setState({selectedYear: element.target.value})}
           handleBillTypeChange={element => this.setState({selectedBillType: element.target.value})}
+          changeBillDateToUse={this.handleBillDateToUseChange.bind(this)}
           selectedBillType={this.state.selectedBillType}
           selectedYear={this.state.selectedYear}
           billDateToUse={this.state.billDateToUse}
-          changeBillDateToUse={this.changeBillDateToUse.bind(this)}
         />
 
         <TableComponent data={this.getTableData()} />
@@ -306,14 +306,14 @@ export default class AppComponent extends React.Component<Props, {}> {
           <div className="row">
             <div className="col-xs-1" />
           
-            <div className="col-xs-4 panel-display">
+            <div className="col-xs-12 col-sm-4 panel-display">
               <PanelComponent title={t('Jahresumsatz')} value={this.getTotal()} icon="fa-line-chart" />
             </div>
 
             <div className="col-xs-2" />
 
-            <div className="col-xs-4 panel-display">
-              <PanelComponent title={t('Unbezahlt')} value={this.getTotalUnpaid()} icon="fa-exclamation-circle" />
+            <div className="col-xs-12 col-sm-4 panel-display">
+              <PanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} icon="fa-exclamation-circle" />
             </div>
 
             <div className="col-xs-1" />            

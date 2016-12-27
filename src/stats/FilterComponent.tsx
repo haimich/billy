@@ -68,7 +68,22 @@ export default class FilterComponent extends React.Component<Props, {}> {
     this.props.changeBillDateToUse(dateField)
   }
 
+  selectedYearNotAvailable(): boolean {
+    return (this.props.years.indexOf(this.props.selectedYear) === -1)
+  }
+
   render() {
+    if (this.selectedYearNotAvailable()) {
+      let closestYear = this.props.years.length >= 1
+        ? this.props.years[0]
+        : ''
+      this.props.handleYearChange({
+        target: {
+          value: closestYear
+        }
+      })
+    }
+    
     return (
       <form id="filter-container">
         <label htmlFor="year">{t('Jahr')}</label>
