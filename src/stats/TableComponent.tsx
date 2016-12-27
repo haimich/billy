@@ -25,8 +25,8 @@ export default class TableComponent extends React.Component<Props, {}> {
       noDataText: t('Keine Einträge'),
       sizePerPage: 5
     }
-
-    return (
+        
+    return (  
       <div id="table-container">
         <BootstrapTable
           data={this.props.data}

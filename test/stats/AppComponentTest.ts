@@ -89,6 +89,33 @@ describe('AppComponent', () => {
       })
       expect(result).to.equal(365)
     })
+
+    it('should return null if date_paid is an empty string', () => {
+      const result = component.getDaysToPay({
+        invoice_id: 'foo/123',
+        customer: {
+          id: 123,
+          name: 'Deine Mudda'
+        },
+        amount: 123.45,
+        date_created: '2016-12-01',
+        date_paid: ''
+      })
+      expect(result).to.equal(null)
+    })
+
+    it('should return null if date_paid is undefined', () => {
+      const result = component.getDaysToPay({
+        invoice_id: 'foo/123',
+        customer: {
+          id: 123,
+          name: 'Deine Mudda'
+        },
+        amount: 123.45,
+        date_created: '2016-12-01'
+      })
+      expect(result).to.equal(null)
+    })
   })
 
   describe('matchesYear', () => {

@@ -99,7 +99,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     let createdDate = bill.date_created
     let payDate = bill.date_paid
 
-    if (payDate != null) {
+    if (payDate != null && payDate !== '') {
       let diff = moment(payDate).diff(moment(createdDate), 'days')
 
       if (diff < 0) {

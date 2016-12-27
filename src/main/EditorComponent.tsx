@@ -637,7 +637,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
     this.enableTypeaheadFeatures(this.refs.billTypeTypeahead, 'billType', false)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const bill: BillDbModel = nextProps.bill
     const isNew = (bill == null)
 
