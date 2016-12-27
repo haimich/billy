@@ -61,6 +61,11 @@ body {
   background-color: #337ab7;
 }
 
+.panel-row {
+  display: flex;
+  align-items: center;
+}
+
 .panel-value {
   font-size: 2.2em;
 }

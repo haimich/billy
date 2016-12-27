@@ -313,7 +313,7 @@ export default class AppComponent extends React.Component<Props, {}> {
             <div className="col-xs-2" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <PanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} icon="fa-exclamation-circle" />
+              <PanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} icon="fa-hourglass-1" />
             </div>
 
             <div className="col-xs-1" />            

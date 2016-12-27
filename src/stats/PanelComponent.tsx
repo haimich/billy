@@ -17,9 +17,9 @@ export default class PanelComponent extends React.Component<Props, {}> {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-xs-3">
-          <i className={`fa fa-5x ${this.props.icon}`} aria-hidden="true"></i>
+      <div className="row panel-row">
+        <div className="col-xs-3 panel-icon">
+          <i className={`fa fa-4x ${this.props.icon}`} aria-hidden="true"></i>
         </div>
         <div className="col-xs-9 text-right">
           <div className="panel-value">

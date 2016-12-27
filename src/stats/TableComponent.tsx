@@ -15,6 +15,10 @@ export default class TableComponent extends React.Component<Props, {}> {
   }
 
   dayFormatter(cell, row): string {
+    if (cell == null || cell === 0) {
+      return ''
+    }
+
     return cell + ' ' + (cell === 1 ? t('Tag') : t('Tage'))
   }
 
