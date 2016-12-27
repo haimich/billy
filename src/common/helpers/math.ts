@@ -5,3 +5,7 @@ export function getAverage(list: number[]): number {
   
   return list.reduce((val1, val2) => val1 + val2) / list.length
 }
+
+export function round(value: number, decimals: number = 2): number {
+  return Number(value.toFixed(decimals))
+}

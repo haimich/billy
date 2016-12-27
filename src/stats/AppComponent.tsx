@@ -11,7 +11,7 @@ import t from '../common/helpers/i18n'
 import { asc, desc } from '../common/helpers/sorters'
 import { dateFormatterYearView } from '../common/helpers/formatters'
 import * as moment from 'moment'
-import { getAverage } from '../common/helpers/math'
+import { getAverage, round } from '../common/helpers/math'
 
 interface Props {
   customers: Customer[]
@@ -58,7 +58,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       }
     }
 
-    return total
+    return round(total)
   }
 
   getTotalUnpaid(): number {
@@ -74,7 +74,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       }
     }
 
-    return total
+    return round(total)
   }
 
   getAvailableYears(): string[] {
