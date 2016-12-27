@@ -51,7 +51,8 @@ body {
 }
 
 .panel-container {
-  margin-bottom: 20px;
+  margin-bottom: .5em;
+  margin-top: -.8em;
 }
 
 .panel-display {

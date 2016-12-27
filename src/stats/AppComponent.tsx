@@ -247,7 +247,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       }
     }
 
-    return Object.keys(typeSums).map(type => typeSums[type])
+    return Object.keys(typeSums).map(type => round(typeSums[type]))
   }
 
   matchesFilters(bill: BillDbModel): boolean {

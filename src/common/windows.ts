@@ -83,8 +83,8 @@ export function openStatsWindow() {
   console.log('open stats window')
   
   statsWindow = new BrowserWindow({
-    width: 800,
-    height: 815,
+    width: 790,
+    height: 880,
     show: false
   })
   statsWindow.loadURL(`file://${getAppFolder()}/src/stats.html`)

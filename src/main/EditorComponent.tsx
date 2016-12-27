@@ -546,7 +546,7 @@ export default class EditorComponent extends React.Component<Props, {}> {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlung erhalten am')}</label>
+                <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlungsdatum')}</label>
                 <Datetime
                   ref="date_paid"
                   value={this.state.date_paid}

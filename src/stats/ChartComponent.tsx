@@ -19,7 +19,16 @@ interface State {
 
 const colors = [
   '54, 162, 235',
-  '255, 105, 180'
+  '255, 105, 180',
+  '243, 134, 47',
+  '136, 216, 176',
+  '255, 204, 92',
+  '119, 91, 163',
+  '47, 47, 47',
+  '210, 117, 117',
+  '209, 31, 63',
+  '234, 240, 241',
+  '246, 41, 106'
 ]
 
 export default class ChartComponent extends React.Component<Props, State> {

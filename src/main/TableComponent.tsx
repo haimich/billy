@@ -75,11 +75,11 @@ export default class TableComponent extends React.Component<Props, {}> {
           height="340 px">
 
           <TableHeaderColumn isKey={true} dataField="invoice_id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="customer_name" width="300" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="customer_name" width="290" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="amount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Betrag')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_created" width="170" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date_paid" width="190" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlung erhalten am')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type_name" width="120" dataSort={true}>{t('Typ')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date_paid" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlungsdatum')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Typ')}</TableHeaderColumn>
           <TableHeaderColumn dataField="comment" width="400" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
 
         </BootstrapTable>
