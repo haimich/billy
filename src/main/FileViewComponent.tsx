@@ -23,22 +23,24 @@ export default class FileViewComponent extends React.Component<Props, {}> {
     for (let i = 0; i < this.props.files.length; i++) {
       const file = this.props.files[i]
 
-      fileList.push(<li key={i}>
-        <span className="file-open" onClick={event => {
+      fileList.push(
+        <li key={i} title={t('Klicken um zu öffnen')}>
+          <span className="file-open" onClick={event => {
+              event.preventDefault()
+              open(file.path)
+            }}
+          >
+            <span className="file-icon">{getFileIconHtml(getFilename(file.path))}</span>
+
+            <span className="file-view">{shortenFilename(getFilename(file.path), 38)}</span>
+          </span>
+
+          <span className="glyphicon glyphicon-remove-circle pull-right" aria-hidden="true" onClick={event => {
             event.preventDefault()
-            open(file.path)
-          }}
-        >
-          <span className="file-icon">{getFileIconHtml(getFilename(file.path))}</span>
-
-          <span className="file-view">{shortenFilename(getFilename(file.path), 38)}</span>
-        </span>
-
-        <span className="glyphicon glyphicon-remove-circle pull-right" aria-hidden="true" onClick={event => {
-          event.preventDefault()
-          this.props.handleDeleteFile(file)
-        }} />
-      </li>)
+            this.props.handleDeleteFile(file)
+          }} />
+        </li>
+      )
     }
 
     if (fileList.length === 0) {
