@@ -2,7 +2,7 @@
 
 ![billy](concept/accountants.png)
 
-**This is a screenshot of the application:** ![screenshot](concept/screenshot.png)
+**Screenshot:** ![screenshot](concept/screenshot.png)
 
 ## Setup
 
