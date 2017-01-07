@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { isDev, getAppFolder } from './helpers/app'
 
 // Keep a global reference of the window objects to prevent gc
-let mainWindow, onboardingWindow, importWindow, statsWindow
+let mainWindow, onboardingWindow, importWindow, statsWindow, incomeWindow
 
 export function openOnboardingWindow() {
   console.log('open onboarding window')
@@ -78,7 +78,6 @@ export function openImportWindow() {
   })
 }
 
-
 export function openStatsWindow() {
   console.log('open stats window')
   
@@ -98,8 +97,27 @@ export function openStatsWindow() {
   })
 }
 
+export function openIncomeWindow() {
+  console.log('open income window')
+  
+  incomeWindow = new BrowserWindow({
+    width: 1200,
+    height: isDev ? 900 : 710, // create room for dev tools
+    show: false
+  })
+  incomeWindow.loadURL(`file://${getAppFolder()}/src/income.html`)
+
+  incomeWindow.once('ready-to-show', () => {
+    incomeWindow.show()
+  })
+
+  incomeWindow.on('closed', () => {
+    incomeWindow = null
+  })
+}
+
 export function allWindowsClosed() {
-  return (mainWindow == null && onboardingWindow == null && importWindow == null)
+  return (mainWindow == null && onboardingWindow == null && importWindow == null && incomeWindow == null)
 }
 
 export function reload(focusedWindow) {

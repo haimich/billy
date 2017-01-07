@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
 import { } from './providers/importProvider'
-import { openImportWindow, openStatsWindow, reload, toggleDevTools } from './windows'
+import { openImportWindow, openStatsWindow, openIncomeWindow, reload, toggleDevTools } from './windows'
 import { isMac } from './helpers/platform'
 import t from './helpers/i18n'
 
@@ -86,6 +86,10 @@ function view() {
       label: t('Statistiken'),
       accelerator: 'CmdOrCtrl+T',
       click: () => openStatsWindow()
+    }, {
+      label: t('Einnahmen'),
+      accelerator: 'CmdOrCtrl+E',
+      click: () => openIncomeWindow()
     }]
   }
 }

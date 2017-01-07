@@ -12,7 +12,7 @@ interface Options {
   count?: number;
 }
 
-export default function t(msgid, options: Options = {}) {
+export default function t(msgid, options: Options = {}): string {
   if ('count' in options && options.count != 1) {
     msgid += '_plural'
   }

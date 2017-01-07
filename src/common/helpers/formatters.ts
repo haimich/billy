@@ -17,6 +17,14 @@ export function dateFormatterYearView(value?: string): string {
   return moment(value, 'YYYY-MM-DD').format('YYYY')
 }
 
+export function dateFormatterMonthView(value?: string): number {
+  if (value == null || value === '') {
+    return null
+  }
+
+  return moment(value, 'YYYY-MM-DD').month()
+}
+
 export function dateFormatterDb(value?: string): string {
   if (value == null || value === '') {
     return ''

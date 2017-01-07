@@ -1,0 +1,26 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+#filter-container {
+  margin-bottom: 2em;
+}
+
+.react-bs-container-body {
+  cursor: pointer;
+}
+
+#table-container {
+  flex: 1;
+  margin-bottom: 2em;
+}
+
+#table-container table {
+  margin-bottom: 0px;
+}

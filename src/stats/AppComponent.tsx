@@ -42,8 +42,10 @@ export default class AppComponent extends React.Component<Props, {}> {
       billDateToUse: 'date_paid'
     }
 
-    if (this.getAvailableYears() !== []) {
-      this.state.selectedYear = this.getAvailableYears()[0]
+    const availableYears = this.getAvailableYears()
+
+    if (availableYears.length >= 1) {
+      this.state.selectedYear = availableYears[0]
     } else {
       this.state.selectedYear = ''
     }
