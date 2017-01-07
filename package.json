@@ -17,10 +17,10 @@
     "watch:test": "nodemon -w ./src -w ./test -e ts,tsx -x npm test",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html buildtmp/src",
-    "dist:mac": "build --mac",
-    "dist:win": "build --win",
-    "dist:linux": "build --linux",
-    "publish:mac": "build --publish onTagOrDraft"
+    "dist:mac": "npm run build && build --mac",
+    "dist:win": "npm run build && build --win",
+    "dist:linux": "npm run build && build --linux",
+    "publish": "npm run build && build --publish onTagOrDraft"
   },
   "repository": {
     "type": "git",
