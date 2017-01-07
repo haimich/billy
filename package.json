@@ -2,21 +2,21 @@
   "name": "billy",
   "version": "0.0.1",
   "description": "A billing tool for Cristina.",
-  "main": "./build/src/index.js",
+  "main": "./buildtmp/src/index.js",
   "scripts": {
     "setup": "npm run install-platform-specific && npm run rebuild && npm run recreate-database",
     "install-platform-specific": "npm install sqlite3 --build-from-source",
     "rebuild": "electron-rebuild",
     "recreate-database": "rimraf bills.sqlite && knex migrate:latest && knex seed:run",
     "build": "npm run clean && tsc && npm run copy-html",
-    "clean": "rimraf build/*",
+    "clean": "rimraf buildtmp/*",
     "clean:mac": "rimraf ~/Library/Application\\ Support/billy/Settings",
     "prestart": "npm run build",
     "start": "NODE_ENV=development electron .",
-    "test": "npm run build && NODE_ENV=development electron-mocha 'build/test/**/*Test.js'",
+    "test": "npm run build && NODE_ENV=development electron-mocha 'buildtmp/test/**/*Test.js'",
     "watch:test": "nodemon -w ./src -w ./test -e ts,tsx -x npm test",
     "watch": "tsc -w",
-    "copy-html": "cp static/*.html build/src",
+    "copy-html": "cp static/*.html buildtmp/src",
     "publish:mac": "sudo rimraf output && npm install && npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.4.0 --out=output --overwrite --icon=static/images/billy.icns",
     "install:mac": "sudo rimraf /Applications/Billy.app && mv output/Billy-darwin-x64/Billy.app /Applications"
   },
@@ -24,11 +24,10 @@
     "type": "git",
     "url": "git+https://github.com/haimich/billy.git"
   },
-  "keywords": [],
   "engines": {
     "node": ">= 6.0.0"
   },
-  "author": "",
+  "author": "Michael Mueller",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/haimich/billy/issues"
@@ -74,6 +73,7 @@
     "chai": "^3.5.0",
     "chance": "^1.0.4",
     "devtron": "^1.3.0",
+    "electron-builder": "^10.17.3",
     "electron-mocha": "^3.1.0",
     "electron-react-devtools": "github:firejune/electron-react-devtools",
     "electron-rebuild": "^1.2.1",
@@ -81,5 +81,15 @@
     "mocha": "^3.0.2",
     "nodemon": "^1.11.0",
     "typescript": "^2.0.3"
+  },
+  "build": {
+    "productName": "Billy",
+    "appId": "com.github.haimich.billy",
+    "mac": {
+      "category": "public.app-category.finance"
+    },
+    "win": {
+      "iconUrl": "https://github.com/haimich/billy/blob/master/build/icon.ico?raw=true"
+    }
   }
 }
