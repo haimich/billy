@@ -40,7 +40,7 @@ export default class AppComponent extends React.Component<any, {}> {
     notifications = this.refs.notificationSystem
   }
 
-  save(bill: Bill, fileActions: FileActions): Promise<void> {
+  save(bill: Bill, fileActions: FileActions): Promise<{}> {
     return new Promise((resolve, reject) => {
       let createdBill
 
@@ -71,7 +71,7 @@ export default class AppComponent extends React.Component<any, {}> {
 
   }
 
-  update(bill: Bill, fileActions: FileActions): Promise<void> {
+  update(bill: Bill, fileActions: FileActions): Promise<{}> {
     return new Promise((resolve, reject) => {
       let updatedBill
 
