@@ -1,7 +1,7 @@
 {
   "name": "billy",
-  "version": "0.0.1",
-  "description": "A billing tool for Cristina.",
+  "version": "0.0.5",
+  "description": "A simple invoice manager built with Electron.",
   "main": "./buildtmp/src/index.js",
   "scripts": {
     "setup": "npm run install-platform-specific && npm run rebuild && npm run recreate-database",
@@ -17,8 +17,10 @@
     "watch:test": "nodemon -w ./src -w ./test -e ts,tsx -x npm test",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html buildtmp/src",
-    "publish:mac": "sudo rimraf output && npm install && npm run build && electron-packager . Billy --platform=darwin --arch=x64 --version=1.4.0 --out=output --overwrite --icon=static/images/billy.icns",
-    "install:mac": "sudo rimraf /Applications/Billy.app && mv output/Billy-darwin-x64/Billy.app /Applications"
+    "dist:mac": "build --mac",
+    "dist:win": "build --win",
+    "dist:linux": "build --linux",
+    "publish:mac": "build --publish onTagOrDraft"
   },
   "repository": {
     "type": "git",
@@ -36,9 +38,7 @@
     "basic-csv": "0.0.2",
     "bootstrap": "^3.3.6",
     "chart.js": "^1.1.1",
-    "electron": "^1.4.0",
     "electron-is-dev": "^0.1.2",
-    "electron-packager": "^8.0.0",
     "electron-settings": "^2.2.1",
     "font-awesome": "^4.7.0",
     "knex": "^0.12.5",
@@ -73,6 +73,7 @@
     "chai": "^3.5.0",
     "chance": "^1.0.4",
     "devtron": "^1.3.0",
+    "electron": "^1.4.0",
     "electron-builder": "^10.17.3",
     "electron-mocha": "^3.1.0",
     "electron-react-devtools": "github:firejune/electron-react-devtools",
@@ -85,11 +86,20 @@
   "build": {
     "productName": "Billy",
     "appId": "com.github.haimich.billy",
+    "publish": ["github"],
     "mac": {
       "category": "public.app-category.finance"
     },
     "win": {
       "iconUrl": "https://github.com/haimich/billy/blob/master/build/icon.ico?raw=true"
+    },
+     "dmg": {
+      "title": "Billy",
+      "backgroundColor": "#eefcfd",
+      "window": {
+        "width": "540",
+        "height": "380"
+      }
     }
   }
 }
