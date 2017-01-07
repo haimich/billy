@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import BillDbModel from '../common/models/BillDbModel'
 import FilterComponent from './FilterComponent'
 import TableComponent from './TableComponent'
-import { dateFormatterYearView, dateFormatterMonthView } from '../common/helpers/formatters'
+import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter } from '../common/helpers/formatters'
 import { asc, desc } from '../common/helpers/sorters'
 import { round } from  '../common/helpers/math'
 import * as moment from 'moment'
@@ -104,8 +104,14 @@ export default class AppComponent extends React.Component<Props, State> {
     })
   }
 
-  getTotalAmount(bills): number {
-    return round(bills.reduce((prev, curr) => prev.amount + curr.amount))
+  getTotalAmount(bills: BillDbModel[]): string {
+    let total = 0
+
+    for (let bill of bills) {
+      total += bill.amount
+    }
+
+    return currencyFormatter(round(total))
   }
 
   generateMonthTables() {
@@ -122,7 +128,7 @@ export default class AppComponent extends React.Component<Props, State> {
           />
 
           <div className="pull-right">
-            <b>{t('SUMMME')}: </b>{this.getTotalAmount(data)} €
+            <b>{t('SUMMME')}: </b>{this.getTotalAmount(data)}
           </div>
         </div>
       )

@@ -1,7 +1,7 @@
 import AppComponent from '../../src/stats/AppComponent'
 import { expect } from 'chai'
 
-describe('AppComponent', () => {
+describe('stats.AppComponent', () => {
   let component = null
 
   beforeEach(() => {
