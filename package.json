@@ -1,6 +1,6 @@
 {
   "name": "billy",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A simple invoice manager built with Electron.",
   "main": "./buildtmp/src/index.js",
   "scripts": {
