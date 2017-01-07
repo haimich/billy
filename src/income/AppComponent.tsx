@@ -121,14 +121,14 @@ export default class AppComponent extends React.Component<Props, State> {
       const data = this.getData(month)
 
       months.push(
-        <div key={`${month}`}>
+        <div key={`${month}`} className="income-month-container">
           <h3>{month}</h3>
           <TableComponent
             bills={data}
           />
 
-          <div className="pull-right">
-            <b>{t('SUMMME')}: </b>{this.getTotalAmount(data)}
+          <div className="income-month-total">
+            <b>{t('SUMMME')}:&nbsp;</b>{this.getTotalAmount(data)}
           </div>
         </div>
       )

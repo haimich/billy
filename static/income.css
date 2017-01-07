@@ -18,9 +18,19 @@ body {
 
 #table-container {
   flex: 1;
-  margin-bottom: 2em;
+  margin-bottom: 1.4em;
 }
 
 #table-container table {
   margin-bottom: 0px;
 }
+
+.income-month-container h3 {
+  margin-top: 0.5em;
+}
+
+.income-month-total {
+  display: flex;
+  justify-content: flex-end;
+}
+  
