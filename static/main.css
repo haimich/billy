@@ -122,3 +122,8 @@ textarea {
   display: flex;
  justify-content: center;
 }
+
+.onoffswitch-container {
+  display: flex;
+  justify-content: center;
+}

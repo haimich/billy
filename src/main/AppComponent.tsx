@@ -10,14 +10,16 @@ import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
 import TableComponent from './TableComponent'
 import EditorComponent from './EditorComponent'
+import OnOffSwitchComponent from './OnOffSwitchComponent'
 import * as NotificationSystem from 'react-notification-system'
 import t from '../common/helpers/i18n'
 
 let notifications
 
 interface State {
-  bills: BillDbModel[];
-  selectedBill?: BillDbModel;
+  bills: BillDbModel[]
+  selectedBill?: BillDbModel
+  mode: string
 }
 
 export default class AppComponent extends React.Component<any, {}> {
@@ -32,7 +34,8 @@ export default class AppComponent extends React.Component<any, {}> {
     super(props)
 
     this.state = {
-      bills: props.bills // we convert props to state here to be able to load bills before render() is called
+      bills: props.bills, // we convert props to state here to be able to load bills before render() is called
+      mode: t('Einnahmen')
     }
   }
 
@@ -169,6 +172,12 @@ export default class AppComponent extends React.Component<any, {}> {
   render() {
     return (
       <div>
+        <OnOffSwitchComponent
+          inactiveLabel={t('Einnahmen')}
+          activeLabel={t('Ausgaben')}
+          selectedValue={this.state.mode}
+          handleValueChange={newValue => this.setState({ mode: newValue})}
+        />
         <TableComponent
           bills={this.state.bills}
           delete={this.deleteBills.bind(this)}
