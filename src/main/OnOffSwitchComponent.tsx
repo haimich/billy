@@ -1,10 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-const ToggleButton = require('react-toggle-button')
 
 interface Props {
-  inactiveLabel: string
   activeLabel: string
+  inactiveLabel: string
   selectedValue: string
   handleValueChange: (newValue: string) => void
 }
@@ -16,17 +15,17 @@ export default class OnOffSwitchComponent extends React.Component<Props, {}> {
   }
 
   isSelected(): boolean {
-    if (this.props.selectedValue === this.props.inactiveLabel) {
+    if (this.props.selectedValue === this.props.activeLabel) {
       return false
-    } else if (this.props.selectedValue === this.props.activeLabel) {
+    } else if (this.props.selectedValue === this.props.inactiveLabel) {
       return true
     }
   }
 
   getToggledValue(): string {
     return this.isSelected()
-      ? this.props.inactiveLabel
-      : this.props.activeLabel
+      ? this.props.activeLabel
+      : this.props.inactiveLabel
   }
 
   toggle() {
@@ -36,12 +35,16 @@ export default class OnOffSwitchComponent extends React.Component<Props, {}> {
   render() {
     return (
       <div className="onoffswitch-container">
-        <ToggleButton
-          inactiveLabel={this.props.inactiveLabel}
-          activeLabel={this.props.activeLabel}
-          value={this.isSelected()}
-          onToggle={this.toggle.bind(this)}
-        />
+        <div className="toggle toggle--knob">
+          <input type="checkbox" id="toggle--knob" className="toggle--checkbox" checked={this.isSelected()} onChange={this.toggle.bind(this)} />
+          <label className="toggle--btn" htmlFor="toggle--knob">
+            <span
+              className="toggle--feature"
+              data-label-on={this.props.activeLabel}
+              data-label-off={this.props.inactiveLabel}
+            />
+          </label>
+        </div>
       </div>
     )
   }

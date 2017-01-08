@@ -173,8 +173,8 @@ export default class AppComponent extends React.Component<any, {}> {
     return (
       <div>
         <OnOffSwitchComponent
-          inactiveLabel={t('Einnahmen')}
-          activeLabel={t('Ausgaben')}
+          activeLabel={t('Einnahmen')}
+          inactiveLabel={t('Ausgaben')}
           selectedValue={this.state.mode}
           handleValueChange={newValue => this.setState({ mode: newValue})}
         />
