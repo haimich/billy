@@ -29,7 +29,7 @@
   "engines": {
     "node": ">= 6.0.0"
   },
-  "author": "Michael Mueller",
+  "author": "M. Mueller && J. Kissel",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/haimich/billy/issues"
@@ -94,7 +94,7 @@
     "win": {
       "iconUrl": "https://github.com/haimich/billy/blob/master/build/icon.ico?raw=true"
     },
-     "dmg": {
+    "dmg": {
       "title": "Billy",
       "backgroundColor": "#eefcfd",
       "window": {
