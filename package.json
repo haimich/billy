@@ -88,6 +88,7 @@
     "appId": "com.github.haimich.billy",
     "publish": ["github"],
     "mac": {
+      "target": "dmg",
       "category": "public.app-category.finance"
     },
     "win": {
