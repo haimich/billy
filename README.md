@@ -20,3 +20,8 @@ To use the following dev tools open the browser console in the open app and inst
 
 * React dev tools: `require('electron-react-devtools').install()`
 * Electron devtron: `require('devtron').install()`
+
+## Continuous Integration
+* tests are run on every git push by [Circle CI](https://circleci.com/gh/haimich/billy)
+* app files for Mac and Linux are built by [Travis CI](https://travis-ci.org/haimich/billy)
+* app files for Windows are built by [Appveyor](https://ci.appveyor.com/project/haimich/billy)
