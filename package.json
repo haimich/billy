@@ -29,7 +29,10 @@
   "engines": {
     "node": ">= 6.0.0"
   },
-  "author": "M. Mueller && J. Kissel",
+  "author": "Michael Mueller <haimich@gmx.net>",
+  "contributors": [
+    "J. Kissel"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/haimich/billy/issues"
