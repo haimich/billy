@@ -92,7 +92,11 @@
       "category": "public.app-category.finance"
     },
     "win": {
+      "title": "Billy",
       "iconUrl": "https://github.com/haimich/billy/blob/master/build/icon.ico?raw=true"
+    },
+    "linux": {
+      "target": "deb"
     },
     "dmg": {
       "title": "Billy",
