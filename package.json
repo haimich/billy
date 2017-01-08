@@ -87,6 +87,12 @@
     "productName": "Billy",
     "appId": "com.github.haimich.billy",
     "publish": ["github"],
+    "files": [
+      "buildtmp",
+      "sql",
+      "static",
+      "node_modules"
+    ],
     "mac": {
       "target": "dmg",
       "category": "public.app-category.finance"
@@ -96,7 +102,10 @@
       "iconUrl": "https://github.com/haimich/billy/blob/master/build/icon.ico?raw=true"
     },
     "linux": {
-      "target": "deb"
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     },
     "dmg": {
       "title": "Billy",
