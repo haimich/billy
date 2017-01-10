@@ -1,6 +1,8 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
-import { init as initBills, billExists, listBills, getBillByInvoiceId } from '../../../src/common/repositories/billsRepository'
-import { createBill, deleteBillByInvoiceId, deleteBillsByInvoiceIdPattern, updateBill } from '../../../src/common/repositories/billsRepository'
+import {
+  init as initBills, billExists, listBills, getBillByInvoiceId, createBill,
+  deleteBillByInvoiceId, deleteBillsByInvoiceIdPattern, updateBill
+} from '../../../src/common/repositories/billsRepository'
 import { init as initFiles, createFile, deleteFilesByPathPattern } from '../../../src/common/repositories/filesRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'

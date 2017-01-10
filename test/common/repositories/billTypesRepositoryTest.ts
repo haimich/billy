@@ -1,6 +1,8 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
-import { init, getBillTypeById, createBillType, updateBillType } from '../../../src/common/repositories/billTypesRepository'
-import { listBillTypes, deleteBillTypeByNamePattern } from '../../../src/common/repositories/billTypesRepository'
+import {
+  init, getBillTypeById, createBillType, updateBillType,
+  listBillTypes, deleteBillTypeByNamePattern
+} from '../../../src/common/repositories/billTypesRepository'
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
