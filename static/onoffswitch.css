@@ -53,7 +53,7 @@
   font-family: 'PT Sans', Sans Serif;
   text-transform: uppercase;
   color: #fff;
-  background: #5bc0de;
+  background: #56B949;
   border-radius: 40px;
 }
 .toggle--knob .toggle--btn:before {
@@ -90,7 +90,7 @@
   right: -60%;
 }
 .toggle--knob .toggle--checkbox:checked + .toggle--btn {
-  background: #C248CF;
+  background: #ff4e1b;
 }
 .toggle--knob .toggle--checkbox:checked + .toggle--btn:before {
   left: 0;

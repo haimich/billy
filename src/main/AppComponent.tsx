@@ -5,6 +5,7 @@ import { performFileActions, deleteAllFilesForBill } from '../common/services/fi
 import { updateCustomer } from '../common/services/customersService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
+import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import FileModel from '../common/models/FileModel'
 import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
@@ -18,13 +19,20 @@ import t from '../common/helpers/i18n'
 
 let notifications
 
+interface Props {
+  bills: BillDbModel[]
+  expenses: ExpenseDbModel[]
+}
+
 interface State {
   bills: BillDbModel[]
+  expenses: ExpenseDbModel[]
   selectedBill?: BillDbModel
+  selectedExpense?: ExpenseDbModel
   mode: string
 }
 
-export default class AppComponent extends React.Component<any, {}> {
+export default class AppComponent extends React.Component<Props, {}> {
 
   state: State
 
@@ -35,9 +43,11 @@ export default class AppComponent extends React.Component<any, {}> {
   constructor(props) {
     super(props)
 
+    // we convert props to state here to be able to load bills before render() is called
     this.state = {
-      bills: props.bills, // we convert props to state here to be able to load bills before render() is called
-      mode: t('Einnahmen')
+      bills: props.bills,
+      expenses: props.expenses,
+      mode: t('Ausgaben')
     }
   }
 
@@ -171,6 +181,14 @@ export default class AppComponent extends React.Component<any, {}> {
     }
   }
 
+  expenseSelected(isSelected: boolean, expense?: ExpenseDbModel) {
+    if (isSelected) {
+      this.setState({ selectedExpense: expense })
+    } else {
+      this.setState({ selectedExpense: undefined })
+    }
+  }
+
   render() {
     let tableView, editorView
 
@@ -193,7 +211,9 @@ export default class AppComponent extends React.Component<any, {}> {
     } else if (this.state.mode === t('Ausgaben')) {
       tableView = 
         <ExpensesTableComponent
-          expenses={this.state.bills}
+          expenses={this.state.expenses}
+          select={this.expenseSelected.bind(this)}
+          selectedId={this.state.selectedExpense && this.state.selectedExpense.id}
         />
       editorView =
         <ExpensesEditorComponent

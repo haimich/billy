@@ -1,16 +1,16 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
-// import ExpenseDbModel from '../common/models/ExpenseDbModel'
-import { dateFormatterView, currencyFormatter } from '../common/helpers/formatters'
+import ExpenseDbModel from '../common/models/ExpenseDbModel'
+import { dateFormatterView, currencyFormatter, percentageFormatter } from '../common/helpers/formatters'
 import { preventDragAndDrop } from '../common/helpers/dom' 
 import t from '../common/helpers/i18n'
 
 interface Props {
   // delete: (rowIds: String[]) => void;
-  // select: (isSelected: boolean, row?: BillDbModel) => void;
+  select: (isSelected: boolean, row?: ExpenseDbModel) => void;
   expenses: any[]; //ExpenseDbModel
-  // selectedExpenseId?: string;
+  selectedId?: number;
 }
 
 export default class ExpensesTableComponent extends React.Component<Props, {}> {
@@ -18,7 +18,7 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
   props: Props
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
-    // this.props.select(isSelected, row)
+    this.props.select(isSelected, row)
     return true
   }
 
@@ -52,7 +52,7 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
       clickToSelect: true,
       bgColor: '#d9edf7',
       onSelect: this.onSelectRow.bind(this),
-      // selected: this.props.selectedInvoiceId ? [this.props.selectedInvoiceId] : [],
+      selected: this.props.selectedId ? [this.props.selectedId] : [],
       hideSelectColumn: true
     }
     const editMode: CellEditClickMode = 'click'
@@ -74,13 +74,11 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
           options={options}
           height="340 px">
 
-          <TableHeaderColumn isKey={true} dataField="id" width="140" dataSort={true}>{t('ID')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="customer_name" width="290" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="amount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Betrag')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date_created" width="170" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date_paid" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlungsdatum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Typ')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="comment" width="400" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
+          <TableHeaderColumn isKey={true} hidden={true} dataField="id" width="140" dataSort={true}>{t('ID')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type" width="290" dataSort={true}>{t('Typ')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="preTaxAmount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="taxrate" width="90" dataAlign="right" dataFormat={percentageFormatter} dataSort={true}>{t('Besteuerung')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date" width="170" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
 
         </BootstrapTable>
       </div>

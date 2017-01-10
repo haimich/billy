@@ -37,6 +37,10 @@ export function currencyFormatter(value: number): string {
   return value.toLocaleString('de-DE', { minimumFractionDigits: 2 }) + ' €'
 }
 
+export function percentageFormatter(value: number): string {
+  return value + ' %'
+}
+
 export function numberFormatterDb(value?: string): number {
   if (value == null) {
     return 0

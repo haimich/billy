@@ -5,31 +5,37 @@ import AppComponent from './main/AppComponent'
 import { initDb } from './common/providers/dbProvider'
 import { get } from './common/providers/settingsProvider'
 import { init as initBillsRepo } from './common/repositories/billsRepository'
+import { init as initExpensesRepo } from './common/repositories/expensesRepository'
 import { init as initCustomersRepo } from './common/repositories/customersRepository'
 import { init as initFilesRepo } from './common/repositories/filesRepository'
 import { init as initBillTypesRepo } from './common/repositories/billTypesRepository'
 import { listBills } from './common/services/billsService'
+import { listExpenses } from './common/services/expensesService'
 
 async function init() {
-  let bills
+  let bills, expenses
 
   try {
     const knexConfig = await get('knex')
     const knexInstance = await initDb(knexConfig)
     initBillsRepo(knexInstance)
+    initExpensesRepo(knexInstance)
     initCustomersRepo(knexInstance)
     initFilesRepo(knexInstance)
-    initBillTypesRepo(knexInstance)
+    initBillTypesRepo(knexInstance); // semicolon intended
 
-    bills = await listBills()
+    [bills, expenses] = await Promise.all([
+      listBills(),
+      listExpenses()
+    ])
   } catch (err) {
-    alert('Could not load bills: ' + err.message)
+    alert('Could not load initial data: ' + err.message)
     return
   }
 
   ReactDOM.render(
     <div>
-      <AppComponent bills={bills} />
+      <AppComponent bills={bills} expenses={expenses} />
     </div>,
     document.getElementById('app')
   )
