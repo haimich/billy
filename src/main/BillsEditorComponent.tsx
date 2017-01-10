@@ -36,9 +36,9 @@ interface State {
 }
 
 interface Props {
-  update: (row: Bill, fileActions: FileActions) => void
-  save: (row: Bill, FileActions: FileActions) => void
-  updateCustomer: (row: Customer) => void
+  update: (model: Bill, fileActions: FileActions) => void
+  save: (model: Bill, FileActions: FileActions) => void
+  updateCustomer: (model: Customer) => void
   bill?: BillDbModel
   notify: any
 }

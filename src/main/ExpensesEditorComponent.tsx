@@ -1,45 +1,27 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Bill from '../common/models/BillModel'
-import BillDbModel from '../common/models/BillDbModel'
-import BillTypeModel from '../common/models/BillTypeModel'
-import Customer from '../common/models/CustomerModel'
-import FileModel from '../common/models/FileModel'
-import FileActions from '../common/models/FileActions'
-import FileViewComponent from './FileViewComponent'
-import FileUploadComponent from './FileUploadComponent'
-import { billExists } from '../common/services/billsService'
-import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
-import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
+import ExpenseDbModel from '../common/models/ExpenseDbModel'
+import ExpenseModel from '../common/models/ExpenseModel'
+import { expenseExists } from '../common/services/expensesService'
 import t from '../common/helpers/i18n'
-import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/helpers/formatters'
-import Textarea from 'react-textarea-autosize'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 
 const Datetime = require('react-datetime')
-const Typeahead = require('react-bootstrap-typeahead').default
 
 interface State {
   id?: number
-  invoice_id: string
-  amount?: string
-  date_created?: string
-  date_paid?: string
-  comment: string
-  selectedCustomer?: Customer[]
-  selectedBillType?: BillTypeModel[]
-  customerList: Customer[]
-  billTypeList: BillTypeModel[]
+  type: string
+  preTaxamount?: string
+  taxrate?: string
+  date?: string
   isNew: boolean
   isDirty: boolean
-  invoiceIdValid: boolean
-  fileActions: FileActions
 }
 
 interface Props {
-  update: (row: Bill, fileActions: FileActions) => void
-  save: (row: Bill, FileActions: FileActions) => void
-  updateCustomer: (row: Customer) => void
-  bill?: BillDbModel
+  update: (model: ExpenseModel) => void
+  save: (model: ExpenseModel) => void
+  expense?: ExpenseDbModel
   notify: any
 }
 
@@ -47,106 +29,49 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
   state: State
   refs: {
-    customerTypeahead: any,
-    billTypeTypeahead: any,
-    invoice: any,
-    date_created: any,
-    date_paid: any
+    type
+    date
   }
-
-  dragCounter: number
 
   constructor(props) {
     super(props)
 
     this.state = this.getDefaultState()
-    this.fetchTypeaheadData()
-    this.dragCounter = 0;
   }
 
   resetState() {
     this.setState(this.getDefaultState())
-    this.refs.customerTypeahead.getInstance().clear()
-    this.refs.billTypeTypeahead.getInstance().clear()
-    this.fetchTypeaheadData()
-    process.nextTick(() => this.refs.invoice.focus())
-    this.dragCounter = 0
+    process.nextTick(() => this.refs.type.focus())
     this.resetFormValidationErrors()
   }
 
   getDefaultState(): State {
     return {
       id: undefined,
-      invoice_id: '',
-      amount: '',
-      date_created: undefined,
-      date_paid: undefined,
-      comment: '',
-      selectedCustomer: undefined,
-      selectedBillType: undefined,
-      customerList: [],
-      billTypeList: [],
+      type: '',
+      preTaxamount: '',
+      taxrate: '',
+      date: undefined,
       isNew: true,
-      isDirty: false,
-      invoiceIdValid: true,
-      fileActions: { add: [], keep: [], delete: [] }
-    }
-  }
-
-  async fetchTypeaheadData() {
-    try {
-      let results = await Promise.all([
-        listCustomers(),
-        listBillTypes()
-      ])
-
-      this.setState({
-        customerList: results[0],
-        billTypeList: results[1]
-      })
-    } catch (err) {
-      this.props.notify(t('Typeahead-Daten konnten nicht geladen werden') + err, 'error')
+      isDirty: false
     }
   }
 
   async onSave(event) {
     event.preventDefault()
 
-    if (this.state.selectedCustomer == null || this.state.selectedCustomer[0] == null) {
-      this.props.notify(t('Bitte wähle einen Kunden aus oder erstelle einen neuen'), 'error')
-      return
-    }
-
-    const bill: Bill = {
-      invoice_id: this.state.invoice_id,
-      customer_id: this.state.selectedCustomer[0].id!,
-      amount: numberFormatterDb(this.state.amount),
-      date_created: dateFormatterDb(this.state.date_created),
-      date_paid: dateFormatterDb(this.state.date_paid),
-      type_id: (this.state.selectedBillType == null || this.state.selectedBillType[0] == null)
-        ? undefined
-        : this.state.selectedBillType[0].id,
-      comment: this.state.comment
+    const expense: ExpenseModel = {
+      type: this.state.type,
+      preTaxAmount: numberFormatterDb(this.state.preTaxamount),
+      taxrate: numberFormatterDb(this.state.taxrate),
+      date: dateFormatterDb(this.state.date)
     }
 
     try {
-      const result = await this.checkValidity(bill)
-      if (result) {
-        this.props.notify(result, 'error')
-        return
-      }
-    } catch (err) {
-      this.props.notify(t('Die Validierung ist fehlgeschlagen: ') + err, 'error')
-      return
-    }
-
-    try {
-      await this.props.updateCustomer(this.state.selectedCustomer[0])
-      
       if (this.state.isNew) {
-        await this.props.save(bill, this.state.fileActions)
+        await this.props.save(expense)
       } else {
-        await this.props.update(bill, this.state.fileActions)
+        await this.props.update(expense)
       }
     } catch (err) {
       return // don't reset state on error
@@ -155,367 +80,68 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     this.resetState()
   }
 
-  async checkValidity(bill: Bill): Promise<string | undefined> {
-    if (this.state.isNew && await billExists(bill.invoice_id)) {
-      return t('Eine Rechnung mit dieser Rechnungsnummer existiert bereits.')
-    }
-
-    return
+  handleDateChange(newDate: Date) {
+    this.setState({ date: newDate })
+    this.revalidate(ReactDOM.findDOMNode(this.refs.date).querySelector('input'))
   }
 
-  getFileModels(files: File[]): FileModel[] {
-    let fileModels = []
-
-    for (let file of files) {
-      fileModels.push({
-        bill_id: this.state.id,
-        path: file.path
-      })
-    }
-
-    return fileModels
+  getNetAmount(): string {
+    return this.state.preTaxamount
   }
 
-  addFiles(files: FileModel[]) {
-    if (files == null) {
-      return
-    }
-
-    let keepList = this.state.fileActions.keep
-    let deleteList = this.state.fileActions.delete
-    let addList = this.state.fileActions.add
-
-    for (let file of files) {
-      if (this.fileExists(file, this.state.fileActions.add)) {
-        continue
-      }
-
-      if (this.fileWithNameExists(file.path, this.state.fileActions.keep)) {
-        if (!confirm(t(`Eine Datei mit dem Namen "${getFilename(file.path)}" existiert bereits. Soll sie überschrieben werden?`))) {
-          continue
-        }
-
-        let originalFile
-
-        keepList = keepList.filter(element => {
-          if (getFilename(element.path) !== getFilename(file.path)) {
-            return true
-          } else {
-            // we found the file to be overwritten
-            originalFile = element
-            return false
-          }
-        })
-        deleteList = deleteList.concat(originalFile)
-      }
-
-      addList = addList.concat(file)
-    }
-
-    this.setState({
-      fileActions: {
-        keep: keepList,
-        add: addList,
-        delete: deleteList
-      },
-      isDirty: true
-    })
-  }
-
-  fileWithNameExists(filePath: string, existingFiles: FileModel[]): boolean {
-    for (let file of existingFiles) {
-      if (getFilename(file.path) === getFilename(filePath)) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  fileExists(file: FileModel, fileList: FileModel[]): boolean {
-    for (let element of fileList) {
-      if (file.id != null && element.id != null && file.id === element.id) {
-        return true
-      } else if (file.path === element.path) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  onDrag(event) {
-    event.preventDefault()
-  }
-
-  onEnter() {
-    this.dragCounter++
-    ReactDOM.findDOMNode(this).classList.add('busy')
-  }
-
-  onLeave() {
-    this.dragCounter--
-    if (this.dragCounter === 0) {
-      ReactDOM.findDOMNode(this).classList.remove('busy')
-    }
-  }
-
-  onDrop(event) {
-    event.preventDefault()
-    this.addFiles(this.getFileModels(event.dataTransfer.files))
-    this.onLeave()
-  }
-
-  handleFileChange(files: File[]) {
-    this.addFiles(this.getFileModels(files))
-  }
-
-  async handleCustomerChange(selected: any) {
-    if (selected == null || selected.length !== 1) {
-      return
-    }
-
-    let selectedCustomer = selected[0]
-    let isNewCustomer = false
-
-    if (selectedCustomer.customOption && (await getCustomerById(selectedCustomer.id) == null)) {
-      isNewCustomer = true
-    }
-
-    if (isNewCustomer) {
-      let customer
-
-      try {
-        customer = await createCustomer({
-          name: selectedCustomer.name,
-          telephone: selectedCustomer.telephone
-        })
-      } catch (err) {
-        this.props.notify(t('Could not create customer'), 'error')
-      }
-
-      this.setState({
-        selectedCustomer: [customer],
-        customerList: [customer].concat(this.state.customerList)
-      })
-    } else {
-      this.setState({ selectedCustomer: selected })
-    }
-
-    this.revalidate(ReactDOM.findDOMNode(this.refs.customerTypeahead.getInstance()).querySelector('input[name=customer]'))
-  }
-
-  async handleBillTypeChange(selected: any) {
-    if (selected == null || selected.length !== 1) {
-      return
-    }
-
-    let selectedBillType = selected[0]
-    let isNewBillType = false
-
-    if (selectedBillType.customOption && (await getBillTypeById(selectedBillType.id) == null)) {
-      isNewBillType = true
-    }
-
-    if (isNewBillType) {
-      let billType
-
-      try {
-        billType = await createBillType({
-          type: selectedBillType.type
-        })
-      } catch (err) {
-        this.props.notify(t('Der Rechnungstyp konnte nicht angelegt werden: ') + err, 'error')
-      }
-
-      this.setState({
-        selectedBillType: [billType],
-        billTypeList: [billType].concat(this.state.billTypeList)
-      })
-    } else {
-      this.setState({ selectedBillType: selected })
-    }
-  }
-
-  handleCustomerTelephoneChange(event: any) {
-    if (this.state.selectedCustomer && this.state.selectedCustomer[0]) {
-      this.setState({
-        selectedCustomer: [{
-          id: this.state.selectedCustomer[0].id,
-          name: this.state.selectedCustomer[0].name,
-          telephone: event.target.value // new number
-        }]
-      })
-    }
-  }
-
-  handleDateCreatedChange(newDate: Date) {
-    this.setState({ date_created: newDate })
-    this.revalidate(ReactDOM.findDOMNode(this.refs.date_created).querySelector('input'))
-  }
-
-  handleDatePaidChange(newDate: Date) {
-    this.setState({ date_paid: newDate })
-    this.revalidate(ReactDOM.findDOMNode(this.refs.date_paid).querySelector('input'))
-  }
-
-  selectedCustomerTelephone() {
-    if (this.state.selectedCustomer && this.state.selectedCustomer[0] && this.state.selectedCustomer[0].telephone) {
-      return this.state.selectedCustomer[0].telephone
-    } else {
-      return ''
-    }
-  }
-
-  async handleDeleteCustomer() {
-    if (this.state.selectedCustomer == null || this.state.selectedCustomer[0] == null) {
-      return
-    }
-
-    let customer = this.state.selectedCustomer[0]
-    if (! confirm(t(`Möchtest du den Kunden "${customer.name}" wirklich löschen?`))) {
-      return
-    }
-
-    try {
-      await deleteCustomerById(customer.id!)
-    } catch (err) {
-      this.props.notify(t('Could not delete customer'), 'error')
-      return
-    }
-
-    this.refs.customerTypeahead.getInstance().clear()
-
-    let newCustomerList: Customer[] = []
-    for (let i = 0; i < this.state.customerList.length; i++) {
-      if (customer.id === this.state.customerList[i].id) {
-        continue
-      }
-      newCustomerList.push(this.state.customerList[i])
-    }
-
-    this.setState({
-      customerList: newCustomerList,
-      selectedCustomer: undefined
-    })
-  }
-
-  handleDeleteFile(file: FileModel) {
-    if (confirm(t('Möchtest du die Datei wirklich entfernen?'))) {
-      const isExisting = (file.id != null)
-
-      this.setState({
-        fileActions: {
-          keep: this.state.fileActions.keep.filter(element => {
-            if (isExisting && file.id === element.id) {
-              // existing file should be deleted
-              return false
-            } else {
-              return true
-            }
-          }),
-          add: this.state.fileActions.add.filter(element => {
-            if (file.path === element.path) {
-              // added file should be unadded
-              return false
-            } else {
-              return true
-            }
-          }),
-          delete: (isExisting)
-            ? this.state.fileActions.delete.concat([file])
-            : this.state.fileActions.delete
-        }
-      })
-    }
-  }
-
-  getFilesForView(): FileModel[] {
-    return this.state.fileActions.keep.concat(this.state.fileActions.add)
+  getVatAmount(): string {
+    return this.state.preTaxamount
   }
 
   render() {
     return (
-      <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
+      <div id="editor-container">
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
 
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnummer')}</label>
+                <label htmlFor="type" className="col-sm-4 control-label">{t('Typ')}</label>
                 <div className="col-sm-8">
                   <input
                     type="text"
                     className="form-control"
-                    id="id"
-                    ref="invoice"
-                    readOnly={!this.state.isNew}
+                    id="type"
+                    ref="type"
                     required
-                    value={this.state.invoice_id}
-                    onChange={(event: any) => this.setState({ invoice_id: event.target.value })}
+                    value={this.state.type}
+                    onChange={(event: any) => this.setState({ type: event.target.value })}
                     autoFocus
                     />
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="customer" className="col-sm-4 control-label">{t('Kunde')}</label>
-                <div className="col-sm-8">
-                  <Typeahead
-                    options={this.state.customerList}
-                    allowNew={true}
-                    onChange={this.handleCustomerChange.bind(this)}
-                    onBlur={this.handleCustomerChange.bind(this)}
-                    selected={this.state.selectedCustomer}
-                    labelKey={'name'}
-                    ref='customerTypeahead'
-                    name="customer"
-                    placeholder=""
-                    emptyLabel={t('Keine Einträge vorhanden')}
-                    newSelectionPrefix={t('Kunden anlegen: ')}
-                    tabIndex={2}
-                    />
-                  <span className="sub-label">
-                    <input
-                      value={this.selectedCustomerTelephone()}
-                      onChange={this.handleCustomerTelephoneChange.bind(this)}
-                      placeholder={t('keine Telefonnr.')}
-                      className="sub-input"
-                      tabIndex={-1}
-                      /> {
-                      this.state.selectedCustomer != null
-                        ? <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" onClick={this.handleDeleteCustomer.bind(this)}></span>
-                        : ''
-                    }
-                  </span>
-                </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="date_created" className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
+                <label htmlFor="date" className="col-sm-4 control-label">{t('Datum')}</label>
                 <Datetime
-                  ref="date_created"
-                  value={this.state.date_created}
+                  ref="date"
+                  value={this.state.date}
                   inputProps={{
-                    id: 'date_created',
+                    id: 'date',
                     required: 'required'
                   }}
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
                   className={'col-sm-8'}
-                  onChange={this.handleDateCreatedChange.bind(this)}
+                  onChange={this.handleDateChange.bind(this)}
                   />
               </div>
               <div className="form-group">
-                <label htmlFor="amount" className="col-sm-4 control-label">{t('Betrag')}</label>
+                <label htmlFor="preTaxamount" className="col-sm-4 control-label">{t('Brutto')}</label>
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
                     <input
                       type="text"
                       className="form-control"
-                      id="amount"
-                      value={this.state.amount}
-                      onChange={(event: any) => this.setState({ amount: event.target.value })}
+                      id="preTaxamount"
+                      value={this.state.preTaxamount}
+                      onChange={(event: any) => this.setState({ preTaxamount: event.target.value })}
                       style={{ textAlign: 'right' }}
                       required
                       pattern={'[+-]?[0-9]+(,[0-9]+)?'}
@@ -527,55 +153,62 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
             <div className="col-md-6">
              <div className="form-group">
-                <label htmlFor="billType" className="col-sm-4 control-label">{t('Auftragsart')}</label>
-                <div className="col-sm-8">
-                  <Typeahead
-                    options={this.state.billTypeList}
-                    allowNew={true}
-                    onChange={this.handleBillTypeChange.bind(this)}
-                    onBlur={this.handleBillTypeChange.bind(this)}
-                    selected={this.state.selectedBillType}
-                    labelKey={'type'}
-                    ref='billTypeTypeahead'
-                    name="billType"
-                    placeholder=""
-                    emptyLabel={t('Keine Einträge vorhanden')}
-                    newSelectionPrefix={t('Typ anlegen: ')}
-                    tabIndex={5}
-                    />
+                <div className="form-group">
+                  <label htmlFor="taxrate" className="col-sm-4 control-label">{t('Steuersatz')}</label>
+                  <div className="col-sm-8">
+                    <div className="input-group">
+                      <span className="input-group-addon">%</span>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="taxrate"
+                        value={this.state.taxrate}
+                        onChange={(event: any) => this.setState({ taxrate: event.target.value })}
+                        style={{ textAlign: 'right' }}
+                        required
+                        />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlungsdatum')}</label>
-                <Datetime
-                  ref="date_paid"
-                  value={this.state.date_paid}
-                  inputProps={{
-                    id: 'date_paid'
-                  }}
-                  dateFormat={'DD.MM.YYYY'}
-                  closeOnSelect={true}
-                  timeFormat={false}
-                  className={'col-sm-8'}
-                  onChange={this.handleDatePaidChange.bind(this)}
-                  />
-              </div>
-              <div className="form-group">
-                <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
-                <div className="col-sm-8">
-                  <Textarea
-                    className="form-control"
-                    minRows={1}
-                    maxRows={3}
-                    id="comment"
-                    value={this.state.comment}
-                    onChange={(event: any) => this.setState({ comment: event.target.value })}
-                  />
+                <div className="form-group">
+                  <label htmlFor="netAmount" className="col-sm-4 control-label">{t('Netto')}</label>
+                  <div className="col-sm-8">
+                    <div className="input-group">
+                      <span className="input-group-addon">€</span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="netAmount"
+                        value={this.getNetAmount()}
+                        style={{ textAlign: 'right' }}
+                        required
+                        readOnly
+                        />
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
-              <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
+              <div className="form-group">
+                <div className="form-group">
+                  <label htmlFor="vat" className="col-sm-4 control-label">{t('Mehrwertsteuer')}</label>
+                  <div className="col-sm-8">
+                    <div className="input-group">
+                      <span className="input-group-addon">€</span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="vat"
+                        value={this.getVatAmount()}
+                        style={{ textAlign: 'right' }}
+                        required
+                        readOnly
+                        />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -633,13 +266,11 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
   componentDidMount() {
     this.addFormValidation()
-    this.enableTypeaheadFeatures(this.refs.customerTypeahead, 'customer', true)
-    this.enableTypeaheadFeatures(this.refs.billTypeTypeahead, 'billType', false)
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const bill: BillDbModel = nextProps.bill
-    const isNew = (bill == null)
+    const expense: ExpenseDbModel = nextProps.expense
+    const isNew = (expense == null)
 
     if (this.state.isDirty && !confirm(t('Möchtest du die Änderungen verwerfen?'))) return
 
@@ -649,18 +280,10 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
       this.resetState()
     } else {
       this.setState({
-        id: bill.id,
-        invoice_id: bill.invoice_id,
-        fileActions: (bill.files != null)
-          ? { add: [], keep: bill.files, delete: [] }
-          : { add: [], keep: [], delete: [] },
-        selectedCustomer: [bill.customer],
-        selectedBillType: [bill.type],
-        date_created: dateFormatterView(bill.date_created),
-        date_paid: dateFormatterView(bill.date_paid),
-        amount: numberFormatterView(bill.amount),
-        comment: bill.comment,
-        invoiceIdValid: true,
+        id: expense.id,
+        type: expense.type,
+        preTaxAmount: numberFormatterView(expense.preTaxAmount),
+        taxrate: expense.taxrate,
         isNew,
         isDirty: false
       })

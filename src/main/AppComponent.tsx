@@ -217,10 +217,9 @@ export default class AppComponent extends React.Component<Props, {}> {
         />
       editorView =
         <ExpensesEditorComponent
-          bill={this.state.selectedBill}
+          expense={this.state.selectedExpense}
           save={this.save.bind(this)}
           update={this.update.bind(this)}
-          updateCustomer={this.updateCustomer.bind(this)}
           notify={this.notify.bind(this)}
         />  
     }
