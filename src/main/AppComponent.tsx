@@ -8,8 +8,10 @@ import BillDbModel from '../common/models/BillDbModel'
 import FileModel from '../common/models/FileModel'
 import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
-import TableComponent from './TableComponent'
-import EditorComponent from './EditorComponent'
+import BillsTableComponent from './BillsTableComponent'
+import BillsEditorComponent from './BillsEditorComponent'
+import ExpensesTableComponent from './ExpensesTableComponent'
+import ExpensesEditorComponent from './ExpensesEditorComponent'
 import OnOffSwitchComponent from './OnOffSwitchComponent'
 import * as NotificationSystem from 'react-notification-system'
 import t from '../common/helpers/i18n'
@@ -170,6 +172,39 @@ export default class AppComponent extends React.Component<any, {}> {
   }
 
   render() {
+    let tableView, editorView
+
+    if (this.state.mode === t('Einnahmen')) {
+      tableView = 
+        <BillsTableComponent
+          bills={this.state.bills}
+          delete={this.deleteBills.bind(this)}
+          select={this.billSelected.bind(this)}
+          selectedInvoiceId={this.state.selectedBill && this.state.selectedBill.invoice_id}
+        />
+      editorView =
+        <BillsEditorComponent
+          bill={this.state.selectedBill}
+          save={this.save.bind(this)}
+          update={this.update.bind(this)}
+          updateCustomer={this.updateCustomer.bind(this)}
+          notify={this.notify.bind(this)}
+        />       
+    } else if (this.state.mode === t('Ausgaben')) {
+      tableView = 
+        <ExpensesTableComponent
+          expenses={this.state.bills}
+        />
+      editorView =
+        <ExpensesEditorComponent
+          bill={this.state.selectedBill}
+          save={this.save.bind(this)}
+          update={this.update.bind(this)}
+          updateCustomer={this.updateCustomer.bind(this)}
+          notify={this.notify.bind(this)}
+        />  
+    }
+
     return (
       <div>
         <OnOffSwitchComponent
@@ -178,19 +213,10 @@ export default class AppComponent extends React.Component<any, {}> {
           selectedValue={this.state.mode}
           handleValueChange={newValue => this.setState({ mode: newValue})}
         />
-        <TableComponent
-          bills={this.state.bills}
-          delete={this.deleteBills.bind(this)}
-          select={this.billSelected.bind(this)}
-          selectedInvoiceId={this.state.selectedBill && this.state.selectedBill.invoice_id}
-        />
-        <EditorComponent
-          bill={this.state.selectedBill}
-          save={this.save.bind(this)}
-          update={this.update.bind(this)}
-          updateCustomer={this.updateCustomer.bind(this)}
-          notify={this.notify.bind(this)}
-        />
+
+        {tableView}
+
+        {editorView}
 
         <NotificationSystem ref="notificationSystem" />
       </div>

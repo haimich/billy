@@ -43,7 +43,7 @@ interface Props {
   notify: any
 }
 
-export default class EditorComponent extends React.Component<Props, {}> {
+export default class BillsEditorComponent extends React.Component<Props, {}> {
 
   state: State
   refs: {

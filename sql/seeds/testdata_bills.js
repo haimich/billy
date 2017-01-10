@@ -75,7 +75,7 @@ function generateCustomer() {
 function generateBill() {
   const createdDay = addZeroIfNecessary(chance.natural({ min: 1, max: 28 }))
   const createdMonth = addZeroIfNecessary(chance.natural({ min: 1, max: 12 }))
-  const createdYear = addZeroIfNecessary(chance.natural({ min: 2013, max: 2016 }))
+  const createdYear = addZeroIfNecessary(chance.natural({ min: 2013, max: 2017 }))
   const dateCreated = moment(`${createdYear}-${createdMonth}-${createdDay}`)
 
   const bill = {

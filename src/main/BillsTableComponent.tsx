@@ -13,7 +13,7 @@ interface Props {
   selectedInvoiceId?: string;
 }
 
-export default class TableComponent extends React.Component<Props, {}> {
+export default class BillsTableComponent extends React.Component<Props, {}> {
 
   props: Props
 
