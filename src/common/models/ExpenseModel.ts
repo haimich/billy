@@ -1,8 +1,8 @@
-interface ExpenseModel {
+interface Expense {
   type: string
   preTaxAmount: number
   taxrate: number
   date: string
 }
 
-export default ExpenseModel
+export default Expense

@@ -1,12 +1,12 @@
 import ExpenseDbModel from '../models/ExpenseDbModel'
-import ExpenseModel from '../models/ExpenseModel'
+import Expense from '../models/ExpenseModel'
 import * as expensesRepo from '../repositories/expensesRepository'
 
 export function expenseExists(id: number): Promise<boolean> {
   return expensesRepo.expenseExists(id)
 }
 
-export function createExpense(expense: ExpenseModel): Promise<ExpenseDbModel> {
+export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
   return expensesRepo.createExpense(expense)
 }
 

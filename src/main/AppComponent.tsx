@@ -7,7 +7,7 @@ import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from 
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
-import ExpenseModel from '../common/models/ExpenseModel'
+import Expense from '../common/models/ExpenseModel'
 import FileModel from '../common/models/FileModel'
 import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
@@ -155,7 +155,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
   }
 
-  saveExpense(expense: ExpenseModel): Promise<{}> {
+  saveExpense(expense: Expense): Promise<{}> {
     return new Promise((resolve, reject) => {
       createExpense(expense)
         .then((createdExpense) => {
@@ -179,7 +179,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     })
   }
 
-  updateExpense(expense: ExpenseModel): Promise<{}> {
+  updateExpense(expense: Expense): Promise<{}> {
     return null
     // return new Promise((resolve, reject) => {
     //   let updatedBill

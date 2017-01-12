@@ -1,5 +1,5 @@
 import ExpensesEditorComponent from '../../src/main/ExpensesEditorComponent'
-import ExpenseModel from '../../src/common/models/ExpenseModel'
+import Expense from '../../src/common/models/ExpenseModel'
 import { expect } from 'chai'
 
 describe('main.ExpensesEditorComponent', () => {

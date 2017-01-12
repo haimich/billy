@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
-import ExpenseModel from '../common/models/ExpenseModel'
+import Expense from '../common/models/ExpenseModel'
 import { expenseExists } from '../common/services/expensesService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
@@ -20,8 +20,8 @@ interface State {
 }
 
 interface Props {
-  update: (model: ExpenseModel) => void
-  save: (model: ExpenseModel) => void
+  update: (model: Expense) => void
+  save: (model: Expense) => void
   expense?: ExpenseDbModel
   notify: any
 }
@@ -61,7 +61,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
   async onSave(event) {
     event.preventDefault()
 
-    const expense: ExpenseModel = {
+    const expense: Expense = {
       type: this.state.type,
       preTaxAmount: numberFormatterDb(this.state.preTaxAmount),
       taxrate: this.state.taxrate,

@@ -1,5 +1,5 @@
 import ExpenseDbModel from '../models/ExpenseDbModel'
-import ExpenseModel from '../models/ExpenseModel'
+import Expense from '../models/ExpenseModel'
 
 let db
 
@@ -14,7 +14,7 @@ export function expenseExists(id: number): Promise<boolean> {
     .then(rows => rows.length === 0 ? false : true)
 }
 
-export function createExpense(expense: ExpenseModel): Promise<ExpenseDbModel> {
+export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
   return db('expenses')
     .insert(expense)
     .then((rows) => {
