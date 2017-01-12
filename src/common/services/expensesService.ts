@@ -10,7 +10,7 @@ export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
   return expensesRepo.createExpense(expense)
 }
 
-export function updateExpense(expense: ExpenseDbModel): Promise<ExpenseDbModel> {
+export function updateExpense(expense: Expense): Promise<ExpenseDbModel> {
   return expensesRepo.updateExpense(expense)
 }
 

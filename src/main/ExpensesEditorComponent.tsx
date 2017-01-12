@@ -62,6 +62,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     event.preventDefault()
 
     const expense: Expense = {
+      id: this.state.id,
       type: this.state.type,
       preTaxAmount: numberFormatterDb(this.state.preTaxAmount),
       taxrate: this.state.taxrate,

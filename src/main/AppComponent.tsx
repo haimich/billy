@@ -6,8 +6,8 @@ import { updateCustomer } from '../common/services/customersService'
 import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from '../common/services/expensesService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
-import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import Expense from '../common/models/ExpenseModel'
+import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import FileModel from '../common/models/FileModel'
 import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
@@ -158,17 +158,17 @@ export default class AppComponent extends React.Component<Props, {}> {
   saveExpense(expense: Expense): Promise<{}> {
     return new Promise((resolve, reject) => {
       createExpense(expense)
-        .then((createdExpense) => {
-          return getExpenseById(createdExpense.id)
+        .then((result) => {
+          return getExpenseById(result.id)
         })
-        .then(result => {
+        .then(createdExpense => {
           resolve() // let the editor know that we're good
 
           // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
           process.nextTick(() => {
             this.setState({
               selectedExpense: undefined,
-              expenses: [ result ].concat(this.state.expenses)
+              expenses: [ createdExpense ].concat(this.state.expenses)
             })
           })
         })
@@ -180,40 +180,56 @@ export default class AppComponent extends React.Component<Props, {}> {
   }
 
   updateExpense(expense: Expense): Promise<{}> {
-    return null
-    // return new Promise((resolve, reject) => {
-    //   let updatedBill
+    return new Promise((resolve, reject) => {
+      updateExpense(expense)
+        .then((result) => {
+          return getExpenseById(result.id)
+        })
+        .then(createdExpense => {
+          resolve() // let the editor know that we're good
 
-    //   updateBill(bill)
-    //     .then(result => {
-    //       updatedBill = result
-    //       return performFileActions(updatedBill, fileActions)
-    //     })
-    //     .then(() => {
-    //       return getBillByInvoiceId(updatedBill.invoice_id)
-    //     })
-    //     .then(billWithFiles => {
-    //       resolve() // let the editor know that we're good
+          // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
+          process.nextTick(() => {
+            this.setState({
+              selectedExpense: undefined,
+              expenses: this.state.expenses.map(element => {
+                if (element.id === createdExpense.id) {
+                  return createdExpense
+                } else {
+                  return element
+                }
+              })
+            })
+          })
+        })
+        .catch(err => {
+          this.handleError(err)
+          reject(err)
+        })
+    })
+  }
 
-    //       // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
-    //       process.nextTick(() => {
-    //         this.setState({
-    //           selectedBill: undefined,
-    //           bills: this.state.bills.map(element => {
-    //             if (element.invoice_id === bill.invoice_id) {
-    //               return billWithFiles
-    //             } else {
-    //               return element
-    //             }
-    //           })
-    //         })
-    //       })
-    //     })
-    //     .catch(err => {
-    //       this.handleError(err)
-    //       reject(err)
-    //     })
-    // })
+  async deleteExpenses(ids: string[]): Promise<any> {
+    let idMap = {}
+
+    try {
+      for (let id of ids) {
+        idMap[id] = true
+
+        const expense = await getExpenseById(Number(id))
+        await deleteExpenseById(Number(id))
+      }
+    } catch (err) {
+      this.handleError(err)
+      throw err
+    }
+
+    this.setState({
+      expenses: this.state.expenses.filter(element => ! idMap[element.id]),
+      selectedExpense: undefined
+    })
+
+    this.notify(t('Löschen erfolgreich'), 'success')
   }
 
   notify(message: string, level: 'error' | 'success') {
