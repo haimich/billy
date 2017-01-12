@@ -77,7 +77,7 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
           <TableHeaderColumn isKey={true} hidden={true} dataField="id" width="140" dataSort={true}>{t('ID')}</TableHeaderColumn>
           <TableHeaderColumn dataField="type" width="290" dataSort={true}>{t('Typ')}</TableHeaderColumn>
           <TableHeaderColumn dataField="preTaxAmount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="taxrate" width="90" dataAlign="right" dataFormat={percentageFormatter} dataSort={true}>{t('Besteuerung')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="taxrate" width="90" dataAlign="right" dataFormat={percentageFormatter} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date" width="170" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
 
         </BootstrapTable>
@@ -87,10 +87,10 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
   }
 
   scrollDown() {
-    // if (this.props.expenses.length >= 1) {
-    //   const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
-    //   lastRow.scrollIntoView()
-    // }
+    if (this.props.expenses.length >= 1) {
+      const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
+      lastRow.scrollIntoView()
+    }
   }
 
   componentDidMount() {

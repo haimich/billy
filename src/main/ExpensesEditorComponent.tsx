@@ -11,7 +11,7 @@ const Datetime = require('react-datetime')
 interface State {
   id?: number
   type: string
-  preTaxamount?: string
+  preTaxAmount?: string
   taxrate?: string
   date?: string
   isNew: boolean
@@ -49,8 +49,8 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     return {
       id: undefined,
       type: '',
-      preTaxamount: '',
-      taxrate: '',
+      preTaxAmount: '',
+      taxrate: '19',
       date: undefined,
       isNew: true,
       isDirty: false
@@ -62,7 +62,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
     const expense: ExpenseModel = {
       type: this.state.type,
-      preTaxAmount: numberFormatterDb(this.state.preTaxamount),
+      preTaxAmount: numberFormatterDb(this.state.preTaxAmount),
       taxrate: numberFormatterDb(this.state.taxrate),
       date: dateFormatterDb(this.state.date)
     }
@@ -86,11 +86,11 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
   }
 
   getNetAmount(): string {
-    return this.state.preTaxamount
+    return this.state.preTaxAmount
   }
 
   getVatAmount(): string {
-    return this.state.preTaxamount
+    return this.state.preTaxAmount
   }
 
   render() {
@@ -101,7 +101,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label htmlFor="type" className="col-sm-4 control-label">{t('Typ')}</label>
+                <label htmlFor="type" className="col-sm-4 control-label">{t('Typ der Ausgabe')}</label>
                 <div className="col-sm-8">
                   <input
                     type="text"
@@ -140,8 +140,8 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                       type="text"
                       className="form-control"
                       id="preTaxamount"
-                      value={this.state.preTaxamount}
-                      onChange={(event: any) => this.setState({ preTaxamount: event.target.value })}
+                      value={this.state.preTaxAmount}
+                      onChange={(event: any) => this.setState({ preTaxAmount: event.target.value })}
                       style={{ textAlign: 'right' }}
                       required
                       pattern={'[+-]?[0-9]+(,[0-9]+)?'}
@@ -149,11 +149,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="col-md-6">
-             <div className="form-group">
-                <div className="form-group">
+              <div className="form-group">
                   <label htmlFor="taxrate" className="col-sm-4 control-label">{t('Steuersatz')}</label>
                   <div className="col-sm-8">
                     <div className="input-group">
@@ -170,7 +166,9 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                     </div>
                   </div>
                 </div>
-              </div>
+            </div>
+
+            <div className="col-md-6">
               <div className="form-group">
                 <div className="form-group">
                   <label htmlFor="netAmount" className="col-sm-4 control-label">{t('Netto')}</label>
@@ -283,6 +281,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
         id: expense.id,
         type: expense.type,
         preTaxAmount: numberFormatterView(expense.preTaxAmount),
+        date: dateFormatterView(expense.date),
         taxrate: expense.taxrate,
         isNew,
         isDirty: false
