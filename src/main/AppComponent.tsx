@@ -3,9 +3,11 @@ import * as ReactDOM from 'react-dom';
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
 import { performFileActions, deleteAllFilesForBill } from '../common/services/filesService'
 import { updateCustomer } from '../common/services/customersService'
+import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from '../common/services/expensesService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
+import ExpenseModel from '../common/models/ExpenseModel'
 import FileModel from '../common/models/FileModel'
 import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
@@ -55,7 +57,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     notifications = this.refs.notificationSystem
   }
 
-  save(bill: Bill, fileActions: FileActions): Promise<{}> {
+  saveBill(bill: Bill, fileActions: FileActions): Promise<{}> {
     return new Promise((resolve, reject) => {
       let createdBill
 
@@ -83,10 +85,9 @@ export default class AppComponent extends React.Component<Props, {}> {
           reject(err)
         })
     })
-
   }
 
-  update(bill: Bill, fileActions: FileActions): Promise<{}> {
+  updateBill(bill: Bill, fileActions: FileActions): Promise<{}> {
     return new Promise((resolve, reject) => {
       let updatedBill
 
@@ -154,6 +155,67 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
   }
 
+  saveExpense(expense: ExpenseModel): Promise<{}> {
+    return new Promise((resolve, reject) => {
+      createExpense(expense)
+        .then((createdExpense) => {
+          return getExpenseById(createdExpense.id)
+        })
+        .then(result => {
+          resolve() // let the editor know that we're good
+
+          // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
+          process.nextTick(() => {
+            this.setState({
+              selectedExpense: undefined,
+              expenses: [ result ].concat(this.state.expenses)
+            })
+          })
+        })
+        .catch(err => {
+          this.handleError(err)
+          reject(err)
+        })
+    })
+  }
+
+  updateExpense(expense: ExpenseModel): Promise<{}> {
+    return null
+    // return new Promise((resolve, reject) => {
+    //   let updatedBill
+
+    //   updateBill(bill)
+    //     .then(result => {
+    //       updatedBill = result
+    //       return performFileActions(updatedBill, fileActions)
+    //     })
+    //     .then(() => {
+    //       return getBillByInvoiceId(updatedBill.invoice_id)
+    //     })
+    //     .then(billWithFiles => {
+    //       resolve() // let the editor know that we're good
+
+    //       // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
+    //       process.nextTick(() => {
+    //         this.setState({
+    //           selectedBill: undefined,
+    //           bills: this.state.bills.map(element => {
+    //             if (element.invoice_id === bill.invoice_id) {
+    //               return billWithFiles
+    //             } else {
+    //               return element
+    //             }
+    //           })
+    //         })
+    //       })
+    //     })
+    //     .catch(err => {
+    //       this.handleError(err)
+    //       reject(err)
+    //     })
+    // })
+  }
+
   notify(message: string, level: 'error' | 'success') {
     if (notifications == null) {
       console.log(level + ': ' + message)
@@ -203,8 +265,8 @@ export default class AppComponent extends React.Component<Props, {}> {
       editorView =
         <BillsEditorComponent
           bill={this.state.selectedBill}
-          save={this.save.bind(this)}
-          update={this.update.bind(this)}
+          save={this.saveBill.bind(this)}
+          update={this.updateBill.bind(this)}
           updateCustomer={this.updateCustomer.bind(this)}
           notify={this.notify.bind(this)}
         />       
@@ -218,8 +280,8 @@ export default class AppComponent extends React.Component<Props, {}> {
       editorView =
         <ExpensesEditorComponent
           expense={this.state.selectedExpense}
-          save={this.save.bind(this)}
-          update={this.update.bind(this)}
+          save={this.saveExpense.bind(this)}
+          update={this.updateExpense.bind(this)}
           notify={this.notify.bind(this)}
         />  
     }

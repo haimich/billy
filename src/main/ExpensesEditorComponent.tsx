@@ -5,6 +5,7 @@ import ExpenseModel from '../common/models/ExpenseModel'
 import { expenseExists } from '../common/services/expensesService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
+import { round } from '../common/helpers/math'
 
 const Datetime = require('react-datetime')
 
@@ -12,7 +13,7 @@ interface State {
   id?: number
   type: string
   preTaxAmount?: string
-  taxrate?: string
+  taxrate?: number
   date?: string
   isNew: boolean
   isDirty: boolean
@@ -50,7 +51,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
       id: undefined,
       type: '',
       preTaxAmount: '',
-      taxrate: '19',
+      taxrate: 19,
       date: undefined,
       isNew: true,
       isDirty: false
@@ -63,7 +64,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     const expense: ExpenseModel = {
       type: this.state.type,
       preTaxAmount: numberFormatterDb(this.state.preTaxAmount),
-      taxrate: numberFormatterDb(this.state.taxrate),
+      taxrate: this.state.taxrate,
       date: dateFormatterDb(this.state.date)
     }
 
@@ -86,11 +87,22 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
   }
 
   getNetAmount(): string {
-    return this.state.preTaxAmount
+    if (this.state.taxrate != null && this.state.preTaxAmount != null && this.state.preTaxAmount !== '') {
+      let preTax = numberFormatterDb(this.state.preTaxAmount)
+      let tax = this.state.taxrate / 100 + 1
+
+      return numberFormatterView(round(preTax / tax))
+    } else {
+      return ''
+    }
   }
 
   getVatAmount(): string {
-    return this.state.preTaxAmount
+    if (this.getNetAmount() == this.state.preTaxAmount) {
+      return ''
+    }
+
+    return numberFormatterView(numberFormatterDb(this.state.preTaxAmount) - numberFormatterDb(this.getNetAmount()))
   }
 
   render() {
@@ -181,7 +193,6 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                         id="netAmount"
                         value={this.getNetAmount()}
                         style={{ textAlign: 'right' }}
-                        required
                         readOnly
                         />
                     </div>
@@ -200,7 +211,6 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                         id="vat"
                         value={this.getVatAmount()}
                         style={{ textAlign: 'right' }}
-                        required
                         readOnly
                         />
                     </div>
