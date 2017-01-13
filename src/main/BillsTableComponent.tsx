@@ -89,10 +89,10 @@ export default class BillsTableComponent extends React.Component<Props, {}> {
   }
 
   scrollDown() {
-    // if (this.props.bills.length >= 1) {
-    //   const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
-    //   lastRow.scrollIntoView()
-    // }
+    if (this.props.bills.length >= 1) {
+      const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
+      lastRow.scrollIntoView()
+    }
   }
 
   componentDidMount() {

@@ -38,7 +38,7 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
 
   render() {
     const options: Options = {
-      sortName: 'id',
+      sortName: 'date',
       sortOrder: 'asc',
       afterDeleteRow: this.onDeleteRows.bind(this),
       deleteText: t('Löschen'),
@@ -87,10 +87,10 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
   }
 
   scrollDown() {
-    // if (this.props.expenses.length >= 1) {
-    //   const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
-    //   lastRow.scrollIntoView()
-    // }
+    if (this.props.expenses.length >= 1) {
+      const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
+      lastRow.scrollIntoView()
+    }
   }
 
   componentDidMount() {
