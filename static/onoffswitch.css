@@ -49,12 +49,12 @@
    ===================================================== */
 .toggle--knob .toggle--btn {
   position: relative;
-  width: 140px;
+  width: 132px;
   height: 33px;
   font-family: 'PT Sans', Sans Serif;
   text-transform: uppercase;
   color: #fff;
-  background: #56B949;
+  background: #5CB8F3;
   border-radius: 40px;
 }
 
@@ -87,7 +87,7 @@
 
 .toggle--knob .toggle--feature:before {
   content: attr(data-label-on);
-  left: 16%;
+  left: 12%;
 }
 
 .toggle--knob .toggle--feature:after {
@@ -96,7 +96,7 @@
 }
 
 .toggle--knob .toggle--checkbox:checked + .toggle--btn {
-  background: #ff4e1b;
+  background: #FF686C;
 }
 
 .toggle--knob .toggle--checkbox:checked + .toggle--btn:before {
@@ -108,5 +108,5 @@
 }
 
 .toggle--knob .toggle--checkbox:checked + .toggle--btn .toggle--feature:after {
-  right: 18%;
+  right: 14%;
 }
