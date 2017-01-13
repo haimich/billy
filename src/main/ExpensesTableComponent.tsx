@@ -87,10 +87,10 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
   }
 
   scrollDown() {
-    if (this.props.expenses.length >= 1) {
-      const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
-      lastRow.scrollIntoView()
-    }
+    // if (this.props.expenses.length >= 1) {
+    //   const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
+    //   lastRow.scrollIntoView()
+    // }
   }
 
   componentDidMount() {

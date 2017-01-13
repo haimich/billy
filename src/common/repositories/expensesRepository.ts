@@ -23,8 +23,6 @@ export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
 }
 
 export function updateExpense(expense: Expense): Promise<ExpenseDbModel> {
-  console.log('UPD', expense);
-  
   return db('expenses')
     .update({
       type: expense.type,

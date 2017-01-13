@@ -120,7 +120,7 @@ textarea {
   font-style: italic;
   font-size: .8em;
   display: flex;
- justify-content: center;
+  justify-content: center;
 }
 
 .onoffswitch-container {

@@ -9,6 +9,7 @@
   display: block;
   text-align: center;
   user-select: none;
+  letter-spacing: .4px;
 }
 
 .toggle--checkbox {
@@ -48,56 +49,64 @@
    ===================================================== */
 .toggle--knob .toggle--btn {
   position: relative;
-  width: 150px;
-  height: 40px;
+  width: 140px;
+  height: 33px;
   font-family: 'PT Sans', Sans Serif;
   text-transform: uppercase;
   color: #fff;
   background: #56B949;
   border-radius: 40px;
 }
+
 .toggle--knob .toggle--btn:before {
   display: block;
   position: absolute;
   top: 50%;
   left: 72%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: #f1f1f1;
   box-shadow: 0 4px 10px 0 #aaa, inset 0 10px 10px 8px rgba(241, 241, 241, 0.8), inset 0 0 8px 0px #333, inset 0 0 0 13px #ccc, inset 0 0 0 14px #f1f1f1;
   text-indent: -100%;
 }
+
 .toggle--knob .toggle--feature {
   position: relative;
   display: block;
   overflow: hidden;
-  height: 40px;
-  text-shadow: 0 1px 2px #666;
+  height: 34px;
 }
+
 .toggle--knob .toggle--feature:before, .toggle--knob .toggle--feature:after {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
+
 .toggle--knob .toggle--feature:before {
   content: attr(data-label-on);
-  left: 20%;
+  left: 16%;
 }
+
 .toggle--knob .toggle--feature:after {
   content: attr(data-label-off);
   right: -60%;
 }
+
 .toggle--knob .toggle--checkbox:checked + .toggle--btn {
   background: #ff4e1b;
 }
+
 .toggle--knob .toggle--checkbox:checked + .toggle--btn:before {
   left: 0;
 }
+
 .toggle--knob .toggle--checkbox:checked + .toggle--btn .toggle--feature:before {
   left: -60%;
 }
+
 .toggle--knob .toggle--checkbox:checked + .toggle--btn .toggle--feature:after {
-  right: 20%;
+  right: 18%;
 }
