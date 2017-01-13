@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { ipcRenderer } from 'electron'
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
 import { performFileActions, deleteAllFilesForBill } from '../common/services/filesService'
 import { updateCustomer } from '../common/services/customersService'
@@ -51,6 +52,10 @@ export default class AppComponent extends React.Component<Props, {}> {
       expenses: props.expenses,
       mode: t('Ausgaben')
     }
+
+    ipcRenderer.on('shortcut-CommandOrControl+d', () => {
+      console.log('Short renderer')
+    })
   }
 
   componentDidMount() {

@@ -1,8 +1,8 @@
 import { app } from 'electron'
-import { initMenu } from './common/menu'
+import { initMenu } from './common/electron/menu'
 import { userInputNeeded } from './common/providers/settingsProvider'
 import { isMac } from './common/helpers/platform'
-import { openMainWindow, openOnboardingWindow, openStatsWindow, allWindowsClosed } from './common/windows'
+import { openMainWindow, openOnboardingWindow, openStatsWindow, allWindowsClosed } from './common/electron/windows'
 import { isDev, getAppFolder } from './common/helpers/app'
 
 if (isDev) {

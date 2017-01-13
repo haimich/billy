@@ -1,5 +1,5 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
-import { isDev, getAppFolder } from './helpers/app'
+import { app, BrowserWindow, ipcMain, ipcRenderer, globalShortcut } from 'electron'
+import { isDev, getAppFolder } from '../helpers/app'
 
 // Keep a global reference of the window objects to prevent gc
 let mainWindow, onboardingWindow, importWindow, statsWindow, incomeWindow
@@ -46,6 +46,11 @@ export function openMainWindow() {
   }
 
   mainWindow.once('ready-to-show', () => {
+    globalShortcut.register('CommandOrControl+d', () => {
+      console.log('Short main')
+      mainWindow.webContents.send('shortcut-CommandOrControl+d')
+    })
+
     mainWindow.show()
     mainWindow.focus()
   })

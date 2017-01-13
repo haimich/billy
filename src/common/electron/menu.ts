@@ -1,8 +1,8 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
 import { } from './providers/importProvider'
 import { openImportWindow, openStatsWindow, openIncomeWindow, reload, toggleDevTools } from './windows'
-import { isMac } from './helpers/platform'
-import t from './helpers/i18n'
+import { isMac } from '../helpers/platform'
+import t from '../helpers/i18n'
 
 function application(): any {
   const name = 'Billy'
