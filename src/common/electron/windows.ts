@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, ipcRenderer, globalShortcut } from 'electron'
+import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import { isDev, getAppFolder } from '../helpers/app'
 
 // Keep a global reference of the window objects to prevent gc
@@ -47,7 +47,6 @@ export function openMainWindow() {
 
   mainWindow.once('ready-to-show', () => {
     globalShortcut.register('CommandOrControl+d', () => {
-      console.log('Short main')
       mainWindow.webContents.send('shortcut-CommandOrControl+d')
     })
 

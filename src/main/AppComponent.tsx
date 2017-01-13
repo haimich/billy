@@ -54,12 +54,20 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
 
     ipcRenderer.on('shortcut-CommandOrControl+d', () => {
-      console.log('Short renderer')
+      this.toggleMode()
     })
   }
 
   componentDidMount() {
     notifications = this.refs.notificationSystem
+  }
+
+  toggleMode() {
+    if (this.state.mode === t('Einnahmen')) {
+      this.setState({ mode: t('Ausgaben') })
+    } else if (this.state.mode === t('Ausgaben')) {
+      this.setState({ mode: t('Einnahmen') })
+    }
   }
 
   saveBill(bill: Bill, fileActions: FileActions): Promise<{}> {
