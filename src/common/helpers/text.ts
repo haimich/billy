@@ -26,3 +26,7 @@ export function shortenFilename(filename: string, length = 100): string {
 function shortenText(text: string, length): string {
   return text.substr(0, length)
 }
+
+export function stringIsEmpty(field): boolean {
+  return field == null || field === ''
+}
