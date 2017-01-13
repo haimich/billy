@@ -68,9 +68,13 @@
   height: 40px;
   border-radius: 50%;
   background: #f1f1f1;
-  box-shadow: 0 4px 10px 0 #aaa, inset 0 10px 10px 8px rgba(241, 241, 241, 0.8), inset 0 0 8px 0px #333, inset 0 0 0 13px #ccc, inset 0 0 0 14px #f1f1f1;
+  box-shadow: 0 4px 10px 0 #aaa, inset 0 10px 10px 8px rgba(241, 241, 241, 0.8), inset 0 0 8px 0px #333, inset 0 0 0 10px #ddd, inset 0 0 0 14px #f1f1f1;
   text-indent: -100%;
 }
+
+/*
+0 4px 10px 0 #aaa, inset 0 10px 10px 8px rgba(241, 241, 241, 0.8), inset 0 0 8px 0px #333, inset 0 0 0 13px #ccc, inset 0 0 0 14px #f1f1f1;
+*/
 
 .toggle--knob .toggle--feature {
   position: relative;
