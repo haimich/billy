@@ -5,15 +5,17 @@ import Expense from '../common/models/ExpenseModel'
 import { expenseExists } from '../common/services/expensesService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
-import { round } from '../common/helpers/math'
+import { stringIsEmpty } from '../common/helpers/text'
+import { round, getNetAmount, getTaxrate, getVatAmount } from '../common/helpers/math'
 
 const Datetime = require('react-datetime')
 
 interface State {
   id?: number
   type: string
-  preTaxAmount?: string
-  taxrate?: number
+  amount?: string
+  amountType?: 'preTax' | 'net'
+  taxrate?: string
   date?: string
   isNew: boolean
   isDirty: boolean
@@ -50,8 +52,9 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     return {
       id: undefined,
       type: '',
-      preTaxAmount: '',
-      taxrate: 19,
+      amount: '',
+      amountType: 'preTax',
+      taxrate: '19',
       date: undefined,
       isNew: true,
       isDirty: false
@@ -65,7 +68,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
       id: this.state.id,
       type: this.state.type,
       preTaxAmount: numberFormatterDb(this.state.preTaxAmount),
-      taxrate: this.state.taxrate,
+      taxrate: numberFormatterDb(this.state.taxrate),
       date: dateFormatterDb(this.state.date)
     }
 
@@ -87,26 +90,56 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     this.revalidate(ReactDOM.findDOMNode(this.refs.date).querySelector('input'))
   }
 
-  getNetAmount(): string {
-    if (this.state.taxrate != null && this.state.preTaxAmount != null && this.state.preTaxAmount !== '') {
-      let preTax = numberFormatterDb(this.state.preTaxAmount)
-      let tax = this.state.taxrate / 100 + 1
+  getNetAmount(amount: string): string {
+    let net = getNetAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(amount))
+    return numberFormatterView(net)
+  }
 
-      return numberFormatterView(round(preTax / tax))
-    } else {
-      return ''
-    }
+  getPreTaxAmount(amount: string): string {
+    // let preTax = getPreTaxAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(amount))
+    // return numberFormatterView(preTax)
+    return '123'
   }
 
   getVatAmount(): string {
-    if (this.getNetAmount() == this.state.preTaxAmount) {
-      return ''
-    }
+    // let vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.preTaxAmount))
+    // return numberFormatterView(vat)
+    return '45'
+  }
 
-    return numberFormatterView(numberFormatterDb(this.state.preTaxAmount) - numberFormatterDb(this.getNetAmount()))
+  getCalculatedAmount(): string {
+    if (this.state.amountType == null) {
+      return ''
+    } else if (this.state.amountType === 'preTax') {
+      return this.getNetAmount(this.state.amount)
+    } else if (this.state.amountType === 'net') {
+      return this.getPreTaxAmount(this.state.amount)
+    }
+  }
+
+  isAmountButtonSelected(type: string): boolean {
+    return this.state.amountType === type
+  }
+
+  handleAmountButtonChange(newType: string) {
+    this.setState({
+      amountType: newType
+    })
   }
 
   render() {
+    let classesPreTaxAmountBtn = 'btn btn-default'
+    let classesNetAmountBtn = 'btn btn-default'
+    let calculatedInputLabel = ''
+
+    if (this.state.amountType === 'preTax') {
+      calculatedInputLabel = t('Brutto')
+      classesPreTaxAmountBtn += ' active'
+    } else if (this.state.amountType === 'net') {
+      calculatedInputLabel = t('Netto')
+      classesNetAmountBtn += ' active'
+    }
+
     return (
       <div id="editor-container">
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
@@ -145,16 +178,32 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                   />
               </div>
               <div className="form-group">
-                <label htmlFor="preTaxamount" className="col-sm-4 control-label">{t('Brutto')}</label>
+                <div className="btn-group toggle-button col-sm-4" role="group">
+                  <button
+                    type="button"
+                    htmlFor="amount"
+                    className={classesPreTaxAmountBtn}
+                    onClick={() => this.handleAmountButtonChange('preTax')}>
+                    {t('Brutto')}
+                  </button>
+                  <button
+                    type="button"
+                    htmlFor="amount"
+                    className={classesNetAmountBtn}
+                    onClick={() => this.handleAmountButtonChange('net')}>
+                    {t('Netto')}
+                  </button>
+                </div>
+
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
                     <input
                       type="text"
                       className="form-control"
-                      id="preTaxamount"
-                      value={this.state.preTaxAmount}
-                      onChange={(event: any) => this.setState({ preTaxAmount: event.target.value })}
+                      id="amount"
+                      value={this.state.amount}
+                      onChange={(event: any) => this.setState({ amount: event.target.value })}
                       style={{ textAlign: 'right' }}
                       required
                       pattern={'[+-]?[0-9]+(,[0-9]+)?'}
@@ -168,13 +217,13 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                     <div className="input-group">
                       <span className="input-group-addon">%</span>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control"
                         id="taxrate"
                         value={this.state.taxrate}
                         onChange={(event: any) => this.setState({ taxrate: event.target.value })}
                         style={{ textAlign: 'right' }}
-                        required
+                        pattern={'[+-]?[0-9]+(,[0-9]?)?'}
                         />
                     </div>
                   </div>
@@ -184,15 +233,15 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
             <div className="col-md-6">
               <div className="form-group">
                 <div className="form-group">
-                  <label htmlFor="netAmount" className="col-sm-4 control-label">{t('Netto')}</label>
+                  <label htmlFor="calculatedAmount" className="col-sm-4 control-label">{calculatedInputLabel}</label>
                   <div className="col-sm-8">
                     <div className="input-group">
                       <span className="input-group-addon">€</span>
                       <input
                         type="text"
                         className="form-control"
-                        id="netAmount"
-                        value={this.getNetAmount()}
+                        id="calculatedAmount"
+                        value={this.getCalculatedAmount()}
                         style={{ textAlign: 'right' }}
                         readOnly
                         />
@@ -202,14 +251,14 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
               </div>
               <div className="form-group">
                 <div className="form-group">
-                  <label htmlFor="vat" className="col-sm-4 control-label">{t('Mehrwertsteuer')}</label>
+                  <label htmlFor="vatAmount" className="col-sm-4 control-label">{t('Mehrwertsteuer')}</label>
                   <div className="col-sm-8">
                     <div className="input-group">
                       <span className="input-group-addon">€</span>
                       <input
                         type="text"
                         className="form-control"
-                        id="vat"
+                        id="vatAmount"
                         value={this.getVatAmount()}
                         style={{ textAlign: 'right' }}
                         readOnly
