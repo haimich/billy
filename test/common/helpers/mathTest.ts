@@ -4,7 +4,7 @@ import {
 } from '../../../src/common/helpers/math'
 import { expect } from 'chai'
 
-describe.only('math', () => {
+describe('math', () => {
 
   describe('round', () => {
     it('should round a value to 2 decimals', () => {

@@ -67,7 +67,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
     const expense: Expense = {
       id: this.state.id,
-      type: this.state.type,
+      type_id: 1, //this.state.type TODOOOOOOOO
       preTaxAmount: numberFormatterDb(
         this.state.amountType === 'preTax'
         ? this.state.amount

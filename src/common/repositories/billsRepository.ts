@@ -17,7 +17,15 @@ export function billExists(invoiceId: string): Promise<boolean> {
 
 export function createBill(bill: Bill): Promise<BillDbModel> {
   return db('bills')
-    .insert(bill)
+    .insert({
+      invoice_id: bill.invoice_id,
+      amount: bill.amount,
+      customer_id: bill.customer_id,
+      date_created: bill.date_created,
+      date_paid: bill.date_paid,
+      type_id: bill.type_id,
+      comment: bill.comment
+    })
     .then((rows) => {
       return getBillById(rows[0])
     })

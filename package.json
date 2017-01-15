@@ -14,7 +14,7 @@
     "prestart": "npm run build",
     "start": "NODE_ENV=development electron .",
     "test": "npm run build && NODE_ENV=development electron-mocha 'buildtmp/test/**/*Test.js'",
-    "watch:test": "nodemon -w ./src -w ./test -e ts,tsx -x npm test",
+    "test:watch": "nodemon -w ./src -w ./test -e ts,tsx -x npm test",
     "watch": "tsc -w",
     "copy-html": "cp static/*.html buildtmp/src",
     "dist:mac": "npm run build && build --mac",

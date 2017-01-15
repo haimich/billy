@@ -16,7 +16,13 @@ export function expenseExists(id: number): Promise<boolean> {
 
 export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
   return db('expenses')
-    .insert(expense)
+    .insert({
+      type_id: expense.type_id,
+      preTaxAmount: expense.preTaxAmount,
+      taxrate: expense.taxrate,
+      date: expense.date,
+      comment: expense.comment
+    })
     .then((rows) => {
       return getExpenseById(rows[0])
     })
@@ -25,10 +31,11 @@ export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
 export function updateExpense(expense: Expense): Promise<ExpenseDbModel> {
   return db('expenses')
     .update({
-      type: expense.type,
+      type_id: expense.type_id,
       preTaxAmount: expense.preTaxAmount,
       taxrate: expense.taxrate,
-      date: expense.date
+      date: expense.date,
+      comment: expense.comment
     })
     .where('id', expense.id)
     .then(() => {
@@ -37,22 +44,48 @@ export function updateExpense(expense: Expense): Promise<ExpenseDbModel> {
 }
 
 export function getExpenseById(id: number): Promise<ExpenseDbModel> {
-  return db('expenses')
-    .select('*')
-    .where('id', id)
+  return db.raw(`
+    select
+      e.id,
+      e.preTaxAmount,
+      e.taxrate,
+      e.date,
+      e.comment,
+      et.id as type_id,
+      et.type as type_name
+
+      from expenses e
+
+      LEFT JOIN expense_types et ON e.type_id = et.id
+
+      where e.id = ?
+  `, [id])
     .then(rows => {
       if (rows == null || rows.length !== 1) {
         return
       }
 
-      return rows[0]
+      return createExpenseDbModel(rows[0])
     })
 }
 
 export function listExpenses(): Promise<ExpenseDbModel[]> {
-  return db('expenses')
-    .select('*')
-    .orderBy('date', 'asc')
+  return db.raw(`
+    select
+      e.id,
+      e.preTaxAmount,
+      e.taxrate,
+      e.date,
+      e.comment,
+      et.id as type_id,
+      et.type as type_name
+
+      from expenses e
+
+      LEFT JOIN expense_types et ON e.type_id = et.id
+
+      order by e.date asc
+  `).then(rows => rows.map(createExpenseDbModel))
 }
 
 export function deleteExpenseById(id: number): Promise<any> {
@@ -61,8 +94,19 @@ export function deleteExpenseById(id: number): Promise<any> {
     .where('id', id)
 }
 
-export function deleteExpensesByTypePattern(typePattern: string): Promise<any> {
+export function deleteExpensesByCommentPattern(commentPattern: string): Promise<any> {
   return db('expenses')
     .delete()
-    .where('type', 'like', typePattern)
+    .where('comment', 'like', commentPattern)
+}
+
+function createExpenseDbModel(row: any): ExpenseDbModel {
+  let expense = Object.assign(row, {
+    type: {
+      id: row.type_id,
+      type: row.type_name
+    }
+  })
+  
+  return expense
 }

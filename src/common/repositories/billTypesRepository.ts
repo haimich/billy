@@ -31,7 +31,7 @@ export function getBillTypeById(id: number): Promise<BillType> {
 export function listBillTypes(): Promise<BillType[]> {
   return db('bill_types')
     .select('*')
-    .orderBy('name')
+    .orderBy('type')
 }
 
 export function deleteBillTypeById(id: number): Promise<void> {

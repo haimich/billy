@@ -150,7 +150,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     let customers: any[] = []
     for (let customerId of Object.keys(customersWithTotals)) {
       let customer = customersWithTotals[customerId]
-      let averageTimeToPay = getAverage(customer.daysToPayList)
+      let averageTimeToPay = round(getAverage(customer.daysToPayList), 1)
 
       customers.push({
         name: customer.name,

@@ -348,7 +348,7 @@ describe('stats.AppComponent', () => {
       expect(result.length).to.equal(1)
       expect(result[0].total).to.equal(246.90)
       expect(result[0].billCount).to.equal(2)
-      expect(result[0].averageTimeToPay).to.equal(8)
+      expect(result[0].averageTimeToPay).to.equal(7.5)
       expect(result[0].name).to.equal('Deine Mudda')
     })
 

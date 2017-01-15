@@ -26,6 +26,6 @@ export function deleteExpenseById(id: number): Promise<any> {
   return expensesRepo.deleteExpenseById(id)
 }
 
-export function deleteExpensesByTypePattern(typePattern: string): Promise<any> {
-  return expensesRepo.deleteExpensesByTypePattern(typePattern)
+export function deleteExpensesByCommentPattern(typePattern: string): Promise<any> {
+  return expensesRepo.deleteExpensesByCommentPattern(typePattern)
 }
