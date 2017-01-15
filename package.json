@@ -38,8 +38,6 @@
     "url": "https://github.com/haimich/billy/issues"
   },
   "dependencies": {
-    "@types/mocha": "^2.2.37",
-    "@types/node": "^6.0.59",
     "basic-csv": "0.0.2",
     "bootstrap": "^3.3.6",
     "chart.js": "^1.1.1",
@@ -69,7 +67,7 @@
     "@types/knex": "0.0.33",
     "@types/mkdirp": "^0.3.28",
     "@types/mocha": "^2.2.31",
-    "@types/node": "^6.0.33",
+    "@types/node": "^6.0.59",
     "@types/react": "^0.14.32",
     "@types/react-bootstrap-table": "^2.3.29",
     "@types/react-dom": "^0.14.14",
