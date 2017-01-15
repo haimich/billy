@@ -8,7 +8,7 @@ import t from '../common/helpers/i18n'
 import { getNetAmount, getVatAmount, hasDecimals } from '../common/helpers/math'
 
 interface Props {
-  // delete: (rowIds: String[]) => void;
+  delete: (rowIds: String[]) => void;
   select: (isSelected: boolean, row?: ExpenseDbModel) => void;
   expenses: ExpenseDbModel[];
   selectedId?: number;
@@ -57,7 +57,7 @@ export default class ExpensesTableComponent extends React.Component<Props, State
   }
 
   onDeleteRows(rowKeys: string[]) {
-    // this.props.delete(rowKeys)
+    this.props.delete(rowKeys)
   }
 
   handleConfirm(next: any, dropRowKeys: string[]) {

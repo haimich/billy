@@ -305,6 +305,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           expenses={this.state.expenses}
           select={this.expenseSelected.bind(this)}
           selectedId={this.state.selectedExpense && this.state.selectedExpense.id}
+          delete={this.deleteExpenses.bind(this)}
         />
       editorView =
         <ExpensesEditorComponent
