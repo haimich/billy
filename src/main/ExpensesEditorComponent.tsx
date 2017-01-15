@@ -34,6 +34,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
   refs: {
     type
     date
+    amount
   }
 
   constructor(props) {
@@ -138,6 +139,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     this.setState({
       amountType: newType
     })
+    this.refs.amount.focus()
   }
 
   render() {
@@ -214,6 +216,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                     <input
                       type="text"
                       className="form-control"
+                      ref="amount"
                       id="amount"
                       value={this.state.amount}
                       onChange={(event: any) => this.setState({ amount: event.target.value })}
