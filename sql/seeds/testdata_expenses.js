@@ -4,18 +4,28 @@ const chance = new Chance()
 
 const NUMBER_OF_EXPENSES = 100
 let counter = 1
+let expenseTypes = ['Travelling Car', 'Travelling Train', 'Stamps', 'Accomodations', 'Others']
 
 // Deletes ALL existing entries!
 exports.seed = (knex, Promise) => {
-  return knex('expenses').del()
-    .then(() => {
-      console.log('Creating expenses')
+  console.log('Creating expense types')
 
-      let promises = []
-      for (let i = 0; i < NUMBER_OF_EXPENSES; i++) {
-        promises.push(knex('expenses').insert(generateExpense()))
-      }
-      return Promise.all(promises)
+  let promises = []
+  for (let type of expenseTypes) {
+    promises.push(knex('expense_types').insert({ type }))
+  }
+  return Promise.all(promises)
+    .then(() => {
+      return knex('expenses').del()
+        .then(() => {
+          console.log('Creating expenses')
+
+          let promises = []
+          for (let i = 0; i < NUMBER_OF_EXPENSES; i++) {
+            promises.push(knex('expenses').insert(generateExpense()))
+          }
+          return Promise.all(promises)
+        })
     })
 }
 
@@ -26,10 +36,14 @@ function generateExpense() {
   const dateCreated = moment(`${createdYear}-${createdMonth}-${createdDay}`)
 
   const expense = {
-    type: chance.paragraph(),
+    type_id: chance.natural({ min: 1, max: expenseTypes.length}),
     preTaxAmount: Math.round(chance.floating({min: 0, max: 1500}) * 100) / 100,
     taxrate: chance.natural({min: 1, max: 20}),
     date: dateCreated.format('YYYY-MM-DD'),
+  }
+
+  if (chance.bool()) {
+    expense.comment = chance.paragraph()
   }
 
   return expense

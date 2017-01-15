@@ -67,11 +67,11 @@ exports.up = (knex, Promise) => {
 }
 
 exports.down = (knex, Promise) => {
-  return knex.schema.dropTableIfExists('bill_types')
+  return knex.schema.table('bills', table => {
+    table.dropColumn('type')
+  })
     .then(() => {
-      return knex.schema.table('bills', table => {
-        table.dropColumn('type')
-      })
+      return knex.schema.dropTableIfExists('bill_types')
     })
 }
 
