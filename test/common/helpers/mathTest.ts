@@ -1,4 +1,4 @@
-import { round, getAverage, getNetAmount, getVatAmount, getTaxrate } from '../../../src/common/helpers/math'
+import { round, getAverage, getNetAmount, getVatAmount, getTaxrate, getPreTaxAmount } from '../../../src/common/helpers/math'
 import { expect } from 'chai'
 
 describe.only('math', () => {
@@ -50,6 +50,22 @@ describe.only('math', () => {
     })
   })
 
+  describe('getPreTaxAmount', () => {
+    it('should return the pre tax amount of the given taxrate and net amount', () => {
+      let net = 100
+      let taxrate = 10
+
+      expect(getPreTaxAmount(taxrate, net)).to.equal(110)
+    })
+
+    it('should return the net amount when the taxrate is 0', () => {
+      let net = 123.45
+      let taxrate = 0
+
+      expect(getPreTaxAmount(taxrate, net)).to.equal(123.45)
+    })
+  })
+
   describe('getVatAmount', () => {
     it('should return the vat amount of the given taxrate', () => {
       let preTaxAmount = 123.45
@@ -58,7 +74,7 @@ describe.only('math', () => {
       expect(getVatAmount(taxrate, preTaxAmount)).to.equal(11.22)
     })
 
-    it('should return 0 when the taxrate is 0', () => {
+    it('should return the pre tax amount when the taxrate is 0', () => {
       let preTaxAmount = 123.45
       let taxrate = 0
 

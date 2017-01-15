@@ -12,6 +12,10 @@ export function round(value: number, decimals: number = 2): number {
   return Number(value.toFixed(decimals))
 }
 
+export function getPreTaxAmount(taxrate: number, netAmount: number): number {
+  return round(netAmount * (taxrate / 100 + 1))
+}
+
 export function getNetAmount(taxrate: number, preTaxAmount: number): number {
   let tax = taxrate / 100 + 1
 

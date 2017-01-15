@@ -93,6 +93,10 @@ textarea {
   justify-content: flex-end;
 }
 
+.form-group .toggle-button .btn {
+  font-weight: 500;
+}
+
 .file-list {
   max-height: 126px;
   overflow: auto;

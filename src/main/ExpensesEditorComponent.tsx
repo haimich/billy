@@ -6,7 +6,7 @@ import { expenseExists } from '../common/services/expensesService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { stringIsEmpty } from '../common/helpers/text'
-import { round, getNetAmount, getTaxrate, getVatAmount } from '../common/helpers/math'
+import { round, getNetAmount, getTaxrate, getVatAmount, getPreTaxAmount } from '../common/helpers/math'
 
 const Datetime = require('react-datetime')
 
@@ -67,7 +67,10 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     const expense: Expense = {
       id: this.state.id,
       type: this.state.type,
-      preTaxAmount: numberFormatterDb(this.state.preTaxAmount),
+      preTaxAmount: numberFormatterDb(
+        this.state.amountType === 'preTax'
+        ? this.state.amount
+        : this.getPreTaxAmount()),
       taxrate: numberFormatterDb(this.state.taxrate),
       date: dateFormatterDb(this.state.date)
     }
@@ -90,30 +93,40 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     this.revalidate(ReactDOM.findDOMNode(this.refs.date).querySelector('input'))
   }
 
-  getNetAmount(amount: string): string {
-    let net = getNetAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(amount))
+  getNetAmount(): string {
+    if (this.state.amount === '' || this.state.taxrate === '') {
+      return ''
+    }
+
+    let net = getNetAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
     return numberFormatterView(net)
   }
 
-  getPreTaxAmount(amount: string): string {
-    // let preTax = getPreTaxAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(amount))
-    // return numberFormatterView(preTax)
-    return '123'
+  getPreTaxAmount(): string {
+    if (this.state.amount === '' || this.state.taxrate === '') {
+      return ''
+    }
+
+    let preTax = getPreTaxAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
+    return numberFormatterView(preTax)
   }
 
   getVatAmount(): string {
-    // let vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.preTaxAmount))
-    // return numberFormatterView(vat)
-    return '45'
+    if (this.state.amount === '' || this.state.taxrate === '') {
+      return ''
+    }
+
+    let vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
+    return numberFormatterView(vat)
   }
 
   getCalculatedAmount(): string {
     if (this.state.amountType == null) {
       return ''
     } else if (this.state.amountType === 'preTax') {
-      return this.getNetAmount(this.state.amount)
+      return this.getNetAmount()
     } else if (this.state.amountType === 'net') {
-      return this.getPreTaxAmount(this.state.amount)
+      return this.getPreTaxAmount()
     }
   }
 
@@ -133,10 +146,10 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     let calculatedInputLabel = ''
 
     if (this.state.amountType === 'preTax') {
-      calculatedInputLabel = t('Brutto')
+      calculatedInputLabel = t('Netto')
       classesPreTaxAmountBtn += ' active'
     } else if (this.state.amountType === 'net') {
-      calculatedInputLabel = t('Netto')
+      calculatedInputLabel = t('Brutto')
       classesNetAmountBtn += ' active'
     }
 

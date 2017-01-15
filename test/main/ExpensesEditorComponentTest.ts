@@ -9,24 +9,6 @@ describe('main.ExpensesEditorComponent', () => {
     component = new ExpensesEditorComponent({})    
   })
 
-/*
-* Brutto (preTaxAmount): 110 €  // macht Sinn in Verbindung mit Taxrate
-* Netto (netAmount):     100 €  // macht Sinn in Verbindung mit Taxrate
-* Steuern (taxrate):     10 %   // wird immer manuell gesetzt, kann berechnet werden aus pre und net
-* Gezahlte Steuern:      10 €   // sollte normalerweise berechnet werden
-*
-* jedes Feld kann verändert werden
-* wenn kein Wert vorliegt, wird der aktuelle Wert nur gespeichert
-* wenn bereits ein Wert vorliegt, wird der dritte berechnet
-* was ist, wenn zwei vorliegen und der dritte eingetragen wird? Das ist nur beim ersten mal nicht der Fall
-* normal wird entweder pre oder net eingegeben, Mwst eher selten
-
-* 1) pre und vat liegen vor, tax wird eingegeben
-*    - 
-* 2) pre und tax liegen vor, vat wird eingegeben
-* 3) vat und tax liegen vor, pre wird eingegeben
-*/
-
   describe('getNetAmount', () => {
     // it('should return the net amount of the given preTaxAmount', () => {
     //   let state: any = {
