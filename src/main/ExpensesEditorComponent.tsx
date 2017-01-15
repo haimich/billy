@@ -248,38 +248,34 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
             <div className="col-md-6">
               <div className="form-group">
-                <div className="form-group">
-                  <label htmlFor="calculatedAmount" className="col-sm-4 control-label">{calculatedInputLabel}</label>
-                  <div className="col-sm-8">
-                    <div className="input-group">
-                      <span className="input-group-addon">€</span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="calculatedAmount"
-                        value={this.getCalculatedAmount()}
-                        style={{ textAlign: 'right' }}
-                        readOnly
-                        />
-                    </div>
+                <label htmlFor="calculatedAmount" className="col-sm-4 control-label">{calculatedInputLabel}</label>
+                <div className="col-sm-8">
+                  <div className="input-group">
+                    <span className="input-group-addon">€</span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="calculatedAmount"
+                      value={this.getCalculatedAmount()}
+                      style={{ textAlign: 'right' }}
+                      readOnly
+                      />
                   </div>
                 </div>
               </div>
               <div className="form-group">
-                <div className="form-group">
-                  <label htmlFor="vatAmount" className="col-sm-4 control-label">{t('Mehrwertsteuer')}</label>
-                  <div className="col-sm-8">
-                    <div className="input-group">
-                      <span className="input-group-addon">€</span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="vatAmount"
-                        value={this.getVatAmount()}
-                        style={{ textAlign: 'right' }}
-                        readOnly
-                        />
-                    </div>
+                <label htmlFor="vatAmount" className="col-sm-4 control-label">{t('Mehrwertsteuer')}</label>
+                <div className="col-sm-8">
+                  <div className="input-group">
+                    <span className="input-group-addon">€</span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="vatAmount"
+                      value={this.getVatAmount()}
+                      style={{ textAlign: 'right' }}
+                      readOnly
+                      />
                   </div>
                 </div>
               </div>
