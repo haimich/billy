@@ -6,7 +6,7 @@ import { expenseExists } from '../common/services/expensesService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { stringIsEmpty } from '../common/helpers/text'
-import { round, getNetAmount, getTaxrate, getVatAmount, getPreTaxAmount } from '../common/helpers/math'
+import { getNetAmount, getVatAmount, getPreTaxAmount, hasDecimals } from '../common/helpers/math'
 
 const Datetime = require('react-datetime')
 
@@ -239,7 +239,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                         value={this.state.taxrate}
                         onChange={(event: any) => this.setState({ taxrate: event.target.value })}
                         style={{ textAlign: 'right' }}
-                        pattern={'[+-]?[0-9]+(,[0-9]?)?'}
+                        pattern={'[+-]?[0-9]+(,[0-9]+)?'}
                         />
                     </div>
                   </div>
@@ -352,13 +352,16 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
     if (isNew) {
       this.resetState()
-    } else {
+    } else {      
       this.setState({
         id: expense.id,
         type: expense.type,
-        preTaxAmount: numberFormatterView(expense.preTaxAmount),
+        amount: numberFormatterView(expense.preTaxAmount),
+        amountType: 'preTax',
         date: dateFormatterView(expense.date),
-        taxrate: expense.taxrate,
+        taxrate: hasDecimals(expense.taxrate)
+          ? numberFormatterView(expense.taxrate)
+          : numberFormatterView(expense.taxrate, 0),
         isNew,
         isDirty: false
       })

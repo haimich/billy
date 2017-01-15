@@ -2,20 +2,54 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
-import { dateFormatterView, currencyFormatter, percentageFormatter } from '../common/helpers/formatters'
+import { dateFormatterView, currencyFormatter, percentageFormatter, numberFormatterView } from '../common/helpers/formatters'
 import { preventDragAndDrop } from '../common/helpers/dom' 
 import t from '../common/helpers/i18n'
+import { getNetAmount, getVatAmount, hasDecimals } from '../common/helpers/math'
 
 interface Props {
   // delete: (rowIds: String[]) => void;
   select: (isSelected: boolean, row?: ExpenseDbModel) => void;
-  expenses: any[]; //ExpenseDbModel
+  expenses: ExpenseDbModel[];
   selectedId?: number;
 }
 
-export default class ExpensesTableComponent extends React.Component<Props, {}> {
+interface State {
+  enrichedExpenses: EnrichedExpense[]
+}
+
+interface EnrichedExpense extends ExpenseDbModel {
+  netAmount: string
+  vatAmount: string
+}
+
+export default class ExpensesTableComponent extends React.Component<Props, State> {
 
   props: Props
+  state: State
+
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      enrichedExpenses: this.getEnrichedExpenses(props.expenses)
+    }
+  }
+
+  getEnrichedExpenses(expenses: ExpenseDbModel[]): EnrichedExpense[] {
+    let enriched = []
+
+    for (let expense of this.props.expenses) {
+      let exp = Object.assign(expense, {
+        netAmount: numberFormatterView(getNetAmount(expense.taxrate, expense.preTaxAmount)),
+        vatAmount: numberFormatterView(getVatAmount(expense.taxrate, expense.preTaxAmount))
+      })
+
+      enriched.push(exp)
+    }
+
+    return enriched
+  }
 
   onSelectRow(row: any, isSelected: boolean, event: any): boolean {
     this.props.select(isSelected, row)
@@ -33,7 +67,15 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
   }
 
   handleAdd(event) {
-    // this.props.select(false, undefined)
+    this.props.select(false, undefined)
+  }
+
+  formatTaxrate(value: number): string {
+    let tax = hasDecimals(value)
+      ? numberFormatterView(value)
+      : numberFormatterView(value, 0)
+
+    return tax + ' %'
   }
 
   render() {
@@ -60,7 +102,7 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
     return (
       <div id="table-container">
         <BootstrapTable
-          data={this.props.expenses}
+          data={this.state.enrichedExpenses}
           striped={true}
           hover={true}
           search={true}
@@ -76,8 +118,10 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
 
           <TableHeaderColumn isKey={true} hidden={true} dataField="id" width="140" dataSort={true}>{t('ID')}</TableHeaderColumn>
           <TableHeaderColumn dataField="type" width="290" dataSort={true}>{t('Typ')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="preTaxAmount" width="90" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="taxrate" width="90" dataAlign="right" dataFormat={percentageFormatter} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="preTaxAmount" width="70" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="netAmount" width="70" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="vatAmount" width="70" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Mehrwertsteuer')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="taxrate" width="70" dataAlign="right" dataFormat={this.formatTaxrate.bind(this)} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date" width="170" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
 
         </BootstrapTable>
@@ -87,7 +131,7 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
   }
 
   scrollDown() {
-    if (this.props.expenses.length >= 1) {
+    if (this.state.enrichedExpenses.length >= 1) {
       const lastRow: any = ReactDOM.findDOMNode(this).querySelector('tbody tr:last-child')
       lastRow.scrollIntoView()
     }
@@ -99,6 +143,12 @@ export default class ExpensesTableComponent extends React.Component<Props, {}> {
 
     document.querySelector(`.react-bs-table-search-form button`).innerHTML = t('Leeren')
     document.querySelector(`.react-bs-table-add-btn`).addEventListener('click', this.handleAdd.bind(this))
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    this.setState({
+      enrichedExpenses: this.getEnrichedExpenses(newProps.expenses)
+    })
   }
 
 }
