@@ -4,6 +4,7 @@ import {
   deleteBillByInvoiceId, deleteBillsByInvoiceIdPattern, updateBill
 } from '../../../src/common/repositories/billsRepository'
 import { init as initFiles, createFile, deleteFilesByPathPattern } from '../../../src/common/repositories/filesRepository'
+import { init as initBillTypes, createBillType, deleteBillTypeByNamePattern } from '../../../src/common/repositories/billTypesRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'
 
@@ -14,10 +15,12 @@ before(async () => {
   const knexInstance = await initDb(knexConfig)
   await initBills(knexInstance)
   await initFiles(knexInstance)
+  await initBillTypes(knexInstance)
 })
 
 afterEach(async () => {
   await deleteFilesByPathPattern(PREFIX + '%')
+  await deleteBillTypeByNamePattern(PREFIX + '%')
   await deleteBillsByInvoiceIdPattern(PREFIX + '%')
 })
 
@@ -45,10 +48,12 @@ describe('billsRepository', () => {
   describe('createBill', () => {
     it('should return the created bill', async () => {
       const testDate = moment().toISOString()
+      const type = await createBillType({ type: PREFIX + 'Dolmetschen' })
 
       const bill = await createBill({
         invoice_id: PREFIX + '123',
         amount: 123.45,
+        type_id: type.id,
         comment: 'bla',
         customer_id: 1,
         date_created: testDate,
@@ -57,7 +62,10 @@ describe('billsRepository', () => {
 
       expect(bill.invoice_id).to.equal(PREFIX + '123')
       expect(bill.amount).to.equal(123.45)
-      expect(bill.amount).to.equal(123.45)
+      expect(bill.comment).to.equal('bla')
+      expect(bill.type_name).to.equal(PREFIX + 'Dolmetschen')
+      expect(bill.type.id).to.equal(type.id)
+      expect(bill.type.type).to.equal(PREFIX + 'Dolmetschen')
       expect(bill.customer.id).to.equal(1)
       expect(bill.date_created).to.equal(testDate)
       expect(bill.date_paid).to.equal(testDate)
@@ -67,10 +75,13 @@ describe('billsRepository', () => {
   describe('updateBill', () => {
     it('should update the bill', async () => {
       const testDate = moment().toISOString()
+      const type1 = await createBillType({ type: PREFIX + 'Dolmetschen' })
+      const type2 = await createBillType({ type: PREFIX + 'Übersetzen' })
 
       await createBill({
         invoice_id: PREFIX + '123',
         amount: 123.45,
+        type_id: type1.id,
         comment: 'bla',
         customer_id: 1,
         date_created: testDate
@@ -79,6 +90,7 @@ describe('billsRepository', () => {
       const updatedBill = await updateBill({
         invoice_id: PREFIX + '123',
         amount: 11,
+        type_id: type2.id,
         comment: 'bla foo',
         customer_id: 1,
         date_created: testDate,
@@ -87,6 +99,9 @@ describe('billsRepository', () => {
 
       expect(updatedBill.amount).to.equal(11)
       expect(updatedBill.comment).to.equal('bla foo')
+      expect(updatedBill.type_name).to.equal(PREFIX + 'Übersetzen')
+      expect(updatedBill.type.id).to.equal(type2.id)
+      expect(updatedBill.type.type).to.equal(PREFIX + 'Übersetzen')
       expect(updatedBill.date_paid).to.equal(testDate)
     })
   })

@@ -60,8 +60,7 @@ function getBillById(id: number): Promise<BillDbModel> {
       c.name as customer_name,
       c.telephone as customer_telephone,
       bt.id as type_id,
-      bt.type as type_name,
-      bt.type
+      bt.type as type_name
 
       from bills b
 
@@ -92,8 +91,7 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
       c.name as customer_name,
       c.telephone as customer_telephone,
       bt.id as type_id,
-      bt.type as type_name,
-      bt.type
+      bt.type as type_name
 
       from bills b
 
@@ -124,8 +122,7 @@ export function listBills(): Promise<BillDbModel[]> {
       c.name as customer_name,
       c.telephone as customer_telephone,
       bt.id as type_id,
-      bt.type as type_name,
-      bt.type
+      bt.type as type_name
       
       from bills b
 
@@ -185,7 +182,7 @@ function createBillDbModel(row: any): BillDbModel {
   if (bill.type_id != null) {
     bill.type = {
       id: bill.type_id,
-      type: bill.type
+      type: bill.type_name
     }
   }
   
