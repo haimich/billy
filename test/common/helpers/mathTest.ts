@@ -1,4 +1,7 @@
-import { round, getAverage, getNetAmount, getVatAmount, getTaxrate, getPreTaxAmount } from '../../../src/common/helpers/math'
+import {
+  round, getAverage, getNetAmount, getVatAmount,
+  getTaxrate, getPreTaxAmount, hasDecimals
+} from '../../../src/common/helpers/math'
 import { expect } from 'chai'
 
 describe.only('math', () => {
@@ -95,6 +98,16 @@ describe.only('math', () => {
       let vatAmount = preTaxAmount
 
       expect(getTaxrate(preTaxAmount, vatAmount)).to.equal(0)
+    })
+  })
+
+  describe('hasDecimals', () => {
+    it('should return true if the given value has one or more decimals', () => {
+      expect(hasDecimals(123.45)).to.be.true
+    })
+
+    it('should return false if the given value has no decimal', () => {
+      expect(hasDecimals(123)).to.be.false
     })
   })
 

@@ -39,3 +39,7 @@ export function getTaxrate(preTaxAmount: number, vatAmount: number): number {
 
   return round((vatAmount / diff) * 100)
 }
+
+export function hasDecimals(value: number): boolean {
+  return ! (Math.floor(value) === value)
+}
