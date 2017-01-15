@@ -32,7 +32,7 @@ interface State {
   expenses: ExpenseDbModel[]
   selectedBill?: BillDbModel
   selectedExpense?: ExpenseDbModel
-  mode: string
+  mode: 'bills' | 'expenses'
 }
 
 export default class AppComponent extends React.Component<Props, {}> {
@@ -50,7 +50,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     this.state = {
       bills: props.bills,
       expenses: props.expenses,
-      mode: t('Ausgaben')
+      mode: 'expenses'
     }
 
     ipcRenderer.on('shortcut-CommandOrControl+d', () => {
@@ -63,10 +63,10 @@ export default class AppComponent extends React.Component<Props, {}> {
   }
 
   toggleMode() {
-    if (this.state.mode === t('Einnahmen')) {
-      this.setState({ mode: t('Ausgaben') })
-    } else if (this.state.mode === t('Ausgaben')) {
-      this.setState({ mode: t('Einnahmen') })
+    if (this.state.mode === 'bills') {
+      this.setState({ mode: 'expenses' })
+    } else if (this.state.mode === 'expenses') {
+      this.setState({ mode: 'bills' })
     }
   }
 
@@ -283,7 +283,7 @@ export default class AppComponent extends React.Component<Props, {}> {
   render() {
     let tableView, editorView
 
-    if (this.state.mode === t('Einnahmen')) {
+    if (this.state.mode === 'bills') {
       tableView = 
         <BillsTableComponent
           bills={this.state.bills}
@@ -298,8 +298,8 @@ export default class AppComponent extends React.Component<Props, {}> {
           update={this.updateBill.bind(this)}
           updateCustomer={this.updateCustomer.bind(this)}
           notify={this.notify.bind(this)}
-        />       
-    } else if (this.state.mode === t('Ausgaben')) {
+        />
+    } else if (this.state.mode === 'expenses') {
       tableView = 
         <ExpensesTableComponent
           expenses={this.state.expenses}
@@ -322,6 +322,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           activeLabel={t('Einnahmen')}
           inactiveLabel={t('Ausgaben')}
           selectedValue={this.state.mode}
+          keys={{active: 'bills', inactive: 'expenses'}}
           handleValueChange={newValue => this.setState({ mode: newValue})}
         />
 

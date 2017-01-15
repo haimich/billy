@@ -39,7 +39,7 @@ export default class ExpensesTableComponent extends React.Component<Props, State
   getEnrichedExpenses(expenses: ExpenseDbModel[]): EnrichedExpense[] {
     let enriched = []
 
-    for (let expense of this.props.expenses) {
+    for (let expense of expenses) {
       let exp = Object.assign(expense, {
         netAmount: numberFormatterView(getNetAmount(expense.taxrate, expense.preTaxAmount)),
         vatAmount: numberFormatterView(getVatAmount(expense.taxrate, expense.preTaxAmount))
