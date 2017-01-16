@@ -141,7 +141,14 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
       return ''
     }
 
-    let vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
+    let vat
+
+    if (this.state.amountType === 'preTax') {
+      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
+    } else if (this.state.amountType === 'net') {
+      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.getPreTaxAmount()))
+    }
+
     return numberFormatterView(vat)
   }
 

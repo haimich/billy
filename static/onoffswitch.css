@@ -100,7 +100,7 @@
 }
 
 .toggle--knob .toggle--checkbox:checked + .toggle--btn {
-  background: #5CB8F3;
+  background: #53c669;
 }
 
 .toggle--knob .toggle--checkbox:checked + .toggle--btn:before {

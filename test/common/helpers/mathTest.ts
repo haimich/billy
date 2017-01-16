@@ -77,11 +77,11 @@ describe('math', () => {
       expect(getVatAmount(taxrate, preTaxAmount)).to.equal(11.22)
     })
 
-    it('should return the pre tax amount when the taxrate is 0', () => {
+    it('should return 0 when the taxrate is 0', () => {
       let preTaxAmount = 123.45
       let taxrate = 0
 
-      expect(getVatAmount(taxrate, preTaxAmount)).to.equal(123.45)
+      expect(getVatAmount(taxrate, preTaxAmount)).to.equal(0)
     })
   })
 

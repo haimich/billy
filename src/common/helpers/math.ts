@@ -24,7 +24,7 @@ export function getNetAmount(taxrate: number, preTaxAmount: number): number {
 
 export function getVatAmount(taxrate: number, preTaxAmount: number): number {
   if (taxrate === 0) {
-    return preTaxAmount
+    return 0
   } else {
     return round(preTaxAmount - getNetAmount(taxrate, preTaxAmount))
   }
