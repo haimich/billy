@@ -157,7 +157,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       selectedBill: undefined
     })
 
-    this.notify(t('Löschen erfolgreich'), 'success')
+    this.notify(t('Die Rechnung wurde gelöscht!'), 'success')
   }
 
   async updateCustomer(customer: Customer) {
@@ -242,7 +242,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       selectedExpense: undefined
     })
 
-    this.notify(t('Löschen erfolgreich'), 'success')
+    this.notify(t('Die Ausgabe wurde gelöscht!'), 'success')
   }
 
   notify(message: string, level: 'error' | 'success') {
@@ -319,10 +319,10 @@ export default class AppComponent extends React.Component<Props, {}> {
     return (
       <div>
         <OnOffSwitchComponent
-          activeLabel={t('Einnahmen')}
-          inactiveLabel={t('Ausgaben')}
+          activeLabel={t('Ausgaben')}
+          inactiveLabel={t('Einnahmen')}
           selectedValue={this.state.mode}
-          keys={{active: 'bills', inactive: 'expenses'}}
+          keys={{inactive: 'bills', active: 'expenses'}}
           handleValueChange={newValue => this.setState({ mode: newValue})}
         />
 

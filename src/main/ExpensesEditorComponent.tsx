@@ -2,21 +2,26 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import Expense from '../common/models/ExpenseModel'
+import ExpenseType from '../common/models/ExpenseTypeModel'
 import { expenseExists } from '../common/services/expensesService'
+import { listExpenseTypes, getExpenseTypeById, createExpenseType } from '../common/services/expenseTypesService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { stringIsEmpty } from '../common/helpers/text'
 import { getNetAmount, getVatAmount, getPreTaxAmount, hasDecimals } from '../common/helpers/math'
 
 const Datetime = require('react-datetime')
+const Typeahead = require('react-bootstrap-typeahead').default
 
 interface State {
   id?: number
-  type: string
+  selectedExpenseType?: ExpenseType[]
   amount?: string
   amountType?: 'preTax' | 'net'
   taxrate?: string
   date?: string
+  comment?: string
+  expenseTypeList: ExpenseType[]
   isNew: boolean
   isDirty: boolean
 }
@@ -35,30 +40,45 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     type
     date
     amount
+    expenseTypeTypeahead
   }
 
   constructor(props) {
     super(props)
 
     this.state = this.getDefaultState()
+    this.fetchTypeaheadData()
   }
 
   resetState() {
     this.setState(this.getDefaultState())
-    process.nextTick(() => this.refs.type.focus())
+    this.refs.expenseTypeTypeahead.getInstance().clear()
+    this.fetchTypeaheadData()
     this.resetFormValidationErrors()
   }
 
   getDefaultState(): State {
     return {
       id: undefined,
-      type: '',
+      selectedExpenseType: undefined,
       amount: '',
       amountType: 'preTax',
       taxrate: '19',
       date: undefined,
+      comment: '',
+      expenseTypeList: [],
       isNew: true,
       isDirty: false
+    }
+  }
+
+  async fetchTypeaheadData() {
+    try {
+      this.setState({
+        expenseTypeList: await listExpenseTypes()
+      })
+    } catch (err) {
+      this.props.notify(t('Typeahead-Daten konnten nicht geladen werden') + err, 'error')
     }
   }
 
@@ -67,7 +87,9 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
     const expense: Expense = {
       id: this.state.id,
-      type_id: 1, //this.state.type TODOOOOOOOO
+      type_id: (this.state.selectedExpenseType == null || this.state.selectedExpenseType[0] == null)
+        ? undefined
+        : this.state.selectedExpenseType[0].id,
       preTaxAmount: numberFormatterDb(
         this.state.amountType === 'preTax'
         ? this.state.amount
@@ -142,6 +164,38 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     this.refs.amount.focus()
   }
 
+  async handleExpenseTypeChange(selected: any) {
+    if (selected == null || selected.length !== 1) {
+      return
+    }
+
+    let selectedExpenseType = selected[0]
+    let isNewExpenseType = false
+
+    if (selectedExpenseType.customOption && (await getExpenseTypeById(selectedExpenseType.id) == null)) {
+      isNewExpenseType = true
+    }
+
+    if (isNewExpenseType) {
+      let expenseType
+
+      try {
+        expenseType = await createExpenseType({
+          type: selectedExpenseType.type
+        })
+      } catch (err) {
+        this.props.notify(t('Der Ausgabenstyp konnte nicht angelegt werden: ') + err, 'error')
+      }
+
+      this.setState({
+        selectedExpenseType: [expenseType],
+        expenseTypeList: [expenseType].concat(this.state.expenseTypeList)
+      })
+    } else {
+      this.setState({ selectedExpenseType: selected })
+    }
+  }
+
   render() {
     let classesPreTaxAmountBtn = 'btn btn-default'
     let classesNetAmountBtn = 'btn btn-default'
@@ -164,15 +218,18 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
               <div className="form-group">
                 <label htmlFor="type" className="col-sm-4 control-label">{t('Typ der Ausgabe')}</label>
                 <div className="col-sm-8">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="type"
-                    ref="type"
-                    required
-                    value={this.state.type}
-                    onChange={(event: any) => this.setState({ type: event.target.value })}
-                    autoFocus
+                  <Typeahead
+                    options={this.state.expenseTypeList}
+                    allowNew={true}
+                    onChange={this.handleExpenseTypeChange.bind(this)}
+                    onBlur={this.handleExpenseTypeChange.bind(this)}
+                    selected={this.state.selectedExpenseType}
+                    labelKey={'type'}
+                    ref='expenseTypeTypeahead'
+                    name="expenseType"
+                    placeholder=""
+                    emptyLabel={t('Keine Einträge vorhanden')}
+                    newSelectionPrefix={t('Typ anlegen: ')}
                     />
                 </div>
               </div>
@@ -240,6 +297,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                         onChange={(event: any) => this.setState({ taxrate: event.target.value })}
                         style={{ textAlign: 'right' }}
                         pattern={'[+-]?[0-9]+(,[0-9]+)?'}
+                        required
                         />
                     </div>
                   </div>
@@ -336,6 +394,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
   componentDidMount() {
     this.addFormValidation()
+    this.enableTypeaheadFeatures(this.refs.expenseTypeTypeahead, 'expenseType', true)
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -351,13 +410,14 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     } else {      
       this.setState({
         id: expense.id,
-        type: expense.type,
+        selectedExpenseType: [expense.type],
         amount: numberFormatterView(expense.preTaxAmount),
         amountType: 'preTax',
         date: dateFormatterView(expense.date),
         taxrate: hasDecimals(expense.taxrate)
           ? numberFormatterView(expense.taxrate)
           : numberFormatterView(expense.taxrate, 0),
+        comment: expense.comment,
         isNew,
         isDirty: false
       })

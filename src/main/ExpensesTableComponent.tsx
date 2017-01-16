@@ -117,7 +117,7 @@ export default class ExpensesTableComponent extends React.Component<Props, State
           height="340 px">
 
           <TableHeaderColumn isKey={true} hidden={true} dataField="id" width="140" dataSort={true}>{t('ID')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type" width="290" dataSort={true}>{t('Typ')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="290" dataSort={true}>{t('Typ')}</TableHeaderColumn>
           <TableHeaderColumn dataField="preTaxAmount" width="70" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
           <TableHeaderColumn dataField="netAmount" width="70" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
           <TableHeaderColumn dataField="vatAmount" width="70" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Mehrwertsteuer')}</TableHeaderColumn>

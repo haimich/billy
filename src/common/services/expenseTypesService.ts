@@ -5,22 +5,22 @@ export function createExpenseType(expenseType: ExpenseType): Promise<ExpenseType
   return expenseTypesRepo.createExpenseType(expenseType)
 }
 
-export function updateBillType(expenseType: ExpenseType): Promise<ExpenseType> {
+export function updateExpenseType(expenseType: ExpenseType): Promise<ExpenseType> {
   return expenseTypesRepo.updateExpenseType(expenseType)
 }
 
-export function getBillTypeById(id: number): Promise<ExpenseType> {
+export function getExpenseTypeById(id: number): Promise<ExpenseType> {
   return expenseTypesRepo.getExpenseTypeById(id)
 }
 
-export function listBillTypes(): Promise<ExpenseType[]> {
+export function listExpenseTypes(): Promise<ExpenseType[]> {
   return expenseTypesRepo.listExpenseTypes()
 }
 
-export function deleteBillTypeById(id: number): Promise<void> {
+export function deleteExpenseTypeById(id: number): Promise<void> {
   return expenseTypesRepo.deleteExpenseTypeById(id)
 }
 
-export function deleteBillTypeByNamePattern(namePattern: string): Promise<void> {
+export function deleteExpenseTypeByNamePattern(namePattern: string): Promise<void> {
   return expenseTypesRepo.deleteExpenseTypeByNamePattern(namePattern)
 }
