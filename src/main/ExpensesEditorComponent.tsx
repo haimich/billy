@@ -9,6 +9,7 @@ import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/helpers/formatters'
 import { stringIsEmpty } from '../common/helpers/text'
 import { getNetAmount, getVatAmount, getPreTaxAmount, hasDecimals } from '../common/helpers/math'
+import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
 const Typeahead = require('react-bootstrap-typeahead').default
@@ -95,7 +96,8 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
         ? this.state.amount
         : this.getPreTaxAmount()),
       taxrate: numberFormatterDb(this.state.taxrate),
-      date: dateFormatterDb(this.state.date)
+      date: dateFormatterDb(this.state.date),
+      comment: this.state.comment
     }
 
     try {
@@ -335,6 +337,19 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                       readOnly
                       />
                   </div>
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
+                <div className="col-sm-8">
+                  <Textarea
+                    className="form-control"
+                    minRows={1}
+                    maxRows={3}
+                    id="comment"
+                    value={this.state.comment}
+                    onChange={(event: any) => this.setState({ comment: event.target.value })}
+                  />
                 </div>
               </div>
             </div>
