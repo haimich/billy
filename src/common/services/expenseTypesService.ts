@@ -13,6 +13,10 @@ export function getExpenseTypeById(id: number): Promise<ExpenseType> {
   return expenseTypesRepo.getExpenseTypeById(id)
 }
 
+export function getExpenseTypeByType(type: string): Promise<ExpenseType> {
+  return expenseTypesRepo.getExpenseTypeByType(type)
+}
+
 export function listExpenseTypes(): Promise<ExpenseType[]> {
   return expenseTypesRepo.listExpenseTypes()
 }

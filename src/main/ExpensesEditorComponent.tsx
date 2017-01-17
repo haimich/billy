@@ -238,6 +238,8 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                     name="expenseType"
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
+                    paginationText={t('Mehr anzeigen')}
+                    maxResults={20}
                     newSelectionPrefix={t('Typ anlegen: ')}
                     />
                 </div>

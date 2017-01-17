@@ -1,7 +1,7 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
 import {
   init, getExpenseTypeById, createExpenseType, updateExpenseType,
-  listExpenseTypes, deleteExpenseTypeByNamePattern
+  listExpenseTypes, deleteExpenseTypeByNamePattern, getExpenseTypeByType
 } from '../../../src/common/repositories/expenseTypesRepository'
 import { expect } from 'chai'
 
@@ -44,6 +44,18 @@ describe('expenseTypesRepository', () => {
       const updatedExpenseType = await getExpenseTypeById(expenseType.id!)
 
       expect(updatedExpenseType.type).to.equal(PREFIX + 'the-updated-type')
+    })
+  })
+
+  describe('getExpenseTypeByType', () => {
+    it('should return the matching expenseType', async () => {
+      const expenseType = await createExpenseType({
+        type: PREFIX + 'Briefmarken'
+      })
+
+      let type = await getExpenseTypeByType(PREFIX + 'Briefmarken')
+
+      expect(type.id).to.equal(expenseType.id)
     })
   })
 

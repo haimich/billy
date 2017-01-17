@@ -28,6 +28,12 @@ export function getExpenseTypeById(id: number): Promise<ExpenseType> {
     .first()
 }
 
+export function getExpenseTypeByType(type: string): Promise<ExpenseType> {
+  return db('expense_types')
+    .where('type', type)
+    .first()
+}
+
 export function listExpenseTypes(): Promise<ExpenseType[]> {
   return db('expense_types')
     .select('*')

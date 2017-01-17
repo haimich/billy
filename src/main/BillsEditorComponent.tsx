@@ -472,6 +472,8 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
                     newSelectionPrefix={t('Kunden anlegen: ')}
+                    paginationText={t('Mehr anzeigen')}
+                    maxResults={20}
                     tabIndex={2}
                     />
                   <span className="sub-label">
@@ -541,6 +543,8 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
                     placeholder=""
                     emptyLabel={t('Keine Einträge vorhanden')}
                     newSelectionPrefix={t('Typ anlegen: ')}
+                    paginationText={t('Mehr anzeigen')}
+                    maxResults={20}
                     tabIndex={5}
                     />
                 </div>
