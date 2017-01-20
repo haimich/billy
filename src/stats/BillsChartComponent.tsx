@@ -31,7 +31,7 @@ const colors = [
   '246, 41, 106'
 ]
 
-export default class ChartComponent extends React.Component<Props, State> {
+export default class BillsChartComponent extends React.Component<Props, State> {
 
   refs: {
     typesPiechart;

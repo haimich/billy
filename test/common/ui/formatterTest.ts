@@ -1,4 +1,4 @@
-import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, currencyFormatter } from '../../../src/common/helpers/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, currencyFormatter } from '../../../src/common/ui/formatters'
 import { expect } from 'chai'
 
 describe('formatters', () => {
@@ -56,7 +56,7 @@ describe('formatters', () => {
       const result = currencyFormatter(123.45)
       expect(result).to.equal('123,45 €')
     })
-    it('should convert a number to a string with two fraction digits', () => { 
+    it('should convert a number to a string with two fraction digits', () => {
       expect(currencyFormatter(123)).to.equal('123,00 €')
       expect(currencyFormatter(123.4)).to.equal('123,40 €')
     })

@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, Options } from 'react-bootstrap-table'
 import BillDbModel from '../common/models/BillDbModel'
-import { dateFormatterView, currencyFormatter } from '../common/helpers/formatters'
+import { dateFormatterView, currencyFormatter } from '../common/ui/formatters'
 import t from '../common/helpers/i18n'
 
 interface Props {

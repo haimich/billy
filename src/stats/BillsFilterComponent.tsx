@@ -16,7 +16,7 @@ interface Props {
   changeBillDateToUse
 }
 
-export default class FilterComponent extends React.Component<Props, {}> {
+export default class BillsFilterComponent extends React.Component<Props, {}> {
 
   constructor(props) {
     super(props)
@@ -68,7 +68,7 @@ export default class FilterComponent extends React.Component<Props, {}> {
     this.props.changeBillDateToUse(dateField)
   }
 
-  render() {  
+  render() {
     return (
       <form id="filter-container">
         <label htmlFor="year">{t('Jahr')}</label>
@@ -94,14 +94,14 @@ export default class FilterComponent extends React.Component<Props, {}> {
             /> {t('Rechnungsdatum')}
           </label>
         </p>
-        
+
       </form>
     )
   }
 
   componentWillReceiveProps(nextProps: Props) {
     const selectedYearNotAvailable = (nextProps.years.indexOf(nextProps.selectedYear) === -1)
-    
+
     if (selectedYearNotAvailable) {
       let closestYear = nextProps.years.length >= 1
         ? nextProps.years[0]

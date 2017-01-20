@@ -1,15 +1,15 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import FilterComponent, { SELECT_TYPE_ALL } from './FilterComponent'
+import BillsFilterComponent, { SELECT_TYPE_ALL } from './BillsFilterComponent'
 import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
-import TableComponent from './TableComponent'
-import PanelComponent from './PanelComponent'
-import ChartComponent from './ChartComponent'
+import BillsTableComponent from './BillsTableComponent'
+import BillsPanelComponent from './BillsPanelComponent'
+import BillsChartComponent from './BillsChartComponent'
 import t from '../common/helpers/i18n'
 import { asc, desc } from '../common/helpers/sorters'
-import { dateFormatterYearView } from '../common/helpers/formatters'
+import { dateFormatterYearView } from '../common/ui/formatters'
 import * as moment from 'moment'
 import { getAverage, round } from '../common/helpers/math'
 
@@ -206,7 +206,7 @@ export default class AppComponent extends React.Component<Props, {}> {
 
   getTypesPieChartData(): number[] {
     let typeSums = {}
-    
+
     for (let type of this.props.billTypes) {
       typeSums[type.type] = 0
     }
@@ -230,7 +230,7 @@ export default class AppComponent extends React.Component<Props, {}> {
 
   getTypesIncomePieChartData(): number[] {
     let typeSums = {}
-    
+
     for (let type of this.props.billTypes) {
       typeSums[type.type] = 0
     }
@@ -277,7 +277,7 @@ export default class AppComponent extends React.Component<Props, {}> {
         return true
       }
     }
-    
+
     return false
   }
 
@@ -291,7 +291,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     return (
       <div>
 
-        <FilterComponent
+        <BillsFilterComponent
           years={this.getAvailableYears()}
           billTypes={this.props.billTypes}
           handleYearChange={element => this.setState({selectedYear: element.target.value})}
@@ -302,27 +302,27 @@ export default class AppComponent extends React.Component<Props, {}> {
           billDateToUse={this.state.billDateToUse}
         />
 
-        <TableComponent data={this.getTableData()} />
+        <BillsTableComponent data={this.getTableData()} />
 
         <div className="panel-container">
           <div className="row">
             <div className="col-xs-1" />
-          
+
             <div className="col-xs-12 col-sm-4 panel-display">
-              <PanelComponent title={t('Jahresumsatz')} value={this.getTotal()} icon="fa-line-chart" />
+              <BillsPanelComponent title={t('Jahresumsatz')} value={this.getTotal()} icon="fa-line-chart" />
             </div>
 
             <div className="col-xs-2" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <PanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} icon="fa-hourglass-1" />
+              <BillsPanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} icon="fa-hourglass-1" />
             </div>
 
-            <div className="col-xs-1" />            
+            <div className="col-xs-1" />
           </div>
         </div>
 
-        <ChartComponent
+        <BillsChartComponent
           lineChartLabels={this.getLineChartLabels()}
           lineChartDatePaidData={this.getLineChartData()}
           typesPieChartLabels={this.getTypesPieChartLabels()}

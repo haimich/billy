@@ -1,9 +1,9 @@
 import * as React from 'react'
 import File from '../common/models/FileModel'
-import { getFilename } from '../common/helpers/formatters'
+import { getFilename } from '../common/ui/formatters'
 import { open } from '../common/providers/fileProvider'
 import { shortenFilename } from '../common/helpers/text'
-import { getFileIconHtml } from '../common/helpers/icons'
+import { getFileIconHtml } from '../common/ui/icons'
 import t from '../common/helpers/i18n'
 
 interface Props {
@@ -19,7 +19,7 @@ export default class FileViewComponent extends React.Component<Props, {}> {
 
   getFileList() {
     let fileList = []
-    
+
     for (let i = 0; i < this.props.files.length; i++) {
       const file = this.props.files[i]
 

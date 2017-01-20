@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
-import { currencyFormatter } from '../common/helpers/formatters'
+import { currencyFormatter } from '../common/ui/formatters'
 import t from '../common/helpers/i18n'
 
 interface Props {
   data: any[];
 }
 
-export default class TableComponent extends React.Component<Props, {}> {
+export default class BillsTableComponent extends React.Component<Props, {}> {
 
   constructor(props) {
     super(props)
@@ -29,8 +29,8 @@ export default class TableComponent extends React.Component<Props, {}> {
       noDataText: t('Keine Einträge'),
       sizePerPage: 5
     }
-        
-    return (  
+
+    return (
       <div id="table-container">
         <BootstrapTable
           data={this.props.data}

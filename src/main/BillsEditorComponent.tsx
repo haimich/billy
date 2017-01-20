@@ -12,7 +12,7 @@ import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
-import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/helpers/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/ui/formatters'
 import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')

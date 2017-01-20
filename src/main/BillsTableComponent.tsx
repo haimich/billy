@@ -2,8 +2,8 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import BillDbModel from '../common/models/BillDbModel'
-import { dateFormatterView, currencyFormatter } from '../common/helpers/formatters'
-import { preventDragAndDrop } from '../common/helpers/dom' 
+import { dateFormatterView, currencyFormatter } from '../common/ui/formatters'
+import { preventDragAndDrop } from '../common/ui/dom'
 import t from '../common/helpers/i18n'
 
 interface Props {

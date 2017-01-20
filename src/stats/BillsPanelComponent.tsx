@@ -9,7 +9,7 @@ interface Props {
   icon: string
 }
 
-export default class PanelComponent extends React.Component<Props, {}> {
+export default class BillsPanelComponent extends React.Component<Props, {}> {
 
   constructor(props) {
     super(props)
@@ -32,7 +32,7 @@ export default class PanelComponent extends React.Component<Props, {}> {
             /> €
           </div>
 
-          <div className="panel-title">{this.props.title}</div>            
+          <div className="panel-title">{this.props.title}</div>
         </div>
       </div>
     )
