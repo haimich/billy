@@ -2,9 +2,12 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { ipcRenderer } from 'electron'
 import BillsStatsComponent from './BillsStatsComponent'
+import ExpensesStatsComponent from './ExpensesStatsComponent'
 import OnOffSwitchComponent from '../common/components/OnOffSwitchComponent'
 import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
+import ExpenseDbModel from '../common/models/ExpenseDbModel'
+import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
 import Customer from '../common/models/CustomerModel'
 import t from '../common/helpers/i18n'
 import { asc, desc } from '../common/helpers/sorters'
@@ -16,6 +19,8 @@ interface Props {
   customers: Customer[]
   bills: BillDbModel[]
   billTypes: BillTypeModel[]
+  expenses: ExpenseDbModel[]
+  expenseTypes: ExpenseTypeModel[]
 }
 
 interface State {
@@ -30,7 +35,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     super(props)
 
     this.state = {
-      mode: 'bills'
+      mode: 'expenses'
     }
 
     ipcRenderer.on('shortcut-CommandOrControl+d', () => {
@@ -59,10 +64,9 @@ export default class AppComponent extends React.Component<Props, {}> {
         />
     } else if (this.state.mode === 'expenses') {
       statsView =
-        <BillsStatsComponent
-          bills={this.props.bills}
-          customers={this.props.customers}
-          billTypes={this.props.billTypes}
+        <ExpensesStatsComponent
+          expenses={this.props.expenses}
+          expenseTypes={this.props.expenseTypes}
         />
     }
 
