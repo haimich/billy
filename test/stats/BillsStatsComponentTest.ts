@@ -1,11 +1,11 @@
-import AppComponent from '../../src/stats/AppComponent'
+import BillsStatsComponent from '../../src/stats/BillsStatsComponent'
 import { expect } from 'chai'
 
-describe('stats.AppComponent', () => {
+describe('stats.BillsStatsComponent', () => {
   let component = null
 
   beforeEach(() => {
-    component = new AppComponent({
+    component = new BillsStatsComponent({
       customers: [{
         id: 123,
         name: 'Your momma'
@@ -203,7 +203,7 @@ describe('stats.AppComponent', () => {
     }
 
     it('should return the sum of the bill amount', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [customer],
         bills: [{
           invoice_id: 'foo/123',
@@ -219,7 +219,7 @@ describe('stats.AppComponent', () => {
     })
 
     it('should return the rounded sum of all bill amounts', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [{
           id: 123,
           name: 'Your momma'
@@ -256,7 +256,7 @@ describe('stats.AppComponent', () => {
     }
 
     it('should return the sum of the unpaid bill amount', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [customer],
         bills: [{
           invoice_id: 'foo/123',
@@ -279,7 +279,7 @@ describe('stats.AppComponent', () => {
     })
 
     it('should return the rounded sum of all bill amounts', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [customer],
         bills: [{
           invoice_id: 'foo/123',
@@ -317,7 +317,7 @@ describe('stats.AppComponent', () => {
     })
 
     it('should return a table row for each customer', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [{
           id: 123,
           name: 'Your momma'
@@ -357,7 +357,7 @@ describe('stats.AppComponent', () => {
       const theInvoiceId = 'foo/123'
       const theAmount = 123.45
 
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [theCustomer],
         bills: [{
           invoice_id: theInvoiceId,
@@ -400,7 +400,7 @@ describe('stats.AppComponent', () => {
     it('should return a table row with the mean time to pay for single customer', () => {
       const theCustomer = { id: 456, name: 'Dolmetscherbüro Deine Mudda' }
 
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [theCustomer],
         bills: [{
           invoice_id: '20112',
@@ -419,7 +419,7 @@ describe('stats.AppComponent', () => {
 
   describe('getLineChartData', () => {
     it('should return a list with the sum of all date_paid amounts', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [{
           id: 123,
           name: 'Your momma'
@@ -446,7 +446,7 @@ describe('stats.AppComponent', () => {
     })
 
     it('should return a list with the sum of all date_created amounts', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [{
           id: 123,
           name: 'Your momma'
@@ -473,7 +473,7 @@ describe('stats.AppComponent', () => {
     })
 
     it('should return a list with the sum of all amounts', () => {
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [{
           id: 123,
           name: 'Your momma'
@@ -532,7 +532,7 @@ describe('stats.AppComponent', () => {
         type: 'bla'
       }
 
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [{
           id: 123,
           name: 'Your momma'
@@ -588,7 +588,7 @@ describe('stats.AppComponent', () => {
         type: 'bla'
       }
 
-      component = new AppComponent({
+      component = new BillsStatsComponent({
         customers: [{
           id: 123,
           name: 'Your momma'
