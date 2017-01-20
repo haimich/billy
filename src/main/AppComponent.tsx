@@ -16,7 +16,7 @@ import BillsTableComponent from './BillsTableComponent'
 import BillsEditorComponent from './BillsEditorComponent'
 import ExpensesTableComponent from './ExpensesTableComponent'
 import ExpensesEditorComponent from './ExpensesEditorComponent'
-import OnOffSwitchComponent from './OnOffSwitchComponent'
+import OnOffSwitchComponent from '../common/components/OnOffSwitchComponent'
 import * as NotificationSystem from 'react-notification-system'
 import t from '../common/helpers/i18n'
 
