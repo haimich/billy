@@ -50,7 +50,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     this.state = {
       bills: props.bills,
       expenses: props.expenses,
-      mode: 'expenses'
+      mode: 'bills'
     }
 
     ipcRenderer.on('shortcut-CommandOrControl+d', () => {
@@ -284,7 +284,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     let tableView, editorView
 
     if (this.state.mode === 'bills') {
-      tableView = 
+      tableView =
         <BillsTableComponent
           bills={this.state.bills}
           delete={this.deleteBills.bind(this)}
@@ -300,7 +300,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           notify={this.notify.bind(this)}
         />
     } else if (this.state.mode === 'expenses') {
-      tableView = 
+      tableView =
         <ExpensesTableComponent
           expenses={this.state.expenses}
           select={this.expenseSelected.bind(this)}
@@ -313,7 +313,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           save={this.saveExpense.bind(this)}
           update={this.updateExpense.bind(this)}
           notify={this.notify.bind(this)}
-        />  
+        />
     }
 
     return (

@@ -30,7 +30,7 @@ export async function copyToAppDir(invoiceId: string, inputFilePath: string): Pr
 
 async function getFilePath(invoiceId: string): Promise<string> {
   const appDir = await get('appDir')
-  return `${appDir}${BILL_FOLDER_SUFFIX}/${encode(invoiceId)}`
+  return `${appDir}/${BILL_FOLDER_SUFFIX}/${encode(invoiceId)}`
 }
 
 export function encode(fileName: string): string {
