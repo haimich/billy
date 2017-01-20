@@ -9,6 +9,7 @@ import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
 import { stringIsEmpty } from '../common/helpers/text'
 import { getNetAmount, getVatAmount, getPreTaxAmount, hasDecimals } from '../common/helpers/math'
+import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
 import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
@@ -55,7 +56,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     this.setState(this.getDefaultState())
     this.refs.expenseTypeTypeahead.getInstance().clear()
     this.fetchTypeaheadData()
-    this.resetFormValidationErrors()
+    resetFormValidationErrors(getInputs(this))
   }
 
   getDefaultState(): State {
@@ -203,6 +204,8 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     } else {
       this.setState({ selectedExpenseType: selected })
     }
+
+    this.revalidate(ReactDOM.findDOMNode(this.refs.expenseTypeTypeahead.getInstance()).querySelector('input[name=expenseType]'))
   }
 
   render() {
@@ -381,44 +384,14 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     )
   }
 
-  addFormValidation() {
-    for (let input of this.getInputs()) {
-      input.addEventListener('input', event => this.revalidate(event.target))
-
-      input.addEventListener('invalid', (event) => {
-        const input: any = event.target;
-        input.closest('.form-group').classList.add('has-error')
-      })
-    }
-  }
-
-  resetFormValidationErrors() {
-    this.getInputs().forEach(input => input.closest('.form-group') !.classList.remove('has-error'))
-  }
-
-  getInputs() {
-    return [...ReactDOM.findDOMNode(this).querySelectorAll('input,textarea')]
-  }
-
   revalidate(input) {
-    this.state.isDirty = true
-    input.closest('.form-group').classList.remove('has-error')
-    setTimeout(() => input.checkValidity())
-  }
-
-  enableTypeaheadFeatures(typeahead: any, name: string, required: boolean) {
-    const typeaheadInput =
-      ReactDOM.findDOMNode(typeahead.getInstance()).querySelector(`input[name=${name}]`)
-    typeaheadInput.setAttribute('id', name)
-
-    if (required) {
-      typeaheadInput.setAttribute('required', 'true')
-    }
+    this.state.isDirty = true // manipulate directly to prevent endless loop
+    revalidateInput(input)
   }
 
   componentDidMount() {
-    this.addFormValidation()
-    this.enableTypeaheadFeatures(this.refs.expenseTypeTypeahead, 'expenseType', true)
+    addFormValidation(getInputs(this), this.revalidate.bind(this))
+    enableTypeaheadFeatures(this.refs.expenseTypeTypeahead, 'expenseType', true)
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -427,7 +400,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
     if (this.state.isDirty && !confirm(t('Möchtest du die Änderungen verwerfen?'))) return
 
-    this.resetFormValidationErrors()
+    resetFormValidationErrors(getInputs(this))
 
     if (isNew) {
       this.resetState()

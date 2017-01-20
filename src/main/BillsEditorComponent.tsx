@@ -13,6 +13,7 @@ import { listBillTypes, getBillTypeById, createBillType } from '../common/servic
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/ui/formatters'
+import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
 import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
@@ -71,7 +72,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     this.fetchTypeaheadData()
     process.nextTick(() => this.refs.invoice.focus())
     this.dragCounter = 0
-    this.resetFormValidationErrors()
+    resetFormValidationErrors(getInputs(this))
   }
 
   getDefaultState(): State {
@@ -459,7 +460,6 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
                     newSelectionPrefix={t('Kunden anlegen: ')}
                     paginationText={t('Mehr anzeigen')}
                     maxResults={20}
-                    tabIndex={1}
                     />
                   <span className="sub-label">
                     <input
@@ -600,45 +600,15 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     )
   }
 
-  addFormValidation() {
-    for (let input of this.getInputs()) {
-      input.addEventListener('input', event => this.revalidate(event.target))
-
-      input.addEventListener('invalid', (event) => {
-        const input: any = event.target;
-        input.closest('.form-group').classList.add('has-error')
-      })
-    }
-  }
-
-  resetFormValidationErrors() {
-    this.getInputs().forEach(input => input.closest('.form-group') !.classList.remove('has-error'))
-  }
-
-  getInputs() {
-    return [...ReactDOM.findDOMNode(this).querySelectorAll('input,textarea')]
-  }
-
   revalidate(input) {
-    this.state.isDirty = true
-    input.closest('.form-group').classList.remove('has-error')
-    setTimeout(() => input.checkValidity())
-  }
-
-  enableTypeaheadFeatures(typeahead: any, name: string, required: boolean) {
-    const typeaheadInput =
-      ReactDOM.findDOMNode(typeahead.getInstance()).querySelector(`input[name=${name}]`)
-    typeaheadInput.setAttribute('id', name)
-
-    if (required) {
-      typeaheadInput.setAttribute('required', 'true')
-    }
+    this.state.isDirty = true // manipulate directly to prevent endless loop
+    revalidateInput(input)
   }
 
   componentDidMount() {
-    this.addFormValidation()
-    this.enableTypeaheadFeatures(this.refs.customerTypeahead, 'customer', true)
-    this.enableTypeaheadFeatures(this.refs.billTypeTypeahead, 'billType', false)
+    addFormValidation(getInputs(this), this.revalidate.bind(this))
+    enableTypeaheadFeatures(this.refs.customerTypeahead, 'customer', true)
+    enableTypeaheadFeatures(this.refs.billTypeTypeahead, 'billType', false)
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -647,7 +617,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
 
     if (this.state.isDirty && !confirm(t('Möchtest du die Änderungen verwerfen?'))) return
 
-    this.resetFormValidationErrors()
+    resetFormValidationErrors(getInputs(this))
 
     if (isNew) {
       this.resetState()
