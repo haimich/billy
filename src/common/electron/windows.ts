@@ -6,7 +6,7 @@ let mainWindow, onboardingWindow, importWindow, statsWindow, incomeWindow
 
 export function openOnboardingWindow() {
   console.log('open onboarding window')
-  
+
   onboardingWindow = new BrowserWindow({
     width: 450,
     height: 320,
@@ -46,9 +46,7 @@ export function openMainWindow() {
   }
 
   mainWindow.once('ready-to-show', () => {
-    globalShortcut.register('CommandOrControl+d', () => {
-      mainWindow.webContents.send('shortcut-CommandOrControl+d')
-    })
+    useShortcut('CommandOrControl+d', mainWindow)
 
     mainWindow.show()
     mainWindow.focus()
@@ -61,7 +59,7 @@ export function openMainWindow() {
 
 export function openImportWindow() {
   console.log('open import window')
-  
+
   importWindow = new BrowserWindow({
     width: 380,
     height: 260,
@@ -84,7 +82,7 @@ export function openImportWindow() {
 
 export function openStatsWindow() {
   console.log('open stats window')
-  
+
   statsWindow = new BrowserWindow({
     width: 790,
     height: 880,
@@ -103,7 +101,7 @@ export function openStatsWindow() {
 
 export function openIncomeWindow() {
   console.log('open income window')
-  
+
   incomeWindow = new BrowserWindow({
     width: 1200,
     height: isDev ? 900 : 710, // create room for dev tools
@@ -143,4 +141,10 @@ export function toggleDevTools(focusedWindow) {
   if (focusedWindow) {
     focusedWindow.toggleDevTools()
   }
+}
+
+function useShortcut(shortcut: string, window: any) {
+  globalShortcut.register(shortcut, () => {
+    window['webContents'].send(`shortcut-${shortcut}`)
+  })
 }

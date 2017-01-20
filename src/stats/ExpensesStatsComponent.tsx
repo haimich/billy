@@ -1,14 +1,11 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-// import BillsFilterComponent, { SELECT_TYPE_ALL } from './BillsFilterComponent'
+import ExpensesFilterComponent, { SELECT_TYPE_ALL } from './ExpensesFilterComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
-// import BillsTableComponent from './BillsTableComponent'
-// import BillsPanelComponent from './BillsPanelComponent'
-// import BillsChartComponent from './BillsChartComponent'
 import t from '../common/helpers/i18n'
-// import { asc, desc } from '../common/helpers/sorters'
-// import { dateFormatterYearView } from '../common/ui/formatters'
+import { asc, desc } from '../common/helpers/sorters'
+import { dateFormatterYearView } from '../common/ui/formatters'
 import * as moment from 'moment'
 // import { getAverage, round } from '../common/helpers/math'
 
@@ -17,37 +14,48 @@ interface Props {
   expenseTypes: ExpenseTypeModel[]
 }
 
+interface State {
+  selectedExpenseType: string
+  selectedYear?: string
+}
+
 export default class ExpensesStatsComponent extends React.Component<Props, {}> {
+
+  state: State
 
   constructor(props) {
     super(props)
 
-    // const availableYears = this.getAvailableYears()
+    this.state = {
+      selectedExpenseType: SELECT_TYPE_ALL
+    }
 
-    // if (availableYears.length >= 1) {
-    //   this.state.selectedYear = availableYears[0]
-    // } else {
-    //   this.state.selectedYear = ''
-    // }
+    const availableYears = this.getAvailableYears()
+
+    if (availableYears.length >= 1) {
+      this.state.selectedYear = availableYears[0]
+    } else {
+      this.state.selectedYear = ''
+    }
   }
 
-  // getAvailableYears(): string[] {
-    // let years: string[] = []
+  getAvailableYears(): string[] {
+    let years: string[] = []
 
-    // for (let bill of this.props.bills) {
-    //   if (bill[this.state.billDateToUse] == null || bill[this.state.billDateToUse] === '') {
-    //     continue
-    //   }
+    for (let expense of this.props.expenses) {
+      if (expense.date == null || expense.date === '') {
+        continue
+      }
 
-    //   let newDate = dateFormatterYearView(bill[this.state.billDateToUse])
+      let newDate = dateFormatterYearView(expense.date)
 
-    //   if (years.indexOf(newDate) === -1) {
-    //     years.push(newDate)
-    //   }
-    // }
+      if (years.indexOf(newDate) === -1) {
+        years.push(newDate)
+      }
+    }
 
-    // return years.sort(desc)
-  // }
+    return years.sort(desc)
+  }
 
   // getTableData(): CustomerStats[] {
   //   let customersWithTotals = {}
@@ -220,15 +228,13 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
     return (
       <div>
 
-        <BillsFilterComponent
+        <ExpensesFilterComponent
           years={this.getAvailableYears()}
-          billTypes={this.props.billTypes}
+          expenseTypes={this.props.expenseTypes}
           handleYearChange={element => this.setState({selectedYear: element.target.value})}
-          handleBillTypeChange={element => this.setState({selectedBillType: element.target.value})}
-          changeBillDateToUse={this.handleBillDateToUseChange.bind(this)}
-          selectedBillType={this.state.selectedBillType}
+          handleExpenseTypeChange={element => this.setState({selectedExpenseType: element.target.value})}
+          selectedExpenseType={this.state.selectedExpenseType}
           selectedYear={this.state.selectedYear}
-          billDateToUse={this.state.billDateToUse}
         />
 
       </div>
