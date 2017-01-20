@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import { dateFormatterView, currencyFormatter, percentageFormatter, numberFormatterView } from '../common/helpers/formatters'
-import { preventDragAndDrop } from '../common/helpers/dom' 
+import { preventDragAndDrop } from '../common/helpers/dom'
 import t from '../common/helpers/i18n'
 import { getNetAmount, getVatAmount, hasDecimals } from '../common/helpers/math'
 

@@ -405,7 +405,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     input.closest('.form-group').classList.remove('has-error')
     setTimeout(() => input.checkValidity())
   }
-  
+
   enableTypeaheadFeatures(typeahead: any, name: string, required: boolean) {
     const typeaheadInput =
       ReactDOM.findDOMNode(typeahead.getInstance()).querySelector(`input[name=${name}]`)
@@ -431,7 +431,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
     if (isNew) {
       this.resetState()
-    } else {      
+    } else {
       this.setState({
         id: expense.id,
         selectedExpenseType: [expense.type],
@@ -441,7 +441,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
         taxrate: hasDecimals(expense.taxrate)
           ? numberFormatterView(expense.taxrate)
           : numberFormatterView(expense.taxrate, 0),
-        comment: expense.comment,
+        comment: expense.comment || '',
         isNew,
         isDirty: false
       })
