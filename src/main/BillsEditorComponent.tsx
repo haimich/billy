@@ -142,7 +142,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
 
     try {
       await this.props.updateCustomer(this.state.selectedCustomer[0])
-      
+
       if (this.state.isNew) {
         await this.props.save(bill, this.state.fileActions)
       } else {
@@ -380,7 +380,8 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     try {
       await deleteCustomerById(customer.id!)
     } catch (err) {
-      this.props.notify(t('Could not delete customer'), 'error')
+      console.warn(err)
+      this.props.notify(t('Der Kunde konnte nicht gelöscht werden. Eventuell wird er noch in anderen Rechnungen verwendet.'), 'error')
       return
     }
 
@@ -442,22 +443,6 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnummer')}</label>
-                <div className="col-sm-8">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="id"
-                    ref="invoice"
-                    readOnly={!this.state.isNew}
-                    required
-                    value={this.state.invoice_id}
-                    onChange={(event: any) => this.setState({ invoice_id: event.target.value })}
-                    autoFocus
-                    />
-                </div>
-              </div>
-              <div className="form-group">
                 <label htmlFor="customer" className="col-sm-4 control-label">{t('Kunde')}</label>
                 <div className="col-sm-8">
                   <Typeahead
@@ -474,7 +459,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
                     newSelectionPrefix={t('Kunden anlegen: ')}
                     paginationText={t('Mehr anzeigen')}
                     maxResults={20}
-                    tabIndex={2}
+                    tabIndex={1}
                     />
                   <span className="sub-label">
                     <input
@@ -489,6 +474,21 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
                         : ''
                     }
                   </span>
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnummer')}</label>
+                <div className="col-sm-8">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="id"
+                    ref="invoice"
+                    readOnly={!this.state.isNew}
+                    required
+                    value={this.state.invoice_id}
+                    onChange={(event: any) => this.setState({ invoice_id: event.target.value })}
+                    />
                 </div>
               </div>
               <div className="form-group">
@@ -624,7 +624,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     input.closest('.form-group').classList.remove('has-error')
     setTimeout(() => input.checkValidity())
   }
-  
+
   enableTypeaheadFeatures(typeahead: any, name: string, required: boolean) {
     const typeaheadInput =
       ReactDOM.findDOMNode(typeahead.getInstance()).querySelector(`input[name=${name}]`)
