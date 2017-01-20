@@ -50,7 +50,7 @@
 .toggle--knob .toggle--btn {
   position: relative;
   width: 125px;
-  height: 29px;
+  height: 30px;
   font-family: 'PT Sans', Sans Serif;
   text-transform: uppercase;
   color: #fff;
@@ -76,7 +76,7 @@
   position: relative;
   display: block;
   overflow: hidden;
-  height: 31px;
+  height: 32px;
 }
 
 .toggle--knob .toggle--feature:before, .toggle--knob .toggle--feature:after {
