@@ -3,7 +3,8 @@ import * as ReactDOM from 'react-dom'
 import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
-import BillsFilterComponent from './BillsFilterComponent'
+import YearsFilterComponent from '../common/components/YearsFilterComponent'
+import TypesFilterComponent from '../common/components/TypesFilterComponent'
 import BillsTableComponent from './BillsTableComponent'
 import BillsPanelComponent from './BillsPanelComponent'
 import BillsChartComponent from './BillsChartComponent'
@@ -209,20 +210,46 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     })
   }
 
+  isDatefieldSelected(dateField: string): boolean {
+    return this.state.billDateToUse === dateField
+  }
+
   render() {
     return (
       <div>
 
-        <BillsFilterComponent
-          years={getAvailableYears(this.props.bills, this.state.billDateToUse)}
-          billTypes={this.props.billTypes}
-          handleYearChange={element => this.setState({selectedYear: element.target.value})}
-          handleBillTypeChange={element => this.setState({selectedBillType: element.target.value})}
-          changeBillDateToUse={this.handleBillDateToUseChange.bind(this)}
-          selectedBillType={this.state.selectedBillType}
-          selectedYear={this.state.selectedYear}
-          billDateToUse={this.state.billDateToUse}
-        />
+        <form id="filter-container">
+
+          <YearsFilterComponent
+            years={getAvailableYears(this.props.bills, this.state.billDateToUse)}
+            handleYearChange={element => this.setState({selectedYear: element.target.value})}
+            selectedYear={this.state.selectedYear}
+          />
+          <TypesFilterComponent
+            types={this.props.billTypes}
+            handleTypeChange={element => this.setState({selectedBillType: element.target.value})}
+            selectedType={this.state.selectedBillType}
+          />
+        
+          <label>{t('Datumsfeld')}</label>
+          <p>
+            <label className="radio-inline">
+              <input
+                type="radio"
+                checked={this.isDatefieldSelected('date_paid')}
+                onChange={() => this.handleBillDateToUseChange('date_paid')}
+              /> {t('Bezahldatum')}
+            </label>
+            <label className="radio-inline">
+              <input
+                type="radio"
+                checked={this.isDatefieldSelected('date_created')}
+                onChange={() => this.handleBillDateToUseChange('date_created')}
+              /> {t('Rechnungsdatum')}
+            </label>
+          </p>
+
+        </form>
 
         <BillsTableComponent data={this.getTableData()} />
 
@@ -245,7 +272,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
         </div>
 
         <BillsChartComponent
-          lineChartHeading={t('Umsatz')}
+          lineChartHeading={t('Umsatz in €')}
           lineChartDataLabel={t('Einkommen nach Bezahldatum')}
           lineChartLabels={getMonthNumbers()}
           lineChartDatePaidData={getAmountsPerMonth<BillDbModel>(this.props.bills, this.state.billDateToUse, 'amount', this.matchesFilters.bind(this))}

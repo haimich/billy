@@ -112,7 +112,7 @@ export default class ExpensesChartComponent extends React.Component<Props, State
 
         <div className="row">
           <div className="col-xs-12 label-container">
-            <section className="chart-heading">{t('Ausgaben')}</section>
+            <section className="chart-heading">{this.props.lineChartHeading}</section>
           </div>
         </div>
 

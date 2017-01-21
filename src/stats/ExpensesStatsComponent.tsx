@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import StatsFilterComponent from '../common/components/StatsFilterComponent'
+import YearsFilterComponent from '../common/components/YearsFilterComponent'
+import TypesFilterComponent from '../common/components/TypesFilterComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
 import ExpensesChartComponent from './ExpensesChartComponent'
@@ -48,19 +49,20 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
       <div>
 
         <form id="filter-container">
-          <StatsFilterComponent
+          <YearsFilterComponent
             years={getAvailableYears(this.props.expenses, 'date')}
-            types={this.props.expenseTypes}
             handleYearChange={element => this.setState({selectedYear: element.target.value})}
+            selectedYear={this.state.selectedYear}
+          />
+          <TypesFilterComponent
+            types={this.props.expenseTypes}
             handleTypeChange={element => this.setState({selectedExpenseType: element.target.value})}
             selectedType={this.state.selectedExpenseType}
-            selectedYear={this.state.selectedYear}
-            dateFieldName="date"
           />
         </form>
 
         <ExpensesChartComponent
-          lineChartHeading={t('Ausgaben')}
+          lineChartHeading={t('Ausgaben in €')}
           lineChartDataLabel={t('Ausgaben nach Datum')}
           lineChartLabels={getMonthNumbers()}
           lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.props.expenses, 'date', 'preTaxAmount', this.matchesFilters.bind(this))}
