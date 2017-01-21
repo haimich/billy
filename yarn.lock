@@ -62,11 +62,7 @@
   version "2.2.38"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.38.tgz#8c188f6e34c2e7c3f1d0127d908d5a36e5a60dc9"
 
-"@types/node@*":
-  version "6.0.60"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.60.tgz#e7e134ebc674ae6ed93c36c767739b110d2c57fc"
-
-"@types/node@^7.0.0":
+"@types/node@*", "@types/node@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.0.tgz#c081147b109da5f9c57af70571771be97ce9c0ba"
 
@@ -95,11 +91,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "0.14.57"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-0.14.57.tgz#1878a8654fafdd1d381b8457292b6433498c5b62"
-
-"@types/react@^15.0.0":
+"@types/react@*", "@types/react@^15.0.0":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.0.tgz#33eb3438130614f25c07c09e46ebec5a8d45b3b0"
 
@@ -860,6 +852,10 @@ electron-download@^3.0.1:
 electron-is-dev@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.1.2.tgz#8a1043e32b3a1da1c3f553dce28ce764246167e3"
+
+electron-localshortcut@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/electron-localshortcut/-/electron-localshortcut-1.0.0.tgz#e9c1ba267c75376e1b254af206b9ff856360a67a"
 
 electron-macos-sign@~1.4.0:
   version "1.4.0"

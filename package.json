@@ -42,6 +42,7 @@
     "bootstrap": "^3.3.6",
     "chart.js": "^1.1.1",
     "electron-is-dev": "^0.1.2",
+    "electron-localshortcut": "^1.0.0",
     "electron-react-devtools": "github:firejune/electron-react-devtools",
     "electron-settings": "^2.2.1",
     "font-awesome": "^4.7.0",
