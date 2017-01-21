@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import { isDev, getAppFolder } from '../helpers/app'
+const electronLocalshortcut = require('electron-localshortcut')
 
 // Keep a global reference of the window objects to prevent gc
 let mainWindow, onboardingWindow, importWindow, statsWindow, incomeWindow
@@ -47,12 +48,13 @@ export function openMainWindow() {
 
   mainWindow.once('ready-to-show', () => {
     useShortcut('CommandOrControl+d', mainWindow)
-
+    
     mainWindow.show()
     mainWindow.focus()
   })
 
   mainWindow.on('closed', () => {
+    unregisterShortcuts(mainWindow)
     mainWindow = null
   })
 }
@@ -68,6 +70,8 @@ export function openImportWindow() {
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
 
   importWindow.once('ready-to-show', () => {
+    useShortcut('CommandOrControl+d', mainWindow)
+
     importWindow.show()
   })
 
@@ -91,10 +95,13 @@ export function openStatsWindow() {
   statsWindow.loadURL(`file://${getAppFolder()}/src/stats.html`)
 
   statsWindow.once('ready-to-show', () => {
+    useShortcut('CommandOrControl+d', statsWindow)
+
     statsWindow.show()
   })
 
   statsWindow.on('closed', () => {
+    unregisterShortcuts(statsWindow)
     statsWindow = null
   })
 }
@@ -144,7 +151,13 @@ export function toggleDevTools(focusedWindow) {
 }
 
 function useShortcut(shortcut: string, window: any) {
-  globalShortcut.register(shortcut, () => {
-    window['webContents'].send(`shortcut-${shortcut}`)
+  electronLocalshortcut.register(window, shortcut, () => {
+    if (window != null) {
+      window['webContents'].send(`shortcut-${shortcut}`)
+    }
   })
+}
+
+function unregisterShortcuts(window) {
+  electronLocalshortcut.unregisterAll(window)
 }

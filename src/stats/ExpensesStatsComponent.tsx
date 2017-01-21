@@ -210,7 +210,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
       <div>
 
         <ExpensesFilterComponent
-          years={this.getAvailableYears()}
+          years={getAvailableYears(this.props.expenses, 'date')}
           expenseTypes={this.props.expenseTypes}
           handleYearChange={element => this.setState({selectedYear: element.target.value})}
           handleExpenseTypeChange={element => this.setState({selectedExpenseType: element.target.value})}
