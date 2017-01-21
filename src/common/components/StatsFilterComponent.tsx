@@ -1,24 +1,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
-import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
-import t from '../common/helpers/i18n'
-
-export const SELECT_TYPE_ALL = t('Alle')
+import { SELECT_TYPE_ALL } from '../ui/stats'
+import t from '../helpers/i18n'
 
 interface Props {
   years: string[]
-  expenseTypes: ExpenseTypeModel[]
+  types: any[]
   selectedYear: string
   handleYearChange
-  selectedExpenseType: string
-  handleExpenseTypeChange
+  selectedType: string
+  handleTypeChange
+  dateFieldName: string
 }
 
-export default class ExpensesFilterComponent extends React.Component<Props, {}> {
-
-  constructor(props) {
-    super(props)
-  }
+export default class StatsFilterComponent extends React.Component<Props, {}> {
 
   generateYearSelectbox() {
     let options: JSX.Element[] = []
@@ -39,19 +34,19 @@ export default class ExpensesFilterComponent extends React.Component<Props, {}> 
     )
   }
 
-  generateExpenseTypeSelectbox() {
+  generateTypeSelectbox() {
     let options: JSX.Element[] = [ <option key={100000}>{SELECT_TYPE_ALL}</option> ]
 
-    for (let type of this.props.expenseTypes) {
+    for (let type of this.props.types) {
       options.push(<option key={type.id}>{type.type}</option>)
     }
 
     return (
       <select
         className="form-control"
-        id="expenseType"
-        value={this.props.selectedExpenseType}
-        onChange={this.props.handleExpenseTypeChange.bind(this)}
+        id="billType"
+        value={this.props.selectedType}
+        onChange={this.props.handleTypeChange.bind(this)}
       >
         {options}
       </select>
@@ -60,14 +55,15 @@ export default class ExpensesFilterComponent extends React.Component<Props, {}> 
 
   render() {
     return (
-      <form id="filter-container">
+      <div>
+      
         <label htmlFor="year">{t('Jahr')}</label>
         {this.generateYearSelectbox()}
 
-        <label htmlFor="expenseType">{t('Typ der Ausgabe')}</label>
-        {this.generateExpenseTypeSelectbox()}
+        <label htmlFor="billType">{t('Auftragsart')}</label>
+        {this.generateTypeSelectbox()}
 
-      </form>
+      </div>
     )
   }
 

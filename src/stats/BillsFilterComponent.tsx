@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
+import StatsFilterComponent from '../common/components/StatsFilterComponent'
 import BillTypeModel from '../common/models/BillTypeModel'
+import { SELECT_TYPE_ALL } from '../common/ui/stats'
 import t from '../common/helpers/i18n'
-
-export const SELECT_TYPE_ALL = t('Alle')
 
 interface Props {
   years: string[]
@@ -18,48 +18,6 @@ interface Props {
 
 export default class BillsFilterComponent extends React.Component<Props, {}> {
 
-  constructor(props) {
-    super(props)
-  }
-
-  generateYearSelectbox() {
-    let options: JSX.Element[] = []
-
-    for (let year of this.props.years) {
-      options.push(<option key={year}>{year}</option>)
-    }
-
-    return (
-      <select
-        className="form-control"
-        id="year"
-        value={this.props.selectedYear}
-        onChange={this.props.handleYearChange.bind(this)}
-      >
-        {options}
-      </select>
-    )
-  }
-
-  generateBillTypeSelectbox() {
-    let options: JSX.Element[] = [ <option key={100000}>{SELECT_TYPE_ALL}</option> ]
-
-    for (let type of this.props.billTypes) {
-      options.push(<option key={type.id}>{type.type}</option>)
-    }
-
-    return (
-      <select
-        className="form-control"
-        id="billType"
-        value={this.props.selectedBillType}
-        onChange={this.props.handleBillTypeChange.bind(this)}
-      >
-        {options}
-      </select>
-    )
-  }
-
   isDatefieldSelected(dateField: string): boolean {
     return this.props.billDateToUse === dateField
   }
@@ -71,11 +29,16 @@ export default class BillsFilterComponent extends React.Component<Props, {}> {
   render() {
     return (
       <form id="filter-container">
-        <label htmlFor="year">{t('Jahr')}</label>
-        {this.generateYearSelectbox()}
-
-        <label htmlFor="billType">{t('Auftragsart')}</label>
-        {this.generateBillTypeSelectbox()}
+      
+        <StatsFilterComponent
+          years={this.props.years}
+          types={this.props.billTypes}
+          handleYearChange={this.props.handleYearChange.bind(this)}
+          handleTypeChange={this.props.handleBillTypeChange.bind(this)}
+          selectedType={this.props.selectedBillType}
+          selectedYear={this.props.selectedYear}
+          dateFieldName={this.props.billDateToUse}
+        />
 
         <label>{t('Datumsfeld')}</label>
         <p>
@@ -97,21 +60,6 @@ export default class BillsFilterComponent extends React.Component<Props, {}> {
 
       </form>
     )
-  }
-
-  componentWillReceiveProps(nextProps: Props) {
-    const selectedYearNotAvailable = (nextProps.years.indexOf(nextProps.selectedYear) === -1)
-
-    if (selectedYearNotAvailable) {
-      let closestYear = nextProps.years.length >= 1
-        ? nextProps.years[0]
-        : ''
-      this.props.handleYearChange({
-        target: {
-          value: closestYear
-        }
-      })
-    }
   }
 
 }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import BillsFilterComponent, { SELECT_TYPE_ALL } from './BillsFilterComponent'
+import BillsFilterComponent from './BillsFilterComponent'
 import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
@@ -8,7 +8,7 @@ import BillsTableComponent from './BillsTableComponent'
 import BillsPanelComponent from './BillsPanelComponent'
 import BillsChartComponent from './BillsChartComponent'
 import t from '../common/helpers/i18n'
-import { getAvailableYears } from '../common/ui/stats'
+import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType } from '../common/ui/stats'
 import * as moment from 'moment'
 import { getAverage, round } from '../common/helpers/math'
 
@@ -68,8 +68,8 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     let total = 0
 
     for (let bill of this.props.bills) {
-      const matchesFilters = (this.matchesYear(bill.date_created, this.state.selectedYear)
-        && this.matchesBillType(bill))
+      const matchesFilters = (matchesYear(bill.date_created, this.state.selectedYear)
+        && matchesType<BillDbModel>(bill, this.state.selectedBillType))
       const isUnpaid = (bill.date_paid == null || bill.date_paid === '')
 
       if (matchesFilters && isUnpaid) {
@@ -146,45 +146,8 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     return customers
   }
 
-  getLineChartLabels(): string[] {
-    return Array.from(Array(12).keys()).map(key => '' + (key + 1))
-  }
-
   getTypesPieChartLabels(): string[] {
     return this.props.billTypes.map(type => type.type)
-  }
-
-  getLineChartData(): number[] {
-    let amountsPerMonth = {}
-
-    for (let bill of this.props.bills) {
-      if (this.matchesFilters(bill)) {
-        if (bill[this.state.billDateToUse] == null) {
-          continue
-        }
-
-        let month = moment(bill[this.state.billDateToUse]).month() + 1
-
-        if (amountsPerMonth[month] == null) {
-          amountsPerMonth[month] = bill.amount
-        } else {
-          amountsPerMonth[month] += bill.amount
-        }
-      }
-    }
-
-    let data: any[] = []
-    for (let i = 1; i <= 12; i++) {
-      let sum = amountsPerMonth[i]
-
-      if (sum == null) {
-        data.push(0)
-      } else {
-        data.push(sum.toFixed(2))
-      }
-    }
-
-    return data
   }
 
   getTypesPieChartData(): number[] {
@@ -195,7 +158,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     }
 
     for (let bill of this.props.bills) {
-      if (! this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
+      if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
         continue
       } else if (bill.type == null) {
         continue
@@ -219,7 +182,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     }
 
     for (let bill of this.props.bills) {
-      if (! this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
+      if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
         continue
       } else if (bill.type == null) {
         continue
@@ -236,32 +199,8 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
   }
 
   matchesFilters(bill: BillDbModel): boolean {
-    return this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)
-      && this.matchesBillType(bill)
-  }
-
-  matchesYear(date: string, year: string): boolean {
-    if (date == null || date === '') {
-      return false
-    }
-
-    let givenYear = '' + moment(date).year()
-
-    return (givenYear === year)
-  }
-
-  matchesBillType(bill: BillDbModel): boolean {
-    if (this.state.selectedBillType == null || this.state.selectedBillType === '' || this.state.selectedBillType === SELECT_TYPE_ALL) {
-      return true
-    }
-
-    if (bill.type != null) {
-      if (bill.type.type === this.state.selectedBillType) {
-        return true
-      }
-    }
-
-    return false
+    return matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)
+      && matchesType(bill, this.state.selectedBillType)
   }
 
   handleBillDateToUseChange(dateField: 'date_paid' | 'date_created') {
@@ -306,8 +245,10 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
         </div>
 
         <BillsChartComponent
-          lineChartLabels={this.getLineChartLabels()}
-          lineChartDatePaidData={this.getLineChartData()}
+          lineChartHeading={t('Umsatz')}
+          lineChartDataLabel={t('Einkommen nach Bezahldatum')}
+          lineChartLabels={getMonthNumbers()}
+          lineChartDatePaidData={getAmountsPerMonth<BillDbModel>(this.props.bills, this.state.billDateToUse, 'amount', this.matchesFilters.bind(this))}
           typesPieChartLabels={this.getTypesPieChartLabels()}
           typesPieChartData={this.getTypesPieChartData()}
           typesIncomePieChartData={this.getTypesIncomePieChartData()}

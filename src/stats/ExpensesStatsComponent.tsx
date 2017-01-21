@@ -1,12 +1,12 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ExpensesFilterComponent, { SELECT_TYPE_ALL } from './ExpensesFilterComponent'
+import StatsFilterComponent from '../common/components/StatsFilterComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
+import ExpensesChartComponent from './ExpensesChartComponent'
 import t from '../common/helpers/i18n'
 import * as moment from 'moment'
-import { getAvailableYears } from '../common/ui/stats'
-// import { getAverage, round } from '../common/helpers/math'
+import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType } from '../common/ui/stats'
 
 interface Props {
   expenses: ExpenseDbModel[]
@@ -38,94 +38,13 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
     }
   }
 
-  // getTableData(): CustomerStats[] {
-  //   let customersWithTotals = {}
-
-  //   for (let bill of this.props.bills) {
-  //     if (this.matchesFilters(bill)) {
-  //       if (bill.customer == null || bill.customer.id == null) {
-  //         continue
-  //       }
-
-  //       let daysToPay = this.getDaysToPay(bill)
-  //       let daysToPayList = []
-
-  //       if (daysToPay != null) {
-  //         daysToPayList.push(daysToPay)
-  //       }
-
-  //       if (customersWithTotals[bill.customer.id] == null) {
-  //         customersWithTotals[bill.customer.id] = {
-  //           total: bill.amount,
-  //           id: bill.customer.id,
-  //           name: bill.customer.name,
-  //           daysToPayList,
-  //           billCount: 1
-  //         }
-  //       } else {
-  //         let customer = customersWithTotals[bill.customer.id]
-  //         customer.total += bill.amount
-  //         customer.billCount += 1
-  //         customer.daysToPayList = customer.daysToPayList.concat(daysToPayList)
-  //       }
-  //     }
-  //   }
-
-  //   let customers: any[] = []
-  //   for (let customerId of Object.keys(customersWithTotals)) {
-  //     let customer = customersWithTotals[customerId]
-  //     let averageTimeToPay = round(getAverage(customer.daysToPayList), 1)
-
-  //     customers.push({
-  //       name: customer.name,
-  //       total: customer.total,
-  //       billCount: customer.billCount,
-  //       averageTimeToPay
-  //     })
-  //   }
-
-  //   return customers
-  // }
-
-  // getLineChartLabels(): string[] {
-  //   return Array.from(Array(12).keys()).map(key => '' + (key + 1))
-  // }
+  matchesFilters(expense: ExpenseDbModel): boolean {
+    return matchesYear(expense.date, this.state.selectedYear)
+      && matchesType<ExpenseDbModel>(expense, this.state.selectedExpenseType)
+  }
 
   // getTypesPieChartLabels(): string[] {
   //   return this.props.billTypes.map(type => type.type)
-  // }
-
-  // getLineChartData(): number[] {
-  //   let amountsPerMonth = {}
-
-  //   for (let bill of this.props.bills) {
-  //     if (this.matchesFilters(bill)) {
-  //       if (bill[this.state.billDateToUse] == null) {
-  //         continue
-  //       }
-
-  //       let month = moment(bill[this.state.billDateToUse]).month() + 1
-
-  //       if (amountsPerMonth[month] == null) {
-  //         amountsPerMonth[month] = bill.amount
-  //       } else {
-  //         amountsPerMonth[month] += bill.amount
-  //       }
-  //     }
-  //   }
-
-  //   let data: any[] = []
-  //   for (let i = 1; i <= 12; i++) {
-  //     let sum = amountsPerMonth[i]
-
-  //     if (sum == null) {
-  //       data.push(0)
-  //     } else {
-  //       data.push(sum.toFixed(2))
-  //     }
-  //   }
-
-  //   return data
   // }
 
   // getTypesPieChartData(): number[] {
@@ -176,46 +95,27 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
   //   return Object.keys(typeSums).map(type => round(typeSums[type]))
   // }
 
-  // matchesFilters(bill: BillDbModel): boolean {
-  //   return this.matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)
-  //     && this.matchesBillType(bill)
-  // }
-
-  // matchesYear(date: string, year: string): boolean {
-  //   if (date == null || date === '') {
-  //     return false
-  //   }
-
-  //   let givenYear = '' + moment(date).year()
-
-  //   return (givenYear === year)
-  // }
-
-  // matchesBillType(bill: BillDbModel): boolean {
-  //   if (this.state.selectedBillType == null || this.state.selectedBillType === '' || this.state.selectedBillType === SELECT_TYPE_ALL) {
-  //     return true
-  //   }
-
-  //   if (bill.type != null) {
-  //     if (bill.type.type === this.state.selectedBillType) {
-  //       return true
-  //     }
-  //   }
-
-  //   return false
-  // }
-
   render() {
     return (
       <div>
 
-        <ExpensesFilterComponent
-          years={getAvailableYears(this.props.expenses, 'date')}
-          expenseTypes={this.props.expenseTypes}
-          handleYearChange={element => this.setState({selectedYear: element.target.value})}
-          handleExpenseTypeChange={element => this.setState({selectedExpenseType: element.target.value})}
-          selectedExpenseType={this.state.selectedExpenseType}
-          selectedYear={this.state.selectedYear}
+        <form id="filter-container">
+          <StatsFilterComponent
+            years={getAvailableYears(this.props.expenses, 'date')}
+            types={this.props.expenseTypes}
+            handleYearChange={element => this.setState({selectedYear: element.target.value})}
+            handleTypeChange={element => this.setState({selectedExpenseType: element.target.value})}
+            selectedType={this.state.selectedExpenseType}
+            selectedYear={this.state.selectedYear}
+            dateFieldName="date"
+          />
+        </form>
+
+        <ExpensesChartComponent
+          lineChartHeading={t('Ausgaben')}
+          lineChartDataLabel={t('Ausgaben nach Datum')}
+          lineChartLabels={getMonthNumbers()}
+          lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.props.expenses, 'date', 'amount', this.matchesFilters.bind(this))}
         />
 
       </div>
