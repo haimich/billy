@@ -2,9 +2,9 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import YearsFilterComponent from '../common/components/YearsFilterComponent'
 import TypesFilterComponent from '../common/components/TypesFilterComponent'
+import LineChartComponent from '../common/components/LineChartComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
-import ExpensesChartComponent from './ExpensesChartComponent'
 import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType } from '../common/ui/stats'
 import t from '../common/helpers/i18n'
 import * as moment from 'moment'
@@ -61,7 +61,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
           />
         </form>
 
-        <ExpensesChartComponent
+        <LineChartComponent
           lineChartHeading={t('Ausgaben in €')}
           lineChartDataLabel={t('Ausgaben nach Datum')}
           lineChartLabels={getMonthNumbers()}

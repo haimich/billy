@@ -6,10 +6,6 @@ let LineChart = require('react-chartjs').Line
 let PieChart = require('react-chartjs').Pie
 
 interface Props {
-  lineChartHeading: string
-  lineChartDataLabel: string
-  lineChartLabels: string[]
-  lineChartDatePaidData: number[]
   typesPieChartLabels: string[]
   typesPieChartData: number[]
   typesIncomePieChartData: number[]
@@ -96,26 +92,7 @@ export default class BillsChartComponent extends React.Component<Props, State> {
     let typesIncomePiechartLegend = this.state && this.state.typesIncomePiechartLegend || '';
 
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <LineChart
-            data={getLineChartData(this.props.lineChartLabels, this.props.lineChartDataLabel, this.props.lineChartDatePaidData)}
-            options={{
-              responsive: true
-            }}
-            ref="chart"
-            width="620"
-            height="250"
-            className="col-xs-12"
-          />
-        </div>
-
-        <div className="row">
-          <div className="col-xs-12 label-container">
-            <section className="chart-heading">{this.props.lineChartHeading}</section>
-          </div>
-        </div>
-
+      <div>
         <div className="row">
           <div className="col-xs-6">
             <PieChart
@@ -153,7 +130,6 @@ export default class BillsChartComponent extends React.Component<Props, State> {
             <div dangerouslySetInnerHTML={{ __html: typesIncomePiechartLegend }} />
           </div>
         </div>
-
       </div>
     )
   }
