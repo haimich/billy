@@ -8,8 +8,7 @@ import BillsTableComponent from './BillsTableComponent'
 import BillsPanelComponent from './BillsPanelComponent'
 import BillsChartComponent from './BillsChartComponent'
 import t from '../common/helpers/i18n'
-import { asc, desc } from '../common/helpers/sorters'
-import { dateFormatterYearView } from '../common/ui/formatters'
+import { getAvailableYears } from '../common/ui/stats'
 import * as moment from 'moment'
 import { getAverage, round } from '../common/helpers/math'
 
@@ -44,7 +43,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
       billDateToUse: 'date_paid'
     }
 
-    const availableYears = this.getAvailableYears()
+    const availableYears = getAvailableYears(this.props.bills, this.state.billDateToUse)
 
     if (availableYears.length >= 1) {
       this.state.selectedYear = availableYears[0]
@@ -79,24 +78,6 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     }
 
     return round(total)
-  }
-
-  getAvailableYears(): string[] {
-    let years: string[] = []
-
-    for (let bill of this.props.bills) {
-      if (bill[this.state.billDateToUse] == null || bill[this.state.billDateToUse] === '') {
-        continue
-      }
-
-      let newDate = dateFormatterYearView(bill[this.state.billDateToUse])
-
-      if (years.indexOf(newDate) === -1) {
-        years.push(newDate)
-      }
-    }
-
-    return years.sort(desc)
   }
 
   getDaysToPay(bill: BillDbModel): number {
@@ -294,7 +275,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
       <div>
 
         <BillsFilterComponent
-          years={this.getAvailableYears()}
+          years={getAvailableYears(this.props.bills, this.state.billDateToUse)}
           billTypes={this.props.billTypes}
           handleYearChange={element => this.setState({selectedYear: element.target.value})}
           handleBillTypeChange={element => this.setState({selectedBillType: element.target.value})}

@@ -36,7 +36,7 @@ export function openMainWindow() {
 
   mainWindow = new BrowserWindow({
     width: 1200,
-    height: 720, // create room for dev tools
+    height: isDev ? 900 : 720, // create room for dev tools
     show: false
   })
   mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
