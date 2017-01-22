@@ -1,8 +1,11 @@
 import {
   getAmountsPerMonth, getAvailableYears, getLineChartData,
-  getMonthNumbers, matchesType, matchesYear, getTotal } from '../../../src/common/ui/stats'
+  getMonthNumbers, matchesType, matchesYear, getTotal, getTypesPieChartData
+} from '../../../src/common/ui/stats'
 import BillDbModel from '../../../src/common/models/BillDbModel'
+import BillTypeModel from '../../../src/common/models/BillTypeModel'
 import ExpenseDbModel from '../../../src/common/models/ExpenseDbModel'
+import ExpenseTypeModel from '../../../src/common/models/ExpenseTypeModel'
 import { expect } from 'chai'
 
 const CUSTOMER = {
@@ -303,6 +306,131 @@ describe('stats', () => {
 
       const result = getTotal<ExpenseDbModel>(expenses, 'preTaxAmount', () => true)
       expect(result).to.equal(246.46)
+    })
+  })
+
+  describe('getTypesPieChartData', () => {
+    it('should return the number of expenses for all types', () => {
+      const typeA = {
+        id: 0,
+        type: 'foo'
+      }
+      const typeB = {
+        id: 1,
+        type: 'bla'
+      }
+
+      let expenses = [{
+          id: 1,
+          preTaxAmount: 123.456,
+          taxrate: 15,
+          type: typeA,
+          date: '2014-09-05'
+        }, {
+          id: 2,
+          preTaxAmount: 123,
+          taxrate: 15,
+          type: typeB,
+          date: '2014-09-21'
+        }]
+      let expenseTypes = [typeA, typeB]
+
+      const result = getTypesPieChartData<ExpenseDbModel, ExpenseTypeModel>(expenses, expenseTypes, 'date', '2014')
+      expect(result.length).to.equal(2)
+      expect(result[0]).to.equal(1)
+      expect(result[1]).to.equal(1)
+    })
+
+    it('should return the number of bills for all types', () => {
+      const typeA = {
+        id: 0,
+        type: 'foo'
+      }
+      const typeB = {
+        id: 1,
+        type: 'bla'
+      }
+      const customer = {
+        id: 123,
+        name: 'Your momma'
+      }
+      
+      let bills: BillDbModel[] = [{
+        id: 1,
+        invoice_id: 'foo/123',
+        customer,
+        customer_name: customer.name,
+        amount: 100,
+        type: typeA,
+        date_created: '2014-09-05',
+        date_paid: '2014-09-05',
+        comment: 'This was a foo auftrag',
+        files: []
+      }, {
+        id: 2,
+        invoice_id: 'foo/124',
+        customer,
+        customer_name: customer.name,
+        type: typeB,
+        amount: 100,
+        date_created: '2014-09-05',
+        date_paid: '2014-09-05',
+        comment: 'This was a bla dolmetschen',
+        files: []
+      }]
+
+      let billTypes: BillTypeModel[] = [typeA, typeB]
+
+      const result = getTypesPieChartData<BillDbModel, BillTypeModel>(bills, billTypes, 'date_paid', '2014')
+      expect(result.length).to.equal(2)
+      expect(result[0]).to.equal(1)
+      expect(result[1]).to.equal(1)
+    })
+
+    it('should return the amount of income for all types', () => {
+      const typeA = {
+        id: 0,
+        type: 'foo'
+      }
+      const typeB = {
+        id: 1,
+        type: 'bla'
+      }
+      const customer = {
+        id: 123,
+        name: 'Your momma'
+      }
+      
+      const bills: BillDbModel[] = [{
+        id: 1,
+        invoice_id: 'foo/123',
+        customer,
+        customer_name: customer.name,
+        amount: 150,
+        type: typeA,
+        date_created: '2014-09-05',
+        date_paid: '2014-09-05',
+        comment: 'This was a foo auftrag',
+        files: []
+      }, {
+        id: 2,
+        invoice_id: 'foo/124',
+        customer,
+        customer_name: customer.name,
+        type: typeB,
+        amount: 200,
+        date_created: '2014-09-05',
+        date_paid: '2014-09-05',
+        comment: 'This was a bla dolmetschen',
+        files: []
+      }]
+
+      const billTypes: BillTypeModel[] = [typeA, typeB]
+
+      const result = getTypesPieChartData<BillDbModel, BillTypeModel>(bills, billTypes, 'date_paid', '2014', 'amount')
+      expect(result.length).to.equal(2)
+      expect(result[0]).to.equal(150)
+      expect(result[1]).to.equal(200)
     })
   })
 

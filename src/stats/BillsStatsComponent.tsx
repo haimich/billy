@@ -8,10 +8,12 @@ import TypesFilterComponent from '../common/components/stats/TypesFilterComponen
 import LineChartComponent from '../common/components/stats/LineChartComponent'
 import PanelComponent from '../common/components/stats/PanelComponent'
 import BillsTableComponent from './BillsTableComponent'
-import BillsChartComponent from './BillsChartComponent'
 import PieChartComponent from '../common/components/stats/PieChartComponent'
 import t from '../common/helpers/i18n'
-import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType, getTotal } from '../common/ui/stats'
+import {
+  SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth,
+  matchesYear, matchesType, getTotal, getTypesPieChartData
+} from '../common/ui/stats'
 import * as moment from 'moment'
 import { getAverage, round } from '../common/helpers/math'
 
@@ -141,53 +143,53 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     return this.props.billTypes.map(type => type.type)
   }
 
-  getTypesPieChartData(): number[] {
-    let typeSums = {}
+  // getTypesPieChartData(): number[] {
+  //   let typeSums = {}
 
-    for (let type of this.props.billTypes) {
-      typeSums[type.type] = 0
-    }
+  //   for (let type of this.props.billTypes) {
+  //     typeSums[type.type] = 0
+  //   }
 
-    for (let bill of this.props.bills) {
-      if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
-        continue
-      } else if (bill.type == null) {
-        continue
-      }
+  //   for (let bill of this.props.bills) {
+  //     if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
+  //       continue
+  //     } else if (bill.type == null) {
+  //       continue
+  //     }
 
-      for (let type of this.props.billTypes) {
-        if (bill.type.type === type.type) {
-          typeSums[bill.type.type] += 1
-        }
-      }
-    }
+  //     for (let type of this.props.billTypes) {
+  //       if (bill.type.type === type.type) {
+  //         typeSums[bill.type.type] += 1
+  //       }
+  //     }
+  //   }
 
-    return Object.keys(typeSums).map(type => typeSums[type])
-  }
+  //   return Object.keys(typeSums).map(type => typeSums[type])
+  // }
 
-  getTypesIncomePieChartData(): number[] {
-    let typeSums = {}
+  // getTypesIncomePieChartData(): number[] {
+  //   let typeSums = {}
 
-    for (let type of this.props.billTypes) {
-      typeSums[type.type] = 0
-    }
+  //   for (let type of this.props.billTypes) {
+  //     typeSums[type.type] = 0
+  //   }
 
-    for (let bill of this.props.bills) {
-      if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
-        continue
-      } else if (bill.type == null) {
-        continue
-      }
+  //   for (let bill of this.props.bills) {
+  //     if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
+  //       continue
+  //     } else if (bill.type == null) {
+  //       continue
+  //     }
 
-      for (let type of this.props.billTypes) {
-        if (bill.type.type === type.type) {
-          typeSums[bill.type.type] += bill.amount
-        }
-      }
-    }
+  //     for (let type of this.props.billTypes) {
+  //       if (bill.type.type === type.type) {
+  //         typeSums[bill.type.type] += bill.amount
+  //       }
+  //     }
+  //   }
 
-    return Object.keys(typeSums).map(type => round(typeSums[type]))
-  }
+  //   return Object.keys(typeSums).map(type => round(typeSums[type]))
+  // }
 
   matchesFilters(bill: BillDbModel): boolean {
     return matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)
@@ -248,13 +250,23 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
             <div className="col-sm-1" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <PanelComponent title={t('Jahresumsatz')} value={getTotal(this.props.bills, 'amount', this.matchesFilters.bind(this))} suffix="€" icon="fa-line-chart" />
+              <PanelComponent
+                title={t('Jahresumsatz')}
+                value={getTotal(this.props.bills, 'amount', this.matchesFilters.bind(this))}
+                suffix="€"
+                icon="fa-line-chart"
+              />
             </div>
 
             <div className="col-sm-2" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <PanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} suffix="€" icon="fa-hourglass-1" />
+              <PanelComponent
+                title={t('Unbezahlte Rechnungen')}
+                value={this.getTotalUnpaid()}
+                suffix="€"
+                icon="fa-hourglass-1"
+              />
             </div>
 
             <div className="col-sm-1" />
@@ -273,17 +285,17 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
 
             <div className="col-xs-6">
               <PieChartComponent
-                data={this.getTypesPieChartData()}
+                data={getTypesPieChartData(this.props.bills, this.props.billTypes, this.state.billDateToUse, this.state.selectedYear)}
                 labels={this.getTypesPieChartLabels()}
-                heading={t('Aufträge nach Typ')}
+                heading={t('Anzahl Aufträge nach Typ')}
               />
             </div>
 
             <div className="col-xs-6">
               <PieChartComponent
-                data={this.getTypesIncomePieChartData()}
+                data={getTypesPieChartData(this.props.bills, this.props.billTypes, this.state.billDateToUse, this.state.selectedYear, 'amount')}
                 labels={this.getTypesPieChartLabels()}
-                heading={t('Aufträge nach Umsatz (€)')}
+                heading={t('Aufträge nach Umsatz in €')}
               />
             </div>
 

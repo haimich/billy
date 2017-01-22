@@ -6,7 +6,10 @@ import LineChartComponent from '../common/components/stats/LineChartComponent'
 import PanelComponent from '../common/components/stats/PanelComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
-import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType, getTotal } from '../common/ui/stats'
+import {
+  SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth,
+  matchesYear, matchesType, getTotal, getTypesPieChartData
+} from '../common/ui/stats'
 import t from '../common/helpers/i18n'
 import * as moment from 'moment'
 
@@ -45,6 +48,14 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
       && matchesType<ExpenseDbModel>(expense, this.state.selectedExpenseType)
   }
 
+  getTypesPieChartLabels(): string[] {
+    return this.props.expenseTypes.map(type => type.type)
+  }
+
+  // getTypesPieChartData(): number[] {
+  //   return getTypesPieChartData<ExpenseDbModel, ExpenseTypeModel>(this.props.expenses, this.props.expenseTypes, 'date', this.state.selectedYear)
+  // }
+
   render() {
     return (
       <div>
@@ -67,7 +78,12 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
             <div className="col-sm-4" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <PanelComponent title={t('Summe Ausgaben')} value={getTotal(this.props.expenses, 'preTaxAmount', this.matchesFilters.bind(this))} suffix="€" icon="fa-line-chart" />
+              <PanelComponent
+                title={t('Summe Ausgaben')}
+                value={getTotal(this.props.expenses, 'preTaxAmount', this.matchesFilters.bind(this))}
+                suffix="€"
+                icon="fa-line-chart"
+              />
             </div>
 
             <div className="col-sm-4" />

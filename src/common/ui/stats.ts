@@ -98,6 +98,34 @@ export function getLineChartData(lineChartLabels: string[], lineChartDataLabel: 
   }
 }
 
+export function getTypesPieChartData<T, V>(list: T[], types: V[], dateFieldName: string, selectedYear: string, amountFieldName?: string): number[] {
+  let typeSums = {}
+
+  for (let type of types) {
+    typeSums[type['type']] = 0
+  }
+
+  for (let element of list) {
+    if (! matchesYear(element[dateFieldName], selectedYear)) {
+      continue
+    } else if (element['type'] == null) {
+      continue
+    }
+
+    for (let type of types) {
+      if (element['type'].type === type['type']) {
+        if (amountFieldName != null) {
+          typeSums[element['type'].type] += element[amountFieldName]
+        } else {
+          typeSums[element['type'].type] += 1
+        }
+      }
+    }
+  }
+
+  return Object.keys(typeSums).map(type => round(typeSums[type]))
+}
+
 export function matchesYear(date: string, year: string): boolean {
   if (date == null || date === '') {
     return false
