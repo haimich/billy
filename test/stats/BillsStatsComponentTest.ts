@@ -102,59 +102,6 @@ describe('stats.BillsStatsComponent', () => {
     })
   })
 
-  describe('getTotal', () => {
-    const customer = {
-      id: 123,
-      name: 'Your momma'
-    }
-
-    it('should return the sum of the bill amount', () => {
-      component = new BillsStatsComponent({
-        customers: [customer],
-        bills: [{
-          invoice_id: 'foo/123',
-          customer,
-          amount: 123.45,
-          date_created: '2014-09-05'
-        }]
-      })
-      component.matchesFilters = () => true
-
-      const result = component.getTotal()
-      expect(result).to.equal(123.45)
-    })
-
-    it('should return the rounded sum of all bill amounts', () => {
-      component = new BillsStatsComponent({
-        customers: [{
-          id: 123,
-          name: 'Your momma'
-        }],
-        bills: [{
-          invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 123.45,
-          date_created: '2014-09-05'
-        }, {
-          invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 20.551,
-          date_created: '2014-09-05'
-        }]
-      })
-      component.matchesFilters = () => true
-
-      const result = component.getTotal()
-      expect(result).to.equal(144.00)
-    })
-  })
-
   describe('getTotalUnpaid', () => {
     const customer = {
       id: 123,

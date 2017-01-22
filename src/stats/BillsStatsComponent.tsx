@@ -10,7 +10,7 @@ import PanelComponent from '../common/components/stats/PanelComponent'
 import BillsTableComponent from './BillsTableComponent'
 import BillsChartComponent from './BillsChartComponent'
 import t from '../common/helpers/i18n'
-import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType } from '../common/ui/stats'
+import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType, getTotal } from '../common/ui/stats'
 import * as moment from 'moment'
 import { getAverage, round } from '../common/helpers/math'
 
@@ -52,18 +52,6 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     } else {
       this.state.selectedYear = ''
     }
-  }
-
-  getTotal(): number {
-    let total = 0
-
-    for (let bill of this.props.bills) {
-      if (this.matchesFilters(bill)) {
-        total += bill.amount
-      }
-    }
-
-    return round(total)
   }
 
   getTotalUnpaid(): number {
@@ -259,7 +247,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
             <div className="col-xs-1" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <PanelComponent title={t('Jahresumsatz')} value={this.getTotal()} suffix="€" icon="fa-line-chart" />
+              <PanelComponent title={t('Jahresumsatz')} value={getTotal(this.props.bills, 'amount', this.matchesFilters.bind(this))} suffix="€" icon="fa-line-chart" />
             </div>
 
             <div className="col-xs-2" />

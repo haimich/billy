@@ -1,5 +1,6 @@
 import { dateFormatterYearView } from './formatters'
 import { asc, desc } from '../helpers/sorters'
+import { round } from '../helpers/math'
 import * as moment from 'moment'
 import t from '../helpers/i18n'
 
@@ -70,6 +71,18 @@ export function getAmountsPerMonth<T>(list: T[], dateFieldName: string, amountFi
   }
 
   return data
+}
+
+export function getTotal<T>(list: T[], amountFieldName: string, matchesFilters: (element: T) => boolean): number {
+  let total = 0
+
+  for (let element of list) {
+    if (matchesFilters(element)) {
+      total += element[amountFieldName]
+    }
+  }
+
+  return round(total)
 }
 
 export function getLineChartData(lineChartLabels: string[], lineChartDataLabel: string, lineChartData: number[]) {

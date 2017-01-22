@@ -1,4 +1,6 @@
-import { getAmountsPerMonth, getAvailableYears, getLineChartData, getMonthNumbers, matchesType, matchesYear } from '../../../src/common/ui/stats'
+import {
+  getAmountsPerMonth, getAvailableYears, getLineChartData,
+  getMonthNumbers, matchesType, matchesYear, getTotal } from '../../../src/common/ui/stats'
 import BillDbModel from '../../../src/common/models/BillDbModel'
 import ExpenseDbModel from '../../../src/common/models/ExpenseDbModel'
 import { expect } from 'chai'
@@ -238,6 +240,69 @@ describe('stats', () => {
       }
 
       expect(matchesType<BillDbModel>(bill, 'foo')).to.be.false
+    })
+  })
+
+
+  describe('getTotal', () => {
+    const customer = {
+      id: 123,
+      name: 'Your momma'
+    }
+
+    it('should return the sum of the bill amounts', () => {
+      let bills = [{
+        id: 1,
+        invoice_id: 'foo/123',
+        customer,
+        customer_name: customer.name,
+        amount: 123.45,
+        date_created: '2014-09-05',
+        files: []
+      }]
+
+      const result = getTotal<BillDbModel>(bills, 'amount', () => true)
+      expect(result).to.equal(123.45)
+    })
+
+    it('should return the rounded sum of all bill amounts', () => {
+      let bills = [{
+        id: 1,
+        invoice_id: 'foo/123',
+        customer,
+        customer_name: customer.name,
+        amount: 123.45,
+        date_created: '2014-09-05',
+        files: []
+      }, {
+        id: 2,
+        invoice_id: 'foo/123',
+        customer,
+        customer_name: customer.name,
+        amount: 20.551,
+        date_created: '2014-09-05',
+        files: []
+      }]
+
+      const result = getTotal<BillDbModel>(bills, 'amount', () => true)
+      expect(result).to.equal(144.00)
+    })
+
+    it('should return the rounded sum of all expense amounts', () => {
+      let expenses = [{
+        id: 1,
+        preTaxAmount: 123.456,
+        taxrate: 15,
+        date: '2014-09-05'
+      }, {
+        id: 2,
+        preTaxAmount: 123,
+        taxrate: 15,
+        date: '2014-09-21'
+      }]
+
+      const result = getTotal<ExpenseDbModel>(expenses, 'preTaxAmount', () => true)
+      expect(result).to.equal(246.46)
     })
   })
 
