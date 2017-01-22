@@ -244,19 +244,19 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
 
         <div className="panel-container">
           <div className="row">
-            <div className="col-xs-1" />
+            <div className="col-sm-1" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
               <PanelComponent title={t('Jahresumsatz')} value={getTotal(this.props.bills, 'amount', this.matchesFilters.bind(this))} suffix="€" icon="fa-line-chart" />
             </div>
 
-            <div className="col-xs-2" />
+            <div className="col-sm-2" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
               <PanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} suffix="€" icon="fa-hourglass-1" />
             </div>
 
-            <div className="col-xs-1" />
+            <div className="col-sm-1" />
           </div>
         </div>
 
