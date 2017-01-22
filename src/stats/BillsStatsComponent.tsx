@@ -9,6 +9,7 @@ import LineChartComponent from '../common/components/stats/LineChartComponent'
 import PanelComponent from '../common/components/stats/PanelComponent'
 import BillsTableComponent from './BillsTableComponent'
 import BillsChartComponent from './BillsChartComponent'
+import PieChartComponent from '../common/components/stats/PieChartComponent'
 import t from '../common/helpers/i18n'
 import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType, getTotal } from '../common/ui/stats'
 import * as moment from 'moment'
@@ -270,11 +271,21 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
         <div className="container-fluid">
           <div className="row">
 
-          <BillsChartComponent
-            typesPieChartLabels={this.getTypesPieChartLabels()}
-            typesPieChartData={this.getTypesPieChartData()}
-            typesIncomePieChartData={this.getTypesIncomePieChartData()}
-          />
+            <div className="col-xs-6">
+              <PieChartComponent
+                data={this.getTypesPieChartData()}
+                labels={this.getTypesPieChartLabels()}
+                heading={t('Aufträge nach Typ')}
+              />
+            </div>
+
+            <div className="col-xs-6">
+              <PieChartComponent
+                data={this.getTypesIncomePieChartData()}
+                labels={this.getTypesPieChartLabels()}
+                heading={t('Aufträge nach Umsatz (€)')}
+              />
+            </div>
 
           </div>
         </div>
