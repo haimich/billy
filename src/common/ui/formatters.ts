@@ -1,5 +1,6 @@
 import * as moment from 'moment'
 import * as path from 'path'
+import t from '../helpers/i18n'
 
 export function dateFormatterView(value?: string): string {
   if (value == null || value === '') {
@@ -61,4 +62,12 @@ export function getFilename(filePath: string): string {
   } else {
     return path.basename(filePath)
   }
+}
+
+export function dayFormatter(cell, row): string {
+  if (cell == null || cell === 0) {
+    return ''
+  }
+
+  return cell + ' ' + (cell === 1 ? t('Tag') : t('Tage'))
 }

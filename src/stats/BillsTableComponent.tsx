@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
-import { currencyFormatter } from '../common/ui/formatters'
+import { currencyFormatter, dayFormatter } from '../common/ui/formatters'
 import t from '../common/helpers/i18n'
 
 interface Props {
@@ -9,18 +9,6 @@ interface Props {
 }
 
 export default class BillsTableComponent extends React.Component<Props, {}> {
-
-  constructor(props) {
-    super(props)
-  }
-
-  dayFormatter(cell, row): string {
-    if (cell == null || cell === 0) {
-      return ''
-    }
-
-    return cell + ' ' + (cell === 1 ? t('Tag') : t('Tage'))
-  }
 
   render() {
     const tableOptions: Options = {
@@ -41,7 +29,7 @@ export default class BillsTableComponent extends React.Component<Props, {}> {
 
           <TableHeaderColumn isKey={true} dataField="name" width="140" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="billCount" width="60" dataSort={true}>{t('Rechnungen')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="averageTimeToPay" width="60" dataFormat={this.dayFormatter.bind(this)} dataSort={true}>{t('Durchschn. Bezahldauer')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="averageTimeToPay" width="60" dataFormat={dayFormatter} dataSort={true}>{t('Durchschn. Bezahldauer')}</TableHeaderColumn>
           <TableHeaderColumn dataField="total" width="100" dataFormat={currencyFormatter} dataAlign="right" dataSort={true}>{t('Umsatz')}</TableHeaderColumn>
 
         </BootstrapTable>

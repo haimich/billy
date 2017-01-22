@@ -62,14 +62,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
           />
         </form>
 
-        <LineChartComponent
-          lineChartHeading={t('Ausgaben in €')}
-          lineChartDataLabel={t('Ausgaben nach Datum')}
-          lineChartLabels={getMonthNumbers()}
-          lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.props.expenses, 'date', 'preTaxAmount', this.matchesFilters.bind(this))}
-        />
-
-        <div className="panel-container">
+        <div className="panel-container" style={{ marginTop: '4px' }}>
           <div className="row">
             <div className="col-sm-4" />
 
@@ -80,6 +73,13 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
             <div className="col-sm-4" />
           </div>
         </div>
+
+        <LineChartComponent
+          lineChartHeading={t('Ausgaben in €')}
+          lineChartDataLabel={t('Ausgaben nach Datum')}
+          lineChartLabels={getMonthNumbers()}
+          lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.props.expenses, 'date', 'preTaxAmount', this.matchesFilters.bind(this))}
+        />
 
       </div>
     )

@@ -32,6 +32,16 @@ body {
   margin-bottom: 12px;
 }
 
+.pie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pie-legend-container {
+  align-self: flex-start;
+}
+
 .pie-legend {
   list-style-type: none;
 }

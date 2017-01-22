@@ -35,7 +35,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     super(props)
 
     this.state = {
-      mode: 'expenses'
+      mode: 'bills'
     }
 
     ipcRenderer.on('shortcut-CommandOrControl+d', () => {
