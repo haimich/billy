@@ -1,6 +1,6 @@
 import {
   getAmountsPerMonth, getAvailableYears, getLineChartData, getMonthNumbers, matchesType,
-  matchesYear, getTotal, getTypesPieChartData, getAvailableMonths
+  matchesMonth, matchesYear, getTotal, getTypesPieChartData, getAvailableMonths
 } from '../../../src/common/ui/stats'
 import BillDbModel from '../../../src/common/models/BillDbModel'
 import BillTypeModel from '../../../src/common/models/BillTypeModel'
@@ -111,7 +111,7 @@ describe('stats', () => {
         comment: 'no comment',
         files: []
       }]
-      
+
       const result = getAvailableMonths(bills, 'date_paid', '2016')
       expect(result.length).to.equal(2)
       expect(result[0]).to.equal(t('Januar'))
@@ -234,6 +234,18 @@ describe('stats', () => {
       const result = matchesYear('2016-02-28', '2017')
       expect(result).to.be.false
     })  
+  })
+
+  describe('matchesMonth', () => {
+    it('should return true if the date is in the same month', () => {
+      const result = matchesMonth('2016-02-28', t('Februar'))
+      expect(result).to.be.true
+    })
+
+    it('should return false if the date is not in the same month', () => {
+      const result = matchesMonth('2017-02-28', t('Januar'))
+      expect(result).to.be.false
+    })
   })
 
   describe('matchesType', () => {

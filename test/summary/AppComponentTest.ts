@@ -41,36 +41,6 @@ describe('summary.AppComponent', () => {
     })
   })
 
-  describe('matchesYear', () => {
-    it('should return true if the date is in the selected year', () => {
-      component.state = {
-        selectedYear: '2016'
-      }
-      const result = component.matchesYear('2016-02-28')
-      expect(result).to.be.true
-    })
-
-    it('should return false if the date is not in the selected year', () => {
-      component.state = {
-        selectedYear: '2016'
-      }
-      const result = component.matchesYear('2017-02-28')
-      expect(result).to.be.false
-    })
-  })
-
-  describe('matchesMonth', () => {
-    it('should return true if the date is in the same month', () => {
-      const result = component.matchesMonth('2016-02-28', t('Februar'))
-      expect(result).to.be.true
-    })
-
-    it('should return false if the date is not in the same month', () => {
-      const result = component.matchesMonth('2017-02-28', t('Januar'))
-      expect(result).to.be.false
-    })
-  })
-
   describe('getTotalAmount', () => {
     const customer = {
       id: 123,

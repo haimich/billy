@@ -6,7 +6,7 @@ import BillsTableComponent from './BillsTableComponent'
 import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter } from '../common/ui/formatters'
 import { asc, desc } from '../common/helpers/sorters'
 import { round } from  '../common/helpers/math'
-import { MONTHS, getAvailableYears, getAvailableMonths } from '../common/ui/stats'
+import { MONTHS, getAvailableYears, getAvailableMonths, matchesYear, matchesMonth } from '../common/ui/stats'
 import * as moment from 'moment'
 import t from '../common/helpers/i18n'
 
@@ -37,29 +37,9 @@ export default class AppComponent extends React.Component<Props, State> {
     }
   }
 
-  matchesYear(date: string): boolean {
-    if (date == null || date === '') {
-      return false
-    }
-
-    let givenYear = '' + moment(date).year()
-
-    return (givenYear === this.state.selectedYear)
-  }
-
-  matchesMonth(date: string, month: string): boolean {
-    if (date == null || date === '') {
-      return false
-    }
-
-    let givenMonth = dateFormatterMonthView(date)
-
-    return (MONTHS[givenMonth] === month)
-  }
-
   getData(month: string) {
     return this.props.bills.filter(bill => {
-      return this.matchesYear(bill.date_paid) && this.matchesMonth(bill.date_paid, month)
+      return matchesYear(bill.date_paid, this.state.selectedYear) && matchesMonth(bill.date_paid, month)
     })
   }
 

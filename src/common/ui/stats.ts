@@ -166,6 +166,16 @@ export function matchesYear(date: string, year: string): boolean {
   return (givenYear === year)
 }
 
+export function matchesMonth(date: string, month: string): boolean {
+  if (date == null || date === '') {
+    return false
+  }
+
+  let givenMonth = dateFormatterMonthView(date)
+
+  return (MONTHS[givenMonth] === month)
+}
+
 export function matchesType<T>(element: T, actualType: string): boolean {
   if (actualType == null || actualType === '' || actualType === SELECT_TYPE_ALL) {
     return true
