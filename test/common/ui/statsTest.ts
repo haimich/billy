@@ -1,11 +1,12 @@
 import {
-  getAmountsPerMonth, getAvailableYears, getLineChartData,
-  getMonthNumbers, matchesType, matchesYear, getTotal, getTypesPieChartData
+  getAmountsPerMonth, getAvailableYears, getLineChartData, getMonthNumbers, matchesType,
+  matchesYear, getTotal, getTypesPieChartData, getAvailableMonths
 } from '../../../src/common/ui/stats'
 import BillDbModel from '../../../src/common/models/BillDbModel'
 import BillTypeModel from '../../../src/common/models/BillTypeModel'
 import ExpenseDbModel from '../../../src/common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../../../src/common/models/ExpenseTypeModel'
+import t from '../../../src/common/helpers/i18n'
 import { expect } from 'chai'
 
 const CUSTOMER = {
@@ -69,6 +70,52 @@ describe('stats', () => {
       const result = getAvailableYears<ExpenseDbModel>(expenses, 'date')
       expect(result.length).to.equal(1)
       expect(result[0]).to.equal('2014')
+    })
+  })
+
+  describe('getAvailableMonths', () => {
+    it('should return all months for the given year that show up in bill.date_paid', () => {
+      const customer = {
+        id: 123,
+        name: 'Deine Mudda'
+      }
+
+      bills = [{
+        id: 1,
+        invoice_id: 'foo/123',
+        customer,
+        customer_name: customer.name,
+        amount: 123.45,
+        date_created: '2014-09-05',
+        date_paid: '2015-11-05',
+        comment: 'no comment',
+        files: []
+      }, {
+        id: 2,
+        invoice_id: 'foo/124',
+        customer,
+        customer_name: customer.name,
+        amount: 123.45,
+        date_created: '2014-09-05',
+        date_paid: '2016-01-05',
+        comment: 'no comment',
+        files: []
+      }, {
+        id: 3,
+        invoice_id: 'foo/126',
+        customer,
+        customer_name: customer.name,
+        amount: 100,
+        date_created: '2014-09-05',
+        date_paid: '2016-11-07',
+        comment: 'no comment',
+        files: []
+      }]
+      
+      const result = getAvailableMonths(bills, 'date_paid', '2016')
+      expect(result.length).to.equal(2)
+      expect(result[0]).to.equal(t('Januar'))
+      expect(result[1]).to.equal(t('November'))
     })
   })
 

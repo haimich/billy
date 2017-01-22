@@ -2,7 +2,7 @@ import AppComponent from '../../src/summary/AppComponent'
 import { expect } from 'chai'
 import t from '../../src/common/helpers/i18n'
 
-describe('income.AppComponent', () => {
+describe('summary.AppComponent', () => {
   let component = null
 
   beforeEach(() => {
@@ -38,27 +38,6 @@ describe('income.AppComponent', () => {
         date_paid: '2016-11-07',
         comment: 'no comment'
       }]
-    })
-  })
-
-  describe('getAvailableYears', () => {
-    it('should return all years that show up in bill.date_paid', () => {
-      const result = component.getAvailableYears()
-      expect(result.length).to.equal(2)
-      expect(result[0]).to.equal('2016')
-      expect(result[1]).to.equal('2015')
-    })
-  })
-
-  describe('getAvailableMonths', () => {
-    it('should return all months for the given year that show up in bill.date_paid', () => {
-      component.state = {
-        selectedYear: '2016'
-      }
-      const result = component.getAvailableMonths()
-      expect(result.length).to.equal(2)
-      expect(result[0]).to.equal(t('Januar'))
-      expect(result[1]).to.equal(t('November'))
     })
   })
 

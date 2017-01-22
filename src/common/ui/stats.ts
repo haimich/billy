@@ -1,4 +1,4 @@
-import { dateFormatterYearView } from './formatters'
+import { dateFormatterYearView, dateFormatterMonthView } from './formatters'
 import { asc, desc } from '../helpers/sorters'
 import { round } from '../helpers/math'
 import * as moment from 'moment'
@@ -21,7 +21,7 @@ export const COLORS = [
 ]
 
 /**
- * Extract all years that occure in the date fields of a list of elements (eg. bills or expenses).
+ * Extract all years that occur in the date fields of a list of elements (eg. bills or expenses).
  */
 export function getAvailableYears<T>(list: T[], dateFieldName: string): string[] {
   let years: string[] = []
@@ -40,6 +40,35 @@ export function getAvailableYears<T>(list: T[], dateFieldName: string): string[]
 
   return years.sort(desc)
 }
+
+/**
+ * Extract all months that occur in the date fields of a list of elements (eg. bills or expenses).
+ */
+export function getAvailableMonths<T>(list: T[], dateFieldName: string, selectedYear: string,): string[] {
+  let months: number[] = []
+
+  for (let element of list) {
+    if (element[dateFieldName] == null || ! matchesYear(element[dateFieldName], selectedYear)) {
+      continue
+    }
+
+    let newDate = dateFormatterMonthView(element[dateFieldName])
+
+    if (months.indexOf(newDate) === -1) {
+      months.push(newDate)
+    }
+  }
+
+  let availableMonths = []
+  for (let i = 0; i < MONTHS.length; i++) {
+    if (months.indexOf(i) !== -1) {
+      availableMonths.push(MONTHS[i])
+    }
+  }
+
+  return availableMonths
+}
+
 
 export function getMonthNumbers(): string[] {
   return Array.from(Array(12).keys()).map(key => '' + (key + 1))
