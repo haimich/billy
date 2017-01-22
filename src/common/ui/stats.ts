@@ -5,6 +5,7 @@ import * as moment from 'moment'
 import t from '../helpers/i18n'
 
 export const SELECT_TYPE_ALL = t('Alle')
+export const MONTHS = [t('Januar'), t('Februar'), t('März'), t('April'), t('Mai'), t('Juni'), t('Juli'), t('August'), t('September'), t('Oktober'), t('November'), t('Dezember')]
 export const COLORS = [
   '54, 162, 235',
   '255, 105, 180',

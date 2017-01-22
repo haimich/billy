@@ -1,4 +1,4 @@
-import AppComponent from '../../src/income/AppComponent'
+import AppComponent from '../../src/summary/AppComponent'
 import { expect } from 'chai'
 import t from '../../src/common/helpers/i18n'
 

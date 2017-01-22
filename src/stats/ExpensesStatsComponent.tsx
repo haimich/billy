@@ -22,6 +22,7 @@ interface Props {
 interface State {
   selectedExpenseType: string
   selectedYear?: string
+  availableYears: string[]
 }
 
 export default class ExpensesStatsComponent extends React.Component<Props, {}> {
@@ -31,16 +32,18 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props)
 
-    this.state = {
-      selectedExpenseType: SELECT_TYPE_ALL
-    }
+    let selectedYear = ''
 
     const availableYears = getAvailableYears<ExpenseDbModel>(this.props.expenses, 'date')
 
     if (availableYears.length >= 1) {
-      this.state.selectedYear = availableYears[0]
-    } else {
-      this.state.selectedYear = ''
+      selectedYear = availableYears[0]
+    }
+
+    this.state = {
+      selectedExpenseType: SELECT_TYPE_ALL,
+      selectedYear,
+      availableYears
     }
   }
 
@@ -53,17 +56,13 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
     return this.props.expenseTypes.map(type => type.type)
   }
 
-  // getTypesPieChartData(): number[] {
-  //   return getTypesPieChartData<ExpenseDbModel, ExpenseTypeModel>(this.props.expenses, this.props.expenseTypes, 'date', this.state.selectedYear)
-  // }
-
   render() {
     return (
       <div>
 
         <form id="filter-container">
           <YearsFilterComponent
-            years={getAvailableYears<ExpenseDbModel>(this.props.expenses, 'date')}
+            years={this.state.availableYears}
             handleYearChange={element => this.setState({selectedYear: element.target.value})}
             selectedYear={this.state.selectedYear}
           />

@@ -3,7 +3,7 @@ import { isDev, getAppFolder } from '../helpers/app'
 const electronLocalshortcut = require('electron-localshortcut')
 
 // Keep a global reference of the window objects to prevent gc
-let mainWindow, onboardingWindow, importWindow, statsWindow, incomeWindow
+let mainWindow, onboardingWindow, importWindow, statsWindow, summaryWindow
 
 export function openOnboardingWindow() {
   console.log('open onboarding window')
@@ -106,27 +106,27 @@ export function openStatsWindow() {
   })
 }
 
-export function openIncomeWindow() {
-  console.log('open income window')
+export function openSummaryWindow() {
+  console.log('open summary window')
 
-  incomeWindow = new BrowserWindow({
+  summaryWindow = new BrowserWindow({
     width: 1200,
     height: isDev ? 900 : 710, // create room for dev tools
     show: false
   })
-  incomeWindow.loadURL(`file://${getAppFolder()}/src/income.html`)
+  summaryWindow.loadURL(`file://${getAppFolder()}/src/summary.html`)
 
-  incomeWindow.once('ready-to-show', () => {
-    incomeWindow.show()
+  summaryWindow.once('ready-to-show', () => {
+    summaryWindow.show()
   })
 
-  incomeWindow.on('closed', () => {
-    incomeWindow = null
+  summaryWindow.on('closed', () => {
+    summaryWindow = null
   })
 }
 
 export function allWindowsClosed() {
-  return (mainWindow == null && onboardingWindow == null && importWindow == null && incomeWindow == null)
+  return (mainWindow == null && onboardingWindow == null && importWindow == null && summaryWindow == null)
 }
 
 export function reload(focusedWindow) {

@@ -43,17 +43,19 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props)
 
-    this.state = {
-      selectedBillType: SELECT_TYPE_ALL,
-      billDateToUse: 'date_paid'
-    }
+    let billDateToUse: any = 'date_paid'
+    let selectedYear = ''
 
-    const availableYears = getAvailableYears<BillDbModel>(this.props.bills, this.state.billDateToUse)
+    const availableYears = getAvailableYears<BillDbModel>(this.props.bills, billDateToUse)
 
     if (availableYears.length >= 1) {
-      this.state.selectedYear = availableYears[0]
-    } else {
-      this.state.selectedYear = ''
+      selectedYear = availableYears[0]
+    }
+
+    this.state = {
+      selectedBillType: SELECT_TYPE_ALL,
+      billDateToUse,
+      selectedYear
     }
   }
 
