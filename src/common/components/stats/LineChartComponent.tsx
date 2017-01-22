@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import t from '../helpers/i18n'
-import { COLORS, getLineChartData } from '../ui/stats'
+import t from '../../helpers/i18n'
+import { COLORS, getLineChartData } from '../../ui/stats'
 let LineChart = require('react-chartjs').Line
 
 interface Props {

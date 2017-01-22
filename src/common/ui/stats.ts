@@ -21,7 +21,7 @@ export const COLORS = [
 /**
  * Extract all years that occure in the date fields of a list of elements (eg. bills or expenses).
  */
-export function getAvailableYears(list: any, dateFieldName: string): string[] {
+export function getAvailableYears<T>(list: T[], dateFieldName: string): string[] {
   let years: string[] = []
 
   for (let element of list) {

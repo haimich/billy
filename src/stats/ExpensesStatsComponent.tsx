@@ -1,8 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import YearsFilterComponent from '../common/components/YearsFilterComponent'
-import TypesFilterComponent from '../common/components/TypesFilterComponent'
-import LineChartComponent from '../common/components/LineChartComponent'
+import YearsFilterComponent from '../common/components/stats/YearsFilterComponent'
+import TypesFilterComponent from '../common/components/stats/TypesFilterComponent'
+import LineChartComponent from '../common/components/stats/LineChartComponent'
+import PanelComponent from '../common/components/stats/PanelComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
 import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType } from '../common/ui/stats'
@@ -30,7 +31,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
       selectedExpenseType: SELECT_TYPE_ALL
     }
 
-    const availableYears = getAvailableYears(this.props.expenses, 'date')
+    const availableYears = getAvailableYears<ExpenseDbModel>(this.props.expenses, 'date')
 
     if (availableYears.length >= 1) {
       this.state.selectedYear = availableYears[0]
@@ -44,13 +45,17 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
       && matchesType<ExpenseDbModel>(expense, this.state.selectedExpenseType)
   }
 
+  getTotal(): number {
+    return 0
+  }
+
   render() {
     return (
       <div>
 
         <form id="filter-container">
           <YearsFilterComponent
-            years={getAvailableYears(this.props.expenses, 'date')}
+            years={getAvailableYears<ExpenseDbModel>(this.props.expenses, 'date')}
             handleYearChange={element => this.setState({selectedYear: element.target.value})}
             selectedYear={this.state.selectedYear}
           />
@@ -67,6 +72,18 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
           lineChartLabels={getMonthNumbers()}
           lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.props.expenses, 'date', 'preTaxAmount', this.matchesFilters.bind(this))}
         />
+
+        <div className="panel-container">
+          <div className="row">
+            <div className="col-xs-1" />
+
+            <div className="col-xs-12 col-sm-4 panel-display">
+              <PanelComponent title={t('Summe Ausgaben')} value={this.getTotal()} suffix="€" icon="fa-line-chart" />
+            </div>
+
+            <div className="col-xs-1" />
+          </div>
+        </div>
 
       </div>
     )

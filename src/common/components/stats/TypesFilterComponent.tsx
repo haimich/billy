@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
-import { SELECT_TYPE_ALL } from '../ui/stats'
-import t from '../helpers/i18n'
+import { SELECT_TYPE_ALL } from '../../ui/stats'
+import t from '../../helpers/i18n'
 
 interface Props {
   types: any[]

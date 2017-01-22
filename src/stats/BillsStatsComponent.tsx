@@ -3,10 +3,10 @@ import * as ReactDOM from 'react-dom'
 import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
-import YearsFilterComponent from '../common/components/YearsFilterComponent'
-import TypesFilterComponent from '../common/components/TypesFilterComponent'
-import LineChartComponent from '../common/components/LineChartComponent'
-import PanelComponent from '../common/components/PanelComponent'
+import YearsFilterComponent from '../common/components/stats/YearsFilterComponent'
+import TypesFilterComponent from '../common/components/stats/TypesFilterComponent'
+import LineChartComponent from '../common/components/stats/LineChartComponent'
+import PanelComponent from '../common/components/stats/PanelComponent'
 import BillsTableComponent from './BillsTableComponent'
 import BillsChartComponent from './BillsChartComponent'
 import t from '../common/helpers/i18n'
@@ -45,7 +45,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
       billDateToUse: 'date_paid'
     }
 
-    const availableYears = getAvailableYears(this.props.bills, this.state.billDateToUse)
+    const availableYears = getAvailableYears<BillDbModel>(this.props.bills, this.state.billDateToUse)
 
     if (availableYears.length >= 1) {
       this.state.selectedYear = availableYears[0]
@@ -222,7 +222,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
         <form id="filter-container">
 
           <YearsFilterComponent
-            years={getAvailableYears(this.props.bills, this.state.billDateToUse)}
+            years={getAvailableYears<BillDbModel>(this.props.bills, this.state.billDateToUse)}
             handleYearChange={element => this.setState({selectedYear: element.target.value})}
             selectedYear={this.state.selectedYear}
           />
@@ -272,19 +272,15 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
           </div>
         </div>
 
-        
+        <LineChartComponent
+          lineChartHeading={t('Umsatz in €')}
+          lineChartDataLabel={t('Einkommen nach Bezahldatum')}
+          lineChartLabels={getMonthNumbers()}
+          lineChartDatePaidData={getAmountsPerMonth<BillDbModel>(this.props.bills, this.state.billDateToUse, 'amount', this.matchesFilters.bind(this))}
+        />
+          
         <div className="container-fluid">
           <div className="row">
-
-            <LineChartComponent
-              lineChartHeading={t('Umsatz in €')}
-              lineChartDataLabel={t('Einkommen nach Bezahldatum')}
-              lineChartLabels={getMonthNumbers()}
-              lineChartDatePaidData={getAmountsPerMonth<BillDbModel>(this.props.bills, this.state.billDateToUse, 'amount', this.matchesFilters.bind(this))}
-            />
-          
-          </div>
-
 
           <BillsChartComponent
             typesPieChartLabels={this.getTypesPieChartLabels()}
@@ -292,6 +288,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
             typesIncomePieChartData={this.getTypesIncomePieChartData()}
           />
 
+          </div>
         </div>
 
       </div>

@@ -30,23 +30,7 @@ describe('stats.BillsStatsComponent', () => {
       }]
     })
   })
-
-  describe('getAvailableYears', () => {
-    it('should return all date_paid years', () => {
-      component.state.billDateToUse = 'date_paid'
-      const result = component.getAvailableYears()
-      expect(result.length).to.equal(1)
-      expect(result[0]).to.equal('2015')
-    })
-
-    it('should return all date_created years', () => {
-      component.state.billDateToUse = 'date_created'
-      const result = component.getAvailableYears()
-      expect(result.length).to.equal(1)
-      expect(result[0]).to.equal('2014')
-    })
-  })
-
+  
   describe('getDaysToPay', () => {
     it('should return the days between date_created and date_paid', () => {
       const result = component.getDaysToPay({
@@ -118,84 +102,6 @@ describe('stats.BillsStatsComponent', () => {
     })
   })
 
-  describe('matchesYear', () => {
-    it('should return true if the date is in the same year', () => {
-      const result = component.matchesYear('2016-02-28', '2016')
-      expect(result).to.be.true
-    })
-
-    it('should return false if the date is not in the same year', () => {
-      const result = component.matchesYear('2016-02-28', '2017')
-      expect(result).to.be.false
-    })
-  })
-
-  describe('matchesBillType', () => {
-    it('should return true if the type matches the bill type', () => {
-      component.state.selectedBillType = 'foo'
-
-      expect(component.matchesBillType({
-        invoice_id: 'foo/123',
-        customer: {
-          id: 123,
-          name: 'Deine Mudda'
-        },
-        amount: 123.45,
-        type: {
-          id: 0,
-          type: 'foo'
-        },
-        date_created: '2014-01-01'
-      })).to.be.true
-    })
-
-    it('should return false if the type does not match the bill type', () => {
-      component.state.selectedBillType = 'foo'
-
-      expect(component.matchesBillType({
-        invoice_id: 'foo/123',
-        customer: {
-          id: 123,
-          name: 'Deine Mudda'
-        },
-        amount: 123.45,
-        type: {
-          id: 1,
-          type: 'bla'
-        },
-        date_created: '2014-01-01'
-      })).to.be.false
-    })
-
-    it('should return true if there is no bill type selected', () => {
-      component.state.selectedBillType = 'foo'
-
-      expect(component.matchesBillType({
-        invoice_id: 'foo/123',
-        customer: {
-          id: 123,
-          name: 'Deine Mudda'
-        },
-        amount: 123.45,
-        date_created: '2014-01-01'
-      })).to.be.false
-    })
-
-    it('should return false if the bill type is null', () => {
-      component.state.selectedBillType = ''
-
-      expect(component.matchesBillType({
-        invoice_id: 'foo/123',
-        customer: {
-          id: 123,
-          name: 'Deine Mudda'
-        },
-        amount: 123.45,
-        date_created: '2014-01-01'
-      })).to.be.true
-    })
-  })
-
   describe('getTotal', () => {
     const customer = {
       id: 123,
@@ -254,25 +160,32 @@ describe('stats.BillsStatsComponent', () => {
       id: 123,
       name: 'Your momma'
     }
+    const type = {
+      id: 1,
+      type: 'foo'
+    }
 
     it('should return the sum of the unpaid bill amount', () => {
       component = new BillsStatsComponent({
         customers: [customer],
         bills: [{
           invoice_id: 'foo/123',
+          type,
           customer,
           amount: 123.45,
           date_created: '2014-09-05'
         }, {
           invoice_id: 'foo/123',
+          type,
           customer,
           amount: 50,
           date_created: '2014-09-05',
           date_paid: '2014-09-15'
         }]
       })
-      component.matchesYear = () => true
-      component.matchesBillType = () => true
+      component.state.selectedYear = '2014'
+      component.state.selectedBillType = 'foo'
+      component.state.billDateToUse = 'date_created'
 
       const result = component.getTotalUnpaid()
       expect(result).to.equal(123.45)
@@ -283,11 +196,13 @@ describe('stats.BillsStatsComponent', () => {
         customers: [customer],
         bills: [{
           invoice_id: 'foo/123',
+          type,
           customer,
           amount: 123.45,
           date_created: '2014-09-05'
         }, {
           invoice_id: 'foo/123',
+          type,
           customer: {
             id: 123,
             name: 'Deine Mudda'
@@ -296,8 +211,10 @@ describe('stats.BillsStatsComponent', () => {
           date_created: '2014-09-05'
         }]
       })
-      component.matchesYear = () => true
-      component.matchesBillType = () => true
+
+      component.state.selectedYear = '2014'
+      component.state.selectedBillType = 'foo'
+      component.state.billDateToUse = 'date_created'
 
       const result = component.getTotalUnpaid()
       expect(result).to.equal(144.00)
@@ -305,6 +222,15 @@ describe('stats.BillsStatsComponent', () => {
   })
 
   describe('getTableData', () => {
+    const customer = {
+      id: 123,
+      name: 'Your momma'
+    }
+    const type = {
+      id: 1,
+      type: 'foo'
+    }
+
     it('should return a table row with the bill', () => {
       component.matchesFilters = () => true
 
@@ -318,38 +244,31 @@ describe('stats.BillsStatsComponent', () => {
 
     it('should return a table row for each customer', () => {
       component = new BillsStatsComponent({
-        customers: [{
-          id: 123,
-          name: 'Your momma'
-        }],
+        customers: [customer],
         bills: [{
           invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
+          type,
+          customer,
           amount: 123.45,
           date_created: '2014-09-05',
-          date_paid: '2014-09-10'
+          date_paid: '2014-09-09'
         }, {
-          invoice_id: 'foo/124',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 123.45,
+          invoice_id: 'foo/123',
+          type,
+          customer,
+          amount: 20.23,
           date_created: '2014-09-05',
-          date_paid: '2014-09-15'
+          date_paid: '2014-09-13'
         }]
       })
       component.matchesFilters = () => true
 
       const result = component.getTableData()
       expect(result.length).to.equal(1)
-      expect(result[0].total).to.equal(246.90)
+      expect(result[0].total).to.equal(143.68)
       expect(result[0].billCount).to.equal(2)
-      expect(result[0].averageTimeToPay).to.equal(7.5)
-      expect(result[0].name).to.equal('Deine Mudda')
+      expect(result[0].averageTimeToPay).to.equal(6)
+      expect(result[0].name).to.equal('Your momma')
     })
 
     it('should return a table row with the mean time to pay', () => {
@@ -417,110 +336,6 @@ describe('stats.BillsStatsComponent', () => {
     })
   })
 
-  describe('getLineChartData', () => {
-    it('should return a list with the sum of all date_paid amounts', () => {
-      component = new BillsStatsComponent({
-        customers: [{
-          id: 123,
-          name: 'Your momma'
-        }],
-        bills: [{
-          invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 123.45,
-          date_created: '2014-09-05',
-          date_paid: '2014-11-05',
-          comment: 'no comment'
-        }]
-      })
-      component.matchesFilters = () => true
-
-      component.state.billDateToUse = 'date_paid'
-      const result = component.getLineChartData()
-      expect(result.length).to.equal(12) // the months
-
-      expect(result[10]).to.equal('123.45')
-    })
-
-    it('should return a list with the sum of all date_created amounts', () => {
-      component = new BillsStatsComponent({
-        customers: [{
-          id: 123,
-          name: 'Your momma'
-        }],
-        bills: [{
-          invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 123.45,
-          date_created: '2014-09-05',
-          date_paid: '2014-11-05',
-          comment: 'no comment'
-        }]
-      })
-      component.matchesFilters = () => true
-
-      component.state.billDateToUse = 'date_created'
-      const result = component.getLineChartData()
-      expect(result.length).to.equal(12) // the months
-
-      expect(result[8]).to.equal('123.45')
-    })
-
-    it('should return a list with the sum of all amounts', () => {
-      component = new BillsStatsComponent({
-        customers: [{
-          id: 123,
-          name: 'Your momma'
-        }],
-        bills: [{
-          invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 123.45,
-          date_created: '2013-09-05',
-          date_paid: '2014-01-01',
-          comment: 'no comment'
-        }, {
-          invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 100.5,
-          date_created: '2014-09-05',
-          date_paid: '2014-11-05',
-          comment: 'no comment'
-        }, {
-          invoice_id: 'foo/123',
-          customer: {
-            id: 123,
-            name: 'Deine Mudda'
-          },
-          amount: 99.5,
-          date_created: '2014-09-05',
-          date_paid: '2014-11-05',
-          comment: 'no comment'
-        }]
-      })
-      component.matchesFilters = () => true
-
-      component.state.billDateToUse = 'date_paid'
-      const result = component.getLineChartData()
-      expect(result.length).to.equal(12) // the months
-
-      expect(result[0]).to.equal('123.45')
-      expect(result[10]).to.equal('200.00')
-    })
-  })
-
   describe('getTypesPieChartData', () => {
     it('should return the number of bills for all types', () => {
       const typeA = {
@@ -567,7 +382,6 @@ describe('stats.BillsStatsComponent', () => {
       })
       component.state.selectedYear = '2014'
       component.matchesFilters = () => true
-      component.matchesYear = () => true
 
       component.state.billDateToUse = 'date_paid'
       const result = component.getTypesPieChartData()

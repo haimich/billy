@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
-import t from '../helpers/i18n'
+import t from '../../helpers/i18n'
 let CountUp = require('react-countup').default
 
 interface Props {
