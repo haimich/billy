@@ -6,8 +6,8 @@ import Customer from '../common/models/CustomerModel'
 import YearsFilterComponent from '../common/components/YearsFilterComponent'
 import TypesFilterComponent from '../common/components/TypesFilterComponent'
 import LineChartComponent from '../common/components/LineChartComponent'
+import PanelComponent from '../common/components/PanelComponent'
 import BillsTableComponent from './BillsTableComponent'
-import BillsPanelComponent from './BillsPanelComponent'
 import BillsChartComponent from './BillsChartComponent'
 import t from '../common/helpers/i18n'
 import { SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth, matchesYear, matchesType } from '../common/ui/stats'
@@ -259,13 +259,13 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
             <div className="col-xs-1" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <BillsPanelComponent title={t('Jahresumsatz')} value={this.getTotal()} icon="fa-line-chart" />
+              <PanelComponent title={t('Jahresumsatz')} value={this.getTotal()} suffix="€" icon="fa-line-chart" />
             </div>
 
             <div className="col-xs-2" />
 
             <div className="col-xs-12 col-sm-4 panel-display">
-              <BillsPanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} icon="fa-hourglass-1" />
+              <PanelComponent title={t('Unbezahlte Rechnungen')} value={this.getTotalUnpaid()} suffix="€" icon="fa-hourglass-1" />
             </div>
 
             <div className="col-xs-1" />

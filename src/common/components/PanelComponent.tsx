@@ -1,19 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
-import t from '../common/helpers/i18n'
+import t from '../helpers/i18n'
 let CountUp = require('react-countup').default
 
 interface Props {
   title: string
   value: number
   icon: string
+  suffix?: string
 }
 
-export default class BillsPanelComponent extends React.Component<Props, {}> {
-
-  constructor(props) {
-    super(props)
-  }
+export default class PanelComponent extends React.Component<Props, {}> {
 
   render() {
     return (
@@ -29,7 +26,7 @@ export default class BillsPanelComponent extends React.Component<Props, {}> {
               duration={1.5}
               useGrouping={true}
               separator="."
-            /> €
+            />&nbsp;{this.props.suffix}
           </div>
 
           <div className="panel-title">{this.props.title}</div>
