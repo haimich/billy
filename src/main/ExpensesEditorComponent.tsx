@@ -228,7 +228,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label htmlFor="type" className="col-sm-4 control-label">{t('Typ der Ausgabe')}</label>
+                <label htmlFor="type" className="col-sm-4 control-label">{t('Typ')}</label>
                 <div className="col-sm-8">
                   <Typeahead
                     options={this.state.expenseTypeList}

@@ -4,6 +4,7 @@ import YearsFilterComponent from '../common/components/stats/YearsFilterComponen
 import TypesFilterComponent from '../common/components/stats/TypesFilterComponent'
 import LineChartComponent from '../common/components/stats/LineChartComponent'
 import PanelComponent from '../common/components/stats/PanelComponent'
+import PieChartComponent from '../common/components/stats/PieChartComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
 import {
@@ -96,6 +97,28 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
           lineChartLabels={getMonthNumbers()}
           lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.props.expenses, 'date', 'preTaxAmount', this.matchesFilters.bind(this))}
         />
+
+        <div className="container-fluid">
+          <div className="row">
+
+            <div className="col-xs-6">
+              <PieChartComponent
+                data={getTypesPieChartData(this.props.expenses, this.props.expenseTypes, 'date', this.state.selectedYear)}
+                labels={this.getTypesPieChartLabels()}
+                heading={t('Anzahl Ausgaben nach Typ')}
+              />
+            </div>
+
+            <div className="col-xs-6">
+              <PieChartComponent
+                data={getTypesPieChartData(this.props.expenses, this.props.expenseTypes, 'date', this.state.selectedYear, 'preTaxAmount')}
+                labels={this.getTypesPieChartLabels()}
+                heading={t('Summe pro Typ in €')}
+              />
+            </div>
+
+          </div>
+        </div>
 
       </div>
     )

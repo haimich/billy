@@ -143,54 +143,6 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     return this.props.billTypes.map(type => type.type)
   }
 
-  // getTypesPieChartData(): number[] {
-  //   let typeSums = {}
-
-  //   for (let type of this.props.billTypes) {
-  //     typeSums[type.type] = 0
-  //   }
-
-  //   for (let bill of this.props.bills) {
-  //     if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
-  //       continue
-  //     } else if (bill.type == null) {
-  //       continue
-  //     }
-
-  //     for (let type of this.props.billTypes) {
-  //       if (bill.type.type === type.type) {
-  //         typeSums[bill.type.type] += 1
-  //       }
-  //     }
-  //   }
-
-  //   return Object.keys(typeSums).map(type => typeSums[type])
-  // }
-
-  // getTypesIncomePieChartData(): number[] {
-  //   let typeSums = {}
-
-  //   for (let type of this.props.billTypes) {
-  //     typeSums[type.type] = 0
-  //   }
-
-  //   for (let bill of this.props.bills) {
-  //     if (! matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)) {
-  //       continue
-  //     } else if (bill.type == null) {
-  //       continue
-  //     }
-
-  //     for (let type of this.props.billTypes) {
-  //       if (bill.type.type === type.type) {
-  //         typeSums[bill.type.type] += bill.amount
-  //       }
-  //     }
-  //   }
-
-  //   return Object.keys(typeSums).map(type => round(typeSums[type]))
-  // }
-
   matchesFilters(bill: BillDbModel): boolean {
     return matchesYear(bill[this.state.billDateToUse], this.state.selectedYear)
       && matchesType(bill, this.state.selectedBillType)
@@ -279,7 +231,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
           lineChartLabels={getMonthNumbers()}
           lineChartDatePaidData={getAmountsPerMonth<BillDbModel>(this.props.bills, this.state.billDateToUse, 'amount', this.matchesFilters.bind(this))}
         />
-          
+
         <div className="container-fluid">
           <div className="row">
 
