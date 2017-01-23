@@ -105,11 +105,13 @@ export function getAmountsPerMonth<T>(list: T[], dateFieldName: string, amountFi
   return data
 }
 
-export function getTotal<T>(list: T[], amountFieldName: string, matchesFilters: (element: T) => boolean): number {
+export function getTotal<T>(list: T[], amountFieldName: string, matchesFilters?: (element: T) => boolean): number {
   let total = 0
 
   for (let element of list) {
-    if (matchesFilters(element)) {
+    if (matchesFilters != null && matchesFilters(element)) {
+      total += element[amountFieldName]
+    } else {
       total += element[amountFieldName]
     }
   }

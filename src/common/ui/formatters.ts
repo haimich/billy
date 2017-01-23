@@ -1,5 +1,6 @@
 import * as moment from 'moment'
 import * as path from 'path'
+import { hasDecimals } from '../helpers/math'
 import t from '../helpers/i18n'
 
 export function dateFormatterView(value?: string): string {
@@ -70,4 +71,12 @@ export function dayFormatter(cell, row): string {
   }
 
   return cell + ' ' + (cell === 1 ? t('Tag') : t('Tage'))
+}
+
+export function formatTaxrate(value: number): string {
+  let tax = hasDecimals(value)
+    ? numberFormatterView(value)
+    : numberFormatterView(value, 0)
+
+  return tax + ' %'
 }

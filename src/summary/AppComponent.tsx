@@ -4,10 +4,11 @@ import BillDbModel from '../common/models/BillDbModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import YearsFilterComponent from '../common/components/stats/YearsFilterComponent'
 import BillsTableComponent from './BillsTableComponent'
+import ExpensesTableComponent from './ExpensesTableComponent'
 import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter } from '../common/ui/formatters'
 import { asc, desc } from '../common/helpers/sorters'
 import { round } from  '../common/helpers/math'
-import { MONTHS, getAvailableYears, getAvailableMonths, matchesYear, matchesMonth } from '../common/ui/stats'
+import { MONTHS, getAvailableYears, getAvailableMonths, matchesYear, matchesMonth, getTotal } from '../common/ui/stats'
 import * as moment from 'moment'
 import t from '../common/helpers/i18n'
 
@@ -67,41 +68,37 @@ export default class AppComponent extends React.Component<Props, State> {
     })
   }
 
-  getTotalBillAmount(bills: BillDbModel[]): string {
-    let total = 0
-
-    for (let bill of bills) {
-      total += bill.amount
-    }
-
-    return currencyFormatter(round(total))
-  }
-
-  getTotalExpenseAmount(expenses: ExpenseDbModel[]): string {
-    let total = 0
-
-    for (let expense of expenses) {
-      total += expense.preTaxAmount
-    }
-
-    return currencyFormatter(round(total))
+  getExpenseData(month: string): ExpenseDbModel[] {
+    return this.props.expenses.filter(expense => {
+      return matchesYear(expense.date, this.state.selectedYear) && matchesMonth(expense.date, month)
+    })
   }
 
   generateMonthTables(): JSX.Element[] {
     let months: JSX.Element[] = []
 
     for (let month of this.getTotalAvailableMonths()) {
-      const data = this.getBillData(month)
+      const billData = this.getBillData(month)
+      const expenseData = this.getExpenseData(month)
 
       months.push(
         <div key={`${month}`} className="income-month-container">
           <h3>{month}</h3>
 
-          <BillsTableComponent bills={data} />
+          <BillsTableComponent bills={billData} />
 
           <div className="income-month-total">
-            <b>{t('SUMMME')}:&nbsp;</b>{this.getTotalBillAmount(data)}
+            <b>{t('SUMMME Einnahmen')}:&nbsp;</b>{getTotal<BillDbModel>(billData, 'amount')}&nbsp;€
           </div>
+
+          <hr />
+
+          <ExpensesTableComponent expenses={expenseData} />
+
+          <div className="income-month-total">
+            <b>{t('SUMMME Ausgaben')}:&nbsp;</b>{getTotal<ExpenseDbModel>(expenseData, 'preTaxAmount')}&nbsp;€
+          </div>
+
         </div>
       )
     }
