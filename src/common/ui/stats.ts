@@ -43,8 +43,10 @@ export function getAvailableYears<T>(list: T[], dateFieldName: string): string[]
 
 /**
  * Extract all months that occur in the date fields of a list of elements (eg. bills or expenses).
+ * 
+ * Sample output ['January']
  */
-export function getAvailableMonths<T>(list: T[], dateFieldName: string, selectedYear: string,): string[] {
+export function getAvailableMonths<T>(list: T[], dateFieldName: string, selectedYear: string): string[] {
   let months: number[] = []
 
   for (let element of list) {

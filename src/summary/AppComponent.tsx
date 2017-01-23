@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import BillDbModel from '../common/models/BillDbModel'
+import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import YearsFilterComponent from '../common/components/stats/YearsFilterComponent'
 import BillsTableComponent from './BillsTableComponent'
 import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter } from '../common/ui/formatters'
@@ -12,6 +13,7 @@ import t from '../common/helpers/i18n'
 
 interface Props {
   bills: BillDbModel[]
+  expenses: ExpenseDbModel[]
 }
 
 interface State {
@@ -26,7 +28,7 @@ export default class AppComponent extends React.Component<Props, State> {
 
     let selectedYear = ''
 
-    const availableYears = getAvailableYears<BillDbModel>(this.props.bills, 'date_paid')
+    const availableYears = this.getTotalAvailableYears()
 
     if (availableYears.length >= 1) {
       selectedYear = availableYears[0]
@@ -37,13 +39,35 @@ export default class AppComponent extends React.Component<Props, State> {
     }
   }
 
-  getData(month: string) {
+  getTotalAvailableYears(): string[] {
+    const billYears = getAvailableYears<BillDbModel>(this.props.bills, 'date_paid') // 2018 2017 2015
+    const expenseYears = getAvailableYears<ExpenseDbModel>(this.props.expenses, 'date') // 2016 2015
+
+    let merged = (billYears.concat(expenseYears)).sort(desc)
+    let unique = new Set(merged)
+
+    return Array.from(unique)
+  }
+
+  getTotalAvailableMonths(): string[] {
+    let billMonths = getAvailableMonths<BillDbModel>(this.props.bills, 'date_paid', this.state.selectedYear)
+    let expenseMonths = getAvailableMonths<ExpenseDbModel>(this.props.expenses, 'date', this.state.selectedYear)
+
+    let merged = (billMonths.concat(expenseMonths)).sort((monthA, monthB) => {
+      return MONTHS.indexOf(monthA) - MONTHS.indexOf(monthB)
+    })
+    let unique = new Set(merged)
+
+    return Array.from(unique)
+  }
+
+  getBillData(month: string): BillDbModel[] {
     return this.props.bills.filter(bill => {
       return matchesYear(bill.date_paid, this.state.selectedYear) && matchesMonth(bill.date_paid, month)
     })
   }
 
-  getTotalAmount(bills: BillDbModel[]): string {
+  getTotalBillAmount(bills: BillDbModel[]): string {
     let total = 0
 
     for (let bill of bills) {
@@ -53,11 +77,21 @@ export default class AppComponent extends React.Component<Props, State> {
     return currencyFormatter(round(total))
   }
 
-  generateMonthTables() {
+  getTotalExpenseAmount(expenses: ExpenseDbModel[]): string {
+    let total = 0
+
+    for (let expense of expenses) {
+      total += expense.preTaxAmount
+    }
+
+    return currencyFormatter(round(total))
+  }
+
+  generateMonthTables(): JSX.Element[] {
     let months: JSX.Element[] = []
 
-    for (let month of getAvailableMonths<BillDbModel>(this.props.bills, 'date_paid', this.state.selectedYear)) {
-      const data = this.getData(month)
+    for (let month of this.getTotalAvailableMonths()) {
+      const data = this.getBillData(month)
 
       months.push(
         <div key={`${month}`} className="income-month-container">
@@ -66,7 +100,7 @@ export default class AppComponent extends React.Component<Props, State> {
           <BillsTableComponent bills={data} />
 
           <div className="income-month-total">
-            <b>{t('SUMMME')}:&nbsp;</b>{this.getTotalAmount(data)}
+            <b>{t('SUMMME')}:&nbsp;</b>{this.getTotalBillAmount(data)}
           </div>
         </div>
       )
