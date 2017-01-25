@@ -281,6 +281,26 @@ describe('stats.BillsStatsComponent', () => {
 
       expect(result[0].averageTimeToPay).to.equal(0)
     })
+
+    it('should return print out "0 days" if date_created = date_paid', () => {
+      const theCustomer = { id: 456, name: 'Dolmetscherbüro Deine Mudda' }
+
+      component = new BillsStatsComponent({
+        customers: [theCustomer],
+        bills: [{
+          invoice_id: '20112',
+          customer: theCustomer,
+          amount: 3495.00,
+          date_created: '2011-04-16',
+          date_paid: '2011-04-16',
+        }]
+      })
+      component.matchesFilters = () => true
+
+      const result = component.getTableData()
+
+      expect(result[0].averageTimeToPay).to.equal(0)
+    })
   })
 
 })

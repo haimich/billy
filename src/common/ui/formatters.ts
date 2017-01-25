@@ -66,7 +66,7 @@ export function getFilename(filePath: string): string {
 }
 
 export function dayFormatter(cell, row): string {
-  if (cell == null || cell === 0) {
+  if (cell == null) {
     return ''
   }
 

@@ -52,39 +52,6 @@ describe('summary.AppComponent', () => {
     })
   })
 
-  describe('getTotalBillAmount', () => {
-    const customer = {
-      id: 123,
-      name: 'Your momma'
-    }
-
-    it('should return the sum of the bill amount', () => {
-      const result = component.getTotalBillAmount([{
-        invoice_id: 'foo/123',
-        customer,
-        amount: 123.45,
-        date_created: '2014-09-05'
-      }])
-      expect(result).to.equal('123,45 €')
-    })
-
-    it('should return the rounded sum of all bill amounts', () => {
-      const result = component.getTotalBillAmount([{
-        invoice_id: 'foo/123',
-        customer,
-        amount: 123.45,
-        date_created: '2014-09-05'
-      }, {
-        invoice_id: 'foo/123',
-        customer,
-        amount: 20.551,
-        date_created: '2014-09-05'
-      }])
-      expect(result).to.equal('144,00 €')
-    })
-
-  })
-
   describe('getTotalAvailableYears', () => {
     it('should return the merged list of available years of expenses and bills', () => {
       expect(component.getTotalAvailableYears()).to.deep.equal(['2016', '2015', '2014', '2013'])
