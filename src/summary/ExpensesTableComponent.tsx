@@ -69,8 +69,8 @@ export default class ExpensesTableComponent extends React.Component<Props, State
           options={options}>
 
           <TableHeaderColumn isKey={true} hidden={true} dataField="id" width="140" dataSort={true}>{t('ID')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date" width="110" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type_name" width="150" dataSort={true}>{t('Typ')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date" width="100" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="160" dataSort={true}>{t('Typ')}</TableHeaderColumn>
           <TableHeaderColumn dataField="comment" width="345" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
           <TableHeaderColumn dataField="preTaxAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
           <TableHeaderColumn dataField="netAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>

@@ -104,7 +104,6 @@ export default class AppComponent extends React.Component<Props, State> {
               {t('MWST.')}: {numberFormatterView(getTotal<ExpenseDbModel>(expenseData, 'vatAmount', false))}&nbsp;€
             </span>
           </div>
-
         </div>
       )
     }
