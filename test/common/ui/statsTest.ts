@@ -323,7 +323,7 @@ describe('stats', () => {
         files: []
       }]
 
-      const result = getTotal<BillDbModel>(bills, 'amount', () => true)
+      const result = getTotal<BillDbModel>(bills, 'amount', true, () => true)
       expect(result).to.equal(123.45)
     })
 
@@ -346,7 +346,7 @@ describe('stats', () => {
         files: []
       }]
 
-      const result = getTotal<BillDbModel>(bills, 'amount', () => true)
+      const result = getTotal<BillDbModel>(bills, 'amount', true, () => true)
       expect(result).to.equal(144.00)
     })
 
@@ -363,7 +363,7 @@ describe('stats', () => {
         date: '2014-09-21'
       }]
 
-      const result = getTotal<ExpenseDbModel>(expenses, 'preTaxAmount', () => true)
+      const result = getTotal<ExpenseDbModel>(expenses, 'preTaxAmount', true, () => true)
       expect(result).to.equal(246.46)
     })
   })

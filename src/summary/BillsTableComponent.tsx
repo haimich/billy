@@ -74,6 +74,7 @@ export default class BillsTableComponent extends React.Component<Props, State> {
           <TableHeaderColumn dataField="netAmount" width="95" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Nettobetrag')}</TableHeaderColumn>
 
         </BootstrapTable>
+
       </div>
     )
 

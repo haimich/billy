@@ -5,9 +5,9 @@ import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import YearsFilterComponent from '../common/components/stats/YearsFilterComponent'
 import BillsTableComponent from './BillsTableComponent'
 import ExpensesTableComponent from './ExpensesTableComponent'
-import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter } from '../common/ui/formatters'
+import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter, numberFormatterView } from '../common/ui/formatters'
 import { asc, desc } from '../common/helpers/sorters'
-import { round } from  '../common/helpers/math'
+import { round, getVatAmount } from  '../common/helpers/math'
 import { MONTHS, getAvailableYears, getAvailableMonths, matchesYear, matchesMonth, getTotal } from '../common/ui/stats'
 import * as moment from 'moment'
 import t from '../common/helpers/i18n'
@@ -70,7 +70,11 @@ export default class AppComponent extends React.Component<Props, State> {
 
   getExpenseData(month: string): ExpenseDbModel[] {
     return this.props.expenses.filter(expense => {
-      return matchesYear(expense.date, this.state.selectedYear) && matchesMonth(expense.date, month)
+      if (matchesYear(expense.date, this.state.selectedYear) && matchesMonth(expense.date, month)) {
+        return Object.assign(expense, {
+          vatAmount: getVatAmount(expense.taxrate, expense.preTaxAmount)
+        })
+      }
     })
   }
 
@@ -82,21 +86,23 @@ export default class AppComponent extends React.Component<Props, State> {
       const expenseData = this.getExpenseData(month)
 
       months.push(
-        <div key={`${month}`} className="income-month-container">
+        <div key={`${month}`} className="month-container">
           <h3>{month}</h3>
 
           <BillsTableComponent bills={billData} />
 
-          <div className="income-month-total">
-            <b>{t('SUMMME Einnahmen')}:&nbsp;</b>{getTotal<BillDbModel>(billData, 'amount')}&nbsp;€
+          <div className="month-total income">
+            <span>
+              {t('BRUTTO')}: {numberFormatterView(getTotal<BillDbModel>(billData, 'amount', false))}&nbsp;€
+            </span>
           </div>
-
-          <hr />
 
           <ExpensesTableComponent expenses={expenseData} />
 
-          <div className="income-month-total">
-            <b>{t('SUMMME Ausgaben')}:&nbsp;</b>{getTotal<ExpenseDbModel>(expenseData, 'preTaxAmount')}&nbsp;€
+          <div className="month-total expenses">
+            <span>
+              {t('MWST.')}: {numberFormatterView(getTotal<ExpenseDbModel>(expenseData, 'vatAmount', false))}&nbsp;€
+            </span>
           </div>
 
         </div>
@@ -113,11 +119,13 @@ export default class AppComponent extends React.Component<Props, State> {
 
           <div className="row">
             <div className="col-sm-3">
-              <YearsFilterComponent
-                years={this.state.availableYears}
-                handleYearChange={element => this.setState({selectedYear: element.target.value})}
-                selectedYear={this.state.selectedYear}
-              />
+              <form id="filter-container">
+                <YearsFilterComponent
+                  years={this.state.availableYears}
+                  handleYearChange={element => this.setState({selectedYear: element.target.value})}
+                  selectedYear={this.state.selectedYear}
+                />
+              </form>
             </div>
           </div>
 

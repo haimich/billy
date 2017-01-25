@@ -80,7 +80,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
             <div className="col-xs-12 col-sm-4 panel-display">
               <PanelComponent
                 title={t('Summe Ausgaben')}
-                value={getTotal(this.props.expenses, 'preTaxAmount', this.matchesFilters.bind(this))}
+                value={getTotal(this.props.expenses, 'preTaxAmount', true, this.matchesFilters.bind(this))}
                 suffix="€"
                 icon="fa-line-chart"
               />

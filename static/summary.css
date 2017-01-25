@@ -9,7 +9,7 @@ body {
 }
 
 #filter-container {
-  margin-bottom: 2em;
+  margin-bottom: .5em;
 }
 
 .react-bs-container-body {
@@ -18,19 +18,31 @@ body {
 
 #table-container {
   flex: 1;
-  margin-bottom: 1.4em;
+  margin-bottom: .8em;
 }
 
 #table-container table {
   margin-bottom: 0px;
 }
 
-.income-month-container h3 {
+.month-container h3 {
   margin-top: 0.5em;
 }
 
-.income-month-total {
+.month-total {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 1.5em;
 }
-  
+
+.month-total.income {
+  color: #53c669;
+}
+
+.month-total.expenses {
+  color: #FF686C;
+}
+
+.month-total span {
+  border-bottom: 1px dotted #666;
+}

@@ -105,7 +105,7 @@ export function getAmountsPerMonth<T>(list: T[], dateFieldName: string, amountFi
   return data
 }
 
-export function getTotal<T>(list: T[], amountFieldName: string, matchesFilters?: (element: T) => boolean): number {
+export function getTotal<T>(list: T[], amountFieldName: string, roundResult: boolean = true, matchesFilters?: (element: T) => boolean): number {
   let total = 0
 
   for (let element of list) {
@@ -116,7 +116,12 @@ export function getTotal<T>(list: T[], amountFieldName: string, matchesFilters?:
     }
   }
 
-  return round(total)
+  if (roundResult) {
+    return round(total)
+  } else {
+    return total
+  }
+
 }
 
 export function getLineChartData(lineChartLabels: string[], lineChartDataLabel: string, lineChartData: number[]) {

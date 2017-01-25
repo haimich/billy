@@ -206,7 +206,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
             <div className="col-xs-12 col-sm-4 panel-display">
               <PanelComponent
                 title={t('Jahresumsatz')}
-                value={getTotal(this.props.bills, 'amount', this.matchesFilters.bind(this))}
+                value={getTotal(this.props.bills, 'amount', true, this.matchesFilters.bind(this))}
                 suffix="€"
                 icon="fa-line-chart"
               />

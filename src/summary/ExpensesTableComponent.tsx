@@ -71,11 +71,11 @@ export default class ExpensesTableComponent extends React.Component<Props, State
           <TableHeaderColumn isKey={true} hidden={true} dataField="id" width="140" dataSort={true}>{t('ID')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date" width="110" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
           <TableHeaderColumn dataField="type_name" width="150" dataSort={true}>{t('Typ')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="comment" width="350" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="comment" width="345" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
           <TableHeaderColumn dataField="preTaxAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
           <TableHeaderColumn dataField="netAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
           <TableHeaderColumn dataField="vatAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Mwst.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="taxrate" width="85" dataAlign="right" dataFormat={formatTaxrate} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="taxrate" width="90" dataAlign="right" dataFormat={formatTaxrate} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
 
         </BootstrapTable>
       </div>
