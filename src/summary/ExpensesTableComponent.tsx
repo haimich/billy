@@ -55,7 +55,7 @@ export default class ExpensesTableComponent extends React.Component<Props, State
     }
 
     return (
-      <div id="table-container">
+      <div id="table-container" className="expenses">
         <BootstrapTable
           data={this.props.expenses}
           striped={true}

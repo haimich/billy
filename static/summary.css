@@ -25,6 +25,14 @@ body {
   margin-bottom: 0px;
 }
 
+#table-container.income .react-bs-container-header {
+  border-bottom: 1px solid #53c669;
+}
+
+#table-container.expenses .react-bs-container-header {
+  border-bottom: 1px solid #FF686C;
+}
+
 .month-container h3 {
   margin-top: 0.5em;
 }
