@@ -1,5 +1,5 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
-import { init as initFiles, createFile, deleteFileById, deleteFilesByPathPattern, getFilesForBillId } from '../../../src/common/repositories/filesRepository'
+import { init as initFiles, createFile, deleteFileById, deleteFilesByPathPattern, getFilesForBillId } from '../../../src/common/repositories/billFilesRepository'
 import { init as initBills, createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/repositories/billsRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'
@@ -18,7 +18,7 @@ afterEach(async () => {
   await deleteBillsByInvoiceIdPattern(PREFIX + '%')
 })
 
-describe('filesRepository', () => {
+describe('billFilesRepository', () => {
   let bill
 
   beforeEach(async () => {

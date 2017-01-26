@@ -2,14 +2,14 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron'
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
-import { performFileActions, deleteAllFilesForBill } from '../common/services/filesService'
+import { performFileActions, deleteAllFilesForBill } from '../common/services/billFilesService'
 import { updateCustomer } from '../common/services/customersService'
 import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from '../common/services/expensesService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Expense from '../common/models/ExpenseModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
-import FileModel from '../common/models/FileModel'
+import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
 import BillsTableComponent from './BillsTableComponent'
@@ -70,7 +70,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
   }
 
-  saveBill(bill: Bill, fileActions: FileActions): Promise<{}> {
+  saveBill(bill: Bill, fileActions: FileActions<BillFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
       let createdBill
 
@@ -100,7 +100,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     })
   }
 
-  updateBill(bill: Bill, fileActions: FileActions): Promise<{}> {
+  updateBill(bill: Bill, fileActions: FileActions<BillFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
       let updatedBill
 

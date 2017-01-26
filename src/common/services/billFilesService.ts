@@ -1,13 +1,13 @@
 import BillDbModel from '../models/BillDbModel'
-import FileModel from '../models/FileModel'
+import BillFileModel from '../models/BillFileModel'
 import FileActions from '../models/FileActions'
 import { copyToAppDir, deleteFile, deleteBillDir } from '../providers/fileProvider'
-import * as filesRepo from '../repositories/filesRepository'
+import * as filesRepo from '../repositories/billFilesRepository'
 
 /**
  * Save all new files for a bill and remove files that are marked for deletion.
  */
-export async function performFileActions(bill: BillDbModel, fileActions: FileActions) {
+export async function performFileActions(bill: BillDbModel, fileActions: FileActions<BillFileModel>) {
   if (fileActions.delete != null) {
     await Promise.all(
       fileActions.delete.map(file => del(file))
@@ -21,12 +21,12 @@ export async function performFileActions(bill: BillDbModel, fileActions: FileAct
   }
 }
 
-async function save(invoiceId: string, billId: number, file: FileModel): Promise<any> {
+async function save(invoiceId: string, billId: number, file: BillFileModel): Promise<any> {
   const copiedFilePath = await copyToAppDir(invoiceId, file.path)
   await createFile({ path: copiedFilePath, bill_id: billId })
 }
 
-async function del(file: FileModel): Promise<any> {
+async function del(file: BillFileModel): Promise<any> {
   if (file.id == null) {
     throw new Error(`Could not delete file due to missing "id" field: ${file.bill_id} - ${file.path}`)
   }
@@ -34,11 +34,11 @@ async function del(file: FileModel): Promise<any> {
   await deleteFile(file)
 }
 
-export function createFile(file: FileModel): Promise<FileModel> {
+export function createFile(file: BillFileModel): Promise<BillFileModel> {
   return filesRepo.createFile(file)
 }
 
-export function getFileById(id: number): Promise<FileModel> {
+export function getFileById(id: number): Promise<BillFileModel> {
   return filesRepo.getFileById(id)
 }
 
@@ -50,7 +50,7 @@ export function deleteFilesByPathPattern(pathPattern: string): Promise<any> {
   return filesRepo.deleteFilesByPathPattern(pathPattern)
 }
 
-export function getFilesForBillId(id: number): Promise<FileModel[]> {
+export function getFilesForBillId(id: number): Promise<BillFileModel[]> {
   return filesRepo.getFilesForBillId(id)
 }
 

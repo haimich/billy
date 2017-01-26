@@ -1,10 +1,9 @@
 import { initDb } from '../../../src/common/providers/dbProvider'
 import { rmrf, exists } from '../../../src/common/providers/fileProvider'
-import { init as initFiles } from '../../../src/common/repositories/filesRepository'
+import { init as initFiles } from '../../../src/common/repositories/billFilesRepository'
 import { init as initBills } from '../../../src/common/repositories/billsRepository'
 import { createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/services/billsService'
-import { createFile, deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId } from '../../../src/common/services/filesService'
-import { performFileActions } from '../../../src/common/services/filesService'
+import { createFile, deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId, performFileActions } from '../../../src/common/services/billFilesService'
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')

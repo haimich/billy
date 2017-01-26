@@ -1,7 +1,7 @@
 import Bill from '../models/BillModel'
 import BillDbModel from '../models/BillDbModel'
 import * as billsRepo from '../repositories/billsRepository'
-import * as filesRepo from '../repositories/filesRepository'
+import * as filesRepo from '../repositories/billFilesRepository'
 
 /**
  * Return a list of all bills with files.

@@ -4,7 +4,7 @@ import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
-import FileModel from '../common/models/FileModel'
+import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from './FileViewComponent'
 import FileUploadComponent from './FileUploadComponent'
@@ -33,12 +33,12 @@ interface State {
   isNew: boolean
   isDirty: boolean
   invoiceIdValid: boolean
-  fileActions: FileActions
+  fileActions: FileActions<BillFileModel>
 }
 
 interface Props {
-  update: (model: Bill, fileActions: FileActions) => void
-  save: (model: Bill, FileActions: FileActions) => void
+  update: (model: Bill, fileActions: FileActions<BillFileModel>) => void
+  save: (model: Bill, FileActions: FileActions<BillFileModel>) => void
   updateCustomer: (model: Customer) => void
   bill?: BillDbModel
   notify: any
@@ -164,7 +164,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     return
   }
 
-  getFileModels(files: File[]): FileModel[] {
+  getFileModels(files: File[]): BillFileModel[] {
     let fileModels = []
 
     for (let file of files) {
@@ -177,7 +177,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     return fileModels
   }
 
-  addFiles(files: FileModel[]) {
+  addFiles(files: BillFileModel[]) {
     if (files == null) {
       return
     }
@@ -223,7 +223,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     })
   }
 
-  fileWithNameExists(filePath: string, existingFiles: FileModel[]): boolean {
+  fileWithNameExists(filePath: string, existingFiles: BillFileModel[]): boolean {
     for (let file of existingFiles) {
       if (getFilename(file.path) === getFilename(filePath)) {
         return true
@@ -233,7 +233,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     return false
   }
 
-  fileExists(file: FileModel, fileList: FileModel[]): boolean {
+  fileExists(file: BillFileModel, fileList: BillFileModel[]): boolean {
     for (let element of fileList) {
       if (file.id != null && element.id != null && file.id === element.id) {
         return true
@@ -402,7 +402,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     })
   }
 
-  handleDeleteFile(file: FileModel) {
+  handleDeleteFile(file: BillFileModel) {
     if (confirm(t('Möchtest du die Datei wirklich entfernen?'))) {
       const isExisting = (file.id != null)
 
@@ -432,7 +432,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     }
   }
 
-  getFilesForView(): FileModel[] {
+  getFilesForView(): BillFileModel[] {
     return this.state.fileActions.keep.concat(this.state.fileActions.add)
   }
 
