@@ -12,7 +12,7 @@ exports.seed = (knex, Promise) => {
   return knex('bills').del()
     .then(() => knex('bill_types').del())
     .then(() => knex('customers').del())
-    .then(() => knex('files').del())
+    .then(() => knex('bill_files').del())
     .then(() => {
       console.log('Creating customers')
 
@@ -52,7 +52,7 @@ exports.seed = (knex, Promise) => {
         const filesToAdd = chance.natural({ min: 0, max: 3 })
 
         for (let i = 0; i < filesToAdd; i++) {
-          promises.push(knex('files').insert(generateFile(bill.id)))
+          promises.push(knex('bill_files').insert(generateFile(bill.id)))
         }
       }
 
