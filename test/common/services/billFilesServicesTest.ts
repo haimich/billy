@@ -8,6 +8,8 @@ import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
 const PREFIX = 'INTEGRATIONTEST-'
+const baseDir = '.'
+const filesDir = `${baseDir}/bills`
 
 before(async () => {
   const knexInstance = await initDb(knexConfig)
@@ -18,12 +20,11 @@ before(async () => {
 afterEach(async () => {
   await deleteFilesByPathPattern(PREFIX + '%')
   await deleteBillsByInvoiceIdPattern(PREFIX + '%')
-  await rmrf(`./files/${PREFIX}*`)
+  await rmrf(`${filesDir}/${PREFIX}*`)
 })
 
-const baseDir = '.'
 
-describe('filesService', () => {
+describe('billFilesService', () => {
 
   let bill
 
@@ -52,9 +53,9 @@ describe('filesService', () => {
       const existingFiles = await getFilesForBillId(bill.id)
 
       expect(existingFiles.length).to.equal(3)
-      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
-      expect(existingFiles[1].path).to.equal(`${baseDir}/files/${bill.invoice_id}/b.txt`)
-      expect(existingFiles[2].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
+      expect(existingFiles[0].path).to.equal(`${filesDir}/${bill.invoice_id}/a.txt`)
+      expect(existingFiles[1].path).to.equal(`${filesDir}/${bill.invoice_id}/b.txt`)
+      expect(existingFiles[2].path).to.equal(`${filesDir}/${bill.invoice_id}/c.txt`)
     })
 
     it('should allow to add same file after it was previously removed', async () => {
@@ -79,7 +80,7 @@ describe('filesService', () => {
       const existingFiles = await getFilesForBillId(bill.id)
 
       expect(existingFiles.length).to.equal(1)
-      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
+      expect(existingFiles[0].path).to.equal(`${filesDir}/${bill.invoice_id}/a.txt`)
     })
 
     it('should allow to overwrite a file with a newer version of itself', async () => {
@@ -101,7 +102,7 @@ describe('filesService', () => {
       const existingFiles = await getFilesForBillId(bill.id)
 
       expect(existingFiles.length).to.equal(1)
-      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
+      expect(existingFiles[0].path).to.equal(`${filesDir}/${bill.invoice_id}/a.txt`)
     })
 
     it('should only change new files', async () => {
@@ -116,7 +117,7 @@ describe('filesService', () => {
 
       await performFileActions(bill, {
         keep: [
-          { bill_id: bill.id, path: `${baseDir}/files/${bill.invoice_id}/a.txt` }
+          { bill_id: bill.id, path: `${filesDir}/${bill.invoice_id}/a.txt` }
         ],
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
@@ -127,9 +128,9 @@ describe('filesService', () => {
       existingFiles = await getFilesForBillId(bill.id)
 
       expect(existingFiles.length).to.equal(3)
-      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/a.txt`)
-      expect(existingFiles[1].path).to.equal(`${baseDir}/files/${bill.invoice_id}/b.txt`)
-      expect(existingFiles[2].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
+      expect(existingFiles[0].path).to.equal(`${filesDir}/${bill.invoice_id}/a.txt`)
+      expect(existingFiles[1].path).to.equal(`${filesDir}/${bill.invoice_id}/b.txt`)
+      expect(existingFiles[2].path).to.equal(`${filesDir}/${bill.invoice_id}/c.txt`)
     })
 
     it('should delete obsolete files', async () => {
@@ -151,8 +152,8 @@ describe('filesService', () => {
       existingFiles = await getFilesForBillId(bill.id)
 
       expect(existingFiles.length).to.equal(2)
-      expect(existingFiles[0].path).to.equal(`${baseDir}/files/${bill.invoice_id}/b.txt`)
-      expect(existingFiles[1].path).to.equal(`${baseDir}/files/${bill.invoice_id}/c.txt`)
+      expect(existingFiles[0].path).to.equal(`${filesDir}/${bill.invoice_id}/b.txt`)
+      expect(existingFiles[1].path).to.equal(`${filesDir}/${bill.invoice_id}/c.txt`)
     })
 
   })
@@ -172,7 +173,7 @@ describe('filesService', () => {
       let existingFiles = await getFilesForBillId(bill.id)
       expect(existingFiles.length).to.equal(0)
 
-      let folderExists = await exists(`${baseDir}/files/${bill.invoice_id}`)
+      let folderExists = await exists(`${filesDir}/${bill.invoice_id}`)
       expect(folderExists).to.be.false
     })
 

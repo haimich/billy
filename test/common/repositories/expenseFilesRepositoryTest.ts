@@ -1,6 +1,6 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
 import { init as initFiles, createFile, deleteFileById, deleteFilesByPathPattern, getFilesForExpenseId } from '../../../src/common/repositories/expenseFilesRepository'
-import { init as initBills, createExpense, deleteExpensesByCommentPattern } from '../../../src/common/repositories/expensesRepository'
+import { init as initExpenses, createExpense, deleteExpensesByCommentPattern } from '../../../src/common/repositories/expensesRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'
 
@@ -9,7 +9,7 @@ const PREFIX = 'INTEGRATIONTEST-'
 
 before(async () => {
   const knexInstance = await initDb(knexConfig)
-  await initBills(knexInstance)
+  await initExpenses(knexInstance)
   await initFiles(knexInstance)
 })
 

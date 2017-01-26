@@ -1,7 +1,7 @@
 import BillDbModel from '../models/BillDbModel'
 import BillFileModel from '../models/BillFileModel'
 import FileActions from '../models/FileActions'
-import { copyToAppDir, deleteFile, deleteBillDir } from '../providers/fileProvider'
+import { copyToAppDir, deleteFile, deleteDir } from '../providers/fileProvider'
 import * as filesRepo from '../repositories/billFilesRepository'
 
 /**
@@ -22,7 +22,7 @@ export async function performFileActions(bill: BillDbModel, fileActions: FileAct
 }
 
 async function save(invoiceId: string, billId: number, file: BillFileModel): Promise<any> {
-  const copiedFilePath = await copyToAppDir(invoiceId, file.path)
+  const copiedFilePath = await copyToAppDir(invoiceId, file.path, 'bills')
   await createFile({ path: copiedFilePath, bill_id: billId })
 }
 
@@ -56,5 +56,5 @@ export function getFilesForBillId(id: number): Promise<BillFileModel[]> {
 
 export async function deleteAllFilesForBill(billId: number, invoiceId: string): Promise<void> {
   await filesRepo.deleteAllFilesForBillId(billId)
-  await deleteBillDir(invoiceId)
+  await deleteDir(invoiceId, 'bills')
 }

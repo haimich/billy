@@ -7,20 +7,23 @@ import { posix } from 'path'
 import * as rimraf from 'rimraf'
 import FileModel from '../models/FileModel'
 
-export const BILL_FOLDER_SUFFIX = 'files'
+export const BILL_FOLDER_SUFFIX = 'bills'
+export const EXPENSE_FOLDER_SUFFIX = 'expenses'
+
+type availableFileTypes = 'bills' | 'expenses'
 
 export function open(fileName) {
   openWithOs(fileName)
 }
 
-export async function copyToAppDir(invoiceId: string, inputFilePath: string): Promise<string> {
+export async function copyToAppDir(folderName: string, inputFilePath: string, fileType: availableFileTypes): Promise<string> {
   if (! await exists(inputFilePath)) {
     throw new Error('The file does not exist: ' + inputFilePath)
   } else if (await isDirectory(inputFilePath)) {
     throw new Error('You can only store files, no directories')
   }
 
-  const targetFolder = await ensureFolderExists(await getFilePath(invoiceId))
+  const targetFolder = await ensureFolderExists(await getFilePath(folderName, fileType))
 
   const filename = posix.basename(inputFilePath)
   const targetFilePath = `${targetFolder}/${filename}`
@@ -28,9 +31,19 @@ export async function copyToAppDir(invoiceId: string, inputFilePath: string): Pr
   return await copyFile(inputFilePath, targetFilePath)
 }
 
-async function getFilePath(invoiceId: string): Promise<string> {
+async function getFilePath(folderName: string, fileType: availableFileTypes): Promise<string> {
   const appDir = await get('appDir')
-  return `${appDir}/${BILL_FOLDER_SUFFIX}/${encode(invoiceId)}`
+  let FOLDER_SUFFIX
+
+  if (fileType === 'bills') {
+    FOLDER_SUFFIX = BILL_FOLDER_SUFFIX
+  } else if (fileType === 'expenses') {
+    FOLDER_SUFFIX = EXPENSE_FOLDER_SUFFIX
+  } else {
+    throw new Error('Unsupported file type: ' + fileType)
+  }
+
+  return `${appDir}/files/${FOLDER_SUFFIX}/${encode(folderName)}`
 }
 
 export function encode(fileName: string): string {
@@ -95,8 +108,8 @@ export async function deleteFile(file: FileModel): Promise<any> {
   return rmrf(await get('appDir') + file.path)
 }
 
-export async function deleteBillDir(invoiceId: string): Promise<any> {
-  return rmrf(await getFilePath(invoiceId))
+export async function deleteDir(folderName: string, fileType: availableFileTypes): Promise<any> {
+  return rmrf(await getFilePath(folderName, fileType))
 }
 
 export function rmrf(filePattern: string): Promise<any> {
@@ -121,9 +134,4 @@ function isDirectory(path: string): Promise<boolean> {
       }
     })
   })
-}
-
-export async function deleteFilesByInvoiceId(invoiceId: string): Promise<any> {
-  const path = await getFilePath(invoiceId)
-  await rmrf(path)
 }
