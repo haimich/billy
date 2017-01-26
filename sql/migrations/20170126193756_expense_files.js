@@ -3,7 +3,7 @@ exports.up = (knex, Promise) => {
     .then(() => {
       return knex.schema.createTable('expense_files', (table) => {
         table.increments('id').primary().notNullable()
-        table.integer('exepense_id').notNullable()
+        table.integer('expense_id').notNullable()
         table.text('path').notNullable()
 
         table.unique(['expense_id', 'path'])
