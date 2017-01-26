@@ -109,10 +109,12 @@ export function getTotal<T>(list: T[], amountFieldName: string, roundResult: boo
   let total = 0
 
   for (let element of list) {
-    if (matchesFilters != null && matchesFilters(element)) {
+    if (matchesFilters == null) {
       total += element[amountFieldName]
     } else {
-      total += element[amountFieldName]
+      if (matchesFilters(element)) {
+        total += element[amountFieldName]
+      }
     }
   }
 
