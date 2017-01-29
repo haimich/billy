@@ -266,7 +266,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
     }
 
     return (
-      <div id="editor-container">
+      <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
 
           <div className="row">
@@ -455,9 +455,9 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
       this.setState({
         id: expense.id,
         selectedExpenseType: [expense.type],
-        // fileActions: (expense.files != null)
-        //   ? { add: [], keep: expense.files, delete: [] }
-        //   : { add: [], keep: [], delete: [] },
+        fileActions: (expense.files != null)
+          ? { add: [], keep: expense.files, delete: [] }
+          : { add: [], keep: [], delete: [] },
         amount: numberFormatterView(expense.preTaxAmount),
         amountType: 'preTax',
         date: dateFormatterView(expense.date),

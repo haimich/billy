@@ -7,7 +7,7 @@ import * as filesRepo from '../repositories/expenseFilesRepository'
 /**
  * Save all new files for an expense and remove files that are marked for deletion.
  */
-export async function performFileActions(expense: ExpenseDbModel, fileActions: FileActions<ExpenseFileModel>) {
+export async function performExpenseFileActions(expense: ExpenseDbModel, fileActions: FileActions<ExpenseFileModel>) {
   if (fileActions.delete != null) {
     await Promise.all(
       fileActions.delete.map(file => del(file))

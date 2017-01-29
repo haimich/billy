@@ -3,7 +3,7 @@ import { rmrf, exists } from '../../../src/common/providers/fileProvider'
 import { init as initFiles } from '../../../src/common/repositories/expenseFilesRepository'
 import { init as initExpenses } from '../../../src/common/repositories/expensesRepository'
 import { createExpense, deleteExpensesByCommentPattern } from '../../../src/common/services/expensesService'
-import { createFile, deleteAllFilesForExpense, deleteFilesByPathPattern, getFilesForExpenseId, performFileActions } from '../../../src/common/services/expenseFilesService'
+import { createFile, deleteAllFilesForExpense, deleteFilesByPathPattern, getFilesForExpenseId, performExpenseFileActions } from '../../../src/common/services/expenseFilesService'
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
@@ -42,7 +42,7 @@ describe('expenseFilesService', () => {
     it('should add new files', async () => {
       expect(await getFilesForExpenseId(expense.id)).to.be.empty
 
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         add: [
           { expense_id: expense.id, path: `${baseDir}/test/resources/a.txt` },
           { expense_id: expense.id, path: `${baseDir}/test/resources/b.txt` },
@@ -59,19 +59,19 @@ describe('expenseFilesService', () => {
     })
 
     it('should allow to add same file after it was previously removed', async () => {
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         add: [
           { expense_id: expense.id, path: `${baseDir}/test/resources/a.txt` }
         ]
       })
 
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         delete: [
           (await getFilesForExpenseId(expense.id))[0]
         ]
       })
 
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         add: [
           { expense_id: expense.id, path: `${baseDir}/test/resources/a.txt` }
         ]
@@ -84,13 +84,13 @@ describe('expenseFilesService', () => {
     })
 
     it('should allow to overwrite a file with a newer version of itself', async () => {
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         add: [
           { expense_id: expense.id, path: `${baseDir}/test/resources/a.txt` }
         ]
       })
 
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         delete: [
           (await getFilesForExpenseId(expense.id))[0]
         ],
@@ -106,7 +106,7 @@ describe('expenseFilesService', () => {
     })
 
     it('should only change new files', async () => {
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         add: [
           { expense_id: expense.id, path: `${baseDir}/test/resources/a.txt` }
         ]
@@ -115,7 +115,7 @@ describe('expenseFilesService', () => {
       let existingFiles = await getFilesForExpenseId(expense.id)
       expect(existingFiles.length).to.equal(1)
 
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         keep: [
           { expense_id: expense.id, path: `${filesDir}/${expense.id}/a.txt` }
         ],
@@ -134,14 +134,14 @@ describe('expenseFilesService', () => {
     })
 
     it('should delete obsolete files', async () => {
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         add: [
         { expense_id: expense.id, path: `${baseDir}/test/resources/a.txt` }
       ]})
 
       let existingFiles = await getFilesForExpenseId(expense.id)
 
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         delete: existingFiles,
         add: [
           { expense_id: expense.id, path: `${baseDir}/test/resources/b.txt` },
@@ -161,7 +161,7 @@ describe('expenseFilesService', () => {
   describe('deleteAllFilesForBillId', () => {
 
     it('should delete all files for a bill', async () => {
-      await performFileActions(expense, {
+      await performExpenseFileActions(expense, {
         add: [
           { expense_id: expense.id, path: `${baseDir}/test/resources/a.txt` },
           { expense_id: expense.id, path: `${baseDir}/test/resources/b.txt` }

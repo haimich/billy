@@ -2,14 +2,16 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron'
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
-import { performFileActions, deleteAllFilesForBill } from '../common/services/billFilesService'
+import { performBillFileActions, deleteAllFilesForBill } from '../common/services/billFilesService'
 import { updateCustomer } from '../common/services/customersService'
 import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from '../common/services/expensesService'
+import { performExpenseFileActions, deleteAllFilesForExpense } from '../common/services/expenseFilesService'
 import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Expense from '../common/models/ExpenseModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import BillFileModel from '../common/models/BillFileModel'
+import ExpenseFileModel from '../common/models/ExpenseFileModel'
 import FileActions from '../common/models/FileActions'
 import Customer from '../common/models/CustomerModel'
 import BillsTableComponent from './BillsTableComponent'
@@ -77,7 +79,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       createBill(bill)
         .then(result => {
           createdBill = result
-          return performFileActions(createdBill, fileActions)
+          return performBillFileActions(createdBill, fileActions)
         })
         .then(() => {
           return getBillByInvoiceId(createdBill.invoice_id)
@@ -107,7 +109,7 @@ export default class AppComponent extends React.Component<Props, {}> {
       updateBill(bill)
         .then(result => {
           updatedBill = result
-          return performFileActions(updatedBill, fileActions)
+          return performBillFileActions(updatedBill, fileActions)
         })
         .then(() => {
           return getBillByInvoiceId(updatedBill.invoice_id)
@@ -168,20 +170,26 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
   }
 
-  saveExpense(expense: Expense): Promise<{}> {
+  saveExpense(expense: Expense, fileActions: FileActions<ExpenseFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
+      let createdExpense
+
       createExpense(expense)
-        .then((result) => {
-          return getExpenseById(result.id)
+        .then(result => {
+          createdExpense = result
+          return performExpenseFileActions(createdExpense, fileActions)
         })
-        .then(createdExpense => {
+        .then(() => {
+          return getExpenseById(createdExpense.id)
+        })
+        .then(expenseWithFiles => {
           resolve() // let the editor know that we're good
 
           // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
           process.nextTick(() => {
             this.setState({
               selectedExpense: undefined,
-              expenses: [ createdExpense ].concat(this.state.expenses)
+              expenses: [ expenseWithFiles ].concat(this.state.expenses)
             })
           })
         })

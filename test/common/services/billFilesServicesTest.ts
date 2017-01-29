@@ -3,7 +3,7 @@ import { rmrf, exists } from '../../../src/common/providers/fileProvider'
 import { init as initFiles } from '../../../src/common/repositories/billFilesRepository'
 import { init as initBills } from '../../../src/common/repositories/billsRepository'
 import { createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/services/billsService'
-import { createFile, deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId, performFileActions } from '../../../src/common/services/billFilesService'
+import { createFile, deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId, performBillFileActions } from '../../../src/common/services/billFilesService'
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
@@ -42,7 +42,7 @@ describe('billFilesService', () => {
     it('should add new files', async () => {
       expect(await getFilesForBillId(bill.id)).to.be.empty
 
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` },
           { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
@@ -59,19 +59,19 @@ describe('billFilesService', () => {
     })
 
     it('should allow to add same file after it was previously removed', async () => {
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
         ]
       })
 
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         delete: [
           (await getFilesForBillId(bill.id))[0]
         ]
       })
 
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
         ]
@@ -84,13 +84,13 @@ describe('billFilesService', () => {
     })
 
     it('should allow to overwrite a file with a newer version of itself', async () => {
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
         ]
       })
 
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         delete: [
           (await getFilesForBillId(bill.id))[0]
         ],
@@ -106,7 +106,7 @@ describe('billFilesService', () => {
     })
 
     it('should only change new files', async () => {
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
         ]
@@ -115,7 +115,7 @@ describe('billFilesService', () => {
       let existingFiles = await getFilesForBillId(bill.id)
       expect(existingFiles.length).to.equal(1)
 
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         keep: [
           { bill_id: bill.id, path: `${filesDir}/${bill.invoice_id}/a.txt` }
         ],
@@ -134,14 +134,14 @@ describe('billFilesService', () => {
     })
 
     it('should delete obsolete files', async () => {
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         add: [
         { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` }
       ]})
 
       let existingFiles = await getFilesForBillId(bill.id)
 
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         delete: existingFiles,
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` },
@@ -161,7 +161,7 @@ describe('billFilesService', () => {
   describe('deleteAllFilesForBillId', () => {
 
     it('should delete all files for a bill', async () => {
-      await performFileActions(bill, {
+      await performBillFileActions(bill, {
         add: [
           { bill_id: bill.id, path: `${baseDir}/test/resources/a.txt` },
           { bill_id: bill.id, path: `${baseDir}/test/resources/b.txt` }
