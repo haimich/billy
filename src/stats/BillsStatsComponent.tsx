@@ -184,14 +184,14 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
                 type="radio"
                 checked={this.isDatefieldSelected('date_paid')}
                 onChange={() => this.handleBillDateToUseChange('date_paid')}
-              /> {t('Bezahldatum')}
+              /> {t('Bezahldatum')} {t('liegt in')} {this.state.selectedYear}
             </label>
             <label className="radio-inline">
               <input
                 type="radio"
                 checked={this.isDatefieldSelected('date_created')}
                 onChange={() => this.handleBillDateToUseChange('date_created')}
-              /> {t('Rechnungsdatum')}
+              /> {t('Rechnungsdatum')} {t('liegt in')} {this.state.selectedYear}
             </label>
           </p>
 
