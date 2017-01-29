@@ -16,7 +16,7 @@ exports.up = (knex, Promise) => {
     })
     .then((billFiles) => {
       return Promise.all(
-        billFiles.map(fixPath)
+        billFiles.map(billFile => fixPath(billFile, knex))
       )
     })
 }
@@ -26,7 +26,10 @@ exports.down = (knex, Promise) => {
     .then(() => knex.schema.dropTableIfExists('expense_files'))
 }
 
-function fixPath(bill) {
-  let newPath = bill.path.replace('/billy/files/', '/billy/files/bills/')
-  return 
+function fixPath(file, knex) {
+  let newPath = file.path.replace('/billy/files/', '/billy/files/bills/')
+
+  return knex('bill_files')
+    .update('path', newPath)
+    .where('id', file.id)
 }
