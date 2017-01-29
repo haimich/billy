@@ -171,10 +171,6 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
     }
   }
 
-  isAmountButtonSelected(type: string): boolean {
-    return this.state.amountType === type
-  }
-
   async handleExpenseTypeChange(selected: any) {
     if (selected == null || selected.length !== 1) {
       return

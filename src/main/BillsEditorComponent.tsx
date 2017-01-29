@@ -9,6 +9,7 @@ import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
 import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
+import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
@@ -26,7 +27,7 @@ interface State {
   id?: number
   invoice_id: string
   amount?: string
-  amountType?: 'preTax' | 'net'
+  amountType?: amountType
   taxrate?: string
   date_created?: string
   date_paid?: string
@@ -301,17 +302,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
     }
   }
 
-  isAmountButtonSelected(type: string): boolean {
-    return this.state.amountType === type
-  }
-
-  handleAmountButtonChange(newType: string) {
-    this.setState({
-      amountType: newType
-    })
-    this.refs.amount.focus()
-  }
-
   selectedCustomerTelephone() {
     if (this.state.selectedCustomer && this.state.selectedCustomer[0] && this.state.selectedCustomer[0].telephone) {
       return this.state.selectedCustomer[0].telephone
@@ -392,16 +382,12 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
   }
 
   render() {
-    let classesPreTaxAmountBtn = 'btn btn-default'
-    let classesNetAmountBtn = 'btn btn-default'
     let calculatedInputLabel = ''
 
     if (this.state.amountType === 'preTax') {
       calculatedInputLabel = t('Netto')
-      classesPreTaxAmountBtn += ' active'
     } else if (this.state.amountType === 'net') {
       calculatedInputLabel = t('Brutto')
-      classesNetAmountBtn += ' active'
     }
 
     return (
@@ -474,41 +460,14 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                   onChange={this.handleDateCreatedChange.bind(this)}
                   />
               </div>
-              <div className="form-group">
-                <div className="btn-group toggle-button col-sm-4" role="group">
-                  <button
-                    type="button"
-                    htmlFor="amount"
-                    className={classesPreTaxAmountBtn}
-                    onClick={() => this.handleAmountButtonChange('preTax')}>
-                    {t('Brutto')}
-                  </button>
-                  <button
-                    type="button"
-                    htmlFor="amount"
-                    className={classesNetAmountBtn}
-                    onClick={() => this.handleAmountButtonChange('net')}>
-                    {t('Netto')}
-                  </button>
-                </div>
+              
+              <PreTaxNetAmountComponent
+                amount={this.state.amount}
+                amountType={this.state.amountType}
+                handleAmountTypeChange={amountType => this.setState({ amountType })}
+                handleAmountChange={amount => this.setState({ amount })}
+              />
 
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">€</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      ref="amount"
-                      id="amount"
-                      value={this.state.amount}
-                      onChange={(event: any) => this.setState({ amount: event.target.value })}
-                      style={{ textAlign: 'right' }}
-                      required
-                      pattern={'[+-]?[0-9]+(,[0-9]+)?'}
-                      />
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="col-md-6">
