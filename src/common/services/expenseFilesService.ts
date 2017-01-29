@@ -9,15 +9,12 @@ import * as filesRepo from '../repositories/expenseFilesRepository'
  */
 export async function performExpenseFileActions(expense: ExpenseDbModel, fileActions: FileActions<ExpenseFileModel>) {
   if (fileActions.delete != null) {
-    console.log('delete yo', fileActions.delete);
-    
     await Promise.all(
       fileActions.delete.map(file => del(file))
     )
   }
 
   if (fileActions.add != null) {
-    console.log('add yo', fileActions.add);
     await Promise.all(
       fileActions.add.map(file => save(expense.id, file))
     )
