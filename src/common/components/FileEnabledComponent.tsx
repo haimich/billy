@@ -57,8 +57,6 @@ export abstract class FileEndabledComponent<Props, State> extends React.Componen
 
   fileExists(file: FileModel, fileList: FileModel[]): boolean {
     for (let element of fileList) {
-      console.log('fileExists', element);
-      
       if (file.id != null && element.id != null && file.id === element.id) {
         return true
       } else if (file.path === element.path) {

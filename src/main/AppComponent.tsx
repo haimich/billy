@@ -200,13 +200,19 @@ export default class AppComponent extends React.Component<Props, {}> {
     })
   }
 
-  updateExpense(expense: Expense): Promise<{}> {
+  updateExpense(expense: Expense, fileActions: FileActions<ExpenseFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
+      let updatedExpense
+
       updateExpense(expense)
-        .then((result) => {
-          return getExpenseById(result.id)
+        .then(result => {
+          updatedExpense = result
+          return performExpenseFileActions(updatedExpense, fileActions)
         })
-        .then(createdExpense => {
+        .then(() => {
+          return getExpenseById(updatedExpense.id)
+        })
+        .then(expenseWithFiles => {
           resolve() // let the editor know that we're good
 
           // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
@@ -214,8 +220,8 @@ export default class AppComponent extends React.Component<Props, {}> {
             this.setState({
               selectedExpense: undefined,
               expenses: this.state.expenses.map(element => {
-                if (element.id === createdExpense.id) {
-                  return createdExpense
+                if (element.id === expenseWithFiles.id) {
+                  return expenseWithFiles
                 } else {
                   return element
                 }
