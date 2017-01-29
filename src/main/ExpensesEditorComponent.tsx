@@ -15,8 +15,9 @@ import { listExpenseTypes, getExpenseTypeById, createExpenseType } from '../comm
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
 import { stringIsEmpty } from '../common/helpers/text'
-import { getNetAmount, getVatAmount, getPreTaxAmount, hasDecimals } from '../common/helpers/math'
+import { hasDecimals } from '../common/helpers/math'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
+import { getCalculatedAmount, getPreTaxAmount, getVatAmount } from '../common/ui/preNetVat'
 import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
@@ -103,7 +104,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
       preTaxAmount: numberFormatterDb(
         this.state.amountType === 'preTax'
         ? this.state.amount
-        : this.getPreTaxAmount()),
+        : getPreTaxAmount(this.state.amount, this.state.taxrate)),
       taxrate: numberFormatterDb(this.state.taxrate),
       date: dateFormatterDb(this.state.date),
       comment: this.state.comment
@@ -125,50 +126,6 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
   handleDateChange(newDate: Date) {
     this.setState({ date: newDate })
     this.revalidate(ReactDOM.findDOMNode(this.refs.date).querySelector('input'))
-  }
-
-  getNetAmount(): string {
-    if (this.state.amount === '' || this.state.taxrate === '') {
-      return ''
-    }
-
-    let net = getNetAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
-    return numberFormatterView(net)
-  }
-
-  getPreTaxAmount(): string {
-    if (this.state.amount === '' || this.state.taxrate === '') {
-      return ''
-    }
-
-    let preTax = getPreTaxAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
-    return numberFormatterView(preTax)
-  }
-
-  getVatAmount(): string {
-    if (this.state.amount === '' || this.state.taxrate === '') {
-      return ''
-    }
-
-    let vat
-
-    if (this.state.amountType === 'preTax') {
-      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
-    } else if (this.state.amountType === 'net') {
-      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.getPreTaxAmount()))
-    }
-
-    return numberFormatterView(vat)
-  }
-
-  getCalculatedAmount(): string {
-    if (this.state.amountType == null) {
-      return ''
-    } else if (this.state.amountType === 'preTax') {
-      return this.getNetAmount()
-    } else if (this.state.amountType === 'net') {
-      return this.getPreTaxAmount()
-    }
   }
 
   async handleExpenseTypeChange(selected: any) {
@@ -349,7 +306,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                       type="text"
                       className="form-control"
                       id="calculatedAmount"
-                      value={this.getCalculatedAmount()}
+                      value={getCalculatedAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
                       style={{ textAlign: 'right' }}
                       readOnly
                       />
@@ -366,7 +323,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                       type="text"
                       className="form-control"
                       id="vatAmount"
-                      value={this.getVatAmount()}
+                      value={getVatAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
                       style={{ textAlign: 'right' }}
                       readOnly
                       />

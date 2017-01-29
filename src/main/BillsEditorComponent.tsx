@@ -15,9 +15,9 @@ import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
-import { getNetAmount, getVatAmount, getPreTaxAmount, hasDecimals } from '../common/helpers/math'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
+import { getCalculatedAmount, getPreTaxAmount, getVatAmount } from '../common/ui/preNetVat'
 import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
@@ -256,50 +256,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
   handleDatePaidChange(newDate: Date) {
     this.setState({ date_paid: newDate })
     this.revalidate(ReactDOM.findDOMNode(this.refs.date_paid).querySelector('input'))
-  }
-
-  getNetAmount(): string {
-    if (this.state.amount === '' || this.state.taxrate === '') {
-      return ''
-    }
-
-    let net = getNetAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
-    return numberFormatterView(net)
-  }
-
-  getPreTaxAmount(): string {
-    if (this.state.amount === '' || this.state.taxrate === '') {
-      return ''
-    }
-
-    let preTax = getPreTaxAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
-    return numberFormatterView(preTax)
-  }
-
-  getVatAmount(): string {
-    if (this.state.amount === '' || this.state.taxrate === '') {
-      return ''
-    }
-
-    let vat
-
-    if (this.state.amountType === 'preTax') {
-      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
-    } else if (this.state.amountType === 'net') {
-      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.getPreTaxAmount()))
-    }
-
-    return numberFormatterView(vat)
-  }
-
-  getCalculatedAmount(): string {
-    if (this.state.amountType == null) {
-      return ''
-    } else if (this.state.amountType === 'preTax') {
-      return this.getNetAmount()
-    } else if (this.state.amountType === 'net') {
-      return this.getPreTaxAmount()
-    }
   }
 
   selectedCustomerTelephone() {
@@ -546,7 +502,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                       type="text"
                       className="form-control"
                       id="calculatedAmount"
-                      value={this.getCalculatedAmount()}
+                      value={getCalculatedAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
                       style={{ textAlign: 'right' }}
                       readOnly
                       />
@@ -562,7 +518,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                       type="text"
                       className="form-control"
                       id="vatAmount"
-                      value={this.getVatAmount()}
+                      value={getVatAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
                       style={{ textAlign: 'right' }}
                       readOnly
                       />
