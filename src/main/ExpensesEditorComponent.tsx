@@ -257,6 +257,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
 
           <div className="row">
             <div className="col-md-6">
+
               <div className="form-group">
                 <label htmlFor="type" className="col-sm-4 control-label">{t('Typ')}</label>
                 <div className="col-sm-8">
@@ -277,6 +278,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                     />
                 </div>
               </div>
+
               <div className="form-group">
                 <label htmlFor="date" className="col-sm-4 control-label">{t('Datum')}</label>
                 <Datetime
@@ -293,6 +295,24 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                   onChange={this.handleDateChange.bind(this)}
                   />
               </div>
+
+              <div className="form-group">
+                <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
+                <div className="col-sm-8">
+                  <Textarea
+                    className="form-control"
+                    minRows={1}
+                    maxRows={3}
+                    id="comment"
+                    value={this.state.comment}
+                    onChange={(event: any) => this.setState({ comment: event.target.value })}
+                  />
+                </div>
+              </div>
+              
+            </div>
+
+            <div className="col-md-6">
 
               <PreTaxNetAmountComponent
                 amount={this.state.amount}
@@ -319,9 +339,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="calculatedAmount" className="col-sm-4 control-label">{calculatedInputLabel}</label>
                 <div className="col-sm-8">
@@ -338,6 +356,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                   </div>
                 </div>
               </div>
+
               <div className="form-group">
                 <label htmlFor="vatAmount" className="col-sm-4 control-label">{t('Mehrwertsteuer')}</label>
                 <div className="col-sm-8">
@@ -354,22 +373,10 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                   </div>
                 </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
-                <div className="col-sm-8">
-                  <Textarea
-                    className="form-control"
-                    minRows={1}
-                    maxRows={3}
-                    id="comment"
-                    value={this.state.comment}
-                    onChange={(event: any) => this.setState({ comment: event.target.value })}
-                  />
-                </div>
-              </div>
 
               <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
+
             </div>
           </div>
 
