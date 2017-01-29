@@ -302,23 +302,23 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
               />
 
               <div className="form-group">
-                  <label htmlFor="taxrate" className="col-sm-4 control-label">{t('Steuersatz')}</label>
-                  <div className="col-sm-8">
-                    <div className="input-group">
-                      <span className="input-group-addon">%</span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="taxrate"
-                        value={this.state.taxrate}
-                        onChange={(event: any) => this.setState({ taxrate: event.target.value })}
-                        style={{ textAlign: 'right' }}
-                        pattern={'[+-]?[0-9]+(,[0-9]+)?'}
-                        required
-                        />
-                    </div>
+                <label htmlFor="taxrate" className="col-sm-4 control-label">{t('Steuersatz')}</label>
+                <div className="col-sm-8">
+                  <div className="input-group">
+                    <span className="input-group-addon">%</span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="taxrate"
+                      value={this.state.taxrate}
+                      onChange={(event: any) => this.setState({ taxrate: event.target.value })}
+                      style={{ textAlign: 'right' }}
+                      pattern={'[+-]?[0-9]+(,[0-9]+)?'}
+                      required
+                      />
                   </div>
                 </div>
+              </div>
             </div>
 
             <div className="col-md-6">
