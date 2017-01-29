@@ -8,11 +8,13 @@ import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
+import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
+import { getNetAmount, getVatAmount, getPreTaxAmount, hasDecimals } from '../common/helpers/math'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
 import Textarea from 'react-textarea-autosize'
@@ -24,6 +26,8 @@ interface State {
   id?: number
   invoice_id: string
   amount?: string
+  amountType?: 'preTax' | 'net'
+  taxrate?: string
   date_created?: string
   date_paid?: string
   comment: string
@@ -78,6 +82,8 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
       id: undefined,
       invoice_id: '',
       amount: '',
+      amountType: 'preTax',
+      taxrate: '19',
       date_created: undefined,
       date_paid: undefined,
       comment: '',
@@ -251,6 +257,61 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
     this.revalidate(ReactDOM.findDOMNode(this.refs.date_paid).querySelector('input'))
   }
 
+  getNetAmount(): string {
+    if (this.state.amount === '' || this.state.taxrate === '') {
+      return ''
+    }
+
+    let net = getNetAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
+    return numberFormatterView(net)
+  }
+
+  getPreTaxAmount(): string {
+    if (this.state.amount === '' || this.state.taxrate === '') {
+      return ''
+    }
+
+    let preTax = getPreTaxAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
+    return numberFormatterView(preTax)
+  }
+
+  getVatAmount(): string {
+    if (this.state.amount === '' || this.state.taxrate === '') {
+      return ''
+    }
+
+    let vat
+
+    if (this.state.amountType === 'preTax') {
+      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.state.amount))
+    } else if (this.state.amountType === 'net') {
+      vat = getVatAmount(numberFormatterDb(this.state.taxrate), numberFormatterDb(this.getPreTaxAmount()))
+    }
+
+    return numberFormatterView(vat)
+  }
+
+  getCalculatedAmount(): string {
+    if (this.state.amountType == null) {
+      return ''
+    } else if (this.state.amountType === 'preTax') {
+      return this.getNetAmount()
+    } else if (this.state.amountType === 'net') {
+      return this.getPreTaxAmount()
+    }
+  }
+
+  isAmountButtonSelected(type: string): boolean {
+    return this.state.amountType === type
+  }
+
+  handleAmountButtonChange(newType: string) {
+    this.setState({
+      amountType: newType
+    })
+    this.refs.amount.focus()
+  }
+
   selectedCustomerTelephone() {
     if (this.state.selectedCustomer && this.state.selectedCustomer[0] && this.state.selectedCustomer[0].telephone) {
       return this.state.selectedCustomer[0].telephone
@@ -331,6 +392,18 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
   }
 
   render() {
+    let classesPreTaxAmountBtn = 'btn btn-default'
+    let classesNetAmountBtn = 'btn btn-default'
+    let calculatedInputLabel = ''
+
+    if (this.state.amountType === 'preTax') {
+      calculatedInputLabel = t('Netto')
+      classesPreTaxAmountBtn += ' active'
+    } else if (this.state.amountType === 'net') {
+      calculatedInputLabel = t('Brutto')
+      classesNetAmountBtn += ' active'
+    }
+
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
@@ -402,13 +475,30 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                   />
               </div>
               <div className="form-group">
-                <label htmlFor="amount" className="col-sm-4 control-label">{t('Betrag')}</label>
+                <div className="btn-group toggle-button col-sm-4" role="group">
+                  <button
+                    type="button"
+                    htmlFor="amount"
+                    className={classesPreTaxAmountBtn}
+                    onClick={() => this.handleAmountButtonChange('preTax')}>
+                    {t('Brutto')}
+                  </button>
+                  <button
+                    type="button"
+                    htmlFor="amount"
+                    className={classesNetAmountBtn}
+                    onClick={() => this.handleAmountButtonChange('net')}>
+                    {t('Netto')}
+                  </button>
+                </div>
+
                 <div className="col-sm-8">
                   <div className="input-group">
                     <span className="input-group-addon">€</span>
                     <input
                       type="text"
                       className="form-control"
+                      ref="amount"
                       id="amount"
                       value={this.state.amount}
                       onChange={(event: any) => this.setState({ amount: event.target.value })}
@@ -527,6 +617,11 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),
         amount: numberFormatterView(bill.amount),
+        // amount: numberFormatterView(expense.preTaxAmount),
+        // amountType: 'preTax',
+        // taxrate: hasDecimals(expense.taxrate)
+        //   ? numberFormatterView(expense.taxrate)
+        //   : numberFormatterView(expense.taxrate, 0),
         comment: bill.comment,
         invoiceIdValid: true,
         isNew,

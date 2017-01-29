@@ -7,6 +7,8 @@ import ExpenseFileModel from '../common/models/ExpenseFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
+import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
+import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { expenseExists } from '../common/services/expensesService'
 import { listExpenseTypes, getExpenseTypeById, createExpenseType } from '../common/services/expenseTypesService'
@@ -24,7 +26,7 @@ interface State {
   id?: number
   selectedExpenseType?: ExpenseType[]
   amount?: string
-  amountType?: 'preTax' | 'net'
+  amountType?: amountType
   taxrate?: string
   date?: string
   comment?: string
@@ -47,7 +49,6 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
   refs: {
     type
     date
-    amount
     expenseTypeTypeahead
   }
 
@@ -174,13 +175,6 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
     return this.state.amountType === type
   }
 
-  handleAmountButtonChange(newType: string) {
-    this.setState({
-      amountType: newType
-    })
-    this.refs.amount.focus()
-  }
-
   async handleExpenseTypeChange(selected: any) {
     if (selected == null || selected.length !== 1) {
       return
@@ -253,16 +247,12 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
   }
 
   render() {
-    let classesPreTaxAmountBtn = 'btn btn-default'
-    let classesNetAmountBtn = 'btn btn-default'
     let calculatedInputLabel = ''
 
     if (this.state.amountType === 'preTax') {
       calculatedInputLabel = t('Netto')
-      classesPreTaxAmountBtn += ' active'
     } else if (this.state.amountType === 'net') {
       calculatedInputLabel = t('Brutto')
-      classesNetAmountBtn += ' active'
     }
 
     return (
@@ -307,41 +297,14 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                   onChange={this.handleDateChange.bind(this)}
                   />
               </div>
-              <div className="form-group">
-                <div className="btn-group toggle-button col-sm-4" role="group">
-                  <button
-                    type="button"
-                    htmlFor="amount"
-                    className={classesPreTaxAmountBtn}
-                    onClick={() => this.handleAmountButtonChange('preTax')}>
-                    {t('Brutto')}
-                  </button>
-                  <button
-                    type="button"
-                    htmlFor="amount"
-                    className={classesNetAmountBtn}
-                    onClick={() => this.handleAmountButtonChange('net')}>
-                    {t('Netto')}
-                  </button>
-                </div>
 
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">€</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      ref="amount"
-                      id="amount"
-                      value={this.state.amount}
-                      onChange={(event: any) => this.setState({ amount: event.target.value })}
-                      style={{ textAlign: 'right' }}
-                      required
-                      pattern={'[+-]?[0-9]+(,[0-9]+)?'}
-                      />
-                  </div>
-                </div>
-              </div>
+              <PreTaxNetAmountComponent
+                amount={this.state.amount}
+                amountType={this.state.amountType}
+                handleAmountTypeChange={amountType => this.setState({ amountType })}
+                handleAmountChange={amount => this.setState({ amount })}
+              />
+
               <div className="form-group">
                   <label htmlFor="taxrate" className="col-sm-4 control-label">{t('Steuersatz')}</label>
                   <div className="col-sm-8">
@@ -458,9 +421,9 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
         fileActions: (expense.files != null)
           ? { add: [], keep: expense.files, delete: [] }
           : { add: [], keep: [], delete: [] },
+        date: dateFormatterView(expense.date),
         amount: numberFormatterView(expense.preTaxAmount),
         amountType: 'preTax',
-        date: dateFormatterView(expense.date),
         taxrate: hasDecimals(expense.taxrate)
           ? numberFormatterView(expense.taxrate)
           : numberFormatterView(expense.taxrate, 0),
