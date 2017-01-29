@@ -26,7 +26,7 @@ export async function copyToAppDir(folderName: string, inputFilePath: string, fi
   const targetFolder = await ensureFolderExists(await getFilePath(folderName, fileType))
 
   const filename = posix.basename(inputFilePath)
-  const targetFilePath = `${targetFolder}/${filename}`
+  const targetFilePath = `${targetFolder}/${encode(filename)}`
 
   return await copyFile(inputFilePath, targetFilePath)
 }
@@ -46,8 +46,8 @@ async function getFilePath(folderName: string, fileType: availableFileTypes): Pr
   return `${appDir}/files/${FOLDER_SUFFIX}/${encode(folderName)}`
 }
 
-export function encode(fileName: string): string {
-  return fileName
+export function encode(name: string): string {
+  return name
     .replace(/ /g, '_')
     .replace(/\/|\\/g, '-')
     .replace(/<|>/g, '-')
@@ -105,11 +105,7 @@ export function exists(path: string): Promise<boolean> {
 }
 
 export async function deleteFile(file: FileModel): Promise<any> {
-  console.log('deleteFile', file.path);
-  
-  console.log('DELETE', await get('appDir') + file.path);
-  
-  return rmrf(await get('appDir') + file.path) // TODO dieser Code muss falsch sein, da in prod path absolut ist 
+  return rmrf(file.path)
 }
 
 export async function deleteDir(folderName: string, fileType: availableFileTypes): Promise<any> {

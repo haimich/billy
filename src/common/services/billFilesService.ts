@@ -8,15 +8,13 @@ import * as filesRepo from '../repositories/billFilesRepository'
  * Save all new files for a bill and remove files that are marked for deletion.
  */
 export async function performFileActions(bill: BillDbModel, fileActions: FileActions<BillFileModel>) {
-  if (fileActions.delete != null) {
-    console.log('delete yo');
-    
+  if (fileActions.delete != null && fileActions.delete.length >= 1) {
     await Promise.all(
       fileActions.delete.map(file => del(file))
     )
   }
 
-  if (fileActions.add != null) {
+  if (fileActions.add != null && fileActions.add.length >= 1) {
     await Promise.all(
       fileActions.add.map(file => save(bill.invoice_id, bill.id, file))
     )
@@ -25,6 +23,7 @@ export async function performFileActions(bill: BillDbModel, fileActions: FileAct
 
 async function save(invoiceId: string, billId: number, file: BillFileModel): Promise<any> {
   const copiedFilePath = await copyToAppDir(invoiceId, file.path, 'bills')
+
   await createFile({ path: copiedFilePath, bill_id: billId })
 }
 

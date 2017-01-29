@@ -36,9 +36,6 @@ export default class AppComponent extends React.Component<any, {}> {
           tableName: 'migrations',
           directory: './sql/migrations'
         },
-        seeds: {
-          directory: './sql/seeds'
-        },
         useNullAsDefault: true // see http://knexjs.org/#Builder-insert
       })
 

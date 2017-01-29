@@ -27,7 +27,7 @@ export default class BillsTableComponent extends React.Component<Props, {}> {
   }
 
   handleConfirm(next: any, dropRowKeys: string[]) {
-    if (confirm(`Möchtest du die ${t('Rechnung', { count: dropRowKeys.length })} wirklich löschen?`)) {
+    if (confirm(`Möchtest du die ${t('Rechnung', { count: dropRowKeys.length })} inklusive aller Dateien wirklich löschen?`)) {
       next()
     }
   }

@@ -61,7 +61,7 @@ export default class ExpensesTableComponent extends React.Component<Props, State
   }
 
   handleConfirm(next: any, dropRowKeys: string[]) {
-    if (confirm(`Möchtest du die ${t('Ausgabe', { count: dropRowKeys.length })} wirklich löschen?`)) {
+    if (confirm(`Möchtest du die ${t('Ausgabe', { count: dropRowKeys.length })} inklusive aller Dateien wirklich löschen?`)) {
       next()
     }
   }

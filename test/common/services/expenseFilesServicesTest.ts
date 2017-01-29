@@ -8,7 +8,7 @@ import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
 const PREFIX = 'INTEGRATIONTEST-'
-const baseDir = '.'
+const baseDir = process.cwd()
 const filesDir = `${baseDir}/files/expenses`
 
 before(async () => {

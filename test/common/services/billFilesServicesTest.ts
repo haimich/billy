@@ -8,8 +8,8 @@ import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
 const PREFIX = 'INTEGRATIONTEST-'
-const baseDir = '.'
-const filesDir = `${baseDir}/bills`
+const baseDir = process.cwd()
+const filesDir = `${baseDir}/files/bills`
 
 before(async () => {
   const knexInstance = await initDb(knexConfig)

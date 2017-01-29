@@ -11,7 +11,7 @@ settings.configure({
 })
 
 const DEV_CONFIG = {
-  appDir: '.', // process.cwd() ??
+  appDir: process.cwd(),
   knex: {
     client: 'sqlite3',
     connection: {
@@ -20,9 +20,6 @@ const DEV_CONFIG = {
     migrations: {
       tableName: 'migrations',
       directory: './sql/migrations'
-    },
-    seeds: {
-      directory: './sql/seeds'
     },
     pool: {
       afterCreate: (conn, done) => conn.run('PRAGMA foreign_keys = ON', done) // see https://github.com/tgriesser/knex/issues/453

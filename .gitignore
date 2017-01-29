@@ -4,6 +4,7 @@ dist/
 output/
 *.log
 *.sqlite
+npm-debug*
 files/
 
 .DS_STORE
