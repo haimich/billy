@@ -244,6 +244,7 @@ export default class AppComponent extends React.Component<Props, {}> {
         idMap[id] = true
 
         const expense = await getExpenseById(Number(id))
+        await deleteAllFilesForExpense(expense.id)
         await deleteExpenseById(Number(id))
       }
     } catch (err) {
