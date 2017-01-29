@@ -3,6 +3,10 @@ import * as ReactDOM from 'react-dom'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import Expense from '../common/models/ExpenseModel'
 import ExpenseType from '../common/models/ExpenseTypeModel'
+import ExpenseFileModel from '../common/models/ExpenseFileModel'
+import FileActions from '../common/models/FileActions'
+import FileViewComponent from '../common/components/FileViewComponent'
+import FileUploadComponent from '../common/components/FileUploadComponent'
 import { expenseExists } from '../common/services/expensesService'
 import { listExpenseTypes, getExpenseTypeById, createExpenseType } from '../common/services/expenseTypesService'
 import t from '../common/helpers/i18n'
@@ -26,11 +30,12 @@ interface State {
   expenseTypeList: ExpenseType[]
   isNew: boolean
   isDirty: boolean
+  fileActions: FileActions<ExpenseFileModel>
 }
 
 interface Props {
-  update: (model: Expense) => void
-  save: (model: Expense) => void
+  update: (model: Expense, fileActions: FileActions<ExpenseFileModel>) => void
+  save: (model: Expense, FileActions: FileActions<ExpenseFileModel>) => void
   expense?: ExpenseDbModel
   notify: any
 }
@@ -70,7 +75,8 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
       comment: '',
       expenseTypeList: [],
       isNew: true,
-      isDirty: false
+      isDirty: false,
+      fileActions: { add: [], keep: [], delete: [] }
     }
   }
 
@@ -103,9 +109,9 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
 
     try {
       if (this.state.isNew) {
-        await this.props.save(expense)
+        await this.props.save(expense, this.state.fileActions)
       } else {
-        await this.props.update(expense)
+        await this.props.update(expense, this.state.fileActions)
       }
     } catch (err) {
       return // don't reset state on error
@@ -206,6 +212,14 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     }
 
     this.revalidate(ReactDOM.findDOMNode(this.refs.expenseTypeTypeahead.getInstance()).querySelector('input[name=expenseType]'))
+  }
+  
+  handleFileChange(files: File[]) {
+    this.addFiles(this.getFileModels(files))
+  }
+
+  getFilesForView(): ExpenseFileModel[] {
+    return this.state.fileActions.keep.concat(this.state.fileActions.add)
   }
 
   render() {
@@ -364,6 +378,9 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
                   />
                 </div>
               </div>
+
+              <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
+              <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
             </div>
           </div>
 
@@ -408,6 +425,9 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
       this.setState({
         id: expense.id,
         selectedExpenseType: [expense.type],
+        fileActions: (expense.files != null)
+          ? { add: [], keep: expense.files, delete: [] }
+          : { add: [], keep: [], delete: [] },
         amount: numberFormatterView(expense.preTaxAmount),
         amountType: 'preTax',
         date: dateFormatterView(expense.date),
