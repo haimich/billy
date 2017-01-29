@@ -7,6 +7,7 @@ import ExpenseFileModel from '../common/models/ExpenseFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
+import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { expenseExists } from '../common/services/expensesService'
 import { listExpenseTypes, getExpenseTypeById, createExpenseType } from '../common/services/expenseTypesService'
 import t from '../common/helpers/i18n'
@@ -40,7 +41,7 @@ interface Props {
   notify: any
 }
 
-export default class ExpensesEditorComponent extends React.Component<Props, {}> {
+export default class ExpensesEditorComponent extends FileEndabledComponent<Props, {}> {
 
   state: State
   refs: {
@@ -214,12 +215,41 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
     this.revalidate(ReactDOM.findDOMNode(this.refs.expenseTypeTypeahead.getInstance()).querySelector('input[name=expenseType]'))
   }
   
-  handleFileChange(files: File[]) {
-    this.addFiles(this.getFileModels(files))
-  }
+  getFileModels(files: File[]): ExpenseFileModel[] {
+    let fileModels = []
 
+    for (let file of files) {
+      fileModels.push({
+        expense_id: this.state.id,
+        path: file.path
+      })
+    }
+
+    return fileModels
+  }
+  
   getFilesForView(): ExpenseFileModel[] {
     return this.state.fileActions.keep.concat(this.state.fileActions.add)
+  }
+
+  handleAddFiles(files: ExpenseFileModel[]) {
+    let newFileActions = this.addFiles(files, this.state.fileActions.keep, this.state.fileActions.delete, this.state.fileActions.add)
+
+    this.setState({
+      fileActions: newFileActions,
+      isDirty: true
+    })
+  }
+
+  handleDeleteFile(file: ExpenseFileModel) {
+    let newFileActions = this.deleteFile(file, this.state.fileActions.keep, this.state.fileActions.delete, this.state.fileActions.add)
+
+    if (newFileActions != null) {
+      this.setState({
+        fileActions: newFileActions,
+        isDirty: true
+      })
+    }
   }
 
   render() {
@@ -380,7 +410,7 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
               </div>
 
               <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
-              <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
+              <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
             </div>
           </div>
 
@@ -425,9 +455,9 @@ export default class ExpensesEditorComponent extends React.Component<Props, {}> 
       this.setState({
         id: expense.id,
         selectedExpenseType: [expense.type],
-        fileActions: (expense.files != null)
-          ? { add: [], keep: expense.files, delete: [] }
-          : { add: [], keep: [], delete: [] },
+        // fileActions: (expense.files != null)
+        //   ? { add: [], keep: expense.files, delete: [] }
+        //   : { add: [], keep: [], delete: [] },
         amount: numberFormatterView(expense.preTaxAmount),
         amountType: 'preTax',
         date: dateFormatterView(expense.date),

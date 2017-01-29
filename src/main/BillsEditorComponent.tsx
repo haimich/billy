@@ -8,11 +8,12 @@ import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
+import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
-import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, getFilename } from '../common/ui/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
 import Textarea from 'react-textarea-autosize'
 
@@ -44,7 +45,7 @@ interface Props {
   notify: any
 }
 
-export default class BillsEditorComponent extends React.Component<Props, {}> {
+export default class BillsEditorComponent extends FileEndabledComponent<Props, {}> {
 
   state: State
   refs: {
@@ -55,14 +56,11 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     date_paid: any
   }
 
-  dragCounter: number
-
   constructor(props) {
     super(props)
 
     this.state = this.getDefaultState()
     this.fetchTypeaheadData()
-    this.dragCounter = 0;
   }
 
   resetState() {
@@ -71,7 +69,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     this.refs.billTypeTypeahead.getInstance().clear()
     this.fetchTypeaheadData()
     process.nextTick(() => this.refs.invoice.focus())
-    this.dragCounter = 0
+    this.resetDragCounter()
     resetFormValidationErrors(getInputs(this))
   }
 
@@ -162,113 +160,6 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     }
 
     return
-  }
-
-  getFileModels(files: File[]): BillFileModel[] {
-    let fileModels = []
-
-    for (let file of files) {
-      fileModels.push({
-        bill_id: this.state.id,
-        path: file.path
-      })
-    }
-
-    return fileModels
-  }
-
-  addFiles(files: BillFileModel[]) {
-    if (files == null) {
-      return
-    }
-
-    let keepList = this.state.fileActions.keep
-    let deleteList = this.state.fileActions.delete
-    let addList = this.state.fileActions.add
-
-    for (let file of files) {
-      if (this.fileExists(file, this.state.fileActions.add)) {
-        continue
-      }
-
-      if (this.fileWithNameExists(file.path, this.state.fileActions.keep)) {
-        if (!confirm(t(`Eine Datei mit dem Namen "${getFilename(file.path)}" existiert bereits. Soll sie überschrieben werden?`))) {
-          continue
-        }
-
-        let originalFile
-
-        keepList = keepList.filter(element => {
-          if (getFilename(element.path) !== getFilename(file.path)) {
-            return true
-          } else {
-            // we found the file to be overwritten
-            originalFile = element
-            return false
-          }
-        })
-        deleteList = deleteList.concat(originalFile)
-      }
-
-      addList = addList.concat(file)
-    }
-
-    this.setState({
-      fileActions: {
-        keep: keepList,
-        add: addList,
-        delete: deleteList
-      },
-      isDirty: true
-    })
-  }
-
-  fileWithNameExists(filePath: string, existingFiles: BillFileModel[]): boolean {
-    for (let file of existingFiles) {
-      if (getFilename(file.path) === getFilename(filePath)) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  fileExists(file: BillFileModel, fileList: BillFileModel[]): boolean {
-    for (let element of fileList) {
-      if (file.id != null && element.id != null && file.id === element.id) {
-        return true
-      } else if (file.path === element.path) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  onDrag(event) {
-    event.preventDefault()
-  }
-
-  onEnter() {
-    this.dragCounter++
-    ReactDOM.findDOMNode(this).classList.add('busy')
-  }
-
-  onLeave() {
-    this.dragCounter--
-    if (this.dragCounter === 0) {
-      ReactDOM.findDOMNode(this).classList.remove('busy')
-    }
-  }
-
-  onDrop(event) {
-    event.preventDefault()
-    this.addFiles(this.getFileModels(event.dataTransfer.files))
-    this.onLeave()
-  }
-
-  handleFileChange(files: File[]) {
-    this.addFiles(this.getFileModels(files))
   }
 
   async handleCustomerChange(selected: any) {
@@ -402,38 +293,41 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
     })
   }
 
-  handleDeleteFile(file: BillFileModel) {
-    if (confirm(t('Möchtest du die Datei wirklich entfernen?'))) {
-      const isExisting = (file.id != null)
+  getFileModels(files: File[]): BillFileModel[] {
+    let fileModels = []
 
-      this.setState({
-        fileActions: {
-          keep: this.state.fileActions.keep.filter(element => {
-            if (isExisting && file.id === element.id) {
-              // existing file should be deleted
-              return false
-            } else {
-              return true
-            }
-          }),
-          add: this.state.fileActions.add.filter(element => {
-            if (file.path === element.path) {
-              // added file should be unadded
-              return false
-            } else {
-              return true
-            }
-          }),
-          delete: (isExisting)
-            ? this.state.fileActions.delete.concat([file])
-            : this.state.fileActions.delete
-        }
+    for (let file of files) {
+      fileModels.push({
+        bill_id: this.state.id,
+        path: file.path
       })
     }
+
+    return fileModels
   }
 
   getFilesForView(): BillFileModel[] {
     return this.state.fileActions.keep.concat(this.state.fileActions.add)
+  }
+
+  handleAddFiles(files: BillFileModel[]) {
+    let newFileActions = this.addFiles(files, this.state.fileActions.keep, this.state.fileActions.delete, this.state.fileActions.add)
+
+    this.setState({
+      fileActions: newFileActions,
+      isDirty: true
+    })
+  }
+
+  handleDeleteFile(file: BillFileModel) {
+    let newFileActions = this.deleteFile(file, this.state.fileActions.keep, this.state.fileActions.delete, this.state.fileActions.add)
+
+    if (newFileActions != null) {
+      this.setState({
+        fileActions: newFileActions,
+        isDirty: true
+      })
+    }
   }
 
   render() {
@@ -579,7 +473,7 @@ export default class BillsEditorComponent extends React.Component<Props, {}> {
               </div>
 
               <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
-              <FileUploadComponent handleFileChange={this.handleFileChange.bind(this)} />
+              <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
             </div>
           </div>
 
