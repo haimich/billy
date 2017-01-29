@@ -51,7 +51,7 @@ describe('billsService', () => {
       expect(result.amount).to.equal(123.45)
       expect(result.files).to.be.ok
       expect(result.type).to.be.ok
-      expect(result.type.id).to.be.ok
+      expect(result.type.id).to.equal(1)
     })
 
     it('should return the bill that matches the invoice id including its files', async () => {

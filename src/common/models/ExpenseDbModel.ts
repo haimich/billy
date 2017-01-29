@@ -1,4 +1,5 @@
 import ExpenseTypeModel from './ExpenseTypeModel'
+import ExpenseFileModel from './ExpenseFileModel'
 
 interface ExpenseDbModel {
   id: number
@@ -8,6 +9,7 @@ interface ExpenseDbModel {
   taxrate: number
   date: string
   comment?: string
+  files?: ExpenseFileModel[]
 }
 
 export default ExpenseDbModel

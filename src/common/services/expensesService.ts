@@ -1,6 +1,33 @@
 import ExpenseDbModel from '../models/ExpenseDbModel'
 import Expense from '../models/ExpenseModel'
 import * as expensesRepo from '../repositories/expensesRepository'
+import * as filesRepo from '../repositories/expenseFilesRepository'
+
+/**
+ * Return a list of all expenses with files.
+ */
+export async function listExpenses(): Promise<ExpenseDbModel[]> {
+  let expenses = await expensesRepo.listExpenses()
+
+  return await Promise.all(expenses.map(addFiles))
+}
+
+async function addFiles(expense: ExpenseDbModel): Promise<ExpenseDbModel> {
+  let files = await filesRepo.getFilesForExpenseId(expense.id)
+
+  return Object.assign(expense, {
+    files
+  })
+}
+
+/**
+ * Return a single expense with its files.
+ */
+export async function getExpenseById(id: number): Promise<ExpenseDbModel> {
+  let expense = await expensesRepo.getExpenseById(id)
+
+  return await addFiles(expense)
+}
 
 export function expenseExists(id: number): Promise<boolean> {
   return expensesRepo.expenseExists(id)
@@ -12,14 +39,6 @@ export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
 
 export function updateExpense(expense: Expense): Promise<ExpenseDbModel> {
   return expensesRepo.updateExpense(expense)
-}
-
-export function getExpenseById(id: number): Promise<ExpenseDbModel> {
-  return expensesRepo.getExpenseById(id)
-}
-
-export function listExpenses(): Promise<ExpenseDbModel[]> {
-  return expensesRepo.listExpenses()
 }
 
 export function deleteExpenseById(id: number): Promise<any> {

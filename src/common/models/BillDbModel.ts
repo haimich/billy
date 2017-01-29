@@ -13,7 +13,7 @@ interface BillDbModel {
   type?: BillTypeModel
   type_name?: string
   comment?: string
-  files: BillFileModel[]
+  files?: BillFileModel[]
 }
 
 export default BillDbModel
