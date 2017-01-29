@@ -9,6 +9,8 @@ import * as filesRepo from '../repositories/billFilesRepository'
  */
 export async function performFileActions(bill: BillDbModel, fileActions: FileActions<BillFileModel>) {
   if (fileActions.delete != null) {
+    console.log('delete yo');
+    
     await Promise.all(
       fileActions.delete.map(file => del(file))
     )

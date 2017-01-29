@@ -105,7 +105,11 @@ export function exists(path: string): Promise<boolean> {
 }
 
 export async function deleteFile(file: FileModel): Promise<any> {
-  return rmrf(await get('appDir') + file.path)
+  console.log('deleteFile', file.path);
+  
+  console.log('DELETE', await get('appDir') + file.path);
+  
+  return rmrf(await get('appDir') + file.path) // TODO dieser Code muss falsch sein, da in prod path absolut ist 
 }
 
 export async function deleteDir(folderName: string, fileType: availableFileTypes): Promise<any> {

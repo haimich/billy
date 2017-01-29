@@ -11,7 +11,7 @@ settings.configure({
 })
 
 const DEV_CONFIG = {
-  appDir: '.',
+  appDir: '.', // process.cwd() ??
   knex: {
     client: 'sqlite3',
     connection: {
