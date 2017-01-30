@@ -9,9 +9,27 @@ exports.up = (knex, Promise) => {
         table.unique(['expense_id', 'path'])
       })
     })
+    .then(() => {
+      console.log('Move bill file paths to new location')
+
+      return knex('bill_files').select('*')
+    })
+    .then((billFiles) => {
+      return Promise.all(
+        billFiles.map(billFile => fixPath(billFile, knex))
+      )
+    })
 }
 
 exports.down = (knex, Promise) => {
   return knex.schema.renameTable('bill_files', 'files')
     .then(() => knex.schema.dropTableIfExists('expense_files'))
+}
+
+function fixPath(file, knex) {
+  let newPath = file.path.replace('/billy/files/', '/billy/files/bills/')
+
+  return knex('bill_files')
+    .update('path', newPath)
+    .where('id', file.id)
 }
