@@ -1,7 +1,7 @@
 exports.up = (knex, Promise) => {
   return knex.schema.createTable('files', (table) => {
     table.increments('id').primary().notNullable()
-    table.integer('bill_id').notNullable()
+    table.integer('bill_id').notNullable().references('id').inTable('bills')
     table.text('path').notNullable()
 
     table.unique(['bill_id', 'path'])
