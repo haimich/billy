@@ -1,5 +1,5 @@
 exports.up = (knex, Promise) => {
-  return knex.schema.createTable('bill_articles', (table) => {
+  return knex.schema.createTable('bill_items', (table) => {
     table.increments('id').primary().notNullable()
     table.integer('bill_id').notNullable().references('id').inTable('bills')
     table.integer('position').notNullable()
@@ -25,11 +25,11 @@ exports.up = (knex, Promise) => {
 }
 
 exports.down = (knex, Promise) => {
-  return knex.schema.dropTableIfExists('bill_articles')
+  return knex.schema.dropTableIfExists('bill_items')
 }
 
 function createBillArticle(bill) {
-  return knex('bill_articles')
+  return knex('bill_items')
     .insert({
       bill_id: bill.id,
       position: 0,

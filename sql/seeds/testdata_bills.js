@@ -64,7 +64,7 @@ exports.seed = (knex, Promise) => {
       return Promise.all(promises)
     })
     .then(() => {
-      console.log('Creating bill articles')
+      console.log('Creating bill items')
 
       let promises = []
 
@@ -72,7 +72,7 @@ exports.seed = (knex, Promise) => {
         const articlesToAdd = chance.natural({ min: 0, max: 3 })
 
         for (let i = 0; i < articlesToAdd; i++) {
-          promises.push(generateBillArticle(bill.id, i, knex))
+          promises.push(generateBillItem(bill.id, i, knex))
         }
       }
 
@@ -124,8 +124,8 @@ function generateFile(billId, knex) {
   })
 }
 
-function generateBillArticle(billId, position, knex) {
-  return knex('bill_articles')
+function generateBillItem(billId, position, knex) {
+  return knex('bill_items')
     .insert({
       bill_id: billId,
       position: 0,

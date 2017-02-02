@@ -1,11 +1,12 @@
 import Customer from './CustomerModel'
 import BillFileModel from './BillFileModel'
 import BillTypeModel from './BillTypeModel'
+import BillItem from './BillItem'
 
 interface BillDbModel {
   id: number
   invoice_id: string
-  amount: number
+  articles: BillItem[]
   date_created: string
   date_paid?: string
   customer_name: string
