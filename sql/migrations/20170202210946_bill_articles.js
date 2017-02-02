@@ -9,8 +9,32 @@ exports.up = (knex, Promise) => {
 
     table.index('bill_id')
   })
+    .then(() => {
+      return knex('bills').select('*')
+    })
+    .then(bills => {
+      return Promise.all(
+        bills.map(createBillArticle)
+      )
+    })
+    .then(() => {
+      return knex.schema.table('bills', table => {
+        table.dropColumn('amount')
+      })
+    })
 }
 
 exports.down = (knex, Promise) => {
   return knex.schema.dropTableIfExists('bill_articles')
+}
+
+function createBillArticle(bill) {
+  return knex('bill_articles')
+    .insert({
+      bill_id: bill.id,
+      position: 0,
+      preTaxAmount: bill.amount,
+      taxrate: 19,
+      description: ''
+    })
 }
