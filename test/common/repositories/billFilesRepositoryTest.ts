@@ -24,7 +24,6 @@ describe('billFilesRepository', () => {
   beforeEach(async () => {
     bill = await createBill({
       invoice_id: PREFIX + '/123',
-      amount: 123,
       customer_id: 1,
       date_created: '2016-05-27'
     })

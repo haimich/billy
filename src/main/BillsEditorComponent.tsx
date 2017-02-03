@@ -8,8 +8,8 @@ import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
-import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
-import { amountType } from '../common/components/PreTaxNetAmountComponent'
+// import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
+// import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
@@ -17,7 +17,7 @@ import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } fr
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
-import { getCalculatedAmount, getPreTaxAmount, getVatAmount } from '../common/ui/preNetVat'
+// import { getCalculatedAmount, getPreTaxAmount, getVatAmount } from '../common/ui/preNetVat'
 import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
@@ -26,9 +26,6 @@ const Typeahead = require('react-bootstrap-typeahead').default
 interface State {
   id?: number
   invoice_id: string
-  amount?: string
-  amountType?: amountType
-  taxrate?: string
   date_created?: string
   date_paid?: string
   comment: string
@@ -82,9 +79,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
     return {
       id: undefined,
       invoice_id: '',
-      amount: '',
-      amountType: 'preTax',
-      taxrate: '19',
       date_created: undefined,
       date_paid: undefined,
       comment: '',
@@ -126,7 +120,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
     const bill: Bill = {
       invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer[0].id!,
-      amount: numberFormatterDb(this.state.amount),
       date_created: dateFormatterDb(this.state.date_created),
       date_paid: dateFormatterDb(this.state.date_paid),
       type_id: (this.state.selectedBillType == null || this.state.selectedBillType[0] == null)
@@ -338,14 +331,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
   }
 
   render() {
-    let calculatedInputLabel = ''
-
-    if (this.state.amountType === 'preTax') {
-      calculatedInputLabel = t('Netto')
-    } else if (this.state.amountType === 'net') {
-      calculatedInputLabel = t('Brutto')
-    }
-
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
@@ -468,64 +453,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
             </div>
 
             <div className="col-md-6">
-              <PreTaxNetAmountComponent
-                amount={this.state.amount}
-                amountType={this.state.amountType}
-                handleAmountTypeChange={amountType => this.setState({ amountType })}
-                handleAmountChange={amount => this.setState({ amount })}
-              />
-
-              <div className="form-group">
-                <label htmlFor="taxrate" className="col-sm-4 control-label">{t('Steuersatz')}</label>
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">%</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="taxrate"
-                      value={this.state.taxrate}
-                      onChange={(event: any) => this.setState({ taxrate: event.target.value })}
-                      style={{ textAlign: 'right' }}
-                      pattern={'[+-]?[0-9]+(,[0-9]+)?'}
-                      required
-                      />
-                  </div>
-                </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="calculatedAmount" className="col-sm-4 control-label">{calculatedInputLabel}</label>
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">€</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="calculatedAmount"
-                      value={getCalculatedAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
-                      style={{ textAlign: 'right' }}
-                      readOnly
-                      />
-                  </div>
-                </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="vatAmount" className="col-sm-4 control-label">{t('Umsatzsteuer')}</label>
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">€</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="vatAmount"
-                      value={getVatAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
-                      style={{ textAlign: 'right' }}
-                      readOnly
-                      />
-                  </div>
-                </div>
-              </div>
-
               <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
             </div>
@@ -580,7 +507,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         selectedBillType: [bill.type],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),
-        amount: numberFormatterView(bill.amount),
+        // amount: numberFormatterView(bill.amount),
         // amount: numberFormatterView(expense.preTaxAmount),
         // amountType: 'preTax',
         // taxrate: hasDecimals(expense.taxrate)

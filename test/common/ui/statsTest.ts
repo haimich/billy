@@ -24,19 +24,19 @@ describe('stats', () => {
       invoice_id: 'foo/123',
       customer: CUSTOMER,
       customer_name: CUSTOMER.name,
-      amount: 123.45,
       date_created: '2014-09-05',
       date_paid: '2014-09-10',
-      files: []
+      files: [],
+      items: []
     }, {
       id: 2,
       invoice_id: 'foo/124',
       customer: CUSTOMER,
-      amount: 123.45,
       customer_name: CUSTOMER.name,
       date_created: '2014-09-05',
       date_paid: '2015-01-15',
-      files: []
+      files: [],
+      items: []
     }]
 
     expenses = [{
@@ -85,31 +85,31 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 123.45,
         date_created: '2014-09-05',
         date_paid: '2015-11-05',
         comment: 'no comment',
-        files: []
+        files: [],
+        items: []
       }, {
         id: 2,
         invoice_id: 'foo/124',
         customer,
         customer_name: customer.name,
-        amount: 123.45,
         date_created: '2014-09-05',
         date_paid: '2016-01-05',
         comment: 'no comment',
-        files: []
+        files: [],
+        items: []
       }, {
         id: 3,
         invoice_id: 'foo/126',
         customer,
         customer_name: customer.name,
-        amount: 100,
         date_created: '2014-09-05',
         date_paid: '2016-11-07',
         comment: 'no comment',
-        files: []
+        files: [],
+        items: []
       }]
 
       const result = getAvailableMonths(bills, 'date_paid', '2016')
@@ -260,13 +260,13 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 123.45,
         type: {
           id: 0,
           type: 'foo'
         },
         date_created: '2014-01-01',
-        files: []
+        files: [],
+        items: []
       }
 
       expect(matchesType<BillDbModel>(bill, 'foo')).to.be.true
@@ -278,13 +278,13 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 123.45,
         type: {
           id: 1,
           type: 'bla'
         },
         date_created: '2014-01-01',
-        files: []
+        files: [],
+        items: []
       }
 
       expect(matchesType<BillDbModel>(bill, 'foo')).to.be.false
@@ -296,9 +296,9 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 123.45,
         date_created: '2014-01-01',
-        files: []
+        files: [],
+        items: []
       }
 
       expect(matchesType<BillDbModel>(bill, 'foo')).to.be.false
@@ -318,9 +318,9 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 123.45,
         date_created: '2014-09-05',
-        files: []
+        files: [],
+        items: []
       }]
 
       const result = getTotal<BillDbModel>(bills, 'amount', true, () => true)
@@ -333,17 +333,17 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 123.45,
         date_created: '2014-09-05',
-        files: []
+        files: [],
+        items: []
       }, {
         id: 2,
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 20.551,
         date_created: '2014-09-05',
-        files: []
+        files: [],
+        items: []
       }]
 
       const result = getTotal<BillDbModel>(bills, 'amount', true, () => true)
@@ -419,23 +419,23 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 100,
         type: typeA,
         date_created: '2014-09-05',
         date_paid: '2014-09-05',
         comment: 'This was a foo auftrag',
-        files: []
+        files: [],
+        items: []
       }, {
         id: 2,
         invoice_id: 'foo/124',
         customer,
         customer_name: customer.name,
         type: typeB,
-        amount: 100,
         date_created: '2014-09-05',
         date_paid: '2014-09-05',
         comment: 'This was a bla dolmetschen',
-        files: []
+        files: [],
+        items: []
       }]
 
       let billTypes: BillTypeModel[] = [typeA, typeB]
@@ -465,23 +465,23 @@ describe('stats', () => {
         invoice_id: 'foo/123',
         customer,
         customer_name: customer.name,
-        amount: 150,
         type: typeA,
         date_created: '2014-09-05',
         date_paid: '2014-09-05',
         comment: 'This was a foo auftrag',
-        files: []
+        files: [],
+        items: []
       }, {
         id: 2,
         invoice_id: 'foo/124',
         customer,
         customer_name: customer.name,
         type: typeB,
-        amount: 200,
         date_created: '2014-09-05',
         date_paid: '2014-09-05',
         comment: 'This was a bla dolmetschen',
-        files: []
+        files: [],
+        items: []
       }]
 
       const billTypes: BillTypeModel[] = [typeA, typeB]

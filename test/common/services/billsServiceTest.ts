@@ -40,7 +40,6 @@ describe('billsService', () => {
     it('should return the bill that matches the invoice id', async () => {
       const bill = await createBill({
         invoice_id: PREFIX + '456',
-        amount: 123.45,
         customer_id: 1,
         type_id: 1,
         date_created: moment().toISOString()
@@ -48,7 +47,6 @@ describe('billsService', () => {
       const result = await getBillByInvoiceId(PREFIX + '456')
 
       expect(result.invoice_id).to.equal(PREFIX + '456')
-      expect(result.amount).to.equal(123.45)
       expect(result.files).to.be.ok
       expect(result.type).to.be.ok
       expect(result.type.id).to.equal(1)
@@ -57,7 +55,6 @@ describe('billsService', () => {
     it('should return the bill that matches the invoice id including its files', async () => {
       const bill = await createBill({
         invoice_id: PREFIX + '456',
-        amount: 123.45,
         customer_id: 1,
         type_id: 1,
         date_created: moment().toISOString()
