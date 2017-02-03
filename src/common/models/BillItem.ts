@@ -1,7 +1,7 @@
 interface Bill {
-  id: number
+  id?: number
   bill_id: number
-  position: 0
+  position: number
   preTaxAmount: number
   taxrate: number
   description?: string

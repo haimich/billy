@@ -36,7 +36,6 @@ describe('billsRepository', () => {
 
       const bill = await createBill({
         invoice_id: invoiceId,
-        amount: 123.45,
         customer_id: 1,
         date_created: testDate
       })
@@ -52,7 +51,6 @@ describe('billsRepository', () => {
 
       const bill = await createBill({
         invoice_id: PREFIX + '123',
-        amount: 123.45,
         type_id: type.id,
         comment: 'bla',
         customer_id: 1,
@@ -61,7 +59,6 @@ describe('billsRepository', () => {
       })
 
       expect(bill.invoice_id).to.equal(PREFIX + '123')
-      expect(bill.amount).to.equal(123.45)
       expect(bill.comment).to.equal('bla')
       expect(bill.type_name).to.equal(PREFIX + 'Dolmetschen')
       expect(bill.type.id).to.equal(type.id)
@@ -80,7 +77,6 @@ describe('billsRepository', () => {
 
       await createBill({
         invoice_id: PREFIX + '123',
-        amount: 123.45,
         type_id: type1.id,
         comment: 'bla',
         customer_id: 1,
@@ -89,7 +85,6 @@ describe('billsRepository', () => {
 
       const updatedBill = await updateBill({
         invoice_id: PREFIX + '123',
-        amount: 11,
         type_id: type2.id,
         comment: 'bla foo',
         customer_id: 1,
@@ -97,7 +92,6 @@ describe('billsRepository', () => {
         date_paid: testDate
       })
 
-      expect(updatedBill.amount).to.equal(11)
       expect(updatedBill.comment).to.equal('bla foo')
       expect(updatedBill.type_name).to.equal(PREFIX + 'Übersetzen')
       expect(updatedBill.type.id).to.equal(type2.id)
@@ -121,14 +115,12 @@ describe('billsRepository', () => {
     it('should return the bill that matches the invoice id', async () => {
       const bill = await createBill({
         invoice_id: PREFIX + '456',
-        amount: 123.45,
         customer_id: 1,
         date_created: moment().toISOString()
       })
       const result = await getBillByInvoiceId(PREFIX + '456')
 
       expect(result.invoice_id).to.equal(PREFIX + '456')
-      expect(result.amount).to.equal(123.45)
     })
   })
 
@@ -136,7 +128,6 @@ describe('billsRepository', () => {
     it('should delete the bills that match the invoice ids', async () => {
       const bill = await createBill({
         invoice_id: PREFIX + '123',
-        amount: 123.45,
         customer_id: 1,
         date_created: moment().toISOString()
       })

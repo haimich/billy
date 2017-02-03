@@ -6,7 +6,7 @@ import BillItem from './BillItem'
 interface BillDbModel {
   id: number
   invoice_id: string
-  articles: BillItem[]
+  items: BillItem[]
   date_created: string
   date_paid?: string
   customer_name: string

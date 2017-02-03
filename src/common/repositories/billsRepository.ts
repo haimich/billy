@@ -19,7 +19,6 @@ export function createBill(bill: Bill): Promise<BillDbModel> {
   return db('bills')
     .insert({
       invoice_id: bill.invoice_id,
-      amount: bill.amount,
       customer_id: bill.customer_id,
       date_created: bill.date_created,
       date_paid: bill.date_paid,
@@ -34,7 +33,6 @@ export function createBill(bill: Bill): Promise<BillDbModel> {
 export function updateBill(bill: Bill): Promise<BillDbModel> {
   return db('bills')
     .update({
-      amount: bill.amount,
       customer_id: bill.customer_id,
       date_created: bill.date_created,
       date_paid: bill.date_paid,
@@ -54,7 +52,6 @@ function getBillById(id: number): Promise<BillDbModel> {
       b.invoice_id,
       b.date_created,
       b.date_paid,
-      b.amount,
       b.comment,
       c.id as customer_id,
       c.name as customer_name,
@@ -85,7 +82,6 @@ export function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
       b.invoice_id,
       b.date_created,
       b.date_paid,
-      b.amount,
       b.comment,
       c.id as customer_id,
       c.name as customer_name,
@@ -116,7 +112,6 @@ export function listBills(): Promise<BillDbModel[]> {
       b.invoice_id,
       b.date_created,
       b.date_paid,
-      b.amount,
       b.comment,
       c.id as customer_id,
       c.name as customer_name,
@@ -171,18 +166,25 @@ export function deleteAll(): Promise<any> {
 }
 
 function createBillDbModel(row: any): BillDbModel {
-  let bill = Object.assign(row, {
+  let bill: any = {
+    id: row.id,
+    invoice_id: row.invoice_id,
+    date_created: row.date_created,
+    date_paid: row.date_paid,
+    comment: row.comment,
+    customer_name: row.customer_name,
     customer: {
       id: row.customer_id,
       name: row.customer_name,
       telephone: row.customer_telephone
     }
-  })
+  }
 
-  if (bill.type_id != null) {
+  if (row.type_id != null) {
+    bill.type_name = row.type_name
     bill.type = {
-      id: bill.type_id,
-      type: bill.type_name
+      id: row.type_id,
+      type: row.type_name
     }
   }
   
