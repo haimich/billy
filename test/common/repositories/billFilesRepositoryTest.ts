@@ -14,7 +14,7 @@ before(async () => {
 })
 
 afterEach(async () => {
-  await deleteFilesByPathPattern(PREFIX + '%')
+  await deleteFilesByPathPattern('%' + PREFIX + '%')
   await deleteBillsByInvoiceIdPattern(PREFIX + '%')
 })
 

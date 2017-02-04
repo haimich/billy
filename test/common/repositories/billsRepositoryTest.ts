@@ -3,7 +3,7 @@ import {
   init as initBills, billExists, listBills, getBillByInvoiceId, createBill,
   deleteBillByInvoiceId, deleteBillsByInvoiceIdPattern, updateBill
 } from '../../../src/common/repositories/billsRepository'
-import { init as initFiles, createFile, deleteFilesByPathPattern } from '../../../src/common/repositories/billFilesRepository'
+import { init as initFiles, deleteFilesByPathPattern } from '../../../src/common/repositories/billFilesRepository'
 import { init as initBillTypes, createBillType, deleteBillTypeByNamePattern } from '../../../src/common/repositories/billTypesRepository'
 import { expect } from 'chai'
 import * as moment from 'moment'

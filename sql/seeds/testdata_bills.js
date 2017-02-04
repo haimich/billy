@@ -128,8 +128,8 @@ function generateBillItem(billId, position, knex) {
   return knex('bill_items')
     .insert({
       bill_id: billId,
-      position: 0,
-      preTaxAamount: Math.round(chance.floating({min: 0, max: 1500}) * 100) / 100,
+      position,
+      preTaxAmount: Math.round(chance.floating({min: 0, max: 1500}) * 100) / 100,
       taxrate: chance.natural({ min: 1, max: 20 }),
       description: chance.word({length: 14})
     })

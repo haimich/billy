@@ -3,7 +3,7 @@ import { rmrf, exists } from '../../../src/common/providers/fileProvider'
 import { init as initFiles } from '../../../src/common/repositories/expenseFilesRepository'
 import { init as initExpenses } from '../../../src/common/repositories/expensesRepository'
 import { createExpense, deleteExpensesByCommentPattern } from '../../../src/common/services/expensesService'
-import { createFile, deleteAllFilesForExpense, deleteFilesByPathPattern, getFilesForExpenseId, performExpenseFileActions } from '../../../src/common/services/expenseFilesService'
+import { deleteAllFilesForExpense, deleteFilesByPathPattern, getFilesForExpenseId, performExpenseFileActions } from '../../../src/common/services/expenseFilesService'
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')

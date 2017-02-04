@@ -2,7 +2,6 @@
 
 module.exports = {
   client: 'sqlite3',
-  debug: false,
   connection: {
     filename: './bills.sqlite'
   },
@@ -13,6 +12,7 @@ module.exports = {
   seeds: {
     directory: './sql/seeds'
   },
+  debug: false,
   pool: {
     afterCreate: (conn, done) => {
       conn.run('PRAGMA foreign_keys = ON', (err, resp) => {  // see https://github.com/tgriesser/knex/issues/453

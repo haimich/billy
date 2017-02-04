@@ -3,7 +3,7 @@ exports.up = (knex, Promise) => {
     table.increments('id').primary().notNullable()
     table.integer('bill_id').notNullable().references('id').inTable('bills')
     table.integer('position').notNullable()
-    table.decimal('preTaxAamount').notNullable()
+    table.decimal('preTaxAmount').notNullable()
     table.decimal('taxrate').notNullable()
     table.text('description')
 

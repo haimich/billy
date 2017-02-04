@@ -3,7 +3,7 @@ import { rmrf, exists } from '../../../src/common/providers/fileProvider'
 import { init as initFiles } from '../../../src/common/repositories/billFilesRepository'
 import { init as initBills } from '../../../src/common/repositories/billsRepository'
 import { createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/services/billsService'
-import { createFile, deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId, performBillFileActions } from '../../../src/common/services/billFilesService'
+import { deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId, performBillFileActions } from '../../../src/common/services/billFilesService'
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
@@ -18,11 +18,10 @@ before(async () => {
 })
 
 afterEach(async () => {
-  await deleteFilesByPathPattern(PREFIX + '%')
+  await deleteFilesByPathPattern('%' + PREFIX + '%')
   await deleteBillsByInvoiceIdPattern(PREFIX + '%')
   await rmrf(`${filesDir}/${PREFIX}*`)
 })
-
 
 describe('billFilesService', () => {
 
@@ -31,7 +30,6 @@ describe('billFilesService', () => {
   beforeEach(async () => {
     bill = await createBill({
       invoice_id: PREFIX + '-123',
-      amount: 123,
       customer_id: 1,
       date_created: '2016-05-27'
     })

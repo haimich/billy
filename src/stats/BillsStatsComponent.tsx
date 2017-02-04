@@ -62,15 +62,15 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
   getTotalUnpaid(): number {
     let total = 0
 
-    for (let bill of this.props.bills) {
-      const matchesFilters = (matchesYear(bill.date_created, this.state.selectedYear)
-        && matchesType<BillDbModel>(bill, this.state.selectedBillType))
-      const isUnpaid = (bill.date_paid == null || bill.date_paid === '')
+    // for (let bill of this.props.bills) {
+    //   const matchesFilters = (matchesYear(bill.date_created, this.state.selectedYear)
+    //     && matchesType<BillDbModel>(bill, this.state.selectedBillType))
+    //   const isUnpaid = (bill.date_paid == null || bill.date_paid === '')
 
-      if (matchesFilters && isUnpaid) {
-        total += bill.amount
-      }
-    }
+    //   if (matchesFilters && isUnpaid) {
+    //     total += bill.amount
+    //   }
+    // }
 
     return round(total)
   }
@@ -95,48 +95,48 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
   getTableData(): CustomerStats[] {
     let customersWithTotals = {}
 
-    for (let bill of this.props.bills) {
-      if (this.matchesFilters(bill)) {
-        if (bill.customer == null || bill.customer.id == null) {
-          continue
-        }
+    // for (let bill of this.props.bills) {
+    //   if (this.matchesFilters(bill)) {
+    //     if (bill.customer == null || bill.customer.id == null) {
+    //       continue
+    //     }
 
-        let daysToPay = this.getDaysToPay(bill)
-        let daysToPayList = []
+    //     let daysToPay = this.getDaysToPay(bill)
+    //     let daysToPayList = []
 
-        if (daysToPay != null) {
-          daysToPayList.push(daysToPay)
-        }
+    //     if (daysToPay != null) {
+    //       daysToPayList.push(daysToPay)
+    //     }
 
-        if (customersWithTotals[bill.customer.id] == null) {
-          customersWithTotals[bill.customer.id] = {
-            total: bill.amount,
-            id: bill.customer.id,
-            name: bill.customer.name,
-            daysToPayList,
-            billCount: 1
-          }
-        } else {
-          let customer = customersWithTotals[bill.customer.id]
-          customer.total += bill.amount
-          customer.billCount += 1
-          customer.daysToPayList = customer.daysToPayList.concat(daysToPayList)
-        }
-      }
-    }
+    //     if (customersWithTotals[bill.customer.id] == null) {
+    //       customersWithTotals[bill.customer.id] = {
+    //         total: bill.amount,
+    //         id: bill.customer.id,
+    //         name: bill.customer.name,
+    //         daysToPayList,
+    //         billCount: 1
+    //       }
+    //     } else {
+    //       let customer = customersWithTotals[bill.customer.id]
+    //       customer.total += bill.amount
+    //       customer.billCount += 1
+    //       customer.daysToPayList = customer.daysToPayList.concat(daysToPayList)
+    //     }
+    //   }
+    // }
 
     let customers: any[] = []
-    for (let customerId of Object.keys(customersWithTotals)) {
-      let customer = customersWithTotals[customerId]
-      let averageTimeToPay = round(getAverage(customer.daysToPayList), 1)
+    // for (let customerId of Object.keys(customersWithTotals)) {
+    //   let customer = customersWithTotals[customerId]
+    //   let averageTimeToPay = round(getAverage(customer.daysToPayList), 1)
 
-      customers.push({
-        name: customer.name,
-        total: customer.total,
-        billCount: customer.billCount,
-        averageTimeToPay
-      })
-    }
+    //   customers.push({
+    //     name: customer.name,
+    //     total: customer.total,
+    //     billCount: customer.billCount,
+    //     averageTimeToPay
+    //   })
+    // }
 
     return customers
   }

@@ -34,15 +34,15 @@ export default class BillsTableComponent extends React.Component<Props, State> {
   getEnrichedBills(bills: BillDbModel[]): EnrichedBill[] {
     let enriched = []
 
-    for (let bill of bills) {
-      let exp = Object.assign(bill, {
-        netAmount: numberFormatterView(getNetAmount(19, bill.amount)), // TODO make taxrate dynamic!!
-        taxrate: 19, //TODO make dynamic
-        vatAmount: 123 //TODO
-      })
+    // for (let bill of bills) {
+    //   let exp = Object.assign(bill, {
+    //     netAmount: numberFormatterView(getNetAmount(19, bill.amount)), // TODO make taxrate dynamic!!
+    //     taxrate: 19, //TODO make dynamic
+    //     vatAmount: 123 //TODO
+    //   })
 
-      enriched.push(exp)
-    }
+    //   enriched.push(exp)
+    // }
 
     return enriched
   }
