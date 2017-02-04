@@ -22,6 +22,8 @@ import OnOffSwitchComponent from '../common/components/OnOffSwitchComponent'
 import * as NotificationSystem from 'react-notification-system'
 import t from '../common/helpers/i18n'
 
+import JustATestComponent from './JustATestComponent'
+
 let notifications
 
 interface Props {
@@ -47,7 +49,7 @@ export default class AppComponent extends React.Component<Props, {}> {
 
   constructor(props) {
     super(props)
-
+    
     // we convert props to state here to be able to load bills before render() is called
     this.state = {
       bills: props.bills,
@@ -332,7 +334,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
 
     return (
-      <div>
+      /*<div>
         <OnOffSwitchComponent
           activeLabel={t('Ausgaben')}
           inactiveLabel={t('Einnahmen')}
@@ -346,7 +348,8 @@ export default class AppComponent extends React.Component<Props, {}> {
         {editorView}
 
         <NotificationSystem ref="notificationSystem" />
-      </div>
+      </div>*/
+      <JustATestComponent />
     )
   }
 

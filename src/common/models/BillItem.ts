@@ -1,10 +1,7 @@
-interface Bill {
-  id?: number
+import ItemModel from './ItemModel'
+
+interface BillItem extends ItemModel {
   bill_id: number
-  position: number
-  preTaxAmount: number
-  taxrate: number
-  description?: string
 }
 
-export default Bill
+export default BillItem

@@ -7,7 +7,7 @@ import { getFileIconHtml } from '../ui/icons'
 import t from '../helpers/i18n'
 
 interface Props {
-  files: File[];
+  files: File[]
   handleDeleteFile: (file: File) => void
 }
 

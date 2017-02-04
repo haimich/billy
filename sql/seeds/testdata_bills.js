@@ -69,7 +69,7 @@ exports.seed = (knex, Promise) => {
       let promises = []
 
       for (let bill of allBills) {
-        const articlesToAdd = chance.natural({ min: 0, max: 3 })
+        const articlesToAdd = chance.natural({ min: 1, max: 3 })
 
         for (let i = 0; i < articlesToAdd; i++) {
           promises.push(generateBillItem(bill.id, i, knex))

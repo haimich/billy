@@ -4,6 +4,7 @@ import Bill from '../common/models/BillModel'
 import BillDbModel from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
+import BillItem from '../common/models/BillItem'
 import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
@@ -11,6 +12,7 @@ import FileUploadComponent from '../common/components/FileUploadComponent'
 // import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
 // import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
+import ItemListComponent from '../common/components/ItemListComponent'
 import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
@@ -28,6 +30,7 @@ interface State {
   invoice_id: string
   date_created?: string
   date_paid?: string
+  billItems: BillItem[]
   comment: string
   selectedCustomer?: Customer[]
   selectedBillType?: BillTypeModel[]
@@ -81,6 +84,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
       invoice_id: '',
       date_created: undefined,
       date_paid: undefined,
+      billItems: [],
       comment: '',
       selectedCustomer: undefined,
       selectedBillType: undefined,
@@ -125,7 +129,8 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
       type_id: (this.state.selectedBillType == null || this.state.selectedBillType[0] == null)
         ? undefined
         : this.state.selectedBillType[0].id,
-      comment: this.state.comment
+      comment: this.state.comment,
+      // items: this.state.billItems
     }
 
     try {
@@ -507,12 +512,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         selectedBillType: [bill.type],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),
-        // amount: numberFormatterView(bill.amount),
-        // amount: numberFormatterView(expense.preTaxAmount),
-        // amountType: 'preTax',
-        // taxrate: hasDecimals(expense.taxrate)
-        //   ? numberFormatterView(expense.taxrate)
-        //   : numberFormatterView(expense.taxrate, 0),
+        billItems: bill.items,
         comment: bill.comment,
         invoiceIdValid: true,
         isNew,
