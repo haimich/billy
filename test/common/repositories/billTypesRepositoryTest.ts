@@ -7,7 +7,7 @@ import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
 
-const PREFIX = 'INTEGRATIONTEST-'
+const PREFIX = 'INTEGRATIONTEST-billTypesRepositoryTest-'
 
 before(async () => {
   const knexInstance = await initDb(knexConfig)

@@ -7,7 +7,7 @@ import { deleteAllFilesForBill, deleteFilesByPathPattern, getFilesForBillId, per
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
-const PREFIX = 'INTEGRATIONTEST-'
+const PREFIX = 'INTEGRATIONTEST-billFilesServiceTest-'
 const baseDir = process.cwd()
 const filesDir = `${baseDir}/files/bills`
 

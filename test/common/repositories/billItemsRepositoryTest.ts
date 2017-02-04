@@ -9,7 +9,7 @@ import * as moment from 'moment'
 
 const knexConfig = require('../../../../knexfile')
 
-const PREFIX = 'INTEGRATIONTEST'
+const PREFIX = 'INTEGRATIONTEST-billItemsRepositoryTest-'
 
 before(async () => {
   const knexInstance = await initDb(knexConfig)

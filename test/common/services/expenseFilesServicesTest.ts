@@ -7,7 +7,7 @@ import { deleteAllFilesForExpense, deleteFilesByPathPattern, getFilesForExpenseI
 import { expect } from 'chai'
 
 const knexConfig = require('../../../../knexfile')
-const PREFIX = 'INTEGRATIONTEST-'
+const PREFIX = 'INTEGRATIONTEST-expenseFilesServiceTest-'
 const baseDir = process.cwd()
 const filesDir = `${baseDir}/files/expenses`
 

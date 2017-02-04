@@ -1,23 +1,26 @@
 import { initDb, setupDb } from '../../../src/common/providers/dbProvider'
 import { init as initBills } from '../../../src/common/repositories/billsRepository'
 import { init as initFiles } from '../../../src/common/repositories/billFilesRepository'
-import { createBill, deleteBillsByInvoiceIdPattern } from '../../../src/common/services/billsService'
+import { init as initBillItems } from '../../../src/common/repositories/billItemsRepository'
+import { createBill, deleteBillsByInvoiceIdPattern, listBills, getBillByInvoiceId } from '../../../src/common/services/billsService'
 import { createFile, deleteFilesByPathPattern } from '../../../src/common/services/billFilesService'
-import { listBills, getBillByInvoiceId } from '../../../src/common/services/billsService'
+import { createBillItem, deleteBillItemByDescriptionPattern } from '../../../src/common/services/billItemsService'
 import { expect } from 'chai'
 import * as moment from 'moment'
 
 const knexConfig = require('../../../../knexfile')
-const PREFIX = 'INTEGRATIONTEST-'
+const PREFIX = 'INTEGRATIONTEST-billsServiceTest-'
 
 before(async () => {
   const knexInstance = await initDb(knexConfig)
   await initBills(knexInstance)
   await initFiles(knexInstance)
+  await initBillItems(knexInstance)
 })
 
 afterEach(async () => {
   await deleteFilesByPathPattern(PREFIX + '%')
+  await deleteBillItemByDescriptionPattern(PREFIX + '%')
   await deleteBillsByInvoiceIdPattern(PREFIX + '%')
 })
 
@@ -68,6 +71,43 @@ describe('billsService', () => {
       expect(result.invoice_id).to.equal(PREFIX + '456')
       expect(result.files.length).to.equal(1)
       expect(result.files[0].path).to.equal(PREFIX + '/foo/bla.doc')
+      expect(result.type).to.be.ok
+      expect(result.type.id).to.be.ok
+    })
+
+    it('should return the bill that matches the invoice id including its bill items', async () => {
+      const bill = await createBill({
+        invoice_id: PREFIX + '456',
+        customer_id: 1,
+        type_id: 1,
+        date_created: moment().toISOString()
+      })
+      await createBillItem({
+        bill_id: bill.id,
+        position: 0,
+        preTaxAmount: 123.45,
+        taxrate: 19,
+        description: PREFIX + 'desc'
+      })
+      await createBillItem({
+        bill_id: bill.id,
+        position: 1,
+        preTaxAmount: 456,
+        taxrate: 10,
+        description: PREFIX + 'desc2'
+      })
+      const result = await getBillByInvoiceId(PREFIX + '456')
+
+      expect(result.invoice_id).to.equal(PREFIX + '456')
+      expect(result.items.length).to.equal(2)
+      expect(result.items[0].position).to.equal(0)
+      expect(result.items[0].preTaxAmount).to.equal(123.45)
+      expect(result.items[0].taxrate).to.equal(19)
+      expect(result.items[0].description).to.equal(PREFIX + 'desc')
+      expect(result.items[1].position).to.equal(1)
+      expect(result.items[1].preTaxAmount).to.equal(456)
+      expect(result.items[1].taxrate).to.equal(10)
+      expect(result.items[1].description).to.equal(PREFIX + 'desc2')
       expect(result.type).to.be.ok
       expect(result.type.id).to.be.ok
     })

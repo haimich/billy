@@ -2,6 +2,7 @@ import Bill from '../models/BillModel'
 import BillDbModel from '../models/BillDbModel'
 import * as billsRepo from '../repositories/billsRepository'
 import * as filesRepo from '../repositories/billFilesRepository'
+import * as billItemsRepo from '../repositories/billItemsRepository'
 
 /**
  * Return a list of all bills with files.
@@ -9,7 +10,18 @@ import * as filesRepo from '../repositories/billFilesRepository'
 export async function listBills(): Promise<BillDbModel[]> {
   let bills = await billsRepo.listBills()
 
-  return await Promise.all(bills.map(addFiles))
+  await Promise.all(bills.map(addFiles))
+  return await Promise.all(bills.map(addBillItems))
+}
+
+/**
+ * Return a single bill with its files.
+ */
+export async function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
+  let bill = await billsRepo.getBillByInvoiceId(invoiceId)
+  
+  await addFiles(bill)
+  return await addBillItems(bill)
 }
 
 async function addFiles(bill: BillDbModel): Promise<BillDbModel> {
@@ -20,13 +32,12 @@ async function addFiles(bill: BillDbModel): Promise<BillDbModel> {
   })
 }
 
-/**
- * Return a single bill with its files.
- */
-export async function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
-  let bill = await billsRepo.getBillByInvoiceId(invoiceId)
-  
-  return await addFiles(bill)
+async function addBillItems(bill: BillDbModel): Promise<BillDbModel> {
+  let items = await billItemsRepo.getBillItemsByBillId(bill.id)
+
+  return Object.assign(bill, {
+    items
+  })
 }
 
 export function createBill(bill: Bill): Promise<BillDbModel> {

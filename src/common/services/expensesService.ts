@@ -12,14 +12,6 @@ export async function listExpenses(): Promise<ExpenseDbModel[]> {
   return await Promise.all(expenses.map(addFiles))
 }
 
-async function addFiles(expense: ExpenseDbModel): Promise<ExpenseDbModel> {
-  let files = await filesRepo.getFilesForExpenseId(expense.id)
-
-  return Object.assign(expense, {
-    files
-  })
-}
-
 /**
  * Return a single expense with its files.
  */
@@ -27,6 +19,14 @@ export async function getExpenseById(id: number): Promise<ExpenseDbModel> {
   let expense = await expensesRepo.getExpenseById(id)
 
   return await addFiles(expense)
+}
+
+async function addFiles(expense: ExpenseDbModel): Promise<ExpenseDbModel> {
+  let files = await filesRepo.getFilesForExpenseId(expense.id)
+
+  return Object.assign(expense, {
+    files
+  })
 }
 
 export function expenseExists(id: number): Promise<boolean> {

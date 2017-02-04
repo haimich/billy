@@ -8,7 +8,7 @@ import { expect } from 'chai'
 import * as moment from 'moment'
 
 const knexConfig = require('../../../../knexfile')
-const PREFIX = 'INTEGRATIONTEST-'
+const PREFIX = 'INTEGRATIONTEST-expensesServiceTest-'
 
 before(async () => {
   const knexInstance = await initDb(knexConfig)
