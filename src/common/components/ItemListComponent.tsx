@@ -5,10 +5,15 @@ import t from '../helpers/i18n'
 
 interface Props {
   items: ItemModel[]
-  addItem: (item: ItemModel) => void
+  handleItemValueChange: (itemId: number, fieldName: string, newValue: string) => void
+  addItem: () => void
 }
 
 export default class ItemListComponent extends React.Component<Props, {}> {
+
+  state: {
+    items: ItemModel[]
+  }
 
   constructor(props) {
     super(props)
@@ -26,6 +31,7 @@ export default class ItemListComponent extends React.Component<Props, {}> {
               className="form-control input-sm"
               id="id"
               value={item.description}
+              onChange={(event: any) => this.props.handleItemValueChange(item.id, 'description', event.target.value)}
             />
           </td>
           <td style={{width: '95px'}}>
@@ -37,6 +43,8 @@ export default class ItemListComponent extends React.Component<Props, {}> {
                 style={{ textAlign: 'right' }}
                 id="id"
                 value={item.taxrate}
+                pattern={'[+-]?[0-9]+(,[0-9]+)?'}
+                onChange={(event: any) => this.props.handleItemValueChange(item.id, 'taxrate', event.target.value)}
               />
             </div>
           </td>
@@ -49,6 +57,8 @@ export default class ItemListComponent extends React.Component<Props, {}> {
                 style={{ textAlign: 'right' }}
                 id="id"
                 value={item.preTaxAmount}
+                pattern={'[+-]?[0-9]+(,[0-9]+)?'}
+                onChange={(event: any) => this.props.handleItemValueChange(item.id, 'preTaxAmount', event.target.value)}
               />
             </div>
           </td>
@@ -59,21 +69,17 @@ export default class ItemListComponent extends React.Component<Props, {}> {
     return rows
   }
 
-  handleAddItem() {
-
-  }
-
   render() {
     return (
       <div>
         <div className="row">
           <div className="col-md-12">
-            <table className="table table-striped">
+            <table className="table">
               <thead>
                 <tr>
-                  <th>{t('Beschreibung')}</th>
-                  <th>{t('Steuersatz')}</th>
-                  <th>{t('Betrag (€)')}</th>
+                  <th className="text-center">{t('Beschreibung')}</th>
+                  <th className="text-center">{t('Steuersatz')}</th>
+                  <th className="text-center">{t('Betrag (€)')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -85,7 +91,7 @@ export default class ItemListComponent extends React.Component<Props, {}> {
 
         <div className="row">
           <div className="col-md-3">
-            <button type="button" className="btn btn-success btn-sm" onClick={this.handleAddItem.bind(this)}>
+            <button type="button" className="btn btn-success btn-sm" onClick={this.props.addItem}>
               <i className="fa fa-plus" aria-hidden="true"></i>&nbsp;
               {t('Position hinzufügen')}
             </button>

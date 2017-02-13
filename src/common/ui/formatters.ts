@@ -44,7 +44,7 @@ export function percentageFormatter(value: number): string {
 }
 
 export function numberFormatterDb(value?: string): number {
-  if (value == null) {
+  if (value == null || value === '') {
     return 0
   }
   return parseFloat(value.replace(',', '.').replace(' ', ''))
