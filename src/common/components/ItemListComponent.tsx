@@ -1,101 +1,99 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ItemModel from '../models/ItemModel'
+import PreTaxNetAmountComponent from '../components/PreTaxNetAmountComponent'
+import { amountType } from '../components/PreTaxNetAmountComponent'
+import { getCalculatedAmount, getVatAmount } from '../ui/preNetVat' //, getPreTaxAmount, 
 import t from '../helpers/i18n'
 
 interface Props {
-  items: ItemModel[]
-  handleItemValueChange: (itemId: number, fieldName: string, newValue: string) => void
-  addItem: () => void
+  amount: string
+  amountType: amountType
+  taxrate?: string
+  handleAmountChange: (newValue: string) => void
+  handleAmountTypeChange: (newValue: string) => void
+  handleTaxrateChange: (newValue: string) => void
 }
 
 export default class ItemListComponent extends React.Component<Props, {}> {
-
-  state: {
-    items: ItemModel[]
-  }
 
   constructor(props) {
     super(props)
   }
 
-  getTableRows() {
-    let rows = []
-
-    for (let item of this.props.items) {
-      rows.push((
-        <tr key={item.id}>
-          <td>
-            <input
-              type="text"
-              className="form-control input-sm"
-              id="id"
-              value={item.description}
-              onChange={(event: any) => this.props.handleItemValueChange(item.id, 'description', event.target.value)}
-            />
-          </td>
-          <td style={{width: '95px'}}>
-            <div className="input-group">
-              <span className="input-group-addon">%</span>
-              <input
-                type="text"
-                className="form-control input-sm"
-                style={{ textAlign: 'right' }}
-                id="id"
-                value={item.taxrate}
-                pattern={'[+-]?[0-9]+(,[0-9]+)?'}
-                onChange={(event: any) => this.props.handleItemValueChange(item.id, 'taxrate', event.target.value)}
-              />
-            </div>
-          </td>
-          <td style={{width: '160px'}}>
-            <div className="input-group">
-              <span className="input-group-addon">€</span>
-              <input
-                type="text"
-                className="form-control input-sm"
-                style={{ textAlign: 'right' }}
-                id="id"
-                value={item.preTaxAmount}
-                pattern={'[+-]?[0-9]+(,[0-9]+)?'}
-                onChange={(event: any) => this.props.handleItemValueChange(item.id, 'preTaxAmount', event.target.value)}
-              />
-            </div>
-          </td>
-        </tr>
-      ))
+  getCalculatedHeading(): string {
+    if (this.props.amountType === 'preTax') {
+      return t('Netto')
+    } else if (this.props.amountType === 'net') {
+      return t('Brutto')
     }
-
-    return rows
   }
 
   render() {
     return (
-      <div>
-        <div className="row">
-          <div className="col-md-12">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th className="text-center">{t('Beschreibung')}</th>
-                  <th className="text-center">{t('Steuersatz')}</th>
-                  <th className="text-center">{t('Betrag (€)')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.getTableRows()}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-3">
-            <button type="button" className="btn btn-success btn-sm" onClick={this.props.addItem}>
-              <i className="fa fa-plus" aria-hidden="true"></i>&nbsp;
-              {t('Position hinzufügen')}
-            </button>
-          </div>
+      <div className="row">
+        <div className="col-md-12">
+          <table className="table">
+            <thead>
+              <tr>
+                <th className="text-center">{t('Betrag')}</th>
+                <th className="text-center">{t('Steuersatz')}</th>
+                <th className="text-center">{this.getCalculatedHeading()}</th>
+                <th className="text-center">{t('Umsatzsteuer')}</th>
+              </tr>
+            </thead>
+            <tbody>       
+              <tr key={0}>
+                <td>
+                  <PreTaxNetAmountComponent
+                    amount={this.props.amount}
+                    amountType={this.props.amountType}
+                    handleAmountTypeChange={amountType => this.props.handleAmountTypeChange(amountType)}
+                    handleAmountChange={amount => this.props.handleAmountChange(amount)}
+                  />
+                </td>
+                <td style={{width: '95px'}}>
+                  <div className="input-group">
+                    <span className="input-group-addon">%</span>
+                    <input
+                      type="text"
+                      className="form-control input-sm"
+                      style={{ textAlign: 'right' }}
+                      id="taxrate"
+                      value={this.props.taxrate}
+                      pattern={'[+-]?[0-9]+(,[0-9]+)?'}
+                      onChange={(event: any) => this.props.handleTaxrateChange(event.target.value)}
+                    />
+                  </div>
+                </td>
+                <td style={{width: '130px'}}>
+                  <div className="input-group">
+                    <span className="input-group-addon">€</span>
+                    <input
+                      type="text"
+                      className="form-control input-sm"
+                      style={{ textAlign: 'right' }}
+                      id="calculatedAmount"
+                      value={getCalculatedAmount(this.props.amount, this.props.taxrate, this.props.amountType)}
+                      readOnly
+                    />
+                  </div>
+                </td>
+                <td style={{width: '130px'}}>
+                  <div className="input-group">
+                    <span className="input-group-addon">€</span>
+                    <input
+                      type="text"
+                      className="form-control input-sm"
+                      style={{ textAlign: 'right' }}
+                      id="calculatedVaxAmount"
+                      value={getVatAmount(this.props.amount, this.props.taxrate, this.props.amountType)}
+                      readOnly
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     )
