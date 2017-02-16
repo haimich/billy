@@ -43,7 +43,7 @@ export default class ItemListComponent extends React.Component<Props, {}> {
             </thead>
             <tbody>       
               <tr key={0}>
-                <td>
+                <td style={{width: '230px'}}>
                   <PreTaxNetAmountComponent
                     amount={this.props.amount}
                     amountType={this.props.amountType}

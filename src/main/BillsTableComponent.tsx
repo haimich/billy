@@ -78,7 +78,7 @@ export default class BillsTableComponent extends React.Component<Props, {}> {
           <TableHeaderColumn dataField="customer_name" width="240" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_created" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_paid" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlungsdatum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Typ')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Auftragsart')}</TableHeaderColumn>
           <TableHeaderColumn dataField="comment" width="440" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
 
         </BootstrapTable>

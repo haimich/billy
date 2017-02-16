@@ -2376,6 +2376,13 @@ react-bootstrap-table@^2.9.0:
     "@allenfang/react-toastr" "2.8.2"
     classnames "^2.1.2"
 
+react-bootstrap-toggle@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-toggle/-/react-bootstrap-toggle-2.0.4.tgz#162e3c0e4bfd5fed62b9628a303a3f7678c88cec"
+  dependencies:
+    react "^15.4.2"
+    react-dom "^15.4.2"
+
 react-bootstrap-typeahead@^0.9.2:
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/react-bootstrap-typeahead/-/react-bootstrap-typeahead-0.9.4.tgz#957a68db0aa53cd05aed57e78bac58d890355875"
@@ -2410,7 +2417,7 @@ react-datetime@^2.6.0:
   version "15.3.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.3.2.tgz#c46b0aa5380d7b838e7a59c4a7beff2ed315531f"
 
-react-dom@^15.3.0, react-dom@^15.3.2:
+react-dom@^15.3.0, react-dom@^15.3.2, react-dom@^15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.2.tgz#015363f05b0a1fd52ae9efdd3a0060d90695208f"
   dependencies:
@@ -2459,7 +2466,7 @@ react-textarea-autosize@^4.0.5:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
 
-react@^15.2.1, react@^15.3.2:
+react@^15.2.1, react@^15.3.2, react@^15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:

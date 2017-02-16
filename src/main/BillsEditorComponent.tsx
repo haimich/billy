@@ -364,7 +364,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                     <input
                       value={this.selectedCustomerTelephone()}
                       onChange={this.handleCustomerTelephoneChange.bind(this)}
-                      placeholder={t('keine Telefonnr.')}
+                      placeholder={t('Telefonr. eingeben')}
                       className="sub-input"
                       tabIndex={-1}
                       /> {

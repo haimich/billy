@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import Toggle from 'react-bootstrap-toggle'
 import t from '../helpers/i18n'
 
 export type amountType = 'preTax' | 'net'
@@ -17,46 +18,43 @@ export default class PreTaxNetAmountComponent extends React.Component<Props, {}>
     amount: any
   }
 
-  handleAmountButtonChange(newType: amountType) {
+  handleAmountTypeChange() {
+    let newType
+
+    if (this.props.amountType === 'preTax') {
+      newType = 'net'
+    } else {
+      newType = 'preTax'
+    }
+
     this.props.handleAmountTypeChange(newType)
     this.refs.amount.focus()
   }
 
+  isAmountTypeActive() {
+    return this.props.amountType === 'preTax'
+  }
+
   render() {
-    let classesPreTaxAmountBtn = 'btn btn-default'
-    let classesNetAmountBtn = 'btn btn-default'
-
-    if (this.props.amountType === 'preTax') {
-      classesPreTaxAmountBtn += ' active'
-    } else if (this.props.amountType === 'net') {
-      classesNetAmountBtn += ' active'
-    }
-
     return (
-      <div className="form-group">
-        <div className="btn-group toggle-button col-sm-4" role="group">
-          <button
-            type="button"
-            htmlFor="amount"
-            className={classesPreTaxAmountBtn}
-            onClick={() => this.handleAmountButtonChange('preTax')}>
-            {t('Brutto')}
-          </button>
-          <button
-            type="button"
-            htmlFor="amount"
-            className={classesNetAmountBtn}
-            onClick={() => this.handleAmountButtonChange('net')}>
-            {t('Netto')}
-          </button>
-        </div>
+      <div className="amount-inputgroup">
+        <span className="toggle-button">
+          <Toggle
+            onClick={this.handleAmountTypeChange.bind(this)}
+            on={t('Brutto')}
+            off={t('Netto')}
+            size="sm"
+            offstyle="success"
+            active={this.isAmountTypeActive()}
+          />
+        </span>
 
         <div className="col-sm-8">
           <div className="input-group">
             <span className="input-group-addon">€</span>
             <input
               type="text"
-              className="form-control"
+              className="form-control input-sm"
               ref="amount"
               id="amount"
               value={this.props.amount}

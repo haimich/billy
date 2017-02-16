@@ -88,15 +88,6 @@ textarea {
   margin-bottom: 0px;
 }
 
-.form-group .toggle-button {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.form-group .toggle-button .btn {
-  font-weight: 500;
-}
-
 .file-list {
   max-height: 126px;
   overflow: auto;
@@ -137,4 +128,13 @@ textarea {
   justify-content: center;
   margin-bottom: -16px;
   margin-top: 5px;
+}
+
+.amount-inputgroup {
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-button > .btn {
+  padding: 14px;
 }
