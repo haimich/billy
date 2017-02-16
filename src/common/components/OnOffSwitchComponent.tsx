@@ -41,17 +41,17 @@ export default class OnOffSwitchComponent extends React.Component<Props, {}> {
   render() {
     return (
       <div className="onoffswitch-container">
-        <div className="toggle toggle--knob">
+        <div className="xl-toggle xl-toggle--knob">
           <input
             type="checkbox"
-            id="toggle--knob"
-            className="toggle--checkbox"
+            id="xl-toggle--knob"
+            className="xl-toggle--checkbox"
             checked={this.isSelected()}
             onChange={this.toggle.bind(this)}
           />
-          <label className="toggle--btn" htmlFor="toggle--knob">
+          <label className="xl-toggle--btn" htmlFor="xl-toggle--knob">
             <span
-              className="toggle--feature"
+              className="xl-toggle--feature"
               data-label-on={this.props.activeLabel}
               data-label-off={this.props.inactiveLabel}
             />

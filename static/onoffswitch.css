@@ -4,7 +4,7 @@
    Default styles
    ===================================================== */
 
-.toggle {
+.xl-toggle {
   font-size: 66.5%;
   letter-spacing: .5px;
   display: block;
@@ -12,34 +12,34 @@
   user-select: none;
 }
 
-.toggle--checkbox {
+.xl-toggle--checkbox {
   display: none;
 }
 
-.toggle--btn {
+.xl-toggle--btn {
   display: block;
   margin: 0 auto;
   font-size: 1.4em;
   transition: all 350ms ease-in;
 }
-.toggle--btn:hover {
+.xl-toggle--btn:hover {
   cursor: pointer;
 }
 
-.toggle--btn, .toggle--btn:before, .toggle--btn:after,
-.toggle--checkbox,
-.toggle--checkbox:before,
-.toggle--checkbox:after,
-.toggle--feature,
-.toggle--feature:before,
-.toggle--feature:after {
+.xl-toggle--btn, .xl-toggle--btn:before, .xl-toggle--btn:after,
+.xl-toggle--checkbox,
+.xl-toggle--checkbox:before,
+.xl-toggle--checkbox:after,
+.xl-toggle--feature,
+.xl-toggle--feature:before,
+.xl-toggle--feature:after {
   transition: all 250ms ease-in;
 }
-.toggle--btn:before, .toggle--btn:after,
-.toggle--checkbox:before,
-.toggle--checkbox:after,
-.toggle--feature:before,
-.toggle--feature:after {
+.xl-toggle--btn:before, .xl-toggle--btn:after,
+.xl-toggle--checkbox:before,
+.xl-toggle--checkbox:after,
+.xl-toggle--feature:before,
+.xl-toggle--feature:after {
   content: '';
   display: block;
 }
@@ -47,7 +47,7 @@
 /* =====================================================
    Button styles
    ===================================================== */
-.toggle--knob .toggle--btn {
+.xl-toggle--knob .xl-toggle--btn {
   position: relative;
   width: 125px;
   height: 30px;
@@ -58,7 +58,7 @@
   border-radius: 40px;
 }
 
-.toggle--knob .toggle--btn:before {
+.xl-toggle--knob .xl-toggle--btn:before {
   display: block;
   position: absolute;
   top: 50%;
@@ -72,41 +72,41 @@
   text-indent: -100%;
 }
 
-.toggle--knob .toggle--feature {
+.xl-toggle--knob .xl-toggle--feature {
   position: relative;
   display: block;
   overflow: hidden;
   height: 32px;
 }
 
-.toggle--knob .toggle--feature:before, .toggle--knob .toggle--feature:after {
+.xl-toggle--knob .xl-toggle--feature:before, .xl-toggle--knob .xl-toggle--feature:after {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.toggle--knob .toggle--feature:before {
+.xl-toggle--knob .xl-toggle--feature:before {
   content: attr(data-label-on);
   left: 16%;
 }
 
-.toggle--knob .toggle--feature:after {
+.xl-toggle--knob .xl-toggle--feature:after {
   content: attr(data-label-off);
   right: -60%;
 }
 
-.toggle--knob .toggle--checkbox:checked + .toggle--btn {
+.xl-toggle--knob .xl-toggle--checkbox:checked + .xl-toggle--btn {
   background: #53c669;
 }
 
-.toggle--knob .toggle--checkbox:checked + .toggle--btn:before {
+.xl-toggle--knob .xl-toggle--checkbox:checked + .xl-toggle--btn:before {
   left: 0;
 }
 
-.toggle--knob .toggle--checkbox:checked + .toggle--btn .toggle--feature:before {
+.xl-toggle--knob .xl-toggle--checkbox:checked + .xl-toggle--btn .xl-toggle--feature:before {
   left: -60%;
 }
 
-.toggle--knob .toggle--checkbox:checked + .toggle--btn .toggle--feature:after {
+.xl-toggle--knob .xl-toggle--checkbox:checked + .xl-toggle--btn .xl-toggle--feature:after {
   right: 11%;
 }
