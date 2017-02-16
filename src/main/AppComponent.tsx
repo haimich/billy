@@ -22,8 +22,6 @@ import OnOffSwitchComponent from '../common/components/OnOffSwitchComponent'
 import * as NotificationSystem from 'react-notification-system'
 import t from '../common/helpers/i18n'
 
-import JustATestComponent from './JustATestComponent'
-
 let notifications
 
 interface Props {
@@ -334,7 +332,7 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
 
     return (
-      /*<div>
+      <div>
         <OnOffSwitchComponent
           activeLabel={t('Ausgaben')}
           inactiveLabel={t('Einnahmen')}
@@ -348,8 +346,7 @@ export default class AppComponent extends React.Component<Props, {}> {
         {editorView}
 
         <NotificationSystem ref="notificationSystem" />
-      </div>*/
-      <JustATestComponent />
+      </div>
     )
   }
 

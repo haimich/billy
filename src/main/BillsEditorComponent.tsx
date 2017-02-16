@@ -9,17 +9,15 @@ import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
 import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
-// import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
-// import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import ItemListComponent from '../common/components/ItemListComponent'
+import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { billExists } from '../common/services/billsService'
 import { listBillTypes, getBillTypeById, createBillType } from '../common/services/billTypesService'
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
-import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, formatTaxrate } from '../common/ui/formatters'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
-// import { getCalculatedAmount, getPreTaxAmount, getVatAmount } from '../common/ui/preNetVat'
 import Textarea from 'react-textarea-autosize'
 
 const Datetime = require('react-datetime')
@@ -30,7 +28,9 @@ interface State {
   invoice_id: string
   date_created?: string
   date_paid?: string
-  billItems: BillItem[]
+  amount?: string
+  amountType?: amountType
+  taxrate?: string
   comment: string
   selectedCustomer?: Customer[]
   selectedBillType?: BillTypeModel[]
@@ -84,7 +84,9 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
       invoice_id: '',
       date_created: undefined,
       date_paid: undefined,
-      billItems: [],
+      amount: '',
+      amountType: 'preTax',
+      taxrate: '19',
       comment: '',
       selectedCustomer: undefined,
       selectedBillType: undefined,
@@ -130,7 +132,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         ? undefined
         : this.state.selectedBillType[0].id,
       comment: this.state.comment,
-      // items: this.state.billItems
     }
 
     try {
@@ -341,10 +342,10 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
 
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-4">
               <div className="form-group">
-                <label htmlFor="customer" className="col-sm-4 control-label">{t('Kunde')}</label>
-                <div className="col-sm-8">
+                <label htmlFor="customer">{t('Kunde')}</label>
+                <div>
                   <Typeahead
                     options={this.state.customerList}
                     allowNew={true}
@@ -376,8 +377,8 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="id" className="col-sm-4 control-label">{t('Rechnungsnummer')}</label>
-                <div className="col-sm-8">
+                <label htmlFor="id">{t('Rechnungsnummer')}</label>
+                <div>
                   <input
                     type="text"
                     className="form-control"
@@ -391,7 +392,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="date_created" className="col-sm-4 control-label">{t('Rechnungsdatum')}</label>
+                <label htmlFor="date_created">{t('Rechnungsdatum')}</label>
                 <Datetime
                   ref="date_created"
                   value={this.state.date_created}
@@ -402,13 +403,13 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
-                  className={'col-sm-8'}
+                  className={}
                   onChange={this.handleDateCreatedChange.bind(this)}
                   />
               </div>
               <div className="form-group">
-                <label htmlFor="billType" className="col-sm-4 control-label">{t('Auftragsart')}</label>
-                <div className="col-sm-8">
+                <label htmlFor="billType">{t('Auftragsart')}</label>
+                <div>
                   <Typeahead
                     options={this.state.billTypeList}
                     allowNew={true}
@@ -428,7 +429,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="date_paid" className="col-sm-4 control-label">{t('Zahlungsdatum')}</label>
+                <label htmlFor="date_paid">{t('Zahlungsdatum')}</label>
                 <Datetime
                   ref="date_paid"
                   value={this.state.date_paid}
@@ -438,13 +439,13 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                   dateFormat={'DD.MM.YYYY'}
                   closeOnSelect={true}
                   timeFormat={false}
-                  className={'col-sm-8'}
+                  className={}
                   onChange={this.handleDatePaidChange.bind(this)}
                   />
               </div>
               <div className="form-group">
-                <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
-                <div className="col-sm-8">
+                <label htmlFor="comment">{t('Kommentar')}</label>
+                <div>
                   <Textarea
                     className="form-control"
                     minRows={1}
@@ -457,7 +458,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
               </div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-8">
               <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
             </div>
@@ -502,6 +503,8 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
     if (isNew) {
       this.resetState()
     } else {
+      let item = bill.items[0] // adapt this line when multiple bill items are implemented
+
       this.setState({
         id: bill.id,
         invoice_id: bill.invoice_id,
@@ -512,6 +515,9 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         selectedBillType: [bill.type],
         date_created: dateFormatterView(bill.date_created),
         date_paid: dateFormatterView(bill.date_paid),
+        amount: numberFormatterView(item.preTaxAmount),
+        amountType: 'preTax',
+        taxrate: formatTaxrate(item.taxrate, false),
         billItems: bill.items,
         comment: bill.comment,
         invoiceIdValid: true,

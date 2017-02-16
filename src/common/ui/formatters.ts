@@ -73,10 +73,14 @@ export function dayFormatter(cell, row): string {
   return cell + ' ' + (cell === 1 ? t('Tag') : t('Tage'))
 }
 
-export function formatTaxrate(value: number): string {
+export function formatTaxrate(value: number, addPercentSign = true): string {
   let tax = hasDecimals(value)
     ? numberFormatterView(value)
     : numberFormatterView(value, 0)
+  
+  if (addPercentSign) {
+    tax += ' %'
+  }
 
-  return tax + ' %'
+  return tax
 }

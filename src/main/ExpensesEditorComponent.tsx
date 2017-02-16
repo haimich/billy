@@ -12,7 +12,7 @@ import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { listExpenseTypes, getExpenseTypeById, createExpenseType } from '../common/services/expenseTypesService'
 import t from '../common/helpers/i18n'
-import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb } from '../common/ui/formatters'
+import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, formatTaxrate} from '../common/ui/formatters'
 import { stringIsEmpty } from '../common/helpers/text'
 import { hasDecimals } from '../common/helpers/math'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
@@ -383,9 +383,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
         date: dateFormatterView(expense.date),
         amount: numberFormatterView(expense.preTaxAmount),
         amountType: 'preTax',
-        taxrate: hasDecimals(expense.taxrate)
-          ? numberFormatterView(expense.taxrate)
-          : numberFormatterView(expense.taxrate, 0),
+        taxrate: formatTaxrate(expense.taxrate, false),
         comment: expense.comment || '',
         isNew,
         isDirty: false
