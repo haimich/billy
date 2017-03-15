@@ -302,6 +302,19 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
     return this.state.fileActions.keep.concat(this.state.fileActions.add)
   }
 
+  getFileModels(files: File[]): BillFileModel[] {
+    let fileModels = []
+
+    for (let file of files) {
+      fileModels.push({
+        bill_id: this.state.id,
+        path: file.path
+      })
+    }
+
+    return fileModels
+  }
+
   handleAddFiles(files: BillFileModel[]) {
     let newFileActions = this.addFiles(files, this.state.fileActions.keep, this.state.fileActions.delete, this.state.fileActions.add)
 
@@ -456,13 +469,11 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                   />
                 </div>
 
-              <div className="row">
+              <div className="row additional-items">
                 <div className="col-md-6">
                   <FileListComponent
                     files={this.getFilesForView()}
-                    idField='bill_id'
-                    parentId={this.state.id}
-                    handleAddFiles={this.handleAddFiles.bind(this)}
+                    handleAddFiles={files => this.handleAddFiles(this.getFileModels(files))}
                     handleDeleteFile={this.handleDeleteFile.bind(this)}
                   />
                 </div>
@@ -485,7 +496,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
           <p></p>
         </form>
 
-        <div className="overlay"><span>{t('Datei ablegen')}</span></div>
+        <div className="overlay"><span>{t('Datei(en) ablegen')}</span></div>
       </div>
     )
   }

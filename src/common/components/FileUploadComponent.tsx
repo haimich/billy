@@ -22,8 +22,8 @@ export default class FileUploadComponent extends React.Component<Props, {}> {
 
   render() {
    return (
-     <div className="form-group">
-       <div className="col-sm-offset-4 col-sm-8">
+     <div className="form-group pull-right">
+       <div className="col-sm-12">
          <label className="btn btn-default btn-sm">
           {t('Datei auswählen')}
           <input

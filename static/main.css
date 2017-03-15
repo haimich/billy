@@ -84,32 +84,21 @@ textarea {
   color: indianred;
 }
 
-#editor-container table {
-  margin-bottom: 0px;
-}
-
 .file-list {
-  max-height: 126px;
+  max-height: 280px;
   overflow: auto;
-}
-
-.file-list ul {
-  list-style: none;
-  padding-left: 0px;
-  margin-bottom: 0px;
-  font-size: 0.9em;
 }
 
 .file-icon {
   margin-right: 8px;
 }
 
-.file-list li {
-  padding: 5px;
+.file-list thead {
+  font-size: 1em;
 }
 
-.file-list li:hover {
-  background-color: #eee;
+.file-list tbody {
+  font-size: 0.9em;
 }
 
 .file-open {
@@ -118,9 +107,25 @@ textarea {
 
 .file-list .empty {
   font-style: italic;
-  font-size: .8em;
   display: flex;
   justify-content: center;
+}
+
+.file-list th {
+  padding-top: 0 !important;
+  padding-bottom: 4px !important;
+}
+
+.file-list tr {
+  padding: 5px;
+}
+
+.file-list .table>tbody>tr>td {
+  border-top: none;
+}
+
+.file-list .table>tbody>tr:hover {
+  background-color: #f5f5f5;
 }
 
 .onoffswitch-container {
@@ -147,4 +152,8 @@ textarea {
 .item-list th {
   padding-top: 0 !important;
   padding-bottom: 4px !important;
+}
+
+.additional-items {
+  margin-top: 10px;
 }
