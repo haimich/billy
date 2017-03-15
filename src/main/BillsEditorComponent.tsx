@@ -391,21 +391,36 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                     />
                 </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="date_created">{t('Rechnungsdatum')}</label>
-                <Datetime
-                  ref="date_created"
-                  value={this.state.date_created}
-                  inputProps={{
-                    id: 'date_created',
-                    required: 'required'
-                  }}
-                  dateFormat={'DD.MM.YYYY'}
-                  closeOnSelect={true}
-                  timeFormat={false}
-                  className={}
-                  onChange={this.handleDateCreatedChange.bind(this)}
-                  />
+              <div className="row">
+                <span className="form-group col-md-6">
+                  <label htmlFor="date_created">{t('Rechnungsdatum')}</label>
+                  <Datetime
+                    ref="date_created"
+                    value={this.state.date_created}
+                    inputProps={{
+                      id: 'date_created',
+                      required: 'required'
+                    }}
+                    dateFormat={'DD.MM.YYYY'}
+                    closeOnSelect={true}
+                    timeFormat={false}
+                    onChange={this.handleDateCreatedChange.bind(this)}
+                    />
+                </span>
+                <span className="form-group col-md-6 date-input-group-right">
+                  <label htmlFor="date_paid">{t('Zahlungsdatum')}</label>
+                  <Datetime
+                    ref="date_paid"
+                    value={this.state.date_paid}
+                    inputProps={{
+                      id: 'date_paid'
+                    }}
+                    dateFormat={'DD.MM.YYYY'}
+                    closeOnSelect={true}
+                    timeFormat={false}
+                    onChange={this.handleDatePaidChange.bind(this)}
+                    />
+                </span>
               </div>
               <div className="form-group">
                 <label htmlFor="billType">{t('Auftragsart')}</label>
@@ -427,21 +442,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                     tabIndex={5}
                     />
                 </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="date_paid">{t('Zahlungsdatum')}</label>
-                <Datetime
-                  ref="date_paid"
-                  value={this.state.date_paid}
-                  inputProps={{
-                    id: 'date_paid'
-                  }}
-                  dateFormat={'DD.MM.YYYY'}
-                  closeOnSelect={true}
-                  timeFormat={false}
-                  className={}
-                  onChange={this.handleDatePaidChange.bind(this)}
-                  />
               </div>
               <div className="form-group">
                 <label htmlFor="comment">{t('Kommentar')}</label>

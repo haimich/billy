@@ -138,3 +138,8 @@ textarea {
 .toggle-button > .btn {
   padding: 14px;
 }
+
+.form-horizontal .form-group.date-input-group-right {
+  margin-left: 29px;
+  padding-right: 0;
+}
