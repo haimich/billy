@@ -7,8 +7,7 @@ import Customer from '../common/models/CustomerModel'
 import BillItem from '../common/models/BillItem'
 import BillFileModel from '../common/models/BillFileModel'
 import FileActions from '../common/models/FileActions'
-import FileViewComponent from '../common/components/FileViewComponent'
-import FileUploadComponent from '../common/components/FileUploadComponent'
+import FileListComponent from '../common/components/FileListComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import ItemListComponent from '../common/components/ItemListComponent'
 import { amountType } from '../common/components/PreTaxNetAmountComponent'
@@ -299,19 +298,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
     })
   }
 
-  getFileModels(files: File[]): BillFileModel[] {
-    let fileModels = []
-
-    for (let file of files) {
-      fileModels.push({
-        bill_id: this.state.id,
-        path: file.path
-      })
-    }
-
-    return fileModels
-  }
-
   getFilesForView(): BillFileModel[] {
     return this.state.fileActions.keep.concat(this.state.fileActions.add)
   }
@@ -472,8 +458,13 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
 
               <div className="row">
                 <div className="col-md-6">
-                  <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
-                  <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
+                  <FileListComponent
+                    files={this.getFilesForView()}
+                    idField='bill_id'
+                    parentId={this.state.id}
+                    handleAddFiles={this.handleAddFiles.bind(this)}
+                    handleDeleteFile={this.handleDeleteFile.bind(this)}
+                  />
                 </div>
                 <div className="col-md-6">
                 </div>
