@@ -459,8 +459,26 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
             </div>
 
             <div className="col-md-8">
-              <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
-              <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
+                <div className="item-list">
+                  <ItemListComponent
+                    amount={this.state.amount}
+                    amountType={this.state.amountType}
+                    taxrate={this.state.taxrate}
+                    handleAmountChange={(newValue) => this.setState({ amount: newValue })}
+                    handleAmountTypeChange={(newValue) => this.setState({ amountType: newValue })}
+                    handleTaxrateChange={(newValue) => this.setState({ taxrate: newValue })}
+                  />
+                </div>
+
+              <div className="row">
+                <div className="col-md-6">
+                  <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
+                  <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
+                </div>
+                <div className="col-md-6">
+                </div>
+              </div>
+
             </div>
           </div>
 

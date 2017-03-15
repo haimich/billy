@@ -143,3 +143,8 @@ textarea {
   margin-left: 29px;
   padding-right: 0;
 }
+
+.item-list th {
+  padding-top: 0 !important;
+  padding-bottom: 4px !important;
+}
