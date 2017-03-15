@@ -157,3 +157,11 @@ textarea {
 .additional-items {
   margin-top: 10px;
 }
+
+#editor-container .editor-comment {
+  margin-right: 15px;
+}
+
+.editor-buttons {
+  margin-top: 58px;
+}

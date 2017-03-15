@@ -442,19 +442,6 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                     />
                 </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="comment">{t('Kommentar')}</label>
-                <div>
-                  <Textarea
-                    className="form-control"
-                    minRows={1}
-                    maxRows={3}
-                    id="comment"
-                    value={this.state.comment}
-                    onChange={(event: any) => this.setState({ comment: event.target.value })}
-                  />
-                </div>
-              </div>
             </div>
 
             <div className="col-md-8">
@@ -477,18 +464,35 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
                     handleDeleteFile={this.handleDeleteFile.bind(this)}
                   />
                 </div>
-                <div className="col-md-6">
+
+                <div className="col-md-1"></div>
+
+                <div className="col-md-5">
+                  <div className="row">
+                    <div className="form-group editor-comment">
+                      <label htmlFor="comment">{t('Kommentar')}</label>
+                      <div>
+                        <Textarea
+                          className="form-control"
+                          minRows={3}
+                          maxRows={3}
+                          id="comment"
+                          value={this.state.comment}
+                          onChange={(event: any) => this.setState({ comment: event.target.value })}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row editor-buttons">
+                    <div className="col-md-12">
+                      <div className="pull-right">
+                        <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)}>{t('Abbrechen')}</button> &nbsp;
+                        <button type="submit" className="btn btn-primary">{t('Speichern')}</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-12">
-              <div className="pull-right">
-                <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)}>{t('Abbrechen')}</button> &nbsp;
-                <button type="submit" className="btn btn-primary">{t('Speichern')}</button>
               </div>
             </div>
           </div>
