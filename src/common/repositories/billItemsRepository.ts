@@ -14,15 +14,15 @@ export function createBillItem(billItem: BillItem): Promise<BillItem> {
     })
 }
 
-export function updateBillItem(billType: any): Promise<BillItem> {
+export function updateBillItem(billItem: any): Promise<BillItem> {
   return db('bill_items')
     .update({
-      position: billType.position,
-      preTaxAmount: billType.preTaxAmount,
-      taxrate: billType.taxrate,
-      description: billType.description
+      position: billItem.position,
+      preTaxAmount: billItem.preTaxAmount,
+      taxrate: billItem.taxrate,
+      description: billItem.description
     })
-    .where('id', billType.id)
+    .where('id', billItem.id)
 }
 
 export function getBillItemById(id: number): Promise<BillItem> {

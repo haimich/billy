@@ -2,11 +2,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron'
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
+import { createBillItem, updateBillItem } from '../common/services/billItemsService'
 import { performBillFileActions, deleteAllFilesForBill } from '../common/services/billFilesService'
 import { updateCustomer } from '../common/services/customersService'
 import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from '../common/services/expensesService'
 import { performExpenseFileActions, deleteAllFilesForExpense } from '../common/services/expenseFilesService'
 import Bill from '../common/models/BillModel'
+import BillItem from '../common/models/BillItem'
 import BillDbModel from '../common/models/BillDbModel'
 import Expense from '../common/models/ExpenseModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
@@ -72,13 +74,18 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
   }
 
-  saveBill(bill: Bill, fileActions: FileActions<BillFileModel>): Promise<{}> {
+  saveBill(bill: Bill, billItem: BillItem, fileActions: FileActions<BillFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
       let createdBill
 
       createBill(bill)
         .then(result => {
           createdBill = result
+
+          billItem.bill_id = createdBill.id
+          return createBillItem(billItem)
+        })
+        .then(() => {
           return performBillFileActions(createdBill, fileActions)
         })
         .then(() => {
@@ -102,13 +109,17 @@ export default class AppComponent extends React.Component<Props, {}> {
     })
   }
 
-  updateBill(bill: Bill, fileActions: FileActions<BillFileModel>): Promise<{}> {
+  updateBill(bill: Bill, billItem: BillItem, fileActions: FileActions<BillFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
       let updatedBill
 
       updateBill(bill)
         .then(result => {
           updatedBill = result
+
+          return updateBillItem(billItem)
+        })
+        .then(() => {
           return performBillFileActions(updatedBill, fileActions)
         })
         .then(() => {

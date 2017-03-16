@@ -16,6 +16,7 @@ import { listBillTypes, getBillTypeById, createBillType } from '../common/servic
 import { listCustomers, createCustomer, getCustomerById, deleteCustomerById } from '../common/services/customersService'
 import t from '../common/helpers/i18n'
 import { numberFormatterDb, numberFormatterView, dateFormatterView, dateFormatterDb, formatTaxrate } from '../common/ui/formatters'
+import { getPreTaxAmount } from '../common/ui/preNetVat'
 import { enableTypeaheadFeatures, getInputs, resetFormValidationErrors, addFormValidation, revalidateInput } from '../common/ui/forms'
 import Textarea from 'react-textarea-autosize'
 
@@ -30,6 +31,7 @@ interface State {
   amount?: string
   amountType?: amountType
   taxrate?: string
+  billItemId: number
   comment: string
   selectedCustomer?: Customer[]
   selectedBillType?: BillTypeModel[]
@@ -86,6 +88,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
       amount: '',
       amountType: 'preTax',
       taxrate: '19',
+      billItemId: undefined,
       comment: '',
       selectedCustomer: undefined,
       selectedBillType: undefined,
@@ -122,6 +125,17 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
       return
     }
 
+    const billItem: BillItem = {
+      id: this.state.billItemId,
+      bill_id: this.state.id,
+      position: 0,
+      preTaxAmount: numberFormatterDb(
+        this.state.amountType === 'preTax'
+        ? this.state.amount
+        : getPreTaxAmount(this.state.amount, this.state.taxrate)),
+      taxrate: numberFormatterDb(this.state.taxrate),
+    }
+
     const bill: Bill = {
       invoice_id: this.state.invoice_id,
       customer_id: this.state.selectedCustomer[0].id!,
@@ -148,9 +162,9 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
       await this.props.updateCustomer(this.state.selectedCustomer[0])
 
       if (this.state.isNew) {
-        await this.props.save(bill, this.state.fileActions)
+        await this.props.save(bill, billItem, this.state.fileActions)
       } else {
-        await this.props.update(bill, this.state.fileActions)
+        await this.props.update(bill, billItem, this.state.fileActions)
       }
     } catch (err) {
       return // don't reset state on error
@@ -542,7 +556,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         amount: numberFormatterView(item.preTaxAmount),
         amountType: 'preTax',
         taxrate: formatTaxrate(item.taxrate, false),
-        billItems: bill.items,
+        billItemId: item.id,
         comment: bill.comment,
         invoiceIdValid: true,
         isNew,

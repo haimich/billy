@@ -6,13 +6,31 @@ export function addFormValidation(inputs: any[], revalidate: (input: any) => voi
 
     input.addEventListener('invalid', (event) => {
       const input: any = event.target;
-      input.closest('.form-group').classList.add('has-error')
+      addHasError(input)
     })
   }
 }
 
 export function resetFormValidationErrors(inputs: any[]) {
-  inputs.forEach(input => input.closest('.form-group') !.classList.remove('has-error'))
+  for (let input of inputs) {
+    removeHasError(input);
+  }
+}
+
+function removeHasError(input: any) {
+  let group = input.closest('.form-group') || input.closest('.input-group')
+  
+  if (group != null) {
+    group.classList.remove('has-error')
+  }
+}
+
+function addHasError(input: any) {
+  let group = input.closest('.form-group') || input.closest('.input-group')
+  
+  if (group != null) {
+    group.classList.add('has-error')
+  }
 }
 
 export function getInputs(component) {
@@ -20,7 +38,7 @@ export function getInputs(component) {
 }
 
 export function revalidateInput(input: any) {
-  input.closest('.form-group').classList.remove('has-error')
+  removeHasError(input)
   setTimeout(() => input.checkValidity())
 }
 
