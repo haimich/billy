@@ -26,10 +26,15 @@ textarea {
 
 #editor-container {
   margin-top: 20px;
+  padding-left: 11px;
 }
 
 #editor-container {
   position: relative;
+}
+
+#editor-container .right-formarea {
+  padding-left: 44px;
 }
 
 .overlay {
