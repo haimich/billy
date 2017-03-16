@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron'
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
-import { createBillItem, updateBillItem } from '../common/services/billItemsService'
+import { createBillItem, updateBillItem, deleteBillItemById } from '../common/services/billItemsService'
 import { performBillFileActions, deleteAllFilesForBill } from '../common/services/billFilesService'
 import { updateCustomer } from '../common/services/customersService'
 import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from '../common/services/expensesService'
@@ -158,6 +158,11 @@ export default class AppComponent extends React.Component<Props, {}> {
 
         const bill = await getBillByInvoiceId(invoiceId)
         await deleteAllFilesForBill(bill.id, invoiceId)
+        
+        for (let item of bill.items) {
+          await deleteBillItemById(item.id)
+        }
+
         await deleteBillByInvoiceId(invoiceId)
       }
     } catch (err) {

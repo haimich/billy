@@ -61,6 +61,7 @@ export default class ItemListComponent extends React.Component<Props, {}> {
                       id="taxrate"
                       value={this.props.taxrate}
                       pattern={'[+-]?[0-9]+(,[0-9]+)?'}
+                      required
                       onChange={(event: any) => this.props.handleTaxrateChange(event.target.value)}
                     />
                   </div>
