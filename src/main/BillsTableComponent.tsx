@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import BillDbModel from '../common/models/BillDbModel'
+import BillItem from '../common/models/BillItem'
 import { dateFormatterView, currencyFormatter } from '../common/ui/formatters'
 import { preventDragAndDrop } from '../common/ui/dom'
 import t from '../common/helpers/i18n'
@@ -34,6 +35,12 @@ export default class BillsTableComponent extends React.Component<Props, {}> {
 
   handleAdd(event) {
     this.props.select(false, undefined)
+  }
+
+  billItemFormatter(items: BillItem[]) {
+    if (items != null && items.length != 0) {
+      return currencyFormatter(items[0].preTaxAmount) // adapt this line when multiple bill items are implemented
+    }
   }
 
   render() {
@@ -78,6 +85,7 @@ export default class BillsTableComponent extends React.Component<Props, {}> {
           <TableHeaderColumn dataField="customer_name" width="240" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_created" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
           <TableHeaderColumn dataField="date_paid" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlungsdatum')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="items" width="110" dataAlign="right" dataFormat={this.billItemFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
           <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Auftragsart')}</TableHeaderColumn>
           <TableHeaderColumn dataField="comment" width="440" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
 
