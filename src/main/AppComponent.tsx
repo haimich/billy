@@ -49,7 +49,7 @@ export default class AppComponent extends React.Component<Props, {}> {
 
   constructor(props) {
     super(props)
-    
+        
     // we convert props to state here to be able to load bills before render() is called
     this.state = {
       bills: props.bills,

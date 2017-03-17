@@ -1,50 +1,22 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, Options } from 'react-bootstrap-table'
-import BillDbModel from '../common/models/BillDbModel'
-import { dateFormatterView, currencyFormatter, numberFormatterView } from '../common/ui/formatters'
-import { getNetAmount } from '../common/helpers/math'
+import { dateFormatterView, currencyFormatter, numberFormatterView, formatTaxrate } from '../common/ui/formatters'
+import { EnrichedBill } from './AppComponent'
 import t from '../common/helpers/i18n'
 
 interface Props {
-  bills: BillDbModel[]
+  bills: EnrichedBill[]
 }
 
-interface State {
-  enrichedBills: EnrichedBill[]
-}
-
-interface EnrichedBill extends BillDbModel {
-  netAmount: string
-}
-
-export default class BillsTableComponent extends React.Component<Props, State> {
-
-  props: Props
-  state: State
+export default class BillsTableComponent extends React.Component<Props, any> {
 
   constructor(props: Props) {
     super(props)
-
-    this.state = {
-      enrichedBills: this.getEnrichedBills(props.bills)
-    }
   }
 
-  getEnrichedBills(bills: BillDbModel[]): EnrichedBill[] {
-    let enriched = []
-
-    // for (let bill of bills) {
-    //   let exp = Object.assign(bill, {
-    //     netAmount: numberFormatterView(getNetAmount(19, bill.amount)), // TODO make taxrate dynamic!!
-    //     taxrate: 19, //TODO make dynamic
-    //     vatAmount: 123 //TODO
-    //   })
-
-    //   enriched.push(exp)
-    // }
-
-    return enriched
+  taxrateFormatter(value: number): string {
+    return formatTaxrate(value, true)
   }
 
   render() {
@@ -68,26 +40,21 @@ export default class BillsTableComponent extends React.Component<Props, State> {
           exportCSV={false}
           options={options}>
 
+
           <TableHeaderColumn dataField="date_paid" width="100" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
           <TableHeaderColumn isKey={true} dataField="invoice_id" width="120" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
           <TableHeaderColumn dataField="customer_name" width="280" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
           <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Einnahmen als')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="amount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="preTaxAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
           <TableHeaderColumn dataField="netAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="vatAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Mwst.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="taxrate" width="110" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="vatAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('USt.')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="taxrate" width="110" dataAlign="right" dataFormat={this.taxrateFormatter} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
 
         </BootstrapTable>
 
       </div>
     )
 
-  }
-
-  componentWillReceiveProps(newProps: Props) {
-    this.setState({
-      enrichedBills: this.getEnrichedBills(newProps.bills)
-    })
   }
 
 }

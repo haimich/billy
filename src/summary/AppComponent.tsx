@@ -7,7 +7,7 @@ import BillsTableComponent from './BillsTableComponent'
 import ExpensesTableComponent from './ExpensesTableComponent'
 import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter, numberFormatterView } from '../common/ui/formatters'
 import { asc, desc } from '../common/helpers/sorters'
-import { round, getVatAmount } from  '../common/helpers/math'
+import { round, getNetAmount, getVatAmount } from '../common/helpers/math'
 import { MONTHS, getAvailableYears, getAvailableMonths, matchesYear, matchesMonth, getTotal } from '../common/ui/stats'
 import * as moment from 'moment'
 import t from '../common/helpers/i18n'
@@ -20,9 +20,19 @@ interface Props {
 interface State {
   selectedYear?: string
   availableYears?: string[]
+  enrichedBills: EnrichedBill[]
 }
 
-export default class AppComponent extends React.Component<Props, State> {
+export interface EnrichedBill extends BillDbModel {
+  netAmount: number,
+  preTaxAmount: number,
+  taxrate: number,
+  vatAmount: number
+}
+
+export default class AppComponent extends React.Component<Props, any> {
+
+  State: State
 
   constructor(props) {
     super(props)
@@ -36,7 +46,8 @@ export default class AppComponent extends React.Component<Props, State> {
     }
 
     this.state = {
-      selectedYear, availableYears
+      selectedYear, availableYears,
+      enrichedBills: this.getEnrichedBills(props.bills)
     }
   }
 
@@ -62,8 +73,27 @@ export default class AppComponent extends React.Component<Props, State> {
     return Array.from(unique)
   }
 
-  getBillData(month: string): BillDbModel[] {
-    return this.props.bills.filter(bill => {
+  getEnrichedBills(bills: BillDbModel[]): EnrichedBill[] {
+    let enriched: EnrichedBill[] = []
+
+    for (let bill of bills) {
+      let item = bill.items[0] // adapt this line when multiple bill items are implemented
+
+      let exp = Object.assign(bill, {
+        preTaxAmount: item.preTaxAmount,
+        netAmount: getNetAmount(item.taxrate, item.preTaxAmount),
+        taxrate: item.taxrate,
+        vatAmount: getVatAmount(item.taxrate, item.preTaxAmount)
+      })
+
+      enriched.push(exp)
+    }
+
+    return enriched
+  }
+
+  getBillData(month: string): EnrichedBill[] {
+    return this.state.enrichedBills.filter(bill => {
       return matchesYear(bill.date_paid, this.state.selectedYear) && matchesMonth(bill.date_paid, month)
     })
   }
@@ -92,9 +122,12 @@ export default class AppComponent extends React.Component<Props, State> {
           <BillsTableComponent bills={billData} />
 
           <div className="month-total income">
-            <span>
-              {t('BRUTTO')}: {numberFormatterView(getTotal<BillDbModel>(billData, 'amount', false))}&nbsp;€
-            </span>
+            <div>
+              {t('BRUTTO')}: {numberFormatterView(getTotal<BillDbModel>(billData, 'preTaxAmount', false))}&nbsp;€
+            </div>
+            <div>
+              {t('NETTO')}: {numberFormatterView(getTotal<BillDbModel>(billData, 'netAmount', false))}&nbsp;€
+            </div>
           </div>
 
           <ExpensesTableComponent expenses={expenseData} />
@@ -133,6 +166,12 @@ export default class AppComponent extends React.Component<Props, State> {
         </div>
       </div>
     )
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    this.setState({
+      enrichedBills: this.getEnrichedBills(newProps.bills)
+    })
   }
 
 }

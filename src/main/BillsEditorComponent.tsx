@@ -44,8 +44,8 @@ interface State {
 }
 
 interface Props {
-  update: (model: Bill, fileActions: FileActions<BillFileModel>) => void
-  save: (model: Bill, FileActions: FileActions<BillFileModel>) => void
+  update: (model: Bill, billItem: BillItem, fileActions: FileActions<BillFileModel>) => void
+  save: (model: Bill, billItem: BillItem, FileActions: FileActions<BillFileModel>) => void
   updateCustomer: (model: Customer) => void
   bill?: BillDbModel
   notify: any
