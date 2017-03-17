@@ -1,4 +1,4 @@
-import BillItem from '../models/BillItem'
+import BillItem from '../models/BillItemModel'
 import * as billItemsRepo from '../repositories/billItemsRepository'
 
 export function createBillItem(BillItem: BillItem): Promise<BillItem> {

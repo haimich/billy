@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import FileModel from '../models/FileModel'
-import FileActions from '../models/FileActions'
+import FileActions from '../models/FileActionsModel'
 import { getFilename } from '../ui/formatters'
 import t from '../helpers/i18n'
 

@@ -1,7 +1,7 @@
 import Customer from './CustomerModel'
 import BillFileModel from './BillFileModel'
 import BillTypeModel from './BillTypeModel'
-import BillItem from './BillItem'
+import BillItem from './BillItemModel'
 
 interface BillDbModel {
   id: number

@@ -1,4 +1,4 @@
-import BillItem from '../models/BillItem'
+import BillItem from '../models/BillItemModel'
 
 let db
 

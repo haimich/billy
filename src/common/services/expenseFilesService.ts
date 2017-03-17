@@ -1,6 +1,6 @@
 import ExpenseDbModel from '../models/ExpenseDbModel'
 import ExpenseFileModel from '../models/ExpenseFileModel'
-import FileActions from '../models/FileActions'
+import FileActions from '../models/FileActionsModel'
 import { copyToAppDir, deleteFile, deleteDir } from '../providers/fileProvider'
 import * as filesRepo from '../repositories/expenseFilesRepository'
 

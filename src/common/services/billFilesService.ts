@@ -1,6 +1,6 @@
 import BillDbModel from '../models/BillDbModel'
 import BillFileModel from '../models/BillFileModel'
-import FileActions from '../models/FileActions'
+import FileActions from '../models/FileActionsModel'
 import { copyToAppDir, deleteFile, deleteDir } from '../providers/fileProvider'
 import * as filesRepo from '../repositories/billFilesRepository'
 
