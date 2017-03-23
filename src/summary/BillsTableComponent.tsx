@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, Options } from 'react-bootstrap-table'
 import { dateFormatterView, currencyFormatter, numberFormatterView, formatTaxrate } from '../common/ui/formatters'
-import { EnrichedBill } from './AppComponent'
+import { EnrichedBill } from '../common/models/BillDbModel'
 import t from '../common/helpers/i18n'
 
 interface Props {

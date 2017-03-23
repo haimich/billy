@@ -17,4 +17,11 @@ interface BillDbModel {
   files?: BillFileModel[]
 }
 
+export interface EnrichedBill extends BillDbModel {
+  netAmount: number,
+  preTaxAmount: number,
+  taxrate: number,
+  vatAmount: number
+}
+
 export default BillDbModel

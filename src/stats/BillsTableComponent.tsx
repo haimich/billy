@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'
+import { CustomerStats } from './BillsStatsComponent'
 import { BootstrapTable, TableHeaderColumn, CellEditClickMode, SelectRowMode, Options } from 'react-bootstrap-table'
 import { currencyFormatter, dayFormatter } from '../common/ui/formatters'
 import t from '../common/helpers/i18n'
 
 interface Props {
-  data: any[];
+  data: CustomerStats[];
 }
 
 export default class BillsTableComponent extends React.Component<Props, {}> {

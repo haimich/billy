@@ -1,8 +1,10 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import BillDbModel from '../common/models/BillDbModel'
+import { EnrichedBill } from '../common/models/BillDbModel'
 import BillTypeModel from '../common/models/BillTypeModel'
 import Customer from '../common/models/CustomerModel'
+import { getEnrichedBills } from '../common/helpers/item'
 import YearsFilterComponent from '../common/components/stats/YearsFilterComponent'
 import TypesFilterComponent from '../common/components/stats/TypesFilterComponent'
 import LineChartComponent from '../common/components/stats/LineChartComponent'
@@ -24,12 +26,13 @@ interface Props {
 }
 
 interface State {
+  enrichedBills: EnrichedBill[],
   selectedBillType: string
   selectedYear?: string
   billDateToUse: 'date_paid' | 'date_created'
 }
 
-interface CustomerStats {
+export interface CustomerStats {
   name: string
   total: number
   billCount: number
@@ -53,6 +56,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
     }
 
     this.state = {
+      enrichedBills: getEnrichedBills(props.bills),
       selectedBillType: SELECT_TYPE_ALL,
       billDateToUse,
       selectedYear
@@ -62,15 +66,15 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
   getTotalUnpaid(): number {
     let total = 0
 
-    // for (let bill of this.props.bills) {
-    //   const matchesFilters = (matchesYear(bill.date_created, this.state.selectedYear)
-    //     && matchesType<BillDbModel>(bill, this.state.selectedBillType))
-    //   const isUnpaid = (bill.date_paid == null || bill.date_paid === '')
+    for (let bill of this.state.enrichedBills) {
+      const matchesFilters = (matchesYear(bill.date_created, this.state.selectedYear)
+        && matchesType<BillDbModel>(bill, this.state.selectedBillType))
+      const isUnpaid = (bill.date_paid == null || bill.date_paid === '')
 
-    //   if (matchesFilters && isUnpaid) {
-    //     total += bill.amount
-    //   }
-    // }
+      if (matchesFilters && isUnpaid) {
+        total += bill.preTaxAmount
+      }
+    }
 
     return round(total)
   }
@@ -95,48 +99,48 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
   getTableData(): CustomerStats[] {
     let customersWithTotals = {}
 
-    // for (let bill of this.props.bills) {
-    //   if (this.matchesFilters(bill)) {
-    //     if (bill.customer == null || bill.customer.id == null) {
-    //       continue
-    //     }
+    for (let bill of this.state.enrichedBills) {
+      if (this.matchesFilters(bill)) {
+        if (bill.customer == null || bill.customer.id == null) {
+          continue
+        }
 
-    //     let daysToPay = this.getDaysToPay(bill)
-    //     let daysToPayList = []
+        let daysToPay = this.getDaysToPay(bill)
+        let daysToPayList = []
 
-    //     if (daysToPay != null) {
-    //       daysToPayList.push(daysToPay)
-    //     }
+        if (daysToPay != null) {
+          daysToPayList.push(daysToPay)
+        }
 
-    //     if (customersWithTotals[bill.customer.id] == null) {
-    //       customersWithTotals[bill.customer.id] = {
-    //         total: bill.amount,
-    //         id: bill.customer.id,
-    //         name: bill.customer.name,
-    //         daysToPayList,
-    //         billCount: 1
-    //       }
-    //     } else {
-    //       let customer = customersWithTotals[bill.customer.id]
-    //       customer.total += bill.amount
-    //       customer.billCount += 1
-    //       customer.daysToPayList = customer.daysToPayList.concat(daysToPayList)
-    //     }
-    //   }
-    // }
+        if (customersWithTotals[bill.customer.id] == null) {
+          customersWithTotals[bill.customer.id] = {
+            total: bill.preTaxAmount,
+            id: bill.customer.id,
+            name: bill.customer.name,
+            daysToPayList,
+            billCount: 1
+          }
+        } else {
+          let customer = customersWithTotals[bill.customer.id]
+          customer.total += bill.preTaxAmount
+          customer.billCount += 1
+          customer.daysToPayList = customer.daysToPayList.concat(daysToPayList)
+        }
+      }
+    }
 
     let customers: any[] = []
-    // for (let customerId of Object.keys(customersWithTotals)) {
-    //   let customer = customersWithTotals[customerId]
-    //   let averageTimeToPay = round(getAverage(customer.daysToPayList), 1)
+    for (let customerId of Object.keys(customersWithTotals)) {
+      let customer = customersWithTotals[customerId]
+      let averageTimeToPay = round(getAverage(customer.daysToPayList), 1)
 
-    //   customers.push({
-    //     name: customer.name,
-    //     total: customer.total,
-    //     billCount: customer.billCount,
-    //     averageTimeToPay
-    //   })
-    // }
+      customers.push({
+        name: customer.name,
+        total: customer.total,
+        billCount: customer.billCount,
+        averageTimeToPay
+      })
+    }
 
     return customers
   }
@@ -167,7 +171,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
         <form id="filter-container">
 
           <YearsFilterComponent
-            years={getAvailableYears<BillDbModel>(this.props.bills, this.state.billDateToUse)}
+            years={getAvailableYears<BillDbModel>(this.state.enrichedBills, this.state.billDateToUse)}
             handleYearChange={element => this.setState({selectedYear: element.target.value})}
             selectedYear={this.state.selectedYear}
           />
@@ -206,7 +210,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
             <div className="col-xs-12 col-sm-4 panel-display">
               <PanelComponent
                 title={t('Jahresumsatz')}
-                value={getTotal(this.props.bills, 'amount', true, this.matchesFilters.bind(this))}
+                value={getTotal(this.state.enrichedBills, 'preTaxAmount', true, this.matchesFilters.bind(this))}
                 suffix="€"
                 icon="fa-line-chart"
               />
@@ -231,7 +235,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
           lineChartHeading={t('Umsatz in €')}
           lineChartDataLabel={t('Einkommen nach Bezahldatum')}
           lineChartLabels={getMonthNumbers()}
-          lineChartDatePaidData={getAmountsPerMonth<BillDbModel>(this.props.bills, this.state.billDateToUse, 'amount', this.matchesFilters.bind(this))}
+          lineChartDatePaidData={getAmountsPerMonth<BillDbModel>(this.state.enrichedBills, this.state.billDateToUse, 'preTaxAmount', this.matchesFilters.bind(this))}
         />
 
         <div className="container-fluid">
@@ -239,7 +243,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
 
             <div className="col-xs-6">
               <PieChartComponent
-                data={getTypesPieChartData(this.props.bills, this.props.billTypes, this.state.billDateToUse, this.state.selectedYear)}
+                data={getTypesPieChartData(this.state.enrichedBills, this.props.billTypes, this.state.billDateToUse, this.state.selectedYear)}
                 labels={this.getTypesPieChartLabels()}
                 heading={t('Anzahl Aufträge nach Typ')}
               />
@@ -247,7 +251,7 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
 
             <div className="col-xs-6">
               <PieChartComponent
-                data={getTypesPieChartData(this.props.bills, this.props.billTypes, this.state.billDateToUse, this.state.selectedYear, 'amount')}
+                data={getTypesPieChartData(this.state.enrichedBills, this.props.billTypes, this.state.billDateToUse, this.state.selectedYear, 'preTaxAmount')}
                 labels={this.getTypesPieChartLabels()}
                 heading={t('Aufträge nach Umsatz in €')}
               />
@@ -258,6 +262,12 @@ export default class BillsStatsComponent extends React.Component<Props, {}> {
 
       </div>
     )
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    this.setState({
+      enrichedBills: getEnrichedBills(newProps.bills)
+    })
   }
 
 }
