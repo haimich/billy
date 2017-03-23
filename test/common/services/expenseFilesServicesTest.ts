@@ -29,8 +29,6 @@ describe('expenseFilesService', () => {
 
   beforeEach(async () => {
     expense = await createExpense({
-      preTaxAmount: 123,
-      taxrate: 19,
       date: '2016-05-27',
       type_id: 1,
       comment: PREFIX + 'foo'

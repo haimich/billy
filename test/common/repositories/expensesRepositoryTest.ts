@@ -30,8 +30,6 @@ describe('expensesRepository', () => {
 
       const expense = await createExpense({
         type_id: type.id,
-        preTaxAmount: 123.45,
-        taxrate: 7,
         date: testDate,
         comment: PREFIX + 'foo'
       })
@@ -47,8 +45,6 @@ describe('expensesRepository', () => {
 
       const expense = await createExpense({
         type_id: type.id,
-        preTaxAmount: 123.45,
-        taxrate: 0,
         date: testDate,
         comment: PREFIX + 'bla foo'
       })
@@ -57,8 +53,6 @@ describe('expensesRepository', () => {
       expect(expense.type.id).to.equal(type.id)
       expect(expense.type.type).to.equal(type.type)
       expect(expense.type_name).to.equal(PREFIX + 'Briefmarken')
-      expect(expense.preTaxAmount).to.equal(123.45)
-      expect(expense.taxrate).to.equal(0)
       expect(expense.date).to.equal(testDate)
       expect(expense.comment).to.equal(PREFIX + 'bla foo')
     })
@@ -72,8 +66,6 @@ describe('expensesRepository', () => {
 
       let createdExpense = await createExpense({
         type_id: type1.id,
-        preTaxAmount: 15,
-        taxrate: 12,
         date: testDate,
         comment: PREFIX + 'deine mudda'
       })
@@ -81,15 +73,11 @@ describe('expensesRepository', () => {
       const updatedExpense = await updateExpense({
         id: createdExpense.id,
         type_id: type2.id,
-        preTaxAmount: 54,
-        taxrate: 4,
         date: testDate,
         comment: PREFIX + 'no'
       })
 
       expect(updatedExpense.type_name).to.equal(PREFIX + 'Seife')
-      expect(updatedExpense.preTaxAmount).to.equal(54)
-      expect(updatedExpense.taxrate).to.equal(4)
       expect(updatedExpense.date).to.equal(testDate)
       expect(updatedExpense.comment).to.equal(PREFIX + 'no')
     })
@@ -102,8 +90,6 @@ describe('expensesRepository', () => {
       expect(expenses.length).to.be.above(1)
       expect(moment(expenses[0].date).isBefore(moment(expenses[1].date))).to.be.true
       expect(expenses[0].type).to.be.ok
-      expect(expenses[0].preTaxAmount).to.be.ok
-      expect(expenses[0].taxrate).to.be.ok
     })
   })
 
@@ -114,8 +100,6 @@ describe('expensesRepository', () => {
       
       const expense = await createExpense({
         type_id: type.id,
-        preTaxAmount: 15,
-        taxrate: 12,
         date: testDate,
         comment: PREFIX + 'foo bar'
       })
@@ -125,8 +109,6 @@ describe('expensesRepository', () => {
       expect(result.type_name).to.equal(PREFIX + 'the-type')
       expect(result.type.id).to.equal(type.id)
       expect(result.type.type).to.equal(type.type)
-      expect(result.preTaxAmount).to.equal(15)
-      expect(result.taxrate).to.equal(12)
       expect(result.date).to.equal(testDate)
       expect(result.comment).to.equal(PREFIX + 'foo bar')
     })
@@ -139,8 +121,6 @@ describe('expensesRepository', () => {
       
       const expense = await createExpense({
         type_id: type.id,
-        preTaxAmount: 15,
-        taxrate: 12,
         date: testDate,
         comment: PREFIX + 'comment'
       })

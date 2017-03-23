@@ -40,13 +40,9 @@ describe('summary.AppComponent', () => {
       }],
       expenses: [{
         id: 1,
-        preTaxAmount: 123,
-        taxrate: 15,
         date: '2013-09-05'
       }, {
         id: 2,
-        preTaxAmount: 123,
-        taxrate: 15,
         date: '2014-10-05'
       }]
     })
