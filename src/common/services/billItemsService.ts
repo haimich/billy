@@ -1,12 +1,12 @@
 import BillItem from '../models/BillItemModel'
 import * as billItemsRepo from '../repositories/billItemsRepository'
 
-export function createBillItem(BillItem: BillItem): Promise<BillItem> {
-  return billItemsRepo.createBillItem(BillItem)
+export function createBillItem(billItem: BillItem): Promise<BillItem> {
+  return billItemsRepo.createBillItem(billItem)
 }
 
-export function updateBillItem(BillItem: BillItem): Promise<BillItem> {
-  return billItemsRepo.updateBillItem(BillItem)
+export function updateBillItem(billItem: BillItem): Promise<BillItem> {
+  return billItemsRepo.updateBillItem(billItem)
 }
 
 export function getBillItemById(id: number): Promise<BillItem> {

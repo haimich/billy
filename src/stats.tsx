@@ -9,6 +9,7 @@ import { init as initBillTypesRepo } from './common/repositories/billTypesReposi
 import { init as initCustomersRepo } from './common/repositories/customersRepository'
 import { init as initBillFilesRepo } from './common/repositories/billFilesRepository'
 import { init as initBillItemsRepo } from './common/repositories/billItemsRepository'
+import { init as initExpenseItemsRepo } from './common/repositories/expenseItemsRepository'
 import { init as initExpenseFilesRepo } from './common/repositories/expenseFilesRepository'
 import { init as initExpenseTypesRepo } from './common/repositories/expenseTypesRepository'
 import { listBills } from './common/services/billsService'
@@ -28,6 +29,7 @@ async function init() {
     initExpenseFilesRepo(knexInstance)
     initBillTypesRepo(knexInstance)
     initBillItemsRepo(knexInstance)
+    initExpenseItemsRepo(knexInstance)
     initExpensesRepo(knexInstance)
     initExpenseTypesRepo(knexInstance)
     initCustomersRepo(knexInstance); // semicolon intended

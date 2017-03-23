@@ -4,8 +4,8 @@ import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import Expense from '../common/models/ExpenseModel'
 import ExpenseType from '../common/models/ExpenseTypeModel'
 import ExpenseFileModel from '../common/models/ExpenseFileModel'
-import FileActions from '../common/models/FileActions'
-import FileViewComponent from '../common/components/FileViewComponent'
+import FileActions from '../common/models/FileActionsModel'
+// import FileViewComponent from '../common/components/FileViewComponent'
 import FileUploadComponent from '../common/components/FileUploadComponent'
 import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
 import { amountType } from '../common/components/PreTaxNetAmountComponent'
@@ -100,11 +100,12 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
       type_id: (this.state.selectedExpenseType == null || this.state.selectedExpenseType[0] == null)
         ? undefined
         : this.state.selectedExpenseType[0].id,
-      preTaxAmount: numberFormatterDb(
-        this.state.amountType === 'preTax'
-        ? this.state.amount
-        : getPreTaxAmount(this.state.amount, this.state.taxrate)),
-      taxrate: numberFormatterDb(this.state.taxrate),
+        //TODO
+      // preTaxAmount: numberFormatterDb(
+      //   this.state.amountType === 'preTax'
+      //   ? this.state.amount
+      //   : getPreTaxAmount(this.state.amount, this.state.taxrate)),
+      // taxrate: numberFormatterDb(this.state.taxrate),
       date: dateFormatterDb(this.state.date),
       comment: this.state.comment
     }
@@ -330,7 +331,6 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                 </div>
               </div>
 
-              <FileViewComponent files={this.getFilesForView()} handleDeleteFile={this.handleDeleteFile.bind(this)} />
               <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
 
             </div>
@@ -348,7 +348,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
           <p></p>
         </form>
 
-        <div className="overlay"><span>{t('Datei ablegen')}</span></div>
+        <div className="overlay"><span>{t('Datei(en) ablegen')}</span></div>
       </div>
     )
   }

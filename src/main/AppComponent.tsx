@@ -57,6 +57,9 @@ export default class AppComponent extends React.Component<Props, {}> {
       mode: 'bills'
     }
 
+    console.log(props.expenses);
+    
+
     ipcRenderer.on('shortcut-CommandOrControl+d', () => {
       this.toggleMode()
     })

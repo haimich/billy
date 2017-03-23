@@ -1,24 +1,27 @@
 import ExpenseDbModel from '../models/ExpenseDbModel'
 import Expense from '../models/ExpenseModel'
 import * as expensesRepo from '../repositories/expensesRepository'
+import * as expenseItemsRepo from '../repositories/expenseItemsRepository'
 import * as filesRepo from '../repositories/expenseFilesRepository'
 
 /**
- * Return a list of all expenses with files.
+ * Return a list of all expenses with files and items.
  */
 export async function listExpenses(): Promise<ExpenseDbModel[]> {
   let expenses = await expensesRepo.listExpenses()
 
-  return await Promise.all(expenses.map(addFiles))
+  await Promise.all(expenses.map(addFiles))
+  return await Promise.all(expenses.map(addExpenseItems))
 }
 
 /**
- * Return a single expense with its files.
+ * Return a single expense with its files and itmes.
  */
 export async function getExpenseById(id: number): Promise<ExpenseDbModel> {
   let expense = await expensesRepo.getExpenseById(id)
 
-  return await addFiles(expense)
+  await addFiles(expense)
+  return await addExpenseItems(expense)
 }
 
 async function addFiles(expense: ExpenseDbModel): Promise<ExpenseDbModel> {
@@ -26,6 +29,14 @@ async function addFiles(expense: ExpenseDbModel): Promise<ExpenseDbModel> {
 
   return Object.assign(expense, {
     files
+  })
+}
+
+async function addExpenseItems(expense: ExpenseDbModel): Promise<ExpenseDbModel> {
+  let items = await expenseItemsRepo.getExpenseItemsByExpenseId(expense.id)
+
+  return Object.assign(expense, {
+    items
   })
 }
 

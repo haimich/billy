@@ -18,8 +18,6 @@ export function createExpense(expense: Expense): Promise<ExpenseDbModel> {
   return db('expenses')
     .insert({
       type_id: expense.type_id,
-      preTaxAmount: expense.preTaxAmount,
-      taxrate: expense.taxrate,
       date: expense.date,
       comment: expense.comment
     })
@@ -32,8 +30,6 @@ export function updateExpense(expense: Expense): Promise<ExpenseDbModel> {
   return db('expenses')
     .update({
       type_id: expense.type_id,
-      preTaxAmount: expense.preTaxAmount,
-      taxrate: expense.taxrate,
       date: expense.date,
       comment: expense.comment
     })
@@ -47,8 +43,6 @@ export function getExpenseById(id: number): Promise<ExpenseDbModel> {
   return db.raw(`
     select
       e.id,
-      e.preTaxAmount,
-      e.taxrate,
       e.date,
       e.comment,
       et.id as type_id,
@@ -73,8 +67,6 @@ export function listExpenses(): Promise<ExpenseDbModel[]> {
   return db.raw(`
     select
       e.id,
-      e.preTaxAmount,
-      e.taxrate,
       e.date,
       e.comment,
       et.id as type_id,

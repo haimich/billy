@@ -11,6 +11,7 @@ import { init as initBillFilesRepo } from './common/repositories/billFilesReposi
 import { init as initExpenseFilesRepo } from './common/repositories/expenseFilesRepository'
 import { init as initBillTypesRepo } from './common/repositories/billTypesRepository'
 import { init as initBillItemsRepo } from './common/repositories/billItemsRepository'
+import { init as initExpenseItemsRepo } from './common/repositories/expenseItemsRepository'
 import { init as initExpenseTypesRepo } from './common/repositories/expenseTypesRepository'
 import { listBills } from './common/services/billsService'
 import { listExpenses } from './common/services/expensesService'
@@ -28,6 +29,7 @@ async function init() {
     initExpenseFilesRepo(knexInstance)
     initBillTypesRepo(knexInstance)
     initBillItemsRepo(knexInstance)
+    initExpenseItemsRepo(knexInstance)
     initExpenseTypesRepo(knexInstance); // semicolon intended
 
     [bills, expenses] = await Promise.all([

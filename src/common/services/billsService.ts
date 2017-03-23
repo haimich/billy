@@ -5,7 +5,7 @@ import * as filesRepo from '../repositories/billFilesRepository'
 import * as billItemsRepo from '../repositories/billItemsRepository'
 
 /**
- * Return a list of all bills with files.
+ * Return a list of all bills with files and items.
  */
 export async function listBills(): Promise<BillDbModel[]> {
   let bills = await billsRepo.listBills()
@@ -15,7 +15,7 @@ export async function listBills(): Promise<BillDbModel[]> {
 }
 
 /**
- * Return a single bill with its files.
+ * Return a single bill with its files and items.
  */
 export async function getBillByInvoiceId(invoiceId: string): Promise<BillDbModel> {
   let bill = await billsRepo.getBillByInvoiceId(invoiceId)
