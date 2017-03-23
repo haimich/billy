@@ -10,22 +10,40 @@ let expenseTypes = ['Travelling Car', 'Travelling Train', 'Stamps', 'Accomodatio
 exports.seed = (knex, Promise) => {
   console.log('Creating expense types')
 
-  let promises = []
+  let expenseTypesPromises = []
   for (let type of expenseTypes) {
-    promises.push(knex('expense_types').insert({ type }))
+    expenseTypesPromises.push(knex('expense_types').insert({ type }))
   }
-  return Promise.all(promises)
-    .then(() => {
-      return knex('expenses').del()
-        .then(() => {
-          console.log('Creating expenses')
 
-          let promises = []
-          for (let i = 0; i < NUMBER_OF_EXPENSES; i++) {
-            promises.push(knex('expenses').insert(generateExpense()))
-          }
-          return Promise.all(promises)
-        })
+  return knex('expenses').del()
+    .then(() => knex('expense_types').del())
+    .then(() => knex('expense_files').del())
+    .then(() => Promise.all(expenseTypesPromises))
+    .then(() => {
+      console.log('Creating expenses')
+
+      let promises = []
+      for (let i = 0; i < NUMBER_OF_EXPENSES; i++) {
+        promises.push(knex('expenses').insert(generateExpense()))
+      }
+      return Promise.all(promises)
+    })
+    .then(() => {
+      return knex('expenses').select('*')
+    })
+    .then((allExpenses) => {
+      console.log('Creating expense items')
+
+      let promises = []
+      for (let expense of allExpenses) {
+        const articlesToAdd = chance.natural({ min: 1, max: 3 })
+
+        for (let i = 0; i < articlesToAdd; i++) {
+          promises.push(knex('expense_items').insert(generateExpenseItem(expense.id, i)))
+        }
+      }
+
+      return Promise.all(promises)      
     })
 }
 
@@ -37,8 +55,6 @@ function generateExpense() {
 
   const expense = {
     type_id: chance.natural({ min: 1, max: expenseTypes.length}),
-    preTaxAmount: Math.round(chance.floating({min: 0, max: 1500}) * 100) / 100,
-    taxrate: chance.natural({min: 1, max: 20}),
     date: dateCreated.format('YYYY-MM-DD'),
   }
 
@@ -55,5 +71,15 @@ function addZeroIfNecessary(number) {
     return '0' + output
   } else {
     return output
+  }
+}
+
+function generateExpenseItem(expenseId, i) {
+  return {
+    expense_id: expenseId,
+    position: i,
+    preTaxAmount: Math.round(chance.floating({min: 0, max: 1500}) * 100) / 100,
+    taxrate: chance.natural({ min: 1, max: 20 }),
+    description: chance.word({length: 14})
   }
 }
