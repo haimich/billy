@@ -89,6 +89,10 @@ textarea {
   color: indianred;
 }
 
+#editor-container .fix-datetime-input {
+  margin-left: -15px;
+}
+
 .file-list {
   max-height: 280px;
   overflow: auto;

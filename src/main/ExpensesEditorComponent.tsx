@@ -5,9 +5,8 @@ import Expense from '../common/models/ExpenseModel'
 import ExpenseType from '../common/models/ExpenseTypeModel'
 import ExpenseFileModel from '../common/models/ExpenseFileModel'
 import FileActions from '../common/models/FileActionsModel'
-// import FileViewComponent from '../common/components/FileViewComponent'
-import FileUploadComponent from '../common/components/FileUploadComponent'
-import PreTaxNetAmountComponent from '../common/components/PreTaxNetAmountComponent'
+import FileListComponent from '../common/components/FileListComponent'
+import ItemListComponent from '../common/components/ItemListComponent'
 import { amountType } from '../common/components/PreTaxNetAmountComponent'
 import { FileEndabledComponent } from '../common/components/FileEnabledComponent'
 import { listExpenseTypes, getExpenseTypeById, createExpenseType } from '../common/services/expenseTypesService'
@@ -151,7 +150,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
           type: selectedExpenseType.type
         })
       } catch (err) {
-        this.props.notify(t('Der Ausgabenstyp konnte nicht angelegt werden: ') + err, 'error')
+        this.props.notify(t('Der Ausgabentyp konnte nicht angelegt werden: ') + err, 'error')
       }
 
       this.setState({
@@ -203,24 +202,15 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
   }
 
   render() {
-    let calculatedInputLabel = ''
-
-    if (this.state.amountType === 'preTax') {
-      calculatedInputLabel = t('Netto')
-    } else if (this.state.amountType === 'net') {
-      calculatedInputLabel = t('Brutto')
-    }
-
     return (
       <div id="editor-container" onDragOver={this.onDrag.bind(this)} onDragEnter={this.onEnter.bind(this)} onDragLeave={this.onLeave.bind(this)} onDrop={this.onDrop.bind(this)}>
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
 
           <div className="row">
-            <div className="col-md-6">
-
+            <div className="col-md-4 left-formarea">
               <div className="form-group">
-                <label htmlFor="type" className="col-sm-4 control-label">{t('Typ')}</label>
-                <div className="col-sm-8">
+                <label htmlFor="type">{t('Typ')}</label>
+                <div>
                   <Typeahead
                     options={this.state.expenseTypeList}
                     allowNew={true}
@@ -240,113 +230,78 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
               </div>
 
               <div className="form-group">
-                <label htmlFor="date" className="col-sm-4 control-label">{t('Datum')}</label>
-                <Datetime
-                  ref="date"
-                  value={this.state.date}
-                  inputProps={{
-                    id: 'date',
-                    required: 'required'
-                  }}
-                  dateFormat={'DD.MM.YYYY'}
-                  closeOnSelect={true}
-                  timeFormat={false}
-                  className={'col-sm-8'}
-                  onChange={this.handleDateChange.bind(this)}
-                  />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="comment" className="col-sm-4 control-label">{t('Kommentar')}</label>
-                <div className="col-sm-8">
-                  <Textarea
-                    className="form-control"
-                    minRows={1}
-                    maxRows={3}
-                    id="comment"
-                    value={this.state.comment}
-                    onChange={(event: any) => this.setState({ comment: event.target.value })}
-                  />
-                </div>
-              </div>
-              
+                <label htmlFor="date">{t('Datum')}</label>
+                <div className="fix-datetime-input">
+                  <Datetime
+                    ref="date"
+                    value={this.state.date}
+                    inputProps={{
+                      id: 'date',
+                      required: 'required'
+                    }}
+                    dateFormat={'DD.MM.YYYY'}
+                    closeOnSelect={true}
+                    timeFormat={false}
+                    className={'col-sm-8'}
+                    onChange={this.handleDateChange.bind(this)}
+                    />
+                 </div>
+              </div>              
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-8 right-formarea">
+                <div className="item-list">
+                  <ItemListComponent
+                    amount={this.state.amount}
+                    amountType={this.state.amountType}
+                    taxrate={this.state.taxrate}
+                    handleAmountChange={(newValue) => this.setState({ amount: newValue })}
+                    handleAmountTypeChange={(newValue) => this.setState({ amountType: newValue })}
+                    handleTaxrateChange={(newValue) => this.setState({ taxrate: newValue })}
+                  />
+                </div>
 
-              <PreTaxNetAmountComponent
-                amount={this.state.amount}
-                amountType={this.state.amountType}
-                handleAmountTypeChange={amountType => this.setState({ amountType })}
-                handleAmountChange={amount => this.setState({ amount })}
-              />
+              <div className="row additional-items">
+                <div className="col-md-6">
+                  <FileListComponent
+                    files={this.getFilesForView()}
+                    handleAddFiles={files => this.handleAddFiles(this.getFileModels(files))}
+                    handleDeleteFile={this.handleDeleteFile.bind(this)}
+                  />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="taxrate" className="col-sm-4 control-label">{t('Steuersatz')}</label>
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">%</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="taxrate"
-                      value={this.state.taxrate}
-                      onChange={(event: any) => this.setState({ taxrate: event.target.value })}
-                      style={{ textAlign: 'right' }}
-                      pattern={'[+-]?[0-9]+(,[0-9]+)?'}
-                      required
-                      />
+                <div className="col-md-1"></div>
+
+                <div className="col-md-5">
+                  <div className="row">
+                    <div className="form-group editor-comment">
+                      <label htmlFor="comment">{t('Kommentar')}</label>
+                      <div>
+                        <Textarea
+                          className="form-control"
+                          minRows={3}
+                          maxRows={3}
+                          id="comment"
+                          value={this.state.comment}
+                          onChange={(event: any) => this.setState({ comment: event.target.value })}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row editor-buttons">
+                    <div className="col-md-12">
+                      <div className="pull-right">
+                        <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)}>{t('Abbrechen')}</button> &nbsp;
+                        <button type="submit" className="btn btn-primary">{t('Speichern')}</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div className="form-group">
-                <label htmlFor="calculatedAmount" className="col-sm-4 control-label">{calculatedInputLabel}</label>
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">€</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="calculatedAmount"
-                      value={getCalculatedAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
-                      style={{ textAlign: 'right' }}
-                      readOnly
-                      />
-                  </div>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="vatAmount" className="col-sm-4 control-label">{t('Mehrwertsteuer')}</label>
-                <div className="col-sm-8">
-                  <div className="input-group">
-                    <span className="input-group-addon">€</span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="vatAmount"
-                      value={getVatAmount(this.state.amount, this.state.taxrate, this.state.amountType)}
-                      style={{ textAlign: 'right' }}
-                      readOnly
-                      />
-                  </div>
-                </div>
-              </div>
-
-              <FileUploadComponent handleFileChange={(files) => this.handleAddFiles(this.getFileModels(files))} />
-
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-md-12">
-              <div className="pull-right">
-                <button type="button" className="btn btn-secondary" onClick={this.resetState.bind(this)}>{t('Abbrechen')}</button> &nbsp;
-                <button type="submit" className="btn btn-primary">{t('Speichern')}</button>
-              </div>
-            </div>
-          </div>
 
           <p></p>
         </form>
