@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron'
 import { createBill, updateBill, getBillByInvoiceId, deleteBillByInvoiceId } from '../common/services/billsService'
 import { createBillItem, updateBillItem, deleteBillItemById } from '../common/services/billItemsService'
+import { createExpenseItem, updateExpenseItem, deleteExpenseItemById } from '../common/services/expenseItemsService'
 import { performBillFileActions, deleteAllFilesForBill } from '../common/services/billFilesService'
 import { updateCustomer } from '../common/services/customersService'
 import { createExpense, updateExpense, getExpenseById, deleteExpenseById } from '../common/services/expensesService'
@@ -11,6 +12,7 @@ import Bill from '../common/models/BillModel'
 import BillItem from '../common/models/BillItemModel'
 import BillDbModel from '../common/models/BillDbModel'
 import Expense from '../common/models/ExpenseModel'
+import ExpenseItem from '../common/models/ExpenseItemModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import BillFileModel from '../common/models/BillFileModel'
 import ExpenseFileModel from '../common/models/ExpenseFileModel'
@@ -186,13 +188,18 @@ export default class AppComponent extends React.Component<Props, {}> {
     }
   }
 
-  saveExpense(expense: Expense, fileActions: FileActions<ExpenseFileModel>): Promise<{}> {
+  saveExpense(expense: Expense, expenseItem: ExpenseItem, fileActions: FileActions<ExpenseFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
       let createdExpense
 
       createExpense(expense)
         .then(result => {
           createdExpense = result
+
+          expenseItem.expense_id = createdExpense.id
+          return createExpenseItem(expenseItem)
+        })
+        .then(() => {
           return performExpenseFileActions(createdExpense, fileActions)
         })
         .then(() => {
@@ -216,13 +223,17 @@ export default class AppComponent extends React.Component<Props, {}> {
     })
   }
 
-  updateExpense(expense: Expense, fileActions: FileActions<ExpenseFileModel>): Promise<{}> {
+  updateExpense(expense: Expense, expenseItem: ExpenseItem, fileActions: FileActions<ExpenseFileModel>): Promise<{}> {
     return new Promise((resolve, reject) => {
       let updatedExpense
 
       updateExpense(expense)
         .then(result => {
           updatedExpense = result
+
+          return updateExpenseItem(expenseItem)
+        })
+        .then(() => {          
           return performExpenseFileActions(updatedExpense, fileActions)
         })
         .then(() => {
@@ -261,6 +272,11 @@ export default class AppComponent extends React.Component<Props, {}> {
 
         const expense = await getExpenseById(Number(id))
         await deleteAllFilesForExpense(expense.id)
+
+        for (let item of expense.items) {
+          await deleteExpenseItemById(item.id)
+        }
+
         await deleteExpenseById(Number(id))
       }
     } catch (err) {

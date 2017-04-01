@@ -355,7 +355,7 @@ export default class BillsEditorComponent extends FileEndabledComponent<Props, {
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
 
           <div className="row">
-            <div className="col-md-4 left-formarea">
+            <div className="col-md-4">
               <div className="form-group">
                 <label htmlFor="customer">{t('Kunde')}</label>
                 <div>

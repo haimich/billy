@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import Expense from '../common/models/ExpenseModel'
 import ExpenseType from '../common/models/ExpenseTypeModel'
+import ExpenseItem from '../common/models/ExpenseItemModel'
 import ExpenseFileModel from '../common/models/ExpenseFileModel'
 import FileActions from '../common/models/FileActionsModel'
 import FileListComponent from '../common/components/FileListComponent'
@@ -37,8 +38,8 @@ interface State {
 }
 
 interface Props {
-  update: (model: Expense, fileActions: FileActions<ExpenseFileModel>) => void
-  save: (model: Expense, FileActions: FileActions<ExpenseFileModel>) => void
+  update: (model: Expense, expenseItem: ExpenseItem, fileActions: FileActions<ExpenseFileModel>) => void
+  save: (model: Expense, expenseItem: ExpenseItem, FileActions: FileActions<ExpenseFileModel>) => void
   expense?: ExpenseDbModel
   notify: any
 }
@@ -97,26 +98,31 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
   async onSave(event) {
     event.preventDefault()
 
+     const expenseItem: ExpenseItem = {
+      id: this.state.expenseItemId,
+      expense_id: this.state.id,
+      position: 0,
+      preTaxAmount: numberFormatterDb(
+        this.state.amountType === 'preTax'
+        ? this.state.amount
+        : getPreTaxAmount(this.state.amount, this.state.taxrate)),
+      taxrate: numberFormatterDb(this.state.taxrate),
+    }
+
     const expense: Expense = {
       id: this.state.id,
       type_id: (this.state.selectedExpenseType == null || this.state.selectedExpenseType[0] == null)
         ? undefined
         : this.state.selectedExpenseType[0].id,
-        //TODO
-      // preTaxAmount: numberFormatterDb(
-      //   this.state.amountType === 'preTax'
-      //   ? this.state.amount
-      //   : getPreTaxAmount(this.state.amount, this.state.taxrate)),
-      // taxrate: numberFormatterDb(this.state.taxrate),
       date: dateFormatterDb(this.state.date),
       comment: this.state.comment
     }
 
     try {
       if (this.state.isNew) {
-        await this.props.save(expense, this.state.fileActions)
+        await this.props.save(expense, expenseItem, this.state.fileActions)
       } else {
-        await this.props.update(expense, this.state.fileActions)
+        await this.props.update(expense, expenseItem, this.state.fileActions)
       }
     } catch (err) {
       return // don't reset state on error
@@ -207,7 +213,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
         <form className="form-horizontal container" onSubmit={this.onSave.bind(this)}>
 
           <div className="row">
-            <div className="col-md-4 left-formarea">
+            <div className="col-md-4">
               <div className="form-group">
                 <label htmlFor="type">{t('Typ')}</label>
                 <div>
@@ -229,24 +235,26 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
                 </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="date">{t('Datum')}</label>
-                <div className="fix-datetime-input">
-                  <Datetime
-                    ref="date"
-                    value={this.state.date}
-                    inputProps={{
-                      id: 'date',
-                      required: 'required'
-                    }}
-                    dateFormat={'DD.MM.YYYY'}
-                    closeOnSelect={true}
-                    timeFormat={false}
-                    className={'col-sm-8'}
-                    onChange={this.handleDateChange.bind(this)}
+              <div className="row">
+                <span className="form-group col-md-6">
+                  <label htmlFor="date">{t('Datum')}</label>
+                  <div>
+                    <Datetime
+                      ref="date"
+                      value={this.state.date}
+                      inputProps={{
+                        id: 'date',
+                        required: 'required'
+                      }}
+                      dateFormat={'DD.MM.YYYY'}
+                      closeOnSelect={true}
+                      timeFormat={false}
+                      onChange={this.handleDateChange.bind(this)}
                     />
-                 </div>
-              </div>              
+                  </div>
+                </span>
+              </div>
+
             </div>
 
             <div className="col-md-8 right-formarea">
