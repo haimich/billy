@@ -37,7 +37,7 @@ exports.seed = (knex, Promise) => {
       let promises = []
       for (let expense of allExpenses) {
         const articlesToAdd = chance.natural({ min: 1, max: 3 })
-
+        
         for (let i = 0; i < articlesToAdd; i++) {
           promises.push(knex('expense_items').insert(generateExpenseItem(expense.id, i)))
         }

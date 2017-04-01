@@ -29,6 +29,7 @@ interface State {
   amountType?: amountType
   taxrate?: string
   date?: string
+  expenseItemId: number
   comment?: string
   expenseTypeList: ExpenseType[]
   isNew: boolean
@@ -63,6 +64,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
     this.setState(this.getDefaultState())
     this.refs.expenseTypeTypeahead.getInstance().clear()
     this.fetchTypeaheadData()
+    this.resetDragCounter()
     resetFormValidationErrors(getInputs(this))
   }
 
@@ -73,6 +75,7 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
       amount: '',
       amountType: 'preTax',
       taxrate: '19',
+      expenseItemId: undefined,
       date: undefined,
       comment: '',
       expenseTypeList: [],
@@ -374,6 +377,8 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
     if (isNew) {
       this.resetState()
     } else {
+      let item = expense.items[0] // adapt this line when multiple expense items are implemented
+
       this.setState({
         id: expense.id,
         selectedExpenseType: [expense.type],
@@ -381,9 +386,10 @@ export default class ExpensesEditorComponent extends FileEndabledComponent<Props
           ? { add: [], keep: expense.files, delete: [] }
           : { add: [], keep: [], delete: [] },
         date: dateFormatterView(expense.date),
-        amount: numberFormatterView(expense.preTaxAmount),
+        amount: numberFormatterView(item.preTaxAmount),
         amountType: 'preTax',
-        taxrate: formatTaxrate(expense.taxrate, false),
+        taxrate: formatTaxrate(item.taxrate, false),
+        expenseItemId: item.id,
         comment: expense.comment || '',
         isNew,
         isDirty: false

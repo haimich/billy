@@ -54,11 +54,8 @@ export default class AppComponent extends React.Component<Props, {}> {
     this.state = {
       bills: props.bills,
       expenses: props.expenses,
-      mode: 'bills'
+      mode: 'expenses' //TODO 'bills'
     }
-
-    console.log(props.expenses);
-    
 
     ipcRenderer.on('shortcut-CommandOrControl+d', () => {
       this.toggleMode()

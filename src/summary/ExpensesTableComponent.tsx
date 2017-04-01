@@ -15,6 +15,8 @@ interface State {
 }
 
 interface EnrichedExpense extends ExpenseDbModel {
+  preTaxAmount: string
+  taxrate: String
   netAmount: string
   vatAmount: string
 }
@@ -36,9 +38,13 @@ export default class ExpensesTableComponent extends React.Component<Props, State
     let enriched = []
 
     for (let expense of expenses) {
+      let item = expense.items[0]; // adapt this line when multiple bill items are implemented
+
       let exp = Object.assign(expense, {
-        netAmount: numberFormatterView(getNetAmount(expense.taxrate, expense.preTaxAmount)),
-        vatAmount: numberFormatterView(getVatAmount(expense.taxrate, expense.preTaxAmount))
+        preTaxAmount: '' + item.preTaxAmount,
+        netAmount: numberFormatterView(getNetAmount(item.taxrate, item.preTaxAmount)),
+        vatAmount: numberFormatterView(getVatAmount(item.taxrate, item.preTaxAmount)),
+        taxrate: item.taxrate
       })
 
       enriched.push(exp)

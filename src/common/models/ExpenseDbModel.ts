@@ -7,17 +7,15 @@ interface ExpenseDbModel {
   items: ExpenseItem[]
   type?: ExpenseTypeModel
   type_name?: string
-  preTaxAmount: number
-  taxrate: number
   date: string
   comment?: string
   files?: ExpenseFileModel[]
 }
 
 export interface EnrichedExpense extends ExpenseDbModel {
-  netAmount: number,
-  preTaxAmount: number,
-  taxrate: number,
+  preTaxAmount: number
+  taxrate: number
+  netAmount: number
   vatAmount: number
 }
 

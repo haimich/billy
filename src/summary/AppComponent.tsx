@@ -75,13 +75,15 @@ export default class AppComponent extends React.Component<Props, any> {
   }
 
   getExpenseData(month: string): ExpenseDbModel[] {
-    return this.props.expenses.filter(expense => {
-      if (matchesYear(expense.date, this.state.selectedYear) && matchesMonth(expense.date, month)) {
-        return Object.assign(expense, {
-          vatAmount: getVatAmount(expense.taxrate, expense.preTaxAmount)
-        })
-      }
-    })
+    // TODO
+    return null
+    // return this.props.expenses.filter(expense => {
+    //   if (matchesYear(expense.date, this.state.selectedYear) && matchesMonth(expense.date, month)) {
+    //     return Object.assign(expense, {
+    //       vatAmount: getVatAmount(expense.taxrate, expense.preTaxAmount)
+    //     })
+    //   }
+    // })
   }
 
   generateMonthTables(): JSX.Element[] {
