@@ -13,7 +13,12 @@ describe('summary.AppComponent', () => {
           id: 123,
           name: 'Deine Mudda'
         },
-        amount: 123.45,
+        items: [
+          {
+            preTaxAmount: 123.45,
+            taxrate: 19
+          }
+        ],
         date_created: '2014-09-05',
         date_paid: '2015-11-05',
         comment: 'no comment'
@@ -23,7 +28,12 @@ describe('summary.AppComponent', () => {
           id: 123,
           name: 'Deine Mudda'
         },
-        amount: 123.45,
+        items: [
+          {
+            preTaxAmount: 123.45,
+            taxrate: 19
+          }
+        ],
         date_created: '2014-09-05',
         date_paid: '2016-01-05',
         comment: 'no comment'
@@ -33,17 +43,34 @@ describe('summary.AppComponent', () => {
           id: 123,
           name: 'Deine Mudda'
         },
-        amount: 100,
+        items: [
+          {
+            preTaxAmount: 123.45,
+            taxrate: 19
+          }
+        ],
         date_created: '2014-09-05',
         date_paid: '2014-11-07',
         comment: 'no comment'
       }],
       expenses: [{
         id: 1,
-        date: '2013-09-05'
+        date: '2013-09-05',
+        items: [
+          {
+            preTaxAmount: 123.45,
+            taxrate: 19
+          }
+        ]
       }, {
         id: 2,
-        date: '2014-10-05'
+        date: '2014-10-05',
+        items: [
+          {
+            preTaxAmount: 123.45,
+            taxrate: 19
+          }
+        ]
       }]
     })
   })
@@ -61,7 +88,12 @@ describe('summary.AppComponent', () => {
             id: 123,
             name: 'Deine Mudda'
           },
-          amount: 123.45,
+          items: [
+            {
+              preTaxAmount: 123.45,
+              taxrate: 19
+            }
+          ],
           date_created: '2014-09-05',
           date_paid: '2015-11-05',
           comment: 'no comment'
@@ -71,7 +103,12 @@ describe('summary.AppComponent', () => {
             id: 123,
             name: 'Deine Mudda'
           },
-          amount: 123.45,
+          items: [
+            {
+              preTaxAmount: 123.45,
+              taxrate: 19
+            }
+          ],
           date_created: '2014-09-05',
           date_paid: '2016-01-05',
           comment: 'no comment'
@@ -86,13 +123,21 @@ describe('summary.AppComponent', () => {
         bills: [],
         expenses: [{
           id: 1,
-          preTaxAmount: 123,
-          taxrate: 15,
+          items: [
+            {
+              preTaxAmount: 123,
+              taxrate: 15,
+            }
+          ],
           date: '2013-09-05'
         }, {
           id: 2,
-          preTaxAmount: 123,
-          taxrate: 15,
+          items: [
+            {
+              preTaxAmount: 123,
+              taxrate: 15,
+            }
+          ],
           date: '2014-09-05'
         }]
       })
@@ -109,7 +154,12 @@ describe('summary.AppComponent', () => {
             id: 123,
             name: 'Deine Mudda'
           },
-          amount: 123.45,
+          items: [
+            {
+              preTaxAmount: 123.45,
+              taxrate: 19
+            }
+          ],
           date_created: '2014-09-05',
           date_paid: '2014-11-05',
           comment: 'no comment'
@@ -119,7 +169,12 @@ describe('summary.AppComponent', () => {
             id: 123,
             name: 'Deine Mudda'
           },
-          amount: 123.45,
+          items: [
+            {
+              preTaxAmount: 123.45,
+              taxrate: 19
+            }
+          ],
           date_created: '2014-09-05',
           date_paid: '2014-01-05',
           comment: 'no comment'
@@ -129,20 +184,33 @@ describe('summary.AppComponent', () => {
             id: 123,
             name: 'Deine Mudda'
           },
-          amount: 100,
+          items: [
+            {
+              preTaxAmount: 123.45,
+              taxrate: 19
+            }
+          ],
           date_created: '2014-09-05',
           date_paid: '2014-11-07',
           comment: 'no comment'
         }],
         expenses: [{
           id: 1,
-          preTaxAmount: 123,
+          items: [
+            {
+              preTaxAmount: 123,
           taxrate: 15,
+            }
+          ],
           date: '2014-09-05'
         }, {
           id: 2,
-          preTaxAmount: 123,
-          taxrate: 15,
+          items: [
+            {
+              preTaxAmount: 123,
+              taxrate: 15,
+            }
+          ],
           date: '2014-10-05'
         }]
       })
