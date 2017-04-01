@@ -7,6 +7,8 @@ import PanelComponent from '../common/components/stats/PanelComponent'
 import PieChartComponent from '../common/components/stats/PieChartComponent'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import ExpenseTypeModel from '../common/models/ExpenseTypeModel'
+import { EnrichedExpense } from '../common/models/ExpenseDbModel'
+import { getEnrichedExpenses } from '../common/helpers/item'
 import {
   SELECT_TYPE_ALL, getAvailableYears, getMonthNumbers, getAmountsPerMonth,
   matchesYear, matchesType, getTotal, getTypesPieChartData
@@ -20,6 +22,7 @@ interface Props {
 }
 
 interface State {
+  enrichedExpenses: EnrichedExpense[],
   selectedExpenseType: string
   selectedYear?: string
   availableYears: string[]
@@ -32,15 +35,17 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props)
 
-    let selectedYear = ''
+    let enrichedExpenses = getEnrichedExpenses(props.expenses)
 
-    const availableYears = getAvailableYears<ExpenseDbModel>(this.props.expenses, 'date')
+    let selectedYear = ''
+    const availableYears = getAvailableYears<ExpenseDbModel>(enrichedExpenses, 'date')
 
     if (availableYears.length >= 1) {
       selectedYear = availableYears[0]
     }
 
     this.state = {
+      enrichedExpenses: enrichedExpenses,
       selectedExpenseType: SELECT_TYPE_ALL,
       selectedYear,
       availableYears
@@ -80,7 +85,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
             <div className="col-xs-12 col-sm-4 panel-display">
               <PanelComponent
                 title={t('Summe Ausgaben')}
-                value={getTotal(this.props.expenses, 'preTaxAmount', true, this.matchesFilters.bind(this))}
+                value={getTotal(this.state.enrichedExpenses, 'preTaxAmount', true, this.matchesFilters.bind(this))}
                 suffix="€"
                 icon="fa-line-chart"
               />
@@ -94,7 +99,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
           lineChartHeading={t('Ausgaben in €')}
           lineChartDataLabel={t('Ausgaben nach Datum')}
           lineChartLabels={getMonthNumbers()}
-          lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.props.expenses, 'date', 'preTaxAmount', this.matchesFilters.bind(this))}
+          lineChartDatePaidData={getAmountsPerMonth<ExpenseDbModel>(this.state.enrichedExpenses, 'date', 'preTaxAmount', this.matchesFilters.bind(this))}
         />
 
         <div className="container-fluid">
@@ -102,7 +107,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
 
             <div className="col-xs-6">
               <PieChartComponent
-                data={getTypesPieChartData(this.props.expenses, this.props.expenseTypes, 'date', this.state.selectedYear)}
+                data={getTypesPieChartData(this.state.enrichedExpenses, this.props.expenseTypes, 'date', this.state.selectedYear)}
                 labels={this.getTypesPieChartLabels()}
                 heading={t('Anzahl Ausgaben nach Typ')}
               />
@@ -110,7 +115,7 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
 
             <div className="col-xs-6">
               <PieChartComponent
-                data={getTypesPieChartData(this.props.expenses, this.props.expenseTypes, 'date', this.state.selectedYear, 'preTaxAmount')}
+                data={getTypesPieChartData(this.state.enrichedExpenses, this.props.expenseTypes, 'date', this.state.selectedYear, 'preTaxAmount')}
                 labels={this.getTypesPieChartLabels()}
                 heading={t('Summe pro Typ in €')}
               />
@@ -121,6 +126,12 @@ export default class ExpensesStatsComponent extends React.Component<Props, {}> {
 
       </div>
     )
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    this.setState({
+      enrichedExpenses: getEnrichedExpenses(newProps.expenses)
+    })
   }
 
 }
