@@ -5,7 +5,6 @@
   "main": "./buildtmp/src/index.js",
   "scripts": {
     "setup": "npm run install-platform-specific && npm run rebuild && npm run recreate-database",
-    "install": "yarn install",
     "install-platform-specific": "npm install sqlite3 --build-from-source",
     "rebuild": "electron-rebuild",
     "recreate-database": "rimraf bills.sqlite && knex migrate:latest && knex seed:run",
