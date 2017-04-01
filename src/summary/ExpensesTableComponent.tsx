@@ -2,8 +2,10 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BootstrapTable, TableHeaderColumn, Options } from 'react-bootstrap-table'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
+import { EnrichedExpense } from '../common/models/ExpenseDbModel'
 import { dateFormatterView, currencyFormatter, percentageFormatter, formatTaxrate, numberFormatterView } from '../common/ui/formatters'
 import { getNetAmount, getVatAmount, hasDecimals } from '../common/helpers/math'
+import { getEnrichedExpenses } from '../common/helpers/item'
 import t from '../common/helpers/i18n'
 
 interface Props {
@@ -12,13 +14,6 @@ interface Props {
 
 interface State {
   enrichedExpenses: EnrichedExpense[]
-}
-
-interface EnrichedExpense extends ExpenseDbModel {
-  preTaxAmount: string
-  taxrate: String
-  netAmount: string
-  vatAmount: string
 }
 
 export default class ExpensesTableComponent extends React.Component<Props, State> {
@@ -30,27 +25,8 @@ export default class ExpensesTableComponent extends React.Component<Props, State
     super(props)
 
     this.state = {
-      enrichedExpenses: this.getEnrichedExpenses(props.expenses)
+      enrichedExpenses: getEnrichedExpenses(props.expenses)
     }
-  }
-
-  getEnrichedExpenses(expenses: ExpenseDbModel[]): EnrichedExpense[] {
-    let enriched = []
-
-    for (let expense of expenses) {
-      let item = expense.items[0]; // adapt this line when multiple bill items are implemented
-
-      let exp = Object.assign(expense, {
-        preTaxAmount: '' + item.preTaxAmount,
-        netAmount: numberFormatterView(getNetAmount(item.taxrate, item.preTaxAmount)),
-        vatAmount: numberFormatterView(getVatAmount(item.taxrate, item.preTaxAmount)),
-        taxrate: item.taxrate
-      })
-
-      enriched.push(exp)
-    }
-
-    return enriched
   }
 
   render() {
@@ -90,7 +66,7 @@ export default class ExpensesTableComponent extends React.Component<Props, State
 
   componentWillReceiveProps(newProps: Props) {
     this.setState({
-      enrichedExpenses: this.getEnrichedExpenses(newProps.expenses)
+      enrichedExpenses: getEnrichedExpenses(newProps.expenses)
     })
   }
 

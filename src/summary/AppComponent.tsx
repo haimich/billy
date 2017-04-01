@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import BillDbModel from '../common/models/BillDbModel'
 import { EnrichedBill } from '../common/models/BillDbModel'
+import { EnrichedExpense } from '../common/models/ExpenseDbModel'
 import ExpenseDbModel from '../common/models/ExpenseDbModel'
 import YearsFilterComponent from '../common/components/stats/YearsFilterComponent'
 import BillsTableComponent from './BillsTableComponent'
@@ -10,7 +11,7 @@ import { dateFormatterYearView, dateFormatterMonthView, currencyFormatter, numbe
 import { asc, desc } from '../common/helpers/sorters'
 import { getVatAmount } from '../common/helpers/math'
 import { MONTHS, getAvailableYears, getAvailableMonths, matchesYear, matchesMonth, getTotal } from '../common/ui/stats'
-import { getEnrichedBills } from '../common/helpers/item'
+import { getEnrichedBills, getEnrichedExpenses } from '../common/helpers/item'
 import * as moment from 'moment'
 import t from '../common/helpers/i18n'
 
@@ -23,6 +24,7 @@ interface State {
   selectedYear?: string
   availableYears?: string[]
   enrichedBills: EnrichedBill[]
+  enrichedExpenses: EnrichedExpense[]
 }
 
 export default class AppComponent extends React.Component<Props, any> {
@@ -42,7 +44,8 @@ export default class AppComponent extends React.Component<Props, any> {
 
     this.state = {
       selectedYear, availableYears,
-      enrichedBills: getEnrichedBills(props.bills)
+      enrichedBills: getEnrichedBills(props.bills),
+      enrichedExpenses: getEnrichedExpenses(props.expenses)
     }
   }
 
@@ -75,15 +78,11 @@ export default class AppComponent extends React.Component<Props, any> {
   }
 
   getExpenseData(month: string): ExpenseDbModel[] {
-    // TODO
-    return null
-    // return this.props.expenses.filter(expense => {
-    //   if (matchesYear(expense.date, this.state.selectedYear) && matchesMonth(expense.date, month)) {
-    //     return Object.assign(expense, {
-    //       vatAmount: getVatAmount(expense.taxrate, expense.preTaxAmount)
-    //     })
-    //   }
-    // })
+    return this.props.expenses.filter(expense => {
+      if (matchesYear(expense.date, this.state.selectedYear) && matchesMonth(expense.date, month)) {
+        return expense
+      }
+    })
   }
 
   generateMonthTables(): JSX.Element[] {
@@ -100,12 +99,13 @@ export default class AppComponent extends React.Component<Props, any> {
           <BillsTableComponent bills={billData} />
 
           <div className="month-total income">
-            <div>
+            <span>
               {t('BRUTTO')}: {numberFormatterView(getTotal<BillDbModel>(billData, 'preTaxAmount', false))}&nbsp;€
-            </div>
-            <div>
+            </span>
+            <br />
+            <span>
               {t('NETTO')}: {numberFormatterView(getTotal<BillDbModel>(billData, 'netAmount', false))}&nbsp;€
-            </div>
+            </span>
           </div>
 
           <ExpensesTableComponent expenses={expenseData} />
@@ -148,7 +148,8 @@ export default class AppComponent extends React.Component<Props, any> {
 
   componentWillReceiveProps(newProps: Props) {
     this.setState({
-      enrichedBills: getEnrichedBills(newProps.bills)
+      enrichedBills: getEnrichedBills(newProps.bills),
+      enrichedExpenses: getEnrichedExpenses(newProps.expenses)
     })
   }
 
