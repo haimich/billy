@@ -70,7 +70,7 @@ export function openImportWindow() {
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
 
   importWindow.once('ready-to-show', () => {
-    useShortcut('CommandOrControl+d', mainWindow)
+    useShortcut('CommandOrControl+D', mainWindow)
 
     importWindow.show()
   })
@@ -95,7 +95,7 @@ export function openStatsWindow() {
   statsWindow.loadURL(`file://${getAppFolder()}/src/stats.html`)
 
   statsWindow.once('ready-to-show', () => {
-    useShortcut('CommandOrControl+d', statsWindow)
+    useShortcut('CommandOrControl+D', statsWindow)
 
     statsWindow.show()
   })
