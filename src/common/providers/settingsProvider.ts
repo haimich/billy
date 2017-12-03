@@ -40,7 +40,7 @@ export async function userInputNeeded(): Promise<boolean> {
 
 type settingKeys = 'appDir' | 'knex'
 
-export function get(value: settingKeys): Promise<string> {
+export function get(value: settingKeys): Promise<any> {
   if (isDev) {
     return Promise.resolve(DEV_CONFIG[value])
   }

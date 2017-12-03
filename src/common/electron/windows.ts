@@ -47,7 +47,7 @@ export function openMainWindow() {
   }
 
   mainWindow.once('ready-to-show', () => {
-    useShortcut('CommandOrControl+d', mainWindow)
+    useShortcut('CommandOrControl+D', mainWindow)
     
     mainWindow.show()
     mainWindow.focus()
