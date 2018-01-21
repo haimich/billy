@@ -1,6 +1,6 @@
 {
   "name": "billy",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A simple invoice manager built with Electron.",
   "main": "./buildtmp/src/index.js",
   "scripts": {
@@ -27,7 +27,8 @@
     "url": "git+https://github.com/haimich/billy.git"
   },
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 6.0.0",
+    "npm": ">= 5.1.0"
   },
   "author": "Michael Mueller <haimich@gmx.net>",
   "contributors": [
