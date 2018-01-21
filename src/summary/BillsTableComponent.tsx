@@ -21,7 +21,7 @@ export default class BillsTableComponent extends React.Component<Props, any> {
 
   render() {
     const options: Options = {
-      sortName: 'invoice_id',
+      sortName: 'date_paid',
       sortOrder: 'asc',
       noDataText: t('Keine Einnahmen')
     }

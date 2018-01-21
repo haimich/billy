@@ -27,3 +27,10 @@ To use the following dev tools open the browser console in the open app and inst
 * app files for Windows are built by [Appveyor](https://ci.appveyor.com/project/haimich/billy)
 
 ## Releasing
+* see https://help.github.com/articles/creating-releases/
+* if you want to link issues, just add a section in the description - example:
+
+```markdown
+### Fixed issues
+https://github.com/haimich/billy/issues/120
+```
