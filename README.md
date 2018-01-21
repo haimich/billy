@@ -36,5 +36,7 @@ https://github.com/haimich/billy/issues/120
 ```
 
 * increase the version in the package.json
+* after pushing any change in the master branch Travis will automatically create releases for Linux and Mac and push them to Github
+* AppVeyor will do the same for the Windows release
 * when you're done edit the release and click on "Publish release"
 * this will automatically create a tag from the current master branch
