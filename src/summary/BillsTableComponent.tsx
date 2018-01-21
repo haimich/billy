@@ -41,14 +41,14 @@ export default class BillsTableComponent extends React.Component<Props, any> {
           options={options}>
 
 
-          <TableHeaderColumn dataField="date_paid" width="100" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
-          <TableHeaderColumn isKey={true} dataField="invoice_id" width="120" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="customer_name" width="280" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Einnahmen als')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="preTaxAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="netAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="vatAmount" width="85" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('USt.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="taxrate" width="110" dataAlign="right" dataFormat={this.taxrateFormatter} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date_paid" width="100 px" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
+          <TableHeaderColumn isKey={true} dataField="invoice_id" width="120 px" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="customer_name" width="280 px" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="180 px" dataSort={true}>{t('Einnahmen als')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="preTaxAmount" width="85 px" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="netAmount" width="85 px" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="vatAmount" width="85 px" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('USt.')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="taxrate" width="110 px" dataAlign="right" dataFormat={this.taxrateFormatter} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
 
         </BootstrapTable>
 

@@ -122,6 +122,10 @@ export default class AppComponent extends React.Component<Props, any> {
     return months
   }
 
+  printPage() {
+    window.print();
+  }
+
   render() {
     return (
       <div>
@@ -136,6 +140,8 @@ export default class AppComponent extends React.Component<Props, any> {
                   selectedYear={this.state.selectedYear}
                 />
               </form>
+
+              <button type="button" className="btn btn-secondary" onClick={this.printPage.bind(this)}>{t('Drucken')}</button> &nbsp;
             </div>
           </div>
 
