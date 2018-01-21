@@ -34,3 +34,7 @@ To use the following dev tools open the browser console in the open app and inst
 ### Fixed issues
 https://github.com/haimich/billy/issues/120
 ```
+
+* increase the version in the package.json
+* when you're done edit the release and click on "Publish release"
+* this will automatically create a tag from the current master branch
