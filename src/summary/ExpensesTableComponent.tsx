@@ -50,14 +50,14 @@ export default class ExpensesTableComponent extends React.Component<Props, State
           exportCSV={false}
           options={options}>
 
-          <TableHeaderColumn isKey={true} hidden={true} dataField="id" width="140 px" dataSort={true}>{t('ID')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date" width="100 px" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type_name" width="160 px" dataSort={true}>{t('Typ')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="comment" width="345 px" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="preTaxAmount" width="85 px" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="netAmount" width="85 px" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="vatAmount" width="85 px" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Mwst.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="taxrate" width="90 px" dataAlign="right" dataFormat={formatTaxrate} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
+          <TableHeaderColumn isKey={true} hidden={true} dataField="id" dataSort={true}>{t('ID')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date" width="10%" dataFormat={dateFormatterView} dataSort={true}>{t('Datum')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="20%" dataSort={true}>{t('Typ')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="comment" width="38%" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="preTaxAmount" width="8%" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="netAmount" width="8%" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Netto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="vatAmount" width="8%" dataAlign="right" dataFormat={currencyFormatter} dataSort={true}>{t('Mwst.')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="taxrate" width="8%" dataAlign="right" dataFormat={formatTaxrate} dataSort={true}>{t('Steuersatz')}</TableHeaderColumn>
 
         </BootstrapTable>
       </div>

@@ -8,8 +8,15 @@ body {
   padding: 5px;
 }
 
-#filter-container {
-  margin-bottom: .5em;
+.summary-heading {
+  display: flex;
+  align-items: flex-end;
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.summary-heading button {
+  margin-left: -.5em;
 }
 
 .react-bs-container-body {
@@ -35,6 +42,7 @@ body {
 
 .month-container h3 {
   margin-top: 0.5em;
+  margin-bottom: .5em;
 }
 
 .month-total {
@@ -51,5 +59,21 @@ body {
 }
 
 .month-total span {
-  border-bottom: 1px dotted #666;
+  border-bottom: 1px solid #666;
+}
+
+/* Print rules */
+@media print {
+  button {
+    visibility: hidden;
+  }
+
+  /* Hide sort buttons in table */
+  .order {
+    display: none;
+  }
+  
+  .month-container {
+    page-break-after: always;
+  }
 }

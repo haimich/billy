@@ -131,17 +131,21 @@ export default class AppComponent extends React.Component<Props, any> {
       <div>
         <div className="container-fluid">
 
-          <div className="row">
+          <div className="row summary-heading">
             <div className="col-sm-3">
-              <form id="filter-container">
+              <form>
                 <YearsFilterComponent
                   years={this.state.availableYears}
                   handleYearChange={element => this.setState({selectedYear: element.target.value})}
                   selectedYear={this.state.selectedYear}
                 />
               </form>
+            </div>
 
-              <button type="button" className="btn btn-secondary" onClick={this.printPage.bind(this)}>{t('Drucken')}</button> &nbsp;
+            <div className="col-sm-3">
+              <button type="button" className="btn btn-secondary" onClick={this.printPage.bind(this)}>
+                <i className="fa fa-print" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
 
