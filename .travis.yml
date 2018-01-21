@@ -29,6 +29,9 @@ addons:
 
 install:
 - nvm install 9
+- node --version
+- npm --version
+- npm install
 
 script:
 - npm run publish
