@@ -16,8 +16,7 @@ install:
   - ps: Install-Product node 6 x64
   - git reset --hard HEAD
   - npm install npm -g
-  - npm install -g yarn
-  - yarn install
+  - npm install
 
 build_script:
   - node --version
