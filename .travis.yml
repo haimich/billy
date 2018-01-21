@@ -28,9 +28,7 @@ addons:
       - xz-utils
 
 install:
-- nvm install 6
-- npm install -g yarn
-- yarn install
+- nvm install 9
 
 script:
 - npm run publish
