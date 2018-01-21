@@ -81,13 +81,13 @@ export default class BillsTableComponent extends React.Component<Props, {}> {
           options={options}
           height="340 px">
 
-          <TableHeaderColumn isKey={true} dataField="invoice_id" width="140" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="customer_name" width="240" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date_created" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="date_paid" width="160" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlungsdatum')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="items" width="110" dataAlign="right" dataFormat={this.billItemFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="type_name" width="180" dataSort={true}>{t('Auftragsart')}</TableHeaderColumn>
-          <TableHeaderColumn dataField="comment" width="440" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
+          <TableHeaderColumn isKey={true} dataField="invoice_id" width="140 px" dataSort={true}>{t('Rechnungsnr.')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="customer_name" width="240 px" dataSort={true}>{t('Kunde')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date_created" width="160 px" dataFormat={dateFormatterView} dataSort={true}>{t('Rechnungsdatum')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="date_paid" width="160 px" dataFormat={dateFormatterView} dataSort={true}>{t('Zahlungsdatum')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="items" width="110 px" dataAlign="right" dataFormat={this.billItemFormatter} dataSort={true}>{t('Brutto')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="type_name" width="180 px" dataSort={true}>{t('Auftragsart')}</TableHeaderColumn>
+          <TableHeaderColumn dataField="comment" width="440 px" dataSort={true}>{t('Kommentar')}</TableHeaderColumn>
 
         </BootstrapTable>
       </div>
