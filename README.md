@@ -27,6 +27,7 @@ To use the following dev tools open the browser console in the open app and inst
 * app files for Windows are built by [Appveyor](https://ci.appveyor.com/project/haimich/billy)
 
 ## Releasing
+### Gihub
 * see https://help.github.com/articles/creating-releases/
 * if you want to link issues, just add a section in the description - example:
 
@@ -36,6 +37,10 @@ https://github.com/haimich/billy/issues/120
 ```
 
 * increase the version in the package.json
+
+### Electron
+* see https://www.electron.build/
+* many settings are made in the package.json
 * after pushing any change in the master branch Travis will automatically create releases for Linux and Mac and push them to Github
 * AppVeyor will do the same for the Windows release
 * when you're done edit the release and click on "Publish release"
