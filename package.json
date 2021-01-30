@@ -47,7 +47,7 @@
     "knex": "^0.12.5",
     "mkdirp": "^0.5.1",
     "moment": "^2.14.1",
-    "open": "0.0.5",
+    "open": "6.0.0",
     "react": "^15.2.1",
     "react-bootstrap-table": "^4.3.1",
     "react-bootstrap-toggle": "^2.0.4",
