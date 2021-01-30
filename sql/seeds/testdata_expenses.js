@@ -3,7 +3,6 @@ const Chance = require('chance')
 const chance = new Chance()
 
 const NUMBER_OF_EXPENSES = 100
-let counter = 1
 let expenseTypes = ['Travelling Car', 'Travelling Train', 'Stamps', 'Accomodations', 'Others']
 
 // Deletes ALL existing entries!

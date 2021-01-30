@@ -169,5 +169,9 @@ function useShortcut(shortcut: string, window: any) {
 }
 
 function unregisterShortcuts(window) {
-  electronLocalshortcut.unregisterAll(window)
+  try {
+    electronLocalshortcut.unregisterAll(window)
+  } catch (err) {
+    // ignore because window might already be inaccessible
+  }
 }

@@ -10,8 +10,14 @@ import * as filesRepo from '../repositories/expenseFilesRepository'
 export async function listExpenses(): Promise<ExpenseDbModel[]> {
   let expenses = await expensesRepo.listExpenses()
 
-  await Promise.all(expenses.map(addFiles))
-  return await Promise.all(expenses.map(addExpenseItems))
+  try {
+    await Promise.all(expenses.map(addFiles))
+    await Promise.all(expenses.map(addExpenseItems))
+
+    return expenses;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 /**
