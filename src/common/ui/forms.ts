@@ -34,6 +34,7 @@ function addHasError(input: any) {
 }
 
 export function getInputs(component) {
+  //@ts-ignore
   return [...ReactDOM.findDOMNode(component).querySelectorAll('input,textarea')]
 }
 

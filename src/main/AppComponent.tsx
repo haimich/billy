@@ -94,7 +94,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           return getBillByInvoiceId(createdBill.invoice_id)
         })
         .then(billWithFiles => {
-          resolve() // let the editor know that we're good
+          resolve(null) // let the editor know that we're good
 
           // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
           process.nextTick(() => {
@@ -128,7 +128,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           return getBillByInvoiceId(updatedBill.invoice_id)
         })
         .then(billWithFiles => {
-          resolve() // let the editor know that we're good
+          resolve(null) // let the editor know that we're good
 
           // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
           process.nextTick(() => {
@@ -206,7 +206,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           return getExpenseById(createdExpense.id)
         })
         .then(expenseWithFiles => {
-          resolve() // let the editor know that we're good
+          resolve(null) // let the editor know that we're good
 
           // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
           process.nextTick(() => {
@@ -240,7 +240,7 @@ export default class AppComponent extends React.Component<Props, {}> {
           return getExpenseById(updatedExpense.id)
         })
         .then(expenseWithFiles => {
-          resolve() // let the editor know that we're good
+          resolve(null) // let the editor know that we're good
 
           // delay updating of state until resolve() is done (see https://github.com/haimich/billy/issues/68)
           process.nextTick(() => {

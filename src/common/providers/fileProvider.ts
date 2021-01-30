@@ -118,7 +118,7 @@ export function rmrf(filePattern: string): Promise<any> {
       if (err) {
         reject(err)
       } else {
-        resolve()
+        resolve(null)
       }
     })
   })

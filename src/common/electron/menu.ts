@@ -1,5 +1,4 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
-import { } from './providers/importProvider'
 import { openImportWindow, openStatsWindow, openSummaryWindow, reload, toggleDevTools } from './windows'
 import { isMac } from '../helpers/platform'
 import t from '../helpers/i18n'

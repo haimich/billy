@@ -5,6 +5,11 @@ const electronLocalshortcut = require('electron-localshortcut')
 // Keep a global reference of the window objects to prevent gc
 let mainWindow, onboardingWindow, importWindow, statsWindow, summaryWindow
 
+const webPreferences = {
+  nodeIntegration: true,
+  enableRemoteModule: true,
+}
+
 export function openOnboardingWindow() {
   console.log('open onboarding window')
 
@@ -14,7 +19,8 @@ export function openOnboardingWindow() {
     show: false,
     resizable: false,
     titleBarStyle: 'hidden',
-    type: 'splash'
+    type: 'splash',
+    webPreferences,
   })
   onboardingWindow.loadURL(`file://${getAppFolder()}/src/onboarding.html`)
 
@@ -38,7 +44,8 @@ export function openMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: isDev ? 900 : 720, // create room for dev tools
-    show: false
+    show: false,
+    webPreferences,
   })
   mainWindow.loadURL(`file://${getAppFolder()}/src/main.html`)
 
@@ -65,7 +72,8 @@ export function openImportWindow() {
   importWindow = new BrowserWindow({
     width: 380,
     height: 260,
-    show: false
+    show: false,
+    webPreferences,
   })
   importWindow.loadURL(`file://${getAppFolder()}/src/import.html`)
 
@@ -90,7 +98,8 @@ export function openStatsWindow() {
   statsWindow = new BrowserWindow({
     width: 790,
     height: 880,
-    show: false
+    show: false,
+    webPreferences,
   })
   statsWindow.loadURL(`file://${getAppFolder()}/src/stats.html`)
 
@@ -112,7 +121,8 @@ export function openSummaryWindow() {
   summaryWindow = new BrowserWindow({
     width: 1200,
     height: isDev ? 900 : 710, // create room for dev tools
-    show: false
+    show: false,
+    webPreferences,
   })
   summaryWindow.loadURL(`file://${getAppFolder()}/src/summary.html`)
 

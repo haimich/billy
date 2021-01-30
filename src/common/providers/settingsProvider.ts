@@ -51,7 +51,7 @@ export function get(value: settingKeys): Promise<any> {
 export function set(key: settingKeys, value: any): Promise<void> {
   if (isDev) {
     DEV_CONFIG[key] = value;
-    return Promise.resolve()
+    return Promise.resolve(null)
   }
 
   return settings.set(key, value)

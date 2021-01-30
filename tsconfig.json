@@ -1,14 +1,19 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es6",
     "jsx": "react",
-    "outDir": "buildtmp",
     "noImplicitAny": false,
     "strictNullChecks": false,
     "noImplicitThis": true,
-    "sourceMap": false
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "*": ["node_modules/*"]
+    }
   },
   "exclude": [
     "node_modules",

@@ -26,7 +26,7 @@ async function createWindow() {
   }
 }
 
-app.on('ready', createWindow)
+app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
