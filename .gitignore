@@ -6,5 +6,6 @@ output/
 *.sqlite
 npm-debug*
 files/
+out/
 
 .DS_STORE

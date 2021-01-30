@@ -11,6 +11,7 @@
     "build": "npm run clean && tsc && npm run copy-html",
     "package": "electron-forge package",
     "recreate-database": "rimraf bills.sqlite && knex migrate:latest && knex seed:run",
+    "clean:mac": "rimraf ~/Library/Application\\ Support/billy/Settings",
     "make": "electron-forge make",
     "copy-html": "cp -r static/*.html dist/src",
     "publish": "electron-forge publish",
