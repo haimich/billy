@@ -23,9 +23,12 @@ export default class AppComponent extends React.Component<any, {}> {
   async finishSetup(values: FormComponentValues): Promise<any> {
     try {
       const appDir = values.folder
+
       await set('appDir', appDir)
 
       const dbFileName =  appDir + '/' + 'bills.sqlite'
+
+      console.log("Db file name is: " + dbFileName)
 
       await set('knex', {
         client: 'sqlite3',

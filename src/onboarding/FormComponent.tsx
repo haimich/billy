@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { resourceLimits } from 'worker_threads';
 import t from '../common/helpers/i18n'
+const { dialog } = require('electron').remote
 
 export interface FormComponentValues {
   folder: string
@@ -18,7 +20,7 @@ export class FormComponent extends React.Component<Props, {}> {
   }
 
   state: {
-    folder?: File
+    folder?: string
   }
 
   constructor(props) {
@@ -29,19 +31,22 @@ export class FormComponent extends React.Component<Props, {}> {
     }
   }
 
-  onFileinputChange(event) {
-    const files = event.target.files
-    if (files.length >= 1) {
-      this.setState({ folder: files[0] })
-      this.refs.next.removeAttribute('disabled')
+  async openFileDialog() {
+    let result = await dialog.showOpenDialog({
+      properties: ['openDirectory']
+    })
+    
+    if (result.canceled || result.filePaths == null || result.filePaths.length === 0) {
+      return
     }
+
+    this.setState({ folder: result.filePaths[0] })
   }
 
   onSubmit(event) {
     event.preventDefault()
     this.props.finishSetup({
-      //folder: this.state.folder!.path
-      folder: "/Users/crismich/Desktop/dev/billy-kid"
+      folder: this.state.folder
     })
   }
 
@@ -56,22 +61,16 @@ export class FormComponent extends React.Component<Props, {}> {
         <p className="onboardingForm">
           <label className="btn btn-default">
             {t('Ordner auswählen')}
-            <input type="file" className="form-control hidden" id="file" ref="file" onChange={this.onFileinputChange.bind(this)} />
+            <button className="form-control hidden" onClick={this.openFileDialog.bind(this)} />
           </label> &nbsp;
 
-          <small ref="fileLabel" className="fileLabel" title={this.state.folder && this.state.folder.path}>
-            {this.state.folder && this.state.folder.path}
+          <small ref="fileLabel" className="fileLabel" title={this.state.folder}>
+            {this.state.folder}
           </small>
 
           <button type="submit" className="btn btn-primary" ref="next">{t('Weiter')}</button>
         </p>
       </form>
     )
-  }
-
-  componentDidMount() {
-    // set file input attributes so it only selects folders
-    this.refs.file.setAttribute('directory', '')
-    this.refs.file.setAttribute('webkitdirectory', '')
   }
 }

@@ -23,7 +23,7 @@ export default class FileListComponent extends React.Component<Props, {}> {
       const file = this.props.files[i]
 
       fileList.push(
-        <tr key={i} title={t('Klicken um zu öffnen')}>
+        <tr key={i} title={t('Klicken um zu öffnen (' + file.path + ')')}>
           <td>
             <span className="file-open" onClick={event => {
                 event.preventDefault()
